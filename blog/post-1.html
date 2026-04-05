@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Testing Math: When to Call a Winner | abwex.com</title>
+  <meta name="description" content="The mathematics of A/B testing decisions — p-values, sample sizes, peeking problems, and practical rules for when to stop a test and declare a winner.">
+  <link rel="canonical" href="https://abwex.com/blog/post-1.html">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="/" class="logo">abwex</a>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <article class="blog-post">
+    <h1>A/B Testing Math: When to Call a Winner (And When You're Fooling Yourself)</h1>
+    <p class="meta">Published April 2025 &middot; 9 min read</p>
+
+    <p>Most A/B tests are called too early. The math behind statistical significance is straightforward, but the discipline to follow it is rare. Here is what actually happens when you peek at results early, why p-values are not what most people think, and the correct framework for deciding when your test is done.</p>
+
+    <h2>The Fundamental Problem: Peeking</h2>
+    <p>Imagine flipping a fair coin. After 10 flips, you see 7 heads. Is the coin biased? Probably not, but p = 0.17, which feels close to significant. After 20 flips, you are back to 11 heads. After 100, you are at 53 heads. If you had checked after flip 10 and stopped, you would have been wrong.</p>
+    <p>A/B tests have the same problem. If you check your results daily with a p < 0.05 threshold, you will eventually see "significant" results even when there is no real difference. Simulations show that checking daily for 30 days gives you roughly a 30% chance of a false positive, compared to the 5% you think you have.</p>
+    <p>This is not a theoretical concern. A 2017 study by Microsoft's ExP platform found that 70% of companies admitted to peeking at A/B test results before the planned sample size was reached.</p>
+
+    <h2>The Z-Test: What It Actually Computes</h2>
+    <p>The standard two-proportion z-test for A/B testing computes how many standard deviations the observed difference is from zero:</p>
+    <pre>p1 = conversions_A / visitors_A
+p2 = conversions_B / visitors_B
+p_pooled = (conv_A + conv_B) / (vis_A + vis_B)
+SE = sqrt(p_pooled * (1 - p_pooled) * (1/n1 + 1/n2))
+z = (p2 - p1) / SE</pre>
+    <p>The p-value is the probability of observing a z-score at least as extreme as the one calculated, assuming the null hypothesis (no difference) is true. A p-value of 0.03 does not mean there is a 3% chance the results are due to chance. It means that if there were truly no difference, you would see a result this extreme 3% of the time.</p>
+    <p>You can compute this instantly at <a href="https://abwex.com">abwex.com</a>. But understanding the number matters more than computing it.</p>
+
+    <h2>Sample Size: Calculate Before You Start</h2>
+    <p>The correct workflow is to calculate the required sample size before running the test, then collect that many samples, then check the result once. The formula depends on four inputs:</p>
+    <ol>
+      <li><strong>Baseline conversion rate</strong> — Your current rate (e.g., 5%)</li>
+      <li><strong>Minimum detectable effect (MDE)</strong> — The smallest improvement worth detecting (e.g., 10% relative = 5.5% absolute)</li>
+      <li><strong>Statistical power</strong> — The probability of detecting a real effect (typically 80%)</li>
+      <li><strong>Significance level</strong> — Your p-value threshold (typically 0.05)</li>
+    </ol>
+    <p>For a 5% baseline rate with a 10% MDE at 80% power and 95% confidence, you need approximately 31,000 visitors per variation (62,000 total). At 1,000 visitors per day, that is a 62-day test.</p>
+    <p>This is why most companies underestimate test duration. Small effects require massive sample sizes. A 2% relative improvement (5% to 5.1%) requires about 3.1 million visitors per variation. If your effect is that small, consider whether it is worth testing at all.</p>
+
+    <h2>The Peeking Solution: Sequential Testing</h2>
+    <p>If you genuinely need to check results early (and most organizations do), use a sequential testing framework rather than fixed-horizon z-tests. The two main approaches are:</p>
+    <p><strong>Alpha spending</strong> (O'Brien-Fleming or Pocock boundaries): Allocates the overall alpha (0.05) across multiple looks. Early looks use extremely strict thresholds (e.g., p < 0.001 at the first check), getting progressively looser. This controls the overall false positive rate at 5% even with multiple checks.</p>
+    <p><strong>Bayesian methods</strong>: Instead of p-values, compute the posterior probability that one variant is better than the other. Bayesian methods handle peeking naturally because they update beliefs rather than testing a fixed hypothesis. The <a href="https://abwex.com">abwex.com calculator</a> includes a Bayesian mode that shows P(B beats A).</p>
+
+    <h2>Common Mistakes</h2>
+    <h3>1. Running too many tests simultaneously</h3>
+    <p>If you run 20 tests at p < 0.05, you expect one false positive by chance alone. This is the multiple comparisons problem. Adjust with Bonferroni correction (divide alpha by the number of tests) or use false discovery rate control.</p>
+
+    <h3>2. Ignoring novelty effects</h3>
+    <p>New designs often perform better initially because users pay more attention to changes. Then performance regresses to the mean after 1-2 weeks. Always run tests for at least two full business cycles (typically 2-4 weeks) to account for this.</p>
+
+    <h3>3. Testing too many variants</h3>
+    <p>Each additional variant increases the required sample size. A 4-variant test needs roughly 4x the traffic of a 2-variant test for the same power. Unless you have enormous traffic, stick to A/B (not A/B/C/D).</p>
+
+    <h3>4. Optimizing for the wrong metric</h3>
+    <p>A button color change might increase clicks (micro-conversion) while decreasing purchases (macro-conversion). Always define your primary metric before starting the test and report it as the main result. Secondary metrics are informative but should not override the primary decision.</p>
+
+    <h2>The Decision Framework</h2>
+    <ol>
+      <li>Define your primary metric and minimum detectable effect</li>
+      <li>Calculate required sample size (use the <a href="https://abwex.com">sample size calculator</a>)</li>
+      <li>Run the test for the full duration without making decisions based on interim results</li>
+      <li>At the end, check significance. If p < 0.05, implement the winner. If not, keep the control</li>
+      <li>Document the result regardless of outcome (negative results prevent repeating failed experiments)</li>
+    </ol>
+    <p>For more on measuring the impact of your design decisions including color choices, see <a href="https://gen8x.com">gen8x.com</a>.</p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <span>Built by <a href="https://zovo.one">zovo.one</a> &middot; More tools: <a href="https://enhio.com">enhio.com</a>, <a href="https://krzen.com">krzen.com</a></span>
+      <span>&copy; 2025 abwex.com</span>
+    </div>
+  </footer>
+</body>
+</html>
