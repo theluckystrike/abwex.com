@@ -1,196 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abwex — Experiment Faster</title>
-    <meta name="description" content="Abwex covers AI experimentation platforms, A/B testing for models, rapid prototyping, and ML experiment tracking. Accelerate your iteration cycles and ship better models.">
-    <meta name="keywords" content="AI experimentation, A/B testing, ML experiment tracking, rapid prototyping, MLOps, model evaluation, experiment management, Weights & Biases, MLflow, hyperparameter tuning">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="Abwex — Experiment Faster">
-    <meta property="og:description" content="AI experimentation frameworks, A/B testing for models, and rapid prototyping methodology. Ship better models through faster iteration.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abwex.com">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Abwex",
-        "url": "https://abwex.com",
-        "description": "Experiment Faster — AI experimentation platforms, A/B testing, and rapid prototyping methodology.",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://abwex.com/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
-
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        html { scroll-behavior: smooth; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Test Calculator — Statistical Significance | abwex.com</title>
+  <meta name="description" content="Free A/B test significance calculator. Z-test, p-values, confidence levels, sample size calculator, and Bayesian probability. No signup needed.">
+  <meta name="keywords" content="AB test calculator, statistical significance, conversion rate, sample size calculator, Bayesian AB testing">
+  <link rel="canonical" href="https://abwex.com/">
+  <meta property="og:title" content="A/B Test Calculator | abwex.com">
+  <meta property="og:description" content="Calculate statistical significance for A/B tests. Z-test, Bayesian probability, and sample size calculator.">
+  <meta property="og:url" content="https://abwex.com/">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="bg-gray-950 text-gray-100">
+<body>
+  <header>
+    <div class="container">
+      <a href="/" class="logo">abwex</a>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-gray-950/90 backdrop-blur-md z-50 border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="text-2xl font-800 tracking-tight" style="color: #3b82f6;">Abwex</a>
-            <div class="hidden md:flex gap-8 text-sm text-gray-400">
-                <a href="/" class="text-white transition">Home</a>
-                <a href="/guides.html" class="hover:text-white transition">Guides</a>
-                <a href="/tools.html" class="hover:text-white transition">Tools</a>
-                <a href="/blog/getting-started.html" class="hover:text-white transition">Blog</a>
-                <a href="/about.html" class="hover:text-white transition">About</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-950 to-indigo-950"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent"></div>
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center py-32">
-            <div class="inline-block px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-sm font-medium mb-8">
-                AI Experimentation Hub
-            </div>
-            <h1 class="text-5xl md:text-7xl font-800 tracking-tight mb-6">
-                Experiment<br><span style="color: #3b82f6;">Faster</span>
-            </h1>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                The teams that iterate fastest win. Learn the frameworks, tools, and methodologies that compress experiment cycles from weeks to hours and turn model development into a systematic, repeatable process.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#methodology" class="px-8 py-3.5 rounded-lg font-semibold text-white transition" style="background-color: #3b82f6;">Learn the Method</a>
-                <a href="#guides" class="px-8 py-3.5 rounded-lg font-semibold text-gray-300 border border-gray-700 hover:border-gray-500 transition">Read Guides</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Why Experimentation Matters Section -->
-    <section class="py-24 bg-gray-900/50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-700 text-center mb-6">The Science of AI Experimentation</h2>
-            <p class="text-gray-400 text-center max-w-3xl mx-auto mb-16 text-lg leading-relaxed">
-                Machine learning is fundamentally an empirical science. No amount of theoretical analysis can predict with certainty whether a particular architecture, hyperparameter configuration, or training strategy will work best for your specific problem. The only way to know is to run experiments. But running experiments without structure leads to chaos: unreproducible results, wasted compute, and teams that cannot explain why one model outperforms another. At Abwex, we teach the discipline of systematic experimentation. Proper experiment tracking, rigorous A/B testing, automated hyperparameter search, and statistical analysis transform model development from guesswork into engineering. The teams that master experimentation methodology consistently ship better models, faster, with fewer resources wasted on dead ends.
-            </p>
-            <div id="methodology" class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(59,130,246,0.15);">
-                        <svg class="w-6 h-6" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">Experiment Tracking</h3>
-                    <p class="text-gray-400 leading-relaxed">Every experiment should be fully reproducible. That means logging not just metrics and hyperparameters, but also code versions, data pipeline configurations, environment details, and random seeds. Tools like Weights and Biases, MLflow, and Neptune provide the infrastructure for this level of tracking. We show you how to set up experiment tracking systems that capture everything you need without slowing down your iteration speed, and how to use tracked data to make informed decisions about which directions to pursue.</p>
-                </div>
-                <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(59,130,246,0.15);">
-                        <svg class="w-6 h-6" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">A/B Testing for Models</h3>
-                    <p class="text-gray-400 leading-relaxed">Offline metrics do not always predict online performance. A/B testing model variants in production provides ground truth about which model actually delivers better business outcomes. We cover the statistics behind proper A/B testing, including sample size calculation, multiple comparison corrections, and sequential testing methods that let you reach conclusions faster. We also explore shadow deployments, multi-armed bandits, and the interleaving technique for comparing ranking models.</p>
-                </div>
-                <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(59,130,246,0.15);">
-                        <svg class="w-6 h-6" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">Rapid Prototyping</h3>
-                    <p class="text-gray-400 leading-relaxed">The first version of any ML system should be built in days, not months. Rapid prototyping means choosing the simplest baseline that could work, getting end-to-end evaluation running immediately, and then iterating from there. We teach the methodology of starting with strong baselines, running ablation studies to understand what each component contributes, and using progressive complexity to avoid over-engineering solutions before you understand the problem space.</p>
-                </div>
-            </div>
-        </div>
+  <main class="container">
+    <section class="hero">
+      <h1>A/B Test <span>Calculator</span></h1>
+      <p>Test statistical significance with z-test, Bayesian probability, and sample size planning.</p>
     </section>
 
-    <!-- Guides Section -->
-    <section id="guides" class="py-24">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-700 text-center mb-6">Featured Guides</h2>
-            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-16 text-lg">
-                Practical frameworks for accelerating your AI experimentation workflow.
-            </p>
-            <div class="grid md:grid-cols-3 gap-8">
-                <article class="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <div class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                        <span class="text-5xl font-800 text-white/20">01</span>
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-500 text-blue-400">Tracking</span>
-                        <h3 class="text-lg font-600 mt-2 mb-3">Setting Up a Production-Grade Experiment Tracking System with W&B</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Configure Weights and Biases for team-wide experiment tracking. Cover project organization, custom dashboards, artifact versioning, model registry integration, and automated report generation. Includes patterns for tracking LLM experiments where traditional metrics fall short.</p>
-                    </div>
-                </article>
-                <article class="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <div class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">
-                        <span class="text-5xl font-800 text-white/20">02</span>
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-500 text-blue-400">Hyperparameters</span>
-                        <h3 class="text-lg font-600 mt-2 mb-3">Bayesian Hyperparameter Optimization: Beyond Grid Search and Random Search</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Understand how Bayesian optimization with Gaussian processes explores the hyperparameter space more efficiently than grid or random search. Implement Optuna sweeps, compare acquisition functions, and learn when to use population-based training for reinforcement learning and LLM fine-tuning tasks.</p>
-                    </div>
-                </article>
-                <article class="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <div class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
-                        <span class="text-5xl font-800 text-white/20">03</span>
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-500 text-blue-400">A/B Testing</span>
-                        <h3 class="text-lg font-600 mt-2 mb-3">Statistical Rigor in Model A/B Tests: Avoiding the Most Common Pitfalls</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Most model A/B tests are underpowered, peeked at too early, or confounded by feature interactions. Learn the correct statistical methodology for model comparison, including power analysis, proper randomization, and when to use paired versus unpaired tests for your specific evaluation setup.</p>
-                    </div>
-                </article>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="abwex.switchTab('significance', this)">Significance Test</button>
+      <button class="tab-btn" onclick="abwex.switchTab('samplesize', this)">Sample Size Calculator</button>
+    </div>
+
+    <!-- Significance Tab -->
+    <div id="tab-significance" class="tab-content active">
+      <div class="calc-card">
+        <div class="input-grid">
+          <div>
+            <h3>Control (A)</h3>
+            <div class="input-group" style="margin-bottom:12px;">
+              <label>Visitors</label>
+              <input type="number" id="control-visitors" placeholder="e.g. 10000" min="1">
             </div>
-        </div>
-    </section>
-
-    <!-- Resources Section -->
-    <section id="resources" class="py-24 bg-gray-900/50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-700 text-center mb-6">Experimentation Tools & Resources</h2>
-            <p class="text-gray-400 text-center max-w-3xl mx-auto mb-16 text-lg leading-relaxed">
-                The right experimentation infrastructure can be the difference between a team that ships one model per quarter and a team that tests dozens of hypotheses per week. From experiment trackers to feature stores to evaluation frameworks, these tools form the backbone of a high-velocity ML team. We review and compare them so you can build the stack that matches your team size, budget, and technical requirements.
-            </p>
-            <div class="grid md:grid-cols-2 gap-6">
-                <a href="https://zovo.one" rel="dofollow" class="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-8 border border-blue-500/20 hover:border-blue-500/40 transition block">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(59,130,246,0.2);">
-                            <svg class="w-5 h-5" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                        </div>
-                        <span class="text-xs font-600 uppercase tracking-wider text-blue-400">Recommended</span>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">Zovo.one — Comprehensive AI Tools & Resources</h3>
-                    <p class="text-gray-400 leading-relaxed">Building your ML experimentation stack? Visit <strong class="text-blue-300">zovo.one</strong> for curated comparisons of experiment tracking platforms, MLOps tools, and AI infrastructure solutions. Their directory helps you evaluate options across the full ML lifecycle, from data management and training to evaluation and deployment, saving you weeks of tool evaluation.</p>
-                </a>
-                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-700/50">
-                    <h3 class="text-xl font-600 mb-3">Weights & Biases</h3>
-                    <p class="text-gray-400 leading-relaxed">The most popular experiment tracking platform in the ML community. W&B provides experiment logging, interactive dashboards, hyperparameter sweep orchestration, model versioning, and collaborative reports. Their Artifacts system handles dataset and model versioning, while Tables enables rich evaluation visualization that goes beyond scalar metrics.</p>
-                </div>
-                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-700/50">
-                    <h3 class="text-xl font-600 mb-3">Optuna</h3>
-                    <p class="text-gray-400 leading-relaxed">A powerful open-source hyperparameter optimization framework. Optuna's define-by-run API makes it easy to search complex parameter spaces including conditional parameters and dynamic architectures. Its pruning feature automatically terminates unpromising trials early, dramatically reducing compute costs for large-scale sweeps across model configurations.</p>
-                </div>
-                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-700/50">
-                    <h3 class="text-xl font-600 mb-3">DVC (Data Version Control)</h3>
-                    <p class="text-gray-400 leading-relaxed">Git for data and ML pipelines. DVC tracks datasets, model files, and pipeline stages alongside your code, making experiments fully reproducible. Combined with DVC Studio for visualization and remote storage backends for large files, it provides a lightweight but powerful alternative to heavier MLOps platforms for teams that want to stay close to their existing Git workflow.</p>
-                </div>
+            <div class="input-group">
+              <label>Conversions</label>
+              <input type="number" id="control-conversions" placeholder="e.g. 500" min="0">
             </div>
+          </div>
+          <div>
+            <h3>Variant (B)</h3>
+            <div class="input-group" style="margin-bottom:12px;">
+              <label>Visitors</label>
+              <input type="number" id="variant-visitors" placeholder="e.g. 10000" min="1">
+            </div>
+            <div class="input-group">
+              <label>Conversions</label>
+              <input type="number" id="variant-conversions" placeholder="e.g. 550" min="0">
+            </div>
+          </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <a href="/" class="text-xl font-700 mb-4 inline-block" style="color: #3b82f6;">Abwex</a>
-            <p class="text-gray-500 text-sm">&copy; 2025 Abwex. All rights reserved.</p>
+        <div class="toggle-row">
+          <div id="bayesian-toggle" class="toggle" onclick="abwex.toggleBayesian()"></div>
+          <span class="toggle-label">Bayesian mode (show probability B beats A)</span>
         </div>
-    </footer>
+        <button class="btn" onclick="abwex.calculate()">Calculate Significance</button>
+      </div>
 
+      <div id="freq-results" class="results-card">
+        <div class="results-grid"></div>
+        <div class="verdict"></div>
+        <div class="bar-chart"></div>
+        <div id="bayesian-result" class="bayesian-result" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Sample Size Tab -->
+    <div id="tab-samplesize" class="tab-content">
+      <div class="calc-card">
+        <h3>Sample Size Planner</h3>
+        <div class="input-grid">
+          <div class="input-group">
+            <label>Baseline Conversion Rate (%)</label>
+            <input type="number" id="ss-baseline" placeholder="e.g. 5" min="0.01" max="99.99" step="0.1">
+          </div>
+          <div class="input-group">
+            <label>Minimum Detectable Effect (%)</label>
+            <input type="number" id="ss-mde" placeholder="e.g. 10" min="0.1" max="100" step="0.1">
+          </div>
+          <div class="input-group">
+            <label>Statistical Power</label>
+            <select id="ss-power">
+              <option value="0.80">80%</option>
+              <option value="0.90">90%</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Significance Level</label>
+            <select id="ss-alpha">
+              <option value="0.05">0.05 (95%)</option>
+              <option value="0.01">0.01 (99%)</option>
+              <option value="0.10">0.10 (90%)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" onclick="abwex.calculateSampleSize()">Calculate Sample Size</button>
+      </div>
+      <div id="ss-results" class="results-card"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>Built by <a href="https://zovo.one">zovo.one</a> &middot; More tools: <a href="https://enhio.com">enhio.com</a>, <a href="https://krzen.com">krzen.com</a></span>
+      <span>&copy; 2025 abwex.com</span>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
 </body>
 </html>

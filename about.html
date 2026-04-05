@@ -1,111 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Abwex</title>
-    <meta name="description" content="Abwex is dedicated to AI experimentation methodology, experiment tracking, A/B testing, and systematic model development. Learn about our mission and partner network.">
-    <meta name="keywords" content="about Abwex, AI experimentation hub, MLOps resource, experiment tracking">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="About Abwex">
-    <meta property="og:description" content="Abwex teaches systematic AI experimentation methodology for ML teams that ship better models faster.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abwex.com/about.html">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "About Abwex",
-        "url": "https://abwex.com/about.html",
-        "description": "Abwex is dedicated to AI experimentation methodology and systematic model development.",
-        "isPartOf": { "@type": "WebSite", "name": "Abwex", "url": "https://abwex.com" }
-    }
-    </script>
-
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        html { scroll-behavior: smooth; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | abwex.com</title>
+  <meta name="description" content="About abwex.com — a free A/B test statistical significance calculator with z-test, Bayesian mode, and sample size planning.">
+  <link rel="canonical" href="https://abwex.com/about.html">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="bg-gray-950 text-gray-100">
+<body>
+  <header>
+    <div class="container">
+      <a href="/" class="logo">abwex</a>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
 
-    <nav class="fixed top-0 w-full bg-gray-950/90 backdrop-blur-md z-50 border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="text-2xl font-800 tracking-tight" style="color: #3b82f6;">Abwex</a>
-            <div class="hidden md:flex gap-8 text-sm text-gray-400">
-                <a href="/" class="hover:text-white transition">Home</a>
-                <a href="/guides.html" class="hover:text-white transition">Guides</a>
-                <a href="/tools.html" class="hover:text-white transition">Tools</a>
-                <a href="/blog/getting-started.html" class="hover:text-white transition">Blog</a>
-                <a href="/about.html" class="text-white transition">About</a>
-            </div>
-        </div>
-    </nav>
+  <main class="about-content">
+    <h1>About <span>abwex</span></h1>
+    <p>abwex.com is a free A/B test significance calculator. Enter your control and variant data to get instant statistical analysis including z-test p-values, confidence levels, visual comparisons, and a clear winner/not-enough-data verdict.</p>
 
-    <header class="relative pt-32 pb-16 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-950 to-indigo-950"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent"></div>
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-800 tracking-tight mb-6">
-                About <span style="color: #3b82f6;">Abwex</span>
-            </h1>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                Systematic experimentation methodology for teams that ship better models.
-            </p>
-        </div>
-    </header>
+    <h2>Features</h2>
+    <ul>
+      <li>Frequentist analysis: z-test, p-value, confidence levels (90%, 95%, 99%)</li>
+      <li>Visual bar chart with 95% confidence interval error bars</li>
+      <li>Relative improvement calculation</li>
+      <li>Bayesian mode: probability that Variant beats Control</li>
+      <li>Sample size calculator: plan tests before running them</li>
+      <li>Clear verdict: winner or not enough data</li>
+    </ul>
 
-    <section class="py-20">
-        <div class="max-w-3xl mx-auto px-4">
-            <h2 class="text-2xl font-700 mb-6">Our Mission</h2>
-            <p class="text-gray-300 leading-relaxed mb-4">
-                Abwex was founded on the observation that the difference between high-performing ML teams and struggling ones is rarely talent or compute — it is methodology. Teams that run rigorous experiments, track every result, and make decisions based on statistical evidence consistently outperform teams that rely on intuition and ad-hoc workflows. We teach the discipline of systematic experimentation because it is the highest-leverage skill improvement available to most ML teams.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-4">
-                Our content covers the full experimentation lifecycle: designing controlled experiments that isolate the effect of each change, setting up experiment tracking systems that make every run reproducible and comparable, running hyperparameter optimization that efficiently explores large search spaces, conducting A/B tests in production with proper statistical rigor, and building rapid prototyping workflows that compress the time from idea to validated result.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-4">
-                We draw on established practices from experimental science, clinical trials, and industrial statistics, adapting them to the specific challenges of machine learning. The principles are not new — the scientific method has been refined for centuries — but their application to ML experimentation requires domain-specific knowledge about data leakage, overfitting to evaluation metrics, and the unique reproducibility challenges of stochastic training processes.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-8">
-                Abwex is part of a network of specialized AI and ML resources. Our flagship resource, <a href="https://zovo.one" class="text-blue-400 hover:text-blue-300 underline">zovo.one</a>, provides a comprehensive directory of AI tools spanning the entire ecosystem. Together with our partner sites, we cover AI development from foundational research to production deployment.
-            </p>
+    <h2>The Math</h2>
+    <p>The significance test uses a two-proportion z-test with pooled standard error. The formula is:</p>
+    <p><code>z = (p2 - p1) / sqrt(p_pooled * (1 - p_pooled) * (1/n1 + 1/n2))</code></p>
+    <p>The Bayesian mode calculates P(B > A) using Beta distributions with uniform priors (Beta(1,1)).</p>
 
-            <h2 class="text-2xl font-700 mb-6">Related Sites</h2>
-            <div class="grid sm:grid-cols-2 gap-4">
-                <a href="https://ml0x.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">ML0X</h3>
-                    <p class="text-gray-400 text-sm">Foundational machine learning from first principles with math and code.</p>
-                </a>
-                <a href="https://gpt0x.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">GPT0X</h3>
-                    <p class="text-gray-400 text-sm">Advanced language model engineering, fine-tuning, and deployment.</p>
-                </a>
-                <a href="https://krzen.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">Krzen</h3>
-                    <p class="text-gray-400 text-sm">Model compression, quantization, and deployment optimization.</p>
-                </a>
-                <a href="https://enhio.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">Enhio</h3>
-                    <p class="text-gray-400 text-sm">AI-powered enhancement tools for images, audio, and video.</p>
-                </a>
-            </div>
-        </div>
-    </section>
+    <h2>Part of the zovo.one Network</h2>
+    <p>abwex.com is built by <a href="https://zovo.one">zovo.one</a>. More tools:</p>
+    <ul>
+      <li><a href="https://gen8x.com">gen8x.com</a> — color palette generator</li>
+      <li><a href="https://enhio.com">enhio.com</a> — text analysis and readability scoring</li>
+      <li><a href="https://krzen.com">krzen.com</a> — client-side image compression</li>
+    </ul>
+  </main>
 
-    <footer class="py-12 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <a href="/" class="text-xl font-700 mb-4 inline-block" style="color: #3b82f6;">Abwex</a>
-            <p class="text-gray-500 text-sm">&copy; 2025 Abwex. All rights reserved.</p>
-        </div>
-    </footer>
-
+  <footer>
+    <div class="container">
+      <span>Built by <a href="https://zovo.one">zovo.one</a> &middot; More tools: <a href="https://enhio.com">enhio.com</a>, <a href="https://krzen.com">krzen.com</a></span>
+      <span>&copy; 2025 abwex.com</span>
+    </div>
+  </footer>
 </body>
 </html>

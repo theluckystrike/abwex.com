@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistical Significance Explained for Non-Statisticians | abwex.com</title>
+  <meta name="description" content="A plain-language explanation of statistical significance, p-values, confidence intervals, and what they actually mean for business decisions.">
+  <link rel="canonical" href="https://abwex.com/blog/post-2.html">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="/" class="logo">abwex</a>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <article class="blog-post">
+    <h1>Statistical Significance Explained for Non-Statisticians</h1>
+    <p class="meta">Published April 2025 &middot; 8 min read</p>
+
+    <p>Statistical significance is one of the most misunderstood concepts in data-driven business. It is the gatekeeper for A/B test decisions, yet surveys consistently show that most product managers and marketers using it daily cannot correctly define it. This guide explains what it actually means, without formulas.</p>
+
+    <h2>The Court Analogy</h2>
+    <p>Statistical significance works like a criminal trial. The null hypothesis is "innocent until proven guilty" — in A/B testing, it means "there is no difference between the two versions." The evidence (your data) either convinces you beyond a reasonable doubt, or it does not.</p>
+    <p>A "statistically significant" result is like a guilty verdict: the evidence is strong enough to reject the assumption of no difference. But just like a guilty verdict does not mean the person definitely committed the crime (wrongful convictions happen), statistical significance does not mean your variant is definitely better. It means the data is unlikely to have occurred if there were truly no difference.</p>
+
+    <h2>What the P-Value Really Means</h2>
+    <p>The p-value is the probability of getting results at least as extreme as what you observed, assuming there is actually no difference. That is it. Let that settle, because every other interpretation is wrong.</p>
+    <p>Common wrong interpretations:</p>
+    <ul>
+      <li><strong>"There is a 5% chance this result is due to chance"</strong> — No. The p-value does not tell you the probability that your result is wrong. It tells you how surprising the data would be under the assumption of no effect.</li>
+      <li><strong>"There is a 95% chance the variant is better"</strong> — No. P-values say nothing about the probability that your hypothesis is true. For that, you need Bayesian statistics (which the <a href="https://abwex.com">abwex.com calculator</a> can compute with its Bayesian toggle).</li>
+      <li><strong>"The effect is large"</strong> — No. Statistical significance says the effect is probably not zero. It says nothing about the size of the effect. A 0.01% improvement can be statistically significant with enough data.</li>
+    </ul>
+
+    <h2>The 5% Threshold: Where It Comes From</h2>
+    <p>The conventional significance level of 0.05 (5%) was proposed by Ronald Fisher in 1925. He wrote that it was a "convenient" threshold. It was never meant to be a universal standard, yet it has become one.</p>
+    <p>There is nothing magical about 5%. In some contexts (medical trials), 1% or even 0.1% is required because false positives have severe consequences. In others (early-stage growth experiments), 10% might be acceptable because the cost of a false positive is low and speed matters.</p>
+    <p>The right threshold depends on the stakes:</p>
+    <ul>
+      <li><strong>High stakes (pricing, checkout flow)</strong> — Use 99% confidence (p < 0.01). A false positive here directly loses revenue.</li>
+      <li><strong>Medium stakes (feature changes, layout tests)</strong> — Use 95% confidence (p < 0.05). The standard for most A/B tests.</li>
+      <li><strong>Low stakes (copy changes, minor UI tweaks)</strong> — 90% confidence (p < 0.10) may be acceptable if test velocity matters more than precision.</li>
+    </ul>
+
+    <h2>Confidence Intervals: More Useful Than P-Values</h2>
+    <p>A confidence interval tells you the range of plausible values for the true effect size. A 95% CI of [1.2%, 3.8%] for the improvement means: if you repeated this experiment many times, 95% of the intervals would contain the true improvement.</p>
+    <p>Confidence intervals are more useful than p-values because they show both significance (whether the interval includes zero) and practical significance (whether the effect is large enough to matter). An interval of [0.01%, 0.03%] is statistically significant but practically meaningless for most businesses.</p>
+
+    <h2>Sample Size: Why Most Tests Run Too Short</h2>
+    <p>The required sample size increases dramatically as the effect you want to detect gets smaller. This is the most counter-intuitive aspect of A/B testing for non-statisticians:</p>
+    <ul>
+      <li>Detecting a 50% relative improvement: ~400 samples per group</li>
+      <li>Detecting a 10% relative improvement: ~15,000 samples per group</li>
+      <li>Detecting a 5% relative improvement: ~60,000 samples per group</li>
+      <li>Detecting a 1% relative improvement: ~1,500,000 samples per group</li>
+    </ul>
+    <p>(Assuming a 5% baseline conversion rate, 80% power, 95% confidence. Use the <a href="https://abwex.com">sample size calculator</a> for your specific parameters.)</p>
+    <p>Most real A/B tests look for improvements in the 5-20% range, which typically requires thousands to tens of thousands of conversions per group — not visitors, conversions. If your conversion rate is 2% and you get 1,000 visitors per day, you need at least 2-4 weeks for a meaningful test, even for large effects.</p>
+
+    <h2>Bayesian vs Frequentist: The Practical Difference</h2>
+    <p>The standard (frequentist) approach asks: "How surprising is this data if there is no effect?" The Bayesian approach asks: "Given this data, what is the probability that B is better than A?"</p>
+    <p>For practitioners, the Bayesian question is usually more natural. Instead of "p = 0.03," you get "there is an 87% probability that the variant outperforms the control." The Bayesian approach also handles sequential testing (checking results multiple times) more gracefully, without the peeking problem that plagues frequentist tests.</p>
+    <p>The trade-off is that Bayesian methods require choosing a prior (your initial belief before seeing data). With enough data, the prior is overwhelmed by evidence, but with small samples, it can influence results. The uniform prior (no prior knowledge) is a safe default for most A/B tests.</p>
+
+    <h2>Making the Decision</h2>
+    <p>After running your test to the predetermined sample size:</p>
+    <ol>
+      <li>Check statistical significance (p < 0.05 or your chosen threshold)</li>
+      <li>Check the confidence interval. Is the lower bound of the improvement meaningful for your business?</li>
+      <li>Check the Bayesian probability if available. Is P(B beats A) above 90%?</li>
+      <li>If significant and practically meaningful: implement the variant</li>
+      <li>If not significant: keep the control. "Not significant" does not mean the variant is worse; it means you could not detect a difference</li>
+    </ol>
+    <p>The most disciplined teams document every test result, including losses and inconclusive tests. This prevents retesting the same ideas and builds organizational knowledge. For more data-driven tools, see <a href="https://ml0x.com">ml0x.com</a> for ML references and <a href="https://zovo.one">zovo.one</a> for our full tool suite.</p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <span>Built by <a href="https://zovo.one">zovo.one</a> &middot; More tools: <a href="https://enhio.com">enhio.com</a>, <a href="https://krzen.com">krzen.com</a></span>
+      <span>&copy; 2025 abwex.com</span>
+    </div>
+  </footer>
+</body>
+</html>
