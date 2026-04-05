@@ -394,7 +394,19 @@
     el.innerHTML = html;
   }
 
-  function calcMulti() {
+  
+function betaRandom(alpha, beta) {
+  var u, v, s;
+  for (var i = 0; i < 200; i++) {
+    u = Math.pow(Math.random(), 1.0 / alpha);
+    v = Math.pow(Math.random(), 1.0 / beta);
+    s = u + v;
+    if (s <= 1.0) return u / s;
+  }
+  return alpha / (alpha + beta);
+}
+
+function calcMulti() {
     var variants = [];
     var names = ['A', 'B', 'C', 'D'];
     for (var i = 0; i < 4; i++) {
@@ -435,11 +447,11 @@
         var wins = 0, trials = 500;
         for (var t = 0; t < trials; t++) {
           var isBest = true;
+      var sampleV = betaRandom(variants[v].conv + 1, variants[v].visitors - variants[v].conv + 1);
           for (var o = 0; o < variants.length && o < 4; o++) {
             if (o === v) continue;
-            var p = probBbeatsA(variants[v].conv + 1, variants[v].visitors - variants[v].conv + 1,
-                                variants[o].conv + 1, variants[o].visitors - variants[o].conv + 1);
-            if (p > 0.5) { isBest = false; break; }
+            var sampleO = betaRandom(variants[o].conv + 1, variants[o].visitors - variants[o].conv + 1);
+        if (sampleO >= sampleV) { isBest = false; break; }
           }
           if (isBest) wins++;
         }
