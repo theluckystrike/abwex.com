@@ -1,111 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Abwex</title>
-    <meta name="description" content="Abwex is dedicated to AI experimentation methodology, experiment tracking, A/B testing, and systematic model development. Learn about our mission and partner network.">
-    <meta name="keywords" content="about Abwex, AI experimentation hub, MLOps resource, experiment tracking">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="About Abwex">
-    <meta property="og:description" content="Abwex teaches systematic AI experimentation methodology for ML teams that ship better models faster.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abwex.com/about.html">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "About Abwex",
-        "url": "https://abwex.com/about.html",
-        "description": "Abwex is dedicated to AI experimentation methodology and systematic model development.",
-        "isPartOf": { "@type": "WebSite", "name": "Abwex", "url": "https://abwex.com" }
-    }
-    </script>
-
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        html { scroll-behavior: smooth; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — ABWex</title>
+  <meta name="description" content="ABWex is a free A/B test statistical significance calculator with frequentist and Bayesian modes, multi-variant support, revenue projections, and sample size planning.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/about.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
 </head>
-<body class="bg-gray-950 text-gray-100">
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html" class="active">About</a>
+        <a href="/blog/">Blog</a>
+      </nav>
+    </div>
+  </header>
 
-    <nav class="fixed top-0 w-full bg-gray-950/90 backdrop-blur-md z-50 border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="text-2xl font-800 tracking-tight" style="color: #3b82f6;">Abwex</a>
-            <div class="hidden md:flex gap-8 text-sm text-gray-400">
-                <a href="/" class="hover:text-white transition">Home</a>
-                <a href="/guides.html" class="hover:text-white transition">Guides</a>
-                <a href="/tools.html" class="hover:text-white transition">Tools</a>
-                <a href="/blog/getting-started.html" class="hover:text-white transition">Blog</a>
-                <a href="/about.html" class="text-white transition">About</a>
-            </div>
-        </div>
-    </nav>
+  <div class="about-content">
+    <h1>About ABWex</h1>
 
-    <header class="relative pt-32 pb-16 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-950 to-indigo-950"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent"></div>
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-800 tracking-tight mb-6">
-                About <span style="color: #3b82f6;">Abwex</span>
-            </h1>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                Systematic experimentation methodology for teams that ship better models.
-            </p>
-        </div>
-    </header>
+    <p>ABWex is a free A/B test calculator that supports both frequentist and Bayesian statistical analysis. It runs entirely in your browser with no data sent to any server.</p>
 
-    <section class="py-20">
-        <div class="max-w-3xl mx-auto px-4">
-            <h2 class="text-2xl font-700 mb-6">Our Mission</h2>
-            <p class="text-gray-300 leading-relaxed mb-4">
-                Abwex was founded on the observation that the difference between high-performing ML teams and struggling ones is rarely talent or compute — it is methodology. Teams that run rigorous experiments, track every result, and make decisions based on statistical evidence consistently outperform teams that rely on intuition and ad-hoc workflows. We teach the discipline of systematic experimentation because it is the highest-leverage skill improvement available to most ML teams.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-4">
-                Our content covers the full experimentation lifecycle: designing controlled experiments that isolate the effect of each change, setting up experiment tracking systems that make every run reproducible and comparable, running hyperparameter optimization that efficiently explores large search spaces, conducting A/B tests in production with proper statistical rigor, and building rapid prototyping workflows that compress the time from idea to validated result.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-4">
-                We draw on established practices from experimental science, clinical trials, and industrial statistics, adapting them to the specific challenges of machine learning. The principles are not new — the scientific method has been refined for centuries — but their application to ML experimentation requires domain-specific knowledge about data leakage, overfitting to evaluation metrics, and the unique reproducibility challenges of stochastic training processes.
-            </p>
-            <p class="text-gray-300 leading-relaxed mb-8">
-                Abwex is part of a network of specialized AI and ML resources. Our flagship resource, <a href="https://zovo.one" class="text-blue-400 hover:text-blue-300 underline">zovo.one</a>, provides a comprehensive directory of AI tools spanning the entire ecosystem. Together with our partner sites, we cover AI development from foundational research to production deployment.
-            </p>
+    <h2>What It Does</h2>
 
-            <h2 class="text-2xl font-700 mb-6">Related Sites</h2>
-            <div class="grid sm:grid-cols-2 gap-4">
-                <a href="https://ml0x.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">ML0X</h3>
-                    <p class="text-gray-400 text-sm">Foundational machine learning from first principles with math and code.</p>
-                </a>
-                <a href="https://gpt0x.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">GPT0X</h3>
-                    <p class="text-gray-400 text-sm">Advanced language model engineering, fine-tuning, and deployment.</p>
-                </a>
-                <a href="https://krzen.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">Krzen</h3>
-                    <p class="text-gray-400 text-sm">Model compression, quantization, and deployment optimization.</p>
-                </a>
-                <a href="https://enhio.com" class="block bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <h3 class="text-lg font-600 mb-1">Enhio</h3>
-                    <p class="text-gray-400 text-sm">AI-powered enhancement tools for images, audio, and video.</p>
-                </a>
-            </div>
-        </div>
-    </section>
+    <p><strong>Frequentist Mode</strong> uses the two-proportion Z-test to calculate p-values, confidence intervals, and relative improvement. The exact formula is shown for every calculation, and results are color-coded by significance level.</p>
 
-    <footer class="py-12 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <a href="/" class="text-xl font-700 mb-4 inline-block" style="color: #3b82f6;">Abwex</a>
-            <p class="text-gray-500 text-sm">&copy; 2025 Abwex. All rights reserved.</p>
-        </div>
-    </footer>
+    <p><strong>Bayesian Mode</strong> uses a Beta-Binomial model to compute P(B beats A) via numerical integration (Simpson's rule for deterministic results). It displays overlapping Beta distribution curves as SVG paths and calculates expected loss if you choose the wrong variant.</p>
 
+    <p><strong>Multi-Variant Comparison</strong> supports up to 4 variants (A/B/C/D). It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is best.</p>
+
+    <p><strong>Revenue Impact Calculator</strong> takes your average revenue per conversion and monthly traffic to project monthly and annual revenue changes.</p>
+
+    <p><strong>Sample Size Pre-Calculator</strong> computes required sample size based on baseline rate, minimum detectable effect, power, and significance level. It includes a duration estimate based on your daily traffic and a power curve visualization.</p>
+
+    <h2>Math Correctness</h2>
+    <p>The statistical calculations use standard formulas from the statistics literature. The normal CDF uses the Abramowitz and Stegun rational approximation (error less than 7.5 times 10 to the minus 8). The Beta distribution uses log-gamma via Lanczos approximation for numerical stability. All formulas are visible in the source code and displayed in the UI.</p>
+
+    <h2>Who Built This</h2>
+    <p>ABWex is part of the <a href="https://zovo.one">zovo.one</a> developer tools collection. Other tools include <a href="https://enhio.com">Enhio</a> for content enhancement and <a href="https://epochpilot.com">EpochPilot</a> for ML training management.</p>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ABWex. Built by <a href="https://zovo.one">zovo.one</a></p>
+      <p style="margin-top:8px;">More tools: <a href="https://enhio.com">Enhio</a> &middot; <a href="https://epochpilot.com">EpochPilot</a></p>
+    </div>
+  </footer>
 </body>
 </html>

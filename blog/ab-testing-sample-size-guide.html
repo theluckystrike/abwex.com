@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Testing Sample Size: How Much Traffic You Actually Need — ABWex</title>
+  <meta name="description" content="Sample size tables for common A/B testing scenarios, the math behind the formula, and a reality check on how long tests take at different traffic levels.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
+  <meta property="og:title" content="A/B Testing Sample Size: How Much Traffic You Actually Need">
+  <meta property="og:url" content="https://abwex.com/blog/ab-testing-sample-size-guide.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/" class="active">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <article class="article">
+    <h1>A/B Testing Sample Size: How Much Traffic You Actually Need</h1>
+    <div class="meta">April 2025 &middot; 8 min read</div>
+
+    <p>The number one mistake in A/B testing is stopping too early. The number two mistake is not calculating sample size before starting. This guide gives you the actual numbers for common scenarios, explains the math, and provides a reality check on how long tests take at real-world traffic levels.</p>
+
+    <h2>The Formula</h2>
+
+    <p>For a two-proportion Z-test comparing conversion rates, the required sample size per variant is:</p>
+
+    <pre><code>n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2
+
+Where:
+  Z_alpha/2 = 1.96 for 95% significance (alpha = 0.05)
+  Z_beta    = 0.84 for 80% power
+  p1        = baseline conversion rate
+  p2        = baseline * (1 + minimum detectable effect)</code></pre>
+
+    <p>Use <a href="/">ABWex's Sample Size Calculator</a> to compute this for your specific numbers.</p>
+
+    <h2>Sample Size Tables</h2>
+
+    <h3>At 80% power, 95% significance (alpha = 0.05)</h3>
+
+    <p>This is the most common configuration. Numbers are per variant (multiply by 2 for total).</p>
+
+    <pre><code>Baseline    MDE 5%      MDE 10%     MDE 15%     MDE 20%
+--------------------------------------------------------------
+1%          305,756     76,439      33,973      19,110
+2%          150,366     37,591      16,707      9,398
+3%          99,454      24,864      11,050      6,216
+5%          58,709      14,677      6,523       3,669
+10%         27,661      6,915       3,073       1,728
+15%         17,306      4,327       1,923       1,081
+20%         12,236      3,059       1,360       765</code></pre>
+
+    <p>Key observations from this table:</p>
+
+    <ul>
+      <li><strong>Low baseline rates are expensive.</strong> A 1% conversion rate with a 5% MDE requires 306,000 visitors per variant. That is 612,000 total.</li>
+      <li><strong>Doubling the MDE cuts sample size by 75%.</strong> Going from 5% MDE to 10% MDE at a 5% baseline drops from 58,709 to 14,677. If you can accept detecting only larger effects, tests finish much faster.</li>
+      <li><strong>Higher baselines need fewer visitors.</strong> A 20% conversion rate at 10% MDE needs only 3,059 per variant. Landing pages with high conversion rates can be tested quickly.</li>
+    </ul>
+
+    <h3>At 90% power, 95% significance</h3>
+
+    <pre><code>Baseline    MDE 5%      MDE 10%     MDE 15%     MDE 20%
+--------------------------------------------------------------
+1%          409,095     102,274     45,455      25,569
+2%          201,083     50,271      22,343      12,568
+5%          78,530      19,633      8,726       4,908
+10%         37,011      9,253       4,112       2,313
+20%         16,366      4,091       1,818       1,023</code></pre>
+
+    <p>Going from 80% to 90% power increases sample size by roughly 34%. The extra confidence costs real traffic.</p>
+
+    <h2>Reality Check: How Long Will This Take?</h2>
+
+    <p>Here is the test duration at different daily traffic levels, assuming 50/50 split (per variant gets half of traffic). Using 5% baseline, 10% MDE, 80% power = 14,677 per variant.</p>
+
+    <pre><code>Daily Traffic    Per Variant/Day    Days to Complete
+---------------------------------------------------
+500              250                59 days
+1,000            500                30 days
+5,000            2,500              6 days
+10,000           5,000              3 days
+50,000           25,000             1 day
+100,000          50,000             < 1 day</code></pre>
+
+    <p>If your site gets 1,000 daily visitors: a standard A/B test with a 10% MDE takes a full month. A 5% MDE test at the same traffic takes nearly 4 months. This is the uncomfortable reality that most A/B testing blog posts gloss over.</p>
+
+    <h2>What If You Do Not Have Enough Traffic?</h2>
+
+    <p>If the sample size calculation shows you need more traffic than you realistically get in a reasonable timeframe, you have four options:</p>
+
+    <ol>
+      <li><strong>Increase your MDE.</strong> Instead of trying to detect a 5% improvement, look for a 20% improvement. This cuts sample size by roughly 16x. Test bigger, bolder changes.</li>
+      <li><strong>Use Bayesian methods.</strong> Bayesian analysis gives useful information at smaller sample sizes. You will not get a "significant" p-value, but you can get a probability like "75% chance B is better" which may be actionable enough. Toggle to Bayesian mode on <a href="/">ABWex</a>.</li>
+      <li><strong>Narrow your audience.</strong> Instead of testing on all visitors, test on a high-intent segment (e.g., visitors who reach the pricing page). Higher baseline conversion rates need fewer samples.</li>
+      <li><strong>Accept less power.</strong> Dropping from 80% to 70% power reduces sample size by about 15%. You increase the chance of missing a real effect, but if you are traffic-constrained, it may be a reasonable tradeoff.</li>
+    </ol>
+
+    <h2>The Multiple Testing Problem</h2>
+
+    <p>If you check results every day and stop when you see significance, your actual false positive rate is much higher than 5%. This is called the multiple testing problem or "peeking." A simulation by Evan Miller showed that peeking at results daily can inflate the false positive rate from 5% to over 30%.</p>
+
+    <p>Solutions:</p>
+    <ul>
+      <li>Calculate sample size before starting and commit to it</li>
+      <li>Use sequential testing methods (alpha spending functions) if you must peek</li>
+      <li>Use Bayesian methods, which do not suffer from the peeking problem</li>
+      <li>ABWex's "When to Stop" advisor warns you about this</li>
+    </ul>
+
+    <h2>Practical Recommendations</h2>
+
+    <ol>
+      <li>Always calculate sample size before starting a test. Use the <a href="/">Sample Size tab on ABWex</a>.</li>
+      <li>For most websites (1,000-10,000 daily visitors), target a 10-20% MDE. Detecting 5% improvements requires enormous traffic.</li>
+      <li>Run tests for at least 7 days regardless of sample size to capture day-of-week effects.</li>
+      <li>Do not stop early because you see significance. Finish the predetermined sample size.</li>
+      <li>If you have low traffic, test fewer variants. Each additional variant splits your traffic further.</li>
+    </ol>
+
+    <p>Calculate your exact numbers at <a href="/">abwex.com</a>.</p>
+
+    <p><em>Part of the <a href="https://zovo.one">zovo.one</a> tools collection.</em></p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ABWex. Built by <a href="https://zovo.one">zovo.one</a></p>
+      <p style="margin-top:8px;">More tools: <a href="https://enhio.com">Enhio</a> &middot; <a href="https://epochpilot.com">EpochPilot</a></p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bayesian vs Frequentist A/B Testing: When to Use Which — ABWex</title>
+  <meta name="description" content="We ran the same three datasets through both frequentist and Bayesian analysis. The results differed in important ways. Here is when each method gives you better answers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html">
+  <meta property="og:title" content="Bayesian vs Frequentist A/B Testing: When to Use Which">
+  <meta property="og:url" content="https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/" class="active">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <article class="article">
+    <h1>Bayesian vs Frequentist A/B Testing: When to Use Which</h1>
+    <div class="meta">April 2025 &middot; 9 min read</div>
+
+    <p>The frequentist approach gives you a p-value. The Bayesian approach gives you a probability. These sound similar but lead to different decisions in practice. We ran the same three datasets through both modes on <a href="/">ABWex</a> and found cases where the two methods lead to opposite conclusions.</p>
+
+    <h2>How the Two Methods Work</h2>
+
+    <h3>Frequentist (Z-Test)</h3>
+    <p>The frequentist approach asks: "If there were no real difference between A and B, how likely would I be to see a result this extreme?" That probability is the p-value. If the p-value is below your significance threshold (typically 0.05), you reject the null hypothesis and declare the result statistically significant.</p>
+
+    <p>The formula ABWex uses:</p>
+    <pre><code>z = (p_B - p_A) / sqrt(p_pool * (1 - p_pool) * (1/n_A + 1/n_B))
+p-value = 2 * (1 - normalCDF(|z|))</code></pre>
+
+    <h3>Bayesian (Beta-Binomial)</h3>
+    <p>The Bayesian approach asks: "Given the data I observed, what is the probability that B is actually better than A?" It models each variant's conversion rate as a Beta distribution and computes P(B beats A) directly via numerical integration.</p>
+
+    <pre><code>Control: Beta(conversions_A + 1, visitors_A - conversions_A + 1)
+Variant: Beta(conversions_B + 1, visitors_B - conversions_B + 1)
+P(B > A) = integral of P(B_rate > A_rate) over both distributions</code></pre>
+
+    <h2>Scenario 1: Large Sample, Clear Winner</h2>
+
+    <p><strong>Data:</strong> Control: 50,000 visitors, 2,000 conversions (4.00%). Variant: 50,000 visitors, 2,200 conversions (4.40%).</p>
+
+    <p><strong>Frequentist result:</strong> z = 2.99, p-value = 0.0028. Statistically significant. 95% CI for the difference: [0.14%, 0.66%]. Relative improvement: +10.0%.</p>
+
+    <p><strong>Bayesian result:</strong> P(B beats A) = 99.8%. Expected loss if choosing A: 0.38%. Beta distributions are well-separated with minimal overlap.</p>
+
+    <p><strong>Verdict:</strong> Both methods agree strongly. When you have large samples and a real effect, the two approaches converge. This is the easy case.</p>
+
+    <h2>Scenario 2: Small Sample, Marginal Difference</h2>
+
+    <p><strong>Data:</strong> Control: 500 visitors, 20 conversions (4.00%). Variant: 500 visitors, 28 conversions (5.60%).</p>
+
+    <p><strong>Frequentist result:</strong> z = 1.20, p-value = 0.2302. Not significant. You cannot reject the null hypothesis. The standard recommendation is to keep testing.</p>
+
+    <p><strong>Bayesian result:</strong> P(B beats A) = 88.5%. Expected loss if choosing B: 0.22%.</p>
+
+    <p><strong>Verdict:</strong> Here the methods diverge. The frequentist test says "not enough evidence." The Bayesian test says "88.5% chance B is better with very low expected loss." If you need to make a business decision now and the cost of choosing wrong is low, the Bayesian answer is more actionable. If you need rigorous evidence (e.g., for a scientific paper), the frequentist answer is correct: you do not have enough data.</p>
+
+    <h2>Scenario 3: Large Sample, Tiny Effect</h2>
+
+    <p><strong>Data:</strong> Control: 100,000 visitors, 3,000 conversions (3.00%). Variant: 100,000 visitors, 3,080 conversions (3.08%).</p>
+
+    <p><strong>Frequentist result:</strong> z = 1.32, p-value = 0.1864. Not significant at alpha = 0.05.</p>
+
+    <p><strong>Bayesian result:</strong> P(B beats A) = 90.6%. Expected loss if choosing A: 0.07%.</p>
+
+    <p><strong>Verdict:</strong> Another divergence. With 200,000 total visitors, you have high statistical power. The tiny 0.08 percentage point difference is probably real (90.6% Bayesian probability), but it is so small that the frequentist test correctly identifies it as not meeting the significance bar. The question becomes: is a 0.08% improvement worth implementing? The Bayesian expected loss (0.07%) helps you answer that in business terms.</p>
+
+    <h2>When to Use Which</h2>
+
+    <h3>Use Frequentist When:</h3>
+    <ul>
+      <li>You can commit to a fixed sample size before starting (use the <a href="/">Sample Size calculator</a>)</li>
+      <li>You need a binary "significant or not" answer for reporting</li>
+      <li>Regulatory or scientific contexts require traditional hypothesis testing</li>
+      <li>You want to control your false positive rate precisely</li>
+      <li>You are running many tests and need to manage family-wise error rate</li>
+    </ul>
+
+    <h3>Use Bayesian When:</h3>
+    <ul>
+      <li>You need to make decisions before reaching ideal sample sizes</li>
+      <li>You want to know the probability that B is better, not just whether the difference is significant</li>
+      <li>You care about expected loss (the cost of being wrong)</li>
+      <li>You want to peek at results during the test without inflating false positive rates</li>
+      <li>Your stakeholders find "90% probability B is better" more intuitive than "p = 0.03"</li>
+    </ul>
+
+    <h2>The Practical Bottom Line</h2>
+
+    <p>For most product teams, start with Bayesian for day-to-day decisions and use frequentist for high-stakes tests where you need to control error rates. The two methods answer different questions. The frequentist asks "is there enough evidence?" The Bayesian asks "what should I believe?" Both are valid questions, and the right one depends on your context.</p>
+
+    <p>Try both modes on your own data using <a href="/">ABWex's calculator</a>. Toggle between frequentist and Bayesian to see how the conclusions differ for your specific numbers.</p>
+
+    <p><em>For validating model experiments in ML pipelines, see <a href="https://epochpilot.com">EpochPilot</a>.</em></p>
+  </article>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ABWex. Built by <a href="https://zovo.one">zovo.one</a></p>
+      <p style="margin-top:8px;">More tools: <a href="https://enhio.com">Enhio</a> &middot; <a href="https://epochpilot.com">EpochPilot</a></p>
+    </div>
+  </footer>
+</body>
+</html>

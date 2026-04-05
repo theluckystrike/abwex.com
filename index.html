@@ -1,196 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abwex — Experiment Faster</title>
-    <meta name="description" content="Abwex covers AI experimentation platforms, A/B testing for models, rapid prototyping, and ML experiment tracking. Accelerate your iteration cycles and ship better models.">
-    <meta name="keywords" content="AI experimentation, A/B testing, ML experiment tracking, rapid prototyping, MLOps, model evaluation, experiment management, Weights & Biases, MLflow, hyperparameter tuning">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="Abwex — Experiment Faster">
-    <meta property="og:description" content="AI experimentation frameworks, A/B testing for models, and rapid prototyping methodology. Ship better models through faster iteration.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abwex.com">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Abwex",
-        "url": "https://abwex.com",
-        "description": "Experiment Faster — AI experimentation platforms, A/B testing, and rapid prototyping methodology.",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://abwex.com/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABWex — A/B Test Statistical Significance Calculator (Frequentist & Bayesian)</title>
+  <meta name="description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue impact projections, sample size calculator, and visual charts. No sign-up required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/">
+  <meta property="og:title" content="ABWex — A/B Test Statistical Significance Calculator">
+  <meta property="og:description" content="Frequentist and Bayesian A/B test calculator with multi-variant support, revenue projections, and sample size planning.">
+  <meta property="og:url" content="https://abwex.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ABWex">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ABWex",
+    "url": "https://abwex.com",
+    "description": "A/B test statistical significance calculator with frequentist Z-test, Bayesian Beta-Binomial analysis, multi-variant comparison, revenue impact projections, and sample size planning.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is statistical significance in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test: z = (p1-p2) / sqrt(p_pool*(1-p_pool)*(1/n1+1/n2))."
         }
-    }
-    </script>
-
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        html { scroll-behavior: smooth; }
-    </style>
+      },
+      {
+        "@type": "Question",
+        "name": "Bayesian vs frequentist A/B testing: which should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss. Bayesian methods give you P(B beats A) directly, while frequentist methods give you a p-value that measures evidence against the null hypothesis."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long should I run an A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Run your test until you reach the pre-calculated sample size. Use ABWex's Sample Size Calculator to determine this before starting. For a typical 5% baseline conversion rate and 10% minimum detectable effect at 80% power, you need approximately 31,000 visitors per variant. Stopping early inflates false positive rates. Always run for at least one full business cycle (typically 7 days) to account for day-of-week effects."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What sample size do I need for A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sample size depends on four factors: your baseline conversion rate, the minimum effect you want to detect (MDE), desired statistical power (typically 80%), and significance level (typically 0.05). The formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1(1-p1) + p2(1-p2)) / delta^2. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate requires about 31,000 visitors per variant."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does p-value mean in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The p-value is the probability of observing a difference as large as (or larger than) your actual result, assuming there is no real difference between variants (the null hypothesis). A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better — that is a common misinterpretation. For that probability, use Bayesian analysis."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
-<body class="bg-gray-950 text-gray-100">
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/" class="active">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-gray-950/90 backdrop-blur-md z-50 border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="text-2xl font-800 tracking-tight" style="color: #3b82f6;">Abwex</a>
-            <div class="hidden md:flex gap-8 text-sm text-gray-400">
-                <a href="/" class="text-white transition">Home</a>
-                <a href="/guides.html" class="hover:text-white transition">Guides</a>
-                <a href="/tools.html" class="hover:text-white transition">Tools</a>
-                <a href="/blog/getting-started.html" class="hover:text-white transition">Blog</a>
-                <a href="/about.html" class="hover:text-white transition">About</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-950 to-indigo-950"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent"></div>
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center py-32">
-            <div class="inline-block px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-sm font-medium mb-8">
-                AI Experimentation Hub
-            </div>
-            <h1 class="text-5xl md:text-7xl font-800 tracking-tight mb-6">
-                Experiment<br><span style="color: #3b82f6;">Faster</span>
-            </h1>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                The teams that iterate fastest win. Learn the frameworks, tools, and methodologies that compress experiment cycles from weeks to hours and turn model development into a systematic, repeatable process.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#methodology" class="px-8 py-3.5 rounded-lg font-semibold text-white transition" style="background-color: #3b82f6;">Learn the Method</a>
-                <a href="#guides" class="px-8 py-3.5 rounded-lg font-semibold text-gray-300 border border-gray-700 hover:border-gray-500 transition">Read Guides</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Why Experimentation Matters Section -->
-    <section class="py-24 bg-gray-900/50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-700 text-center mb-6">The Science of AI Experimentation</h2>
-            <p class="text-gray-400 text-center max-w-3xl mx-auto mb-16 text-lg leading-relaxed">
-                Machine learning is fundamentally an empirical science. No amount of theoretical analysis can predict with certainty whether a particular architecture, hyperparameter configuration, or training strategy will work best for your specific problem. The only way to know is to run experiments. But running experiments without structure leads to chaos: unreproducible results, wasted compute, and teams that cannot explain why one model outperforms another. At Abwex, we teach the discipline of systematic experimentation. Proper experiment tracking, rigorous A/B testing, automated hyperparameter search, and statistical analysis transform model development from guesswork into engineering. The teams that master experimentation methodology consistently ship better models, faster, with fewer resources wasted on dead ends.
-            </p>
-            <div id="methodology" class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(59,130,246,0.15);">
-                        <svg class="w-6 h-6" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">Experiment Tracking</h3>
-                    <p class="text-gray-400 leading-relaxed">Every experiment should be fully reproducible. That means logging not just metrics and hyperparameters, but also code versions, data pipeline configurations, environment details, and random seeds. Tools like Weights and Biases, MLflow, and Neptune provide the infrastructure for this level of tracking. We show you how to set up experiment tracking systems that capture everything you need without slowing down your iteration speed, and how to use tracked data to make informed decisions about which directions to pursue.</p>
-                </div>
-                <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(59,130,246,0.15);">
-                        <svg class="w-6 h-6" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">A/B Testing for Models</h3>
-                    <p class="text-gray-400 leading-relaxed">Offline metrics do not always predict online performance. A/B testing model variants in production provides ground truth about which model actually delivers better business outcomes. We cover the statistics behind proper A/B testing, including sample size calculation, multiple comparison corrections, and sequential testing methods that let you reach conclusions faster. We also explore shadow deployments, multi-armed bandits, and the interleaving technique for comparing ranking models.</p>
-                </div>
-                <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(59,130,246,0.15);">
-                        <svg class="w-6 h-6" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">Rapid Prototyping</h3>
-                    <p class="text-gray-400 leading-relaxed">The first version of any ML system should be built in days, not months. Rapid prototyping means choosing the simplest baseline that could work, getting end-to-end evaluation running immediately, and then iterating from there. We teach the methodology of starting with strong baselines, running ablation studies to understand what each component contributes, and using progressive complexity to avoid over-engineering solutions before you understand the problem space.</p>
-                </div>
-            </div>
-        </div>
+  <main class="container">
+    <section class="hero">
+      <h1>A/B Test <span>Significance</span> Calculator</h1>
+      <p>Frequentist and Bayesian analysis, multi-variant comparison, revenue impact projections, and sample size planning. All math runs in your browser.</p>
     </section>
 
-    <!-- Guides Section -->
-    <section id="guides" class="py-24">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-700 text-center mb-6">Featured Guides</h2>
-            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-16 text-lg">
-                Practical frameworks for accelerating your AI experimentation workflow.
-            </p>
-            <div class="grid md:grid-cols-3 gap-8">
-                <article class="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <div class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                        <span class="text-5xl font-800 text-white/20">01</span>
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-500 text-blue-400">Tracking</span>
-                        <h3 class="text-lg font-600 mt-2 mb-3">Setting Up a Production-Grade Experiment Tracking System with W&B</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Configure Weights and Biases for team-wide experiment tracking. Cover project organization, custom dashboards, artifact versioning, model registry integration, and automated report generation. Includes patterns for tracking LLM experiments where traditional metrics fall short.</p>
-                    </div>
-                </article>
-                <article class="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <div class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">
-                        <span class="text-5xl font-800 text-white/20">02</span>
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-500 text-blue-400">Hyperparameters</span>
-                        <h3 class="text-lg font-600 mt-2 mb-3">Bayesian Hyperparameter Optimization: Beyond Grid Search and Random Search</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Understand how Bayesian optimization with Gaussian processes explores the hyperparameter space more efficiently than grid or random search. Implement Optuna sweeps, compare acquisition functions, and learn when to use population-based training for reinforcement learning and LLM fine-tuning tasks.</p>
-                    </div>
-                </article>
-                <article class="bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/30 transition">
-                    <div class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
-                        <span class="text-5xl font-800 text-white/20">03</span>
-                    </div>
-                    <div class="p-6">
-                        <span class="text-xs font-500 text-blue-400">A/B Testing</span>
-                        <h3 class="text-lg font-600 mt-2 mb-3">Statistical Rigor in Model A/B Tests: Avoiding the Most Common Pitfalls</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Most model A/B tests are underpowered, peeked at too early, or confounded by feature interactions. Learn the correct statistical methodology for model comparison, including power analysis, proper randomization, and when to use paired versus unpaired tests for your specific evaluation setup.</p>
-                    </div>
-                </article>
-            </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="calc">Calculator</button>
+      <button class="tab-btn" data-tab="multi">Multi-Variant</button>
+      <button class="tab-btn" data-tab="sample">Sample Size</button>
+    </div>
+
+    <div id="calc-content" class="tab-pane active"></div>
+    <div id="multi-content" class="tab-pane"></div>
+    <div id="sample-content" class="tab-pane"></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">What is statistical significance in A/B testing?</div>
+        <div class="faq-a">
+          <p>Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test.</p>
         </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Bayesian vs frequentist A/B testing: which should I use?</div>
+        <div class="faq-a">
+          <p>Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss from choosing wrong. Toggle between modes using the switch above the calculator.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How long should I run an A/B test?</div>
+        <div class="faq-a">
+          <p>Run your test until you reach the pre-calculated sample size. Use the Sample Size tab to determine this before starting. Stopping early because you see a significant result inflates your false positive rate. Always run for at least one full business cycle (7 days minimum) to account for day-of-week effects, and never peek repeatedly at results without adjusting for multiple comparisons.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What sample size do I need for A/B testing?</div>
+        <div class="faq-a">
+          <p>It depends on your baseline conversion rate, the minimum effect size you want to detect, and your desired power level. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate at 80% power requires approximately 31,000 visitors per variant. Use the Sample Size tab for your exact numbers.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What does p-value mean in A/B testing?</div>
+        <div class="faq-a">
+          <p>The p-value is the probability of observing a difference as large as your actual result, assuming there is no real difference between variants. A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better. For that probability, switch to Bayesian mode which gives you P(B beats A) directly.</p>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <!-- Resources Section -->
-    <section id="resources" class="py-24 bg-gray-900/50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-700 text-center mb-6">Experimentation Tools & Resources</h2>
-            <p class="text-gray-400 text-center max-w-3xl mx-auto mb-16 text-lg leading-relaxed">
-                The right experimentation infrastructure can be the difference between a team that ships one model per quarter and a team that tests dozens of hypotheses per week. From experiment trackers to feature stores to evaluation frameworks, these tools form the backbone of a high-velocity ML team. We review and compare them so you can build the stack that matches your team size, budget, and technical requirements.
-            </p>
-            <div class="grid md:grid-cols-2 gap-6">
-                <a href="https://zovo.one" rel="dofollow" class="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-8 border border-blue-500/20 hover:border-blue-500/40 transition block">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(59,130,246,0.2);">
-                            <svg class="w-5 h-5" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                        </div>
-                        <span class="text-xs font-600 uppercase tracking-wider text-blue-400">Recommended</span>
-                    </div>
-                    <h3 class="text-xl font-600 mb-3">Zovo.one — Comprehensive AI Tools & Resources</h3>
-                    <p class="text-gray-400 leading-relaxed">Building your ML experimentation stack? Visit <strong class="text-blue-300">zovo.one</strong> for curated comparisons of experiment tracking platforms, MLOps tools, and AI infrastructure solutions. Their directory helps you evaluate options across the full ML lifecycle, from data management and training to evaluation and deployment, saving you weeks of tool evaluation.</p>
-                </a>
-                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-700/50">
-                    <h3 class="text-xl font-600 mb-3">Weights & Biases</h3>
-                    <p class="text-gray-400 leading-relaxed">The most popular experiment tracking platform in the ML community. W&B provides experiment logging, interactive dashboards, hyperparameter sweep orchestration, model versioning, and collaborative reports. Their Artifacts system handles dataset and model versioning, while Tables enables rich evaluation visualization that goes beyond scalar metrics.</p>
-                </div>
-                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-700/50">
-                    <h3 class="text-xl font-600 mb-3">Optuna</h3>
-                    <p class="text-gray-400 leading-relaxed">A powerful open-source hyperparameter optimization framework. Optuna's define-by-run API makes it easy to search complex parameter spaces including conditional parameters and dynamic architectures. Its pruning feature automatically terminates unpromising trials early, dramatically reducing compute costs for large-scale sweeps across model configurations.</p>
-                </div>
-                <div class="bg-gray-800/30 rounded-2xl p-8 border border-gray-700/50">
-                    <h3 class="text-xl font-600 mb-3">DVC (Data Version Control)</h3>
-                    <p class="text-gray-400 leading-relaxed">Git for data and ML pipelines. DVC tracks datasets, model files, and pipeline stages alongside your code, making experiments fully reproducible. Combined with DVC Studio for visualization and remote storage backends for large files, it provides a lightweight but powerful alternative to heavier MLOps platforms for teams that want to stay close to their existing Git workflow.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ABWex. Built by <a href="https://zovo.one">zovo.one</a></p>
+      <p style="margin-top:8px;">More tools: <a href="https://enhio.com">Enhio</a> &middot; <a href="https://epochpilot.com">EpochPilot</a></p>
+    </div>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <a href="/" class="text-xl font-700 mb-4 inline-block" style="color: #3b82f6;">Abwex</a>
-            <p class="text-gray-500 text-sm">&copy; 2025 Abwex. All rights reserved.</p>
-        </div>
-    </footer>
-
+  <script src="/assets/app.js"></script>
 </body>
 </html>
