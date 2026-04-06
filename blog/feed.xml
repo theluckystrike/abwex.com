@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog</title>
+  <link href="http://abwex.com/blog/" rel="alternate"/>
+  <link href="http://abwex.com/blog/feed.xml" rel="self"/>
+  <id>http://abwex.com/blog/</id>
+  <updated>2026-04-06T00:00:00Z</updated>
+  <author><name>ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian)</name></author>
+  <entry>
+    <title>Bayesian vs Frequentist A/B Testing: When to Use Which — ABWex</title>
+    <link href="https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html" rel="alternate"/>
+    <id>https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html</id>
+    <updated>2026-04-06T00:00:00Z</updated>
+    <summary>We ran the same three datasets through both frequentist and Bayesian analysis. The results differed in important ways. Here is when each method gives you better answers.</summary>
+  </entry>
+  <entry>
+    <title>A/B Testing Sample Size: How Much Traffic You Actually Need — ABWex</title>
+    <link href="https://abwex.com/blog/ab-testing-sample-size-guide.html" rel="alternate"/>
+    <id>https://abwex.com/blog/ab-testing-sample-size-guide.html</id>
+    <updated>2026-04-06T00:00:00Z</updated>
+    <summary>Sample size tables for common A/B testing scenarios, the math behind the formula, and a reality check on how long tests take at different traffic levels.</summary>
+  </entry>
+</feed>
