@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog</title>
+  <title>ABWex Blog</title>
   <link href="http://abwex.com/blog/" rel="alternate"/>
   <link href="http://abwex.com/blog/feed.xml" rel="self"/>
   <id>http://abwex.com/blog/</id>
   <updated>2026-04-06T00:00:00Z</updated>
-  <author><name>ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian)</name></author>
+  <author><name>ABWex</name></author>
   <entry>
     <title>Bayesian vs Frequentist A/B Testing: When to Use Which — ABWex</title>
     <link href="https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html" rel="alternate"/>
