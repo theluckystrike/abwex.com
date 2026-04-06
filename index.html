@@ -8,12 +8,18 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://abwex.com/">
 <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="ABWex — A/B Test Statistical Significance Calculator">
-  <meta property="og:description" content="Frequentist and Bayesian A/B test calculator with multi-variant support, revenue projections, and sample size planning.">
+  <meta property="og:title" content="ABWex — A/B Test Statistical Significance Calculator (Frequentist & Bayesian)">
+  <meta property="og:description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue impact projections, sample size calculator, and visual charts.">
   <meta property="og:url" content="https://abwex.com/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="ABWex">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ABWex — A/B Test Statistical Significance Calculator">
+  <meta name="twitter:description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue projections, and sample size planning.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -28,6 +34,10 @@
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "datePublished": "2026-04-05",
+    "dateModified": "2026-04-06",
+    "featureList": ["Frequentist Z-test analysis", "Bayesian Beta-Binomial analysis", "Multi-variant comparison (up to 4 variants)", "Revenue impact projections", "Sample size pre-calculator", "Power curve visualization", "Confidence interval calculation", "Client-side processing"],
     "browserRequirements": "Requires JavaScript"
   }
   </script>
@@ -75,6 +85,30 @@
           "@type": "Answer",
           "text": "The p-value is the probability of observing a difference as large as (or larger than) your actual result, assuming there is no real difference between variants (the null hypothesis). A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better — that is a common misinterpretation. For that probability, use Bayesian analysis."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I compare more than two variants at once?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, ABWex's Multi-Variant tab supports comparing up to 4 variants (A/B/C/D) simultaneously. It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is best."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I calculate revenue impact from an A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Enter your average revenue per conversion and monthly traffic in ABWex's Revenue Impact section. It projects monthly and annual revenue changes based on the conversion rate difference between your control and variant, helping you make data-driven business decisions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is ABWex free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, ABWex is completely free with no sign-up required. All statistical calculations run in your browser using JavaScript — your data is never sent to any server, ensuring complete privacy for sensitive business metrics."
+        }
       }
     ]
   }
@@ -101,6 +135,7 @@
     <section class="hero">
       <h1>A/B Test <span>Significance</span> Calculator</h1>
       <p>Frequentist and Bayesian analysis, multi-variant comparison, revenue impact projections, and sample size planning. All math runs in your browser.</p>
+      <p class="byline">Built by <a href="/about.html">Michael Lip</a></p>
     </section>
 
     <div class="tab-bar">
@@ -113,43 +148,66 @@
     <div id="multi-content" class="tab-pane"></div>
     <div id="sample-content" class="tab-pane"></div>
 
+    <section class="explainer-section">
+      <h2>How the A/B Test Calculator Works</h2>
+      <p>ABWex provides two distinct statistical frameworks for analyzing A/B test results. The frequentist mode uses the two-proportion Z-test, which compares conversion rates between your control and variant by computing a Z-score and corresponding p-value. The formula pools the conversion rates to estimate the common proportion under the null hypothesis, then measures how many standard deviations the observed difference falls from zero. When the p-value drops below your significance threshold (typically 0.05), you can reject the null hypothesis and declare the result statistically significant.</p>
+      <p>The Bayesian mode takes a fundamentally different approach. It models each variant's conversion rate as a Beta distribution — specifically, Beta(conversions + 1, visitors - conversions + 1) using a uniform prior. ABWex then computes P(B beats A) through numerical integration using Simpson's rule for deterministic, reproducible results. The overlapping Beta distribution curves are rendered as SVG paths so you can visually see the probability mass overlap between variants. The expected loss calculation tells you the average conversion rate you would sacrifice by choosing the wrong variant, which translates directly into business risk.</p>
+      <p>The Multi-Variant tab extends both modes to support up to four variants (A/B/C/D). It automatically generates all pairwise comparisons, highlights the winning variant, and in Bayesian mode shows the probability that each variant is the absolute best. The Sample Size pre-calculator uses the standard power analysis formula to determine how many visitors you need per variant before starting your test, and includes a duration estimator based on your daily traffic.</p>
+
+      <h3>Features</h3>
+      <p>ABWex includes frequentist Z-test with p-value, Z-score, and confidence intervals, Bayesian Beta-Binomial analysis with P(B beats A) and expected loss, multi-variant comparison for up to four variants with pairwise analysis, a revenue impact calculator that projects monthly and annual revenue changes based on your average revenue per conversion and traffic volume, a sample size pre-calculator with power curves and duration estimates, color-coded significance indicators, formula transparency showing the exact math behind every result, and full client-side processing with no server dependency.</p>
+
+      <h3>Who Uses This</h3>
+      <p>Product managers use ABWex to evaluate feature experiments and decide whether to ship changes. Growth engineers run conversion rate optimization tests on landing pages, signup flows, and pricing pages. Marketing teams compare ad creative and email subject line performance. Data analysts validate experiment results using both frequentist and Bayesian frameworks. Startups with limited traffic use the Bayesian mode to make informed decisions before reaching traditional significance thresholds. If you also need to <a href="https://enhio.com">optimize your landing page copy</a> or <a href="https://krzen.com">compress images for faster page loads</a>, those companion tools integrate well with the A/B testing workflow.</p>
+
+      <h3>Privacy</h3>
+      <p>All statistical calculations run locally in your browser using JavaScript. Your conversion data, visitor counts, and revenue figures are never sent to any server, never stored, and never shared. There are no cookies, no analytics trackers, and no accounts required. The source code is open on <a href="https://github.com/theluckystrike/abwex.com">GitHub</a>. For teams building ML-powered experimentation platforms, <a href="https://kappakit.com">KappaKit</a> provides useful development utilities.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-04-06">Last updated: April 6, 2026</time></div>
+
     <section class="faq-section">
       <h2>Frequently Asked Questions</h2>
 
-      <div class="faq-item">
-        <div class="faq-q">What is statistical significance in A/B testing?</div>
-        <div class="faq-a">
-          <p>Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test.</p>
-        </div>
-      </div>
+      <details>
+        <summary>What is statistical significance in A/B testing?</summary>
+        <p>Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test.</p>
+      </details>
 
-      <div class="faq-item">
-        <div class="faq-q">Bayesian vs frequentist A/B testing: which should I use?</div>
-        <div class="faq-a">
-          <p>Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss from choosing wrong. Toggle between modes using the switch above the calculator.</p>
-        </div>
-      </div>
+      <details>
+        <summary>Bayesian vs frequentist A/B testing: which should I use?</summary>
+        <p>Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss from choosing wrong. Toggle between modes using the switch above the calculator.</p>
+      </details>
 
-      <div class="faq-item">
-        <div class="faq-q">How long should I run an A/B test?</div>
-        <div class="faq-a">
-          <p>Run your test until you reach the pre-calculated sample size. Use the Sample Size tab to determine this before starting. Stopping early because you see a significant result inflates your false positive rate. Always run for at least one full business cycle (7 days minimum) to account for day-of-week effects, and never peek repeatedly at results without adjusting for multiple comparisons.</p>
-        </div>
-      </div>
+      <details>
+        <summary>How long should I run an A/B test?</summary>
+        <p>Run your test until you reach the pre-calculated sample size. Use the Sample Size tab to determine this before starting. Stopping early because you see a significant result inflates your false positive rate. Always run for at least one full business cycle (7 days minimum) to account for day-of-week effects, and never peek repeatedly at results without adjusting for multiple comparisons.</p>
+      </details>
 
-      <div class="faq-item">
-        <div class="faq-q">What sample size do I need for A/B testing?</div>
-        <div class="faq-a">
-          <p>It depends on your baseline conversion rate, the minimum effect size you want to detect, and your desired power level. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate at 80% power requires approximately 31,000 visitors per variant. Use the Sample Size tab for your exact numbers.</p>
-        </div>
-      </div>
+      <details>
+        <summary>What sample size do I need for A/B testing?</summary>
+        <p>It depends on your baseline conversion rate, the minimum effect size you want to detect, and your desired power level. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate at 80% power requires approximately 31,000 visitors per variant. Use the Sample Size tab for your exact numbers.</p>
+      </details>
 
-      <div class="faq-item">
-        <div class="faq-q">What does p-value mean in A/B testing?</div>
-        <div class="faq-a">
-          <p>The p-value is the probability of observing a difference as large as your actual result, assuming there is no real difference between variants. A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better. For that probability, switch to Bayesian mode which gives you P(B beats A) directly.</p>
-        </div>
-      </div>
+      <details>
+        <summary>What does p-value mean in A/B testing?</summary>
+        <p>The p-value is the probability of observing a difference as large as your actual result, assuming there is no real difference between variants. A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better. For that probability, switch to Bayesian mode which gives you P(B beats A) directly.</p>
+      </details>
+
+      <details>
+        <summary>Can I compare more than two variants at once?</summary>
+        <p>Yes, ABWex's Multi-Variant tab supports comparing up to 4 variants (A/B/C/D) simultaneously. It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is the absolute best among all variants.</p>
+      </details>
+
+      <details>
+        <summary>How do I calculate revenue impact from an A/B test?</summary>
+        <p>Enter your average revenue per conversion and monthly traffic in ABWex's Revenue Impact section. It projects monthly and annual revenue changes based on the conversion rate difference, helping you translate statistical results into business decisions.</p>
+      </details>
+
+      <details>
+        <summary>Is ABWex free to use?</summary>
+        <p>Yes, ABWex is completely free with no sign-up required. All statistical calculations run in your browser — your data is never sent to any server, ensuring complete privacy for sensitive business metrics.</p>
+      </details>
     </section>
   </main>
 
