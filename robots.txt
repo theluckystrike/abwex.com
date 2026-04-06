@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://abwex.com/sitemap.xml
+Sitemap: https://abwex.com/sitemap.xml
