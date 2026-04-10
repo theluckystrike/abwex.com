@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Test Sample Size Calculator — Plan Your Test | ABWex</title>
+  <meta name="description" content="Calculate the sample size needed for your A/B test. Enter baseline conversion rate, minimum detectable effect, and power to get exact visitor requirements.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/sample-size-calculator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="A/B Test Sample Size Calculator — Plan Your Test | ABWex">
+  <meta property="og:description" content="Calculate the sample size needed for your A/B test. Enter baseline conversion rate, minimum detectable effect, and power to get exact visitor requirements.">
+  <meta property="og:url" content="https://abwex.com/tools/sample-size-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A/B Test Sample Size Calculator — Plan Your Test">
+  <meta name="twitter:description" content="Calculate the sample size needed for your A/B test. Enter baseline conversion rate, minimum detectable effect, and power to get exact visitor requirements.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/sample-size-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/sample-size-calculator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "A/B Test Sample Size Calculator",
+    "url": "https://abwex.com/tools/sample-size-calculator.html",
+    "description": "Calculate the sample size needed for your A/B test. Enter baseline conversion rate, minimum detectable effect, and power to get exact visitor requirements.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "datePublished": "2026-04-10",
+    "dateModified": "2026-04-10"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I calculate sample size for an A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the standard power analysis formula: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2-p1)^2. You need four inputs: baseline conversion rate (p1), minimum detectable effect (to derive p2), statistical power (typically 80%, giving Z_beta = 0.84), and significance level (typically 0.05, giving Z_alpha/2 = 1.96). The result is the number of visitors needed per variant."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is minimum detectable effect (MDE) in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Minimum detectable effect is the smallest relative improvement in conversion rate that your test is designed to detect. For example, if your baseline is 5% and your MDE is 10%, you are looking for a change from 5% to 5.5%. Smaller MDEs require larger sample sizes. An MDE of 5% on a 5% baseline requires roughly four times more traffic than an MDE of 10%."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What statistical power should I use for my A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The industry standard is 80% power, meaning you have an 80% chance of detecting a real effect if it exists. Higher power (90% or 95%) reduces the risk of false negatives but requires significantly more traffic. Going from 80% to 90% power increases sample size by about 30%. Use 80% unless you have high traffic and the cost of missing a real effect is large."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long should I run my A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Divide your required sample size per variant by your daily traffic per variant. For example, if you need 30,000 visitors per variant and get 2,000 per day, run the test for 15 days. Always run for at least 7 days to capture day-of-week effects. Never stop early just because you see significance — that inflates false positive rates through the peeking problem."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does a lower baseline conversion rate require more traffic?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lower conversion rates produce more variance in the binomial distribution. With a 1% conversion rate, the signal-to-noise ratio is much lower than at 20%, so you need more data to distinguish a real effect from random noise. A 10% MDE on a 1% baseline needs about 1.5 million visitors per variant, while the same MDE on a 20% baseline needs only about 15,000."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Sample Size Calculator</span></nav>
+      <h1>A/B Test Sample Size Calculator</h1>
+      <p>Determine exactly how many visitors you need per variant before launching your experiment. Plan test duration, avoid underpowered tests, and set realistic expectations.</p>
+    </section>
+
+    <section class="explainer-section">
+      <h2>The Sample Size Formula for A/B Testing</h2>
+      <p>Every A/B test requires a minimum number of visitors to produce reliable results. Running a test without adequate sample size is the most common mistake in experimentation programs. The sample size formula for a two-proportion comparison is derived from the Neyman-Pearson framework and balances two competing error types: false positives (Type I) and false negatives (Type II).</p>
+      <p>The core formula is: <strong>n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2</strong>, where p1 is the baseline conversion rate, p2 is the expected conversion rate after the change, Z_alpha/2 is the critical value for your significance level, and Z_beta is the critical value for your desired power. For the standard configuration of 95% confidence and 80% power, the Z-values are 1.96 and 0.84 respectively.</p>
+
+      <h2>Understanding Power Analysis</h2>
+      <p>Power analysis is the process of determining how large your sample needs to be to detect an effect of a given size. Statistical power is the probability that your test will correctly reject the null hypothesis when a real difference exists. A power of 80% means that if variant B truly has a higher conversion rate than variant A, your test will detect it 80% of the time. The remaining 20% represents the false negative rate (Type II error), where a real improvement goes undetected.</p>
+      <p>Power depends on four interconnected variables: sample size, effect size, significance level, and the variance of the metric. Increasing any one of these (except variance) increases power. In practice, you fix three of the four and solve for the remaining one. Most teams fix significance at 0.05, power at 0.80, and MDE at whatever is business-relevant, then solve for sample size.</p>
+
+      <h2>How MDE Affects Required Sample Size</h2>
+      <p>The minimum detectable effect (MDE) is the smallest relative change in conversion rate that your test can reliably detect. MDE has a quadratic relationship with sample size: halving your MDE quadruples the required traffic. This is because the effect size appears in the denominator of the formula as (p2 - p1)^2.</p>
+      <p>Choosing the right MDE is a business decision, not a statistical one. Ask: what is the smallest improvement worth implementing? If a 2% relative lift would not justify the engineering effort to ship a change, there is no point designing a test to detect it. Set your MDE at the threshold where the result becomes actionable.</p>
+
+      <h2>Common Sample Sizes for Different Baselines</h2>
+      <p>Here are approximate sample sizes per variant at 80% power, 95% confidence, for a 10% relative MDE:</p>
+      <ul>
+        <li><strong>1% baseline conversion rate:</strong> ~1,500,000 visitors per variant</li>
+        <li><strong>3% baseline:</strong> ~170,000 visitors per variant</li>
+        <li><strong>5% baseline:</strong> ~62,000 visitors per variant</li>
+        <li><strong>10% baseline:</strong> ~15,000 visitors per variant</li>
+        <li><strong>20% baseline:</strong> ~3,600 visitors per variant</li>
+        <li><strong>50% baseline:</strong> ~800 visitors per variant</li>
+      </ul>
+      <p>These numbers scale inversely with the square of the MDE. For a 20% relative MDE, divide each number by roughly 4. For a 5% relative MDE, multiply by roughly 4.</p>
+
+      <h2>How Long to Run Your Test</h2>
+      <p>Test duration is a function of required sample size and daily traffic. Divide the per-variant sample size by your daily visitors per variant. If you split traffic 50/50 between control and variant, each variant receives half your daily traffic. A test requiring 30,000 visitors per variant with 1,000 daily visitors per variant will take 30 days.</p>
+      <p>There are important minimum duration constraints beyond raw sample size. Always run for at least one full week to capture day-of-week seasonality. For e-commerce sites, consider running through a full pay cycle (two weeks) or avoiding major holidays. Never stop a test early because you see a significant result midway through. This practice, known as peeking, inflates your actual false positive rate far beyond the nominal 5% level. If you need to monitor results during the test, use sequential testing methods with alpha spending functions.</p>
+      <p>For sites with lower traffic, consider whether A/B testing is the right approach. If your required test duration exceeds 8 weeks, the risk of external factors (seasonality, competitor changes, product updates) confounding your results becomes substantial. In these cases, Bayesian methods with informative priors, or qualitative research methods, may be more appropriate than traditional frequentist testing.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-04-10">Last updated: April 10, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>How do I calculate sample size for an A/B test?</summary>
+        <p>Use the standard power analysis formula: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2-p1)^2. You need four inputs: baseline conversion rate, minimum detectable effect, statistical power (typically 80%), and significance level (typically 0.05). The result is the number of visitors needed per variant. Use ABWex's <a href="/">calculator</a> to compute this automatically.</p>
+      </details>
+
+      <details>
+        <summary>What is minimum detectable effect (MDE) in A/B testing?</summary>
+        <p>Minimum detectable effect is the smallest relative improvement your test is designed to detect. If your baseline is 5% and your MDE is 10%, you are testing for a change from 5.0% to 5.5%. Smaller MDEs require exponentially more traffic because effect size appears squared in the denominator of the sample size formula.</p>
+      </details>
+
+      <details>
+        <summary>What statistical power should I use for my A/B test?</summary>
+        <p>The standard is 80% power, meaning an 80% probability of detecting a real effect. Higher power (90% or 95%) reduces false negatives but requires about 30-70% more traffic. Use 80% for most tests, and 90% when the cost of missing a real improvement is high, such as pricing page experiments.</p>
+      </details>
+
+      <details>
+        <summary>How long should I run my A/B test?</summary>
+        <p>Divide required sample size per variant by daily traffic per variant. Always run at least 7 days to capture weekly seasonality. Never stop early based on interim significance — the peeking problem inflates false positive rates dramatically. For e-commerce, consider running through a full pay cycle.</p>
+      </details>
+
+      <details>
+        <summary>Why does a lower baseline conversion rate require more traffic?</summary>
+        <p>Lower conversion rates produce higher relative variance in the binomial distribution. With a 1% rate, most observations are non-conversions, making it harder to distinguish signal from noise. A 10% MDE on a 1% baseline needs roughly 100 times more traffic than the same MDE on a 20% baseline.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate statistical significance for your A/B test results</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Compute confidence intervals for conversion rates</li>
+        <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a> — Learn the Beta-Binomial method for A/B testing</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
+        <div class="footer-copy">© 2026 <a href="https://zovo.one">Zovo</a> · 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — Prompts</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script src="/assets/js/share.js"></script>
+</body>
+</html>

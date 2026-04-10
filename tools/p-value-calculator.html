@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P-Value Calculator — Statistical Significance Test | ABWex</title>
+  <meta name="description" content="Calculate p-values for A/B test results. Understand statistical significance with the two-proportion Z-test. Free p-value calculator.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/p-value-calculator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="P-Value Calculator — Statistical Significance Test | ABWex">
+  <meta property="og:description" content="Calculate p-values for A/B test results. Understand statistical significance with the two-proportion Z-test. Free p-value calculator.">
+  <meta property="og:url" content="https://abwex.com/tools/p-value-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="P-Value Calculator — Statistical Significance Test">
+  <meta name="twitter:description" content="Calculate p-values for A/B test results. Understand statistical significance with the two-proportion Z-test.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/p-value-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/p-value-calculator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "P-Value Calculator for A/B Tests",
+    "url": "https://abwex.com/tools/p-value-calculator.html",
+    "description": "Calculate p-values for A/B test results. Understand statistical significance with the two-proportion Z-test.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "datePublished": "2026-04-10",
+    "dateModified": "2026-04-10"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does p-value mean in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The p-value is the probability of observing a difference as large as (or larger than) your actual result, assuming there is no real difference between variants (the null hypothesis). A p-value of 0.03 means there is a 3% probability of seeing this result if both variants have identical true conversion rates. It is NOT the probability that the variant is better or worse."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a good p-value for an A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The standard threshold is 0.05 (5%), meaning you accept a 5% chance of a false positive. More conservative teams use 0.01 (1%) for high-stakes decisions like pricing changes. Some teams use 0.10 (10%) for exploratory tests where false negatives are more costly than false positives. The threshold should be set before running the test, not after seeing results."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between one-tailed and two-tailed p-values?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A two-tailed test checks whether the variant is different from the control in either direction (better or worse). A one-tailed test only checks one direction (e.g., is B better than A?). Two-tailed p-values are exactly double one-tailed p-values. Most A/B testing tools use two-tailed tests by default because you should know if your change made things worse. Use one-tailed only when a negative result would not change your decision."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is my p-value not significant even though the conversion rates look different?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A visually noticeable difference in conversion rates can still be statistically insignificant if your sample size is too small. With 100 visitors per variant, a difference between 5% and 8% yields a p-value of 0.38 — far from significant. The same percentage difference with 10,000 visitors per variant gives p < 0.001. Significance depends on both effect size and sample size."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a p-value tell me the probability that B is better than A?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This is the most common misinterpretation of p-values. A p-value of 0.03 does NOT mean there is a 97% probability that B is better. It means the data would be unlikely (3% chance) if there were no difference. To get the actual probability that B beats A, use Bayesian analysis, which directly computes P(B > A) using Beta distributions."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>P-Value Calculator</span></nav>
+      <h1>P-Value Calculator for A/B Tests</h1>
+      <p>Calculate p-values using the two-proportion Z-test. Understand what your p-value actually means and avoid the most common misinterpretations in A/B testing.</p>
+    </section>
+
+    <section class="explainer-section">
+      <h2>What P-Values Mean in A/B Testing</h2>
+      <p>The p-value quantifies the strength of evidence against the null hypothesis — the assumption that both variants have the same true conversion rate. Formally, it is the probability of observing a test statistic at least as extreme as the one computed from your data, given that the null hypothesis is true. A small p-value (below your pre-set threshold) indicates that the observed data would be unlikely under the null hypothesis, providing grounds to reject it.</p>
+      <p>Critically, the p-value is not the probability that your hypothesis is true or false. It does not tell you the magnitude of the effect, the practical significance of the result, or the probability that the variant is better than the control. These are separate questions that require additional analysis such as confidence intervals, effect size estimation, or Bayesian posterior probabilities.</p>
+
+      <h2>The Two-Proportion Z-Test Formula</h2>
+      <p>For comparing two conversion rates, the Z-test statistic is computed as:</p>
+      <p><strong>Z = (p1 - p2) / sqrt(p_pool * (1 - p_pool) * (1/n1 + 1/n2))</strong></p>
+      <p>Where p1 and p2 are the observed conversion rates for control and variant, n1 and n2 are the sample sizes, and p_pool is the pooled conversion rate: (x1 + x2) / (n1 + n2), where x1 and x2 are the number of conversions. The pooled estimate is used because under the null hypothesis, both groups share the same true rate.</p>
+      <p>The Z-score follows a standard normal distribution under the null hypothesis. The p-value is computed by looking up the Z-score in the normal CDF. For a two-tailed test, p = 2 * (1 - Phi(|Z|)), where Phi is the standard normal cumulative distribution function. ABWex uses the Abramowitz and Stegun rational approximation for the normal CDF, which has an error of less than 7.5 * 10^-8.</p>
+
+      <h2>Common Significance Thresholds</h2>
+      <p>The significance level (alpha) is the threshold below which you reject the null hypothesis. It represents the maximum false positive rate you are willing to accept. The three most common thresholds in practice are:</p>
+      <ul>
+        <li><strong>alpha = 0.10 (90% confidence):</strong> Used for exploratory tests, early-stage experiments, or when the cost of a false negative (missing a real improvement) far exceeds the cost of a false positive. Common in content testing and UI experiments where changes are easily reversible.</li>
+        <li><strong>alpha = 0.05 (95% confidence):</strong> The industry standard for most A/B tests. Provides a reasonable balance between false positives and statistical power. Used by the majority of experimentation platforms and recommended by most statistics textbooks.</li>
+        <li><strong>alpha = 0.01 (99% confidence):</strong> Used for high-stakes decisions such as pricing changes, checkout flow modifications, or experiments that affect revenue directly. The higher bar reduces false positives but requires roughly twice the sample size as alpha = 0.05 for the same power.</li>
+      </ul>
+
+      <h2>P-Value Misconceptions</h2>
+      <p>The p-value is the single most misunderstood concept in applied statistics. Here are the five most common misconceptions and their corrections:</p>
+      <p><strong>Misconception 1: The p-value is the probability that the null hypothesis is true.</strong> The p-value assumes the null is true and tells you how surprising your data is under that assumption. It says nothing about the probability of the hypothesis itself. That requires Bayesian analysis with a prior distribution.</p>
+      <p><strong>Misconception 2: A p-value of 0.03 means there is a 97% chance the variant is better.</strong> This confuses P(data | null) with P(null | data). The p-value is the former. The latter requires Bayes' theorem and depends on your prior beliefs about the effect size.</p>
+      <p><strong>Misconception 3: A non-significant result means there is no effect.</strong> Absence of evidence is not evidence of absence. A high p-value may simply mean your sample size was too small to detect the effect. Check your statistical power before concluding "no effect."</p>
+      <p><strong>Misconception 4: A smaller p-value means a larger effect.</strong> P-values conflate effect size with sample size. A tiny, meaningless difference can produce a very small p-value with enough data. Always report confidence intervals alongside p-values to communicate effect magnitude.</p>
+      <p><strong>Misconception 5: You can set your significance threshold after seeing the results.</strong> This is called post-hoc threshold adjustment and invalidates the entire frequentist framework. The threshold must be set before collecting data. Choosing alpha = 0.06 because your p-value was 0.058 is not valid statistics.</p>
+
+      <h2>One-Tailed vs Two-Tailed Tests</h2>
+      <p>A two-tailed test evaluates whether variant B is different from control A in either direction — it could be better or worse. The rejection region is split between both tails of the distribution. A one-tailed test evaluates only one direction — for example, whether B is strictly better than A.</p>
+      <p>Two-tailed tests are the default in most A/B testing scenarios because you need to know if your change harmed performance. One-tailed tests are appropriate only when a negative result would not change your decision. For example, if you will either ship variant B or keep A, and there is no "B is worse" scenario that matters, a one-tailed test is defensible. The one-tailed p-value is exactly half the two-tailed p-value, making it easier to reach significance — which is precisely why you should be cautious about using it.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-04-10">Last updated: April 10, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What does p-value mean in A/B testing?</summary>
+        <p>The p-value is the probability of observing a difference as large as your actual result, assuming there is no real difference between variants. A p-value of 0.03 means there is a 3% probability of seeing this result if both variants have identical true conversion rates. It is NOT the probability that the variant is better — for that, use <a href="/tools/bayesian-ab-testing.html">Bayesian analysis</a>.</p>
+      </details>
+
+      <details>
+        <summary>What is a good p-value for an A/B test?</summary>
+        <p>The standard threshold is 0.05 (5%). More conservative teams use 0.01 for high-stakes decisions. Some teams use 0.10 for exploratory tests. The key is to set your threshold before running the test, not after seeing results.</p>
+      </details>
+
+      <details>
+        <summary>What is the difference between one-tailed and two-tailed p-values?</summary>
+        <p>A two-tailed test checks for differences in either direction (better or worse). A one-tailed test checks only one direction. Two-tailed p-values are double the one-tailed values. Use two-tailed by default unless a negative result would not change your decision.</p>
+      </details>
+
+      <details>
+        <summary>Why is my p-value not significant even though the conversion rates look different?</summary>
+        <p>Visual differences can be statistically insignificant with small sample sizes. A difference between 5% and 8% with 100 visitors per variant has p = 0.38. The same difference with 10,000 visitors has p &lt; 0.001. Use the <a href="/tools/sample-size-calculator.html">sample size calculator</a> to plan your test properly.</p>
+      </details>
+
+      <details>
+        <summary>Can a p-value tell me the probability that B is better than A?</summary>
+        <p>No. This is the most common p-value misconception. A p-value of 0.03 does NOT mean 97% probability that B is better. To get the actual probability that B beats A, use <a href="/tools/bayesian-ab-testing.html">Bayesian analysis</a> with ABWex's Bayesian mode, which directly computes P(B > A).</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/chi-square-test.html">Chi-Square Test Calculator</a> — Alternative significance test for categorical data</li>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Plan your test with the right number of visitors</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Quantify the range of plausible effect sizes</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
+        <div class="footer-copy">© 2026 <a href="https://zovo.one">Zovo</a> · 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — Prompts</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script src="/assets/js/share.js"></script>
+</body>
+</html>

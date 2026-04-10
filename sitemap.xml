@@ -30,4 +30,40 @@
 <changefreq>monthly</changefreq>
 <priority>0.6</priority>
 </url>
+  <url>
+<loc>https://abwex.com/tools/</loc>
+<lastmod>2026-04-10</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
+  <url>
+<loc>https://abwex.com/tools/sample-size-calculator.html</loc>
+<lastmod>2026-04-10</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+  <url>
+<loc>https://abwex.com/tools/p-value-calculator.html</loc>
+<lastmod>2026-04-10</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+  <url>
+<loc>https://abwex.com/tools/chi-square-test.html</loc>
+<lastmod>2026-04-10</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+  <url>
+<loc>https://abwex.com/tools/confidence-interval-calculator.html</loc>
+<lastmod>2026-04-10</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+  <url>
+<loc>https://abwex.com/tools/bayesian-ab-testing.html</loc>
+<lastmod>2026-04-10</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
 </urlset>

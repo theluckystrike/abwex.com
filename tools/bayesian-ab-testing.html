@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bayesian A/B Testing Guide — Beta-Binomial Method | ABWex</title>
+  <meta name="description" content="Learn Bayesian A/B testing with Beta-Binomial conjugate priors. Calculate probability that variant B beats A. Understand expected loss.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/bayesian-ab-testing.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Bayesian A/B Testing Guide — Beta-Binomial Method | ABWex">
+  <meta property="og:description" content="Learn Bayesian A/B testing with Beta-Binomial conjugate priors. Calculate probability that variant B beats A. Understand expected loss.">
+  <meta property="og:url" content="https://abwex.com/tools/bayesian-ab-testing.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bayesian A/B Testing Guide — Beta-Binomial Method">
+  <meta name="twitter:description" content="Learn Bayesian A/B testing with Beta-Binomial conjugate priors. Calculate probability that variant B beats A.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/bayesian-ab-testing.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/bayesian-ab-testing.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Bayesian A/B Testing Guide",
+    "url": "https://abwex.com/tools/bayesian-ab-testing.html",
+    "description": "Learn Bayesian A/B testing with Beta-Binomial conjugate priors. Calculate probability that variant B beats A. Understand expected loss.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "datePublished": "2026-04-10",
+    "dateModified": "2026-04-10"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Bayesian A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bayesian A/B testing uses Bayes' theorem to update beliefs about conversion rates as data accumulates. Instead of computing a p-value, it directly calculates the probability that one variant is better than another — P(B beats A). It models each variant's conversion rate as a Beta distribution and uses the observed data to update the distribution parameters. The result is an intuitive probability statement rather than an abstract significance test."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Beta-Binomial conjugate prior?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Beta distribution is the conjugate prior for the Binomial likelihood, meaning that when you combine a Beta prior with Binomial data (conversions out of visitors), the posterior is also a Beta distribution. If the prior is Beta(alpha, beta) and you observe s successes in n trials, the posterior is Beta(alpha + s, beta + n - s). ABWex uses a uniform prior Beta(1, 1), which represents no prior knowledge about the conversion rate. This makes the posterior Beta(conversions + 1, visitors - conversions + 1)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is expected loss in Bayesian A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Expected loss (also called risk) is the average conversion rate you sacrifice by choosing one variant over the other, weighted by the probability of being wrong. If you choose B, the expected loss is E[max(theta_A - theta_B, 0)] — the expected amount by which A's conversion rate exceeds B's, averaged over the posterior distribution. An expected loss below 0.01% (0.0001) is a common threshold for making a decision. Expected loss is more useful than P(B beats A) because it accounts for the magnitude of potential mistakes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are credible intervals and how do they differ from confidence intervals?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A 95% Bayesian credible interval means there is a 95% probability that the true parameter falls within the interval, given the observed data and prior. This is the intuitive interpretation most people incorrectly apply to frequentist confidence intervals. Confidence intervals make a statement about the procedure (95% of intervals would contain the true value), while credible intervals make a direct probability statement about the parameter. For A/B testing with uninformative priors and large samples, both intervals are numerically similar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I use Bayesian vs frequentist A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use Bayesian when you want intuitive probability statements (P(B beats A) = 92%), need to make decisions with smaller samples, want to quantify expected loss from choosing wrong, or plan to peek at results during the test. Use frequentist when you need to control false positive rates precisely, have pre-specified sample sizes, need to report results in traditional academic format, or when your organization has established frequentist protocols. Many teams use both: frequentist for the primary analysis and Bayesian for exploratory interpretation."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Bayesian A/B Testing</span></nav>
+      <h1>Bayesian A/B Testing Guide</h1>
+      <p>Understand the Beta-Binomial approach to A/B testing. Calculate P(B beats A), expected loss, and credible intervals. Make decisions with intuitive probability statements.</p>
+    </section>
+
+    <section class="explainer-section">
+      <h2>Bayesian vs Frequentist: A Fundamental Comparison</h2>
+      <p>Frequentist and Bayesian A/B testing answer fundamentally different questions. The frequentist approach asks: "If there were no real difference, how surprising is my data?" The answer is the p-value. The Bayesian approach asks: "Given my data, what is the probability that B is better than A?" The answer is a direct posterior probability.</p>
+      <p>This distinction matters in practice. A frequentist result of "p = 0.04, statistically significant at alpha = 0.05" tells you the data is inconsistent with the null hypothesis but says nothing about how much better B is or the probability that B beats A. A Bayesian result of "P(B beats A) = 94%, expected loss if choosing B = 0.02%" directly tells you the probability of being right and the cost of being wrong. Most product managers and business stakeholders find the Bayesian framing more actionable.</p>
+      <p>However, the Bayesian approach requires specifying a prior distribution, which introduces subjectivity. Frequentist methods make no assumptions about prior beliefs and provide strict guarantees on error rates (false positive rate control). Both frameworks are valid and useful. The best practice is to understand both and choose based on your decision-making context.</p>
+
+      <h2>Beta Distribution as Conjugate Prior</h2>
+      <p>The Beta distribution is the natural prior for modeling proportions because it is defined on the interval [0, 1] and is the conjugate prior for the Binomial likelihood. Conjugacy means the posterior distribution has the same functional form as the prior, making calculations tractable without numerical methods.</p>
+      <p>A Beta(alpha, beta) distribution has mean alpha/(alpha + beta) and concentrates more tightly around its mean as alpha + beta increases. The uniform prior Beta(1, 1) assigns equal probability to all conversion rates between 0 and 1. A weakly informative prior like Beta(2, 20) centers around a 9% conversion rate with moderate uncertainty. A strong prior like Beta(50, 950) is tightly concentrated around 5%.</p>
+      <p>When you observe s conversions out of n visitors and start with a Beta(alpha, beta) prior, the posterior distribution is Beta(alpha + s, beta + n - s). With the uniform prior Beta(1, 1), the posterior after 50 conversions out of 1,000 visitors is Beta(51, 951), which has a mean of 5.1% and a 95% credible interval of roughly [3.8%, 6.6%]. As more data accumulates, the prior has less influence and the posterior converges to the same result regardless of the prior chosen.</p>
+
+      <h2>Posterior Probability Calculation</h2>
+      <p>The key output of a Bayesian A/B test is P(B beats A) — the probability that variant B's true conversion rate exceeds variant A's true conversion rate. Given posteriors Beta(alpha_A, beta_A) and Beta(alpha_B, beta_B), this probability is computed as the integral over all pairs (theta_A, theta_B) where theta_B > theta_A, weighted by the posterior densities.</p>
+      <p>For the Beta-Binomial model, there is a closed-form solution involving the regularized incomplete Beta function, but it requires summing over one of the parameters. ABWex uses Simpson's rule for numerical integration, which provides deterministic, reproducible results with high accuracy. The computation evaluates the joint density over a grid and sums the probability mass where B exceeds A.</p>
+      <p>A common decision rule is to choose B when P(B beats A) exceeds a threshold, typically 95%. However, this threshold alone does not account for the magnitude of the difference. A result of P(B beats A) = 96% with an expected improvement of 0.01 percentage points may not justify the effort of shipping a change. This is why expected loss is a more nuanced decision metric.</p>
+
+      <h2>Expected Loss</h2>
+      <p>Expected loss quantifies the average cost of choosing the wrong variant, measured in conversion rate points. If you choose variant B, the expected loss is the expected value of max(theta_A - theta_B, 0) under the posterior distribution. This is the average amount by which A's conversion rate exceeds B's, weighted by the posterior probability of each scenario.</p>
+      <p>The expected loss framework is particularly useful because it combines probability and magnitude into a single metric. Consider two scenarios: In scenario 1, P(B beats A) = 60% with expected loss of choosing B = 0.001%. In scenario 2, P(B beats A) = 95% with expected loss of choosing B = 0.0001%. Both provide clear decision criteria even though the probabilities differ substantially. A common decision rule is to choose the variant with expected loss below some threshold (e.g., 0.01% or 0.001%), which naturally adapts to both the certainty and magnitude of the effect.</p>
+      <p>Expected loss also translates directly into business terms. If your expected loss from choosing B is 0.05% and you have 100,000 monthly visitors with $50 revenue per conversion, the maximum expected cost of choosing B is 0.0005 * 100,000 * $50 = $2,500 per month. This makes the risk tangible and comparable to other business decisions.</p>
+
+      <h2>Credible Intervals</h2>
+      <p>Bayesian credible intervals are the direct analog of frequentist confidence intervals but with a more intuitive interpretation. A 95% credible interval means there is a 95% posterior probability that the true parameter falls within the interval. This is the interpretation most people mistakenly attribute to confidence intervals.</p>
+      <p>For the Beta posterior, the 95% highest density interval (HDI) contains the 95% most probable values of the conversion rate. It is computed from the inverse CDF (quantile function) of the Beta distribution. The 2.5th percentile gives the lower bound and the 97.5th percentile gives the upper bound. For the difference between two variants, the credible interval on (theta_B - theta_A) is computed via simulation or numerical integration.</p>
+
+      <h2>When to Use Bayesian A/B Testing</h2>
+      <p>Bayesian methods are particularly well-suited when you need to make decisions early with limited data, when you want to peek at results without inflating error rates, when stakeholders need intuitive probability statements, when you want to quantify the cost of making the wrong decision, or when you have genuine prior information from previous experiments.</p>
+      <p>Bayesian methods are less appropriate when you need strict control over false positive rates (as in regulatory contexts), when the choice of prior is contentious, or when your organization requires traditional statistical significance for compliance. In practice, many sophisticated experimentation programs use both: a frequentist analysis as the primary decision tool with Bayesian analysis providing supplementary insight into probabilities and expected losses.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-04-10">Last updated: April 10, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What is Bayesian A/B testing?</summary>
+        <p>Bayesian A/B testing uses Bayes' theorem to directly calculate the probability that one variant is better than another. Instead of a p-value, you get P(B beats A) as a percentage. It models conversion rates as Beta distributions and updates them as data arrives. Try ABWex's <a href="/">Bayesian mode</a> to see it in action.</p>
+      </details>
+
+      <details>
+        <summary>What is the Beta-Binomial conjugate prior?</summary>
+        <p>The Beta distribution is the conjugate prior for Binomial data, meaning the posterior is also a Beta distribution. Starting with Beta(1, 1) (uniform prior) and observing s conversions out of n visitors, the posterior is Beta(s+1, n-s+1). This makes Bayesian updates computationally simple — no MCMC or complex sampling required.</p>
+      </details>
+
+      <details>
+        <summary>What is expected loss in Bayesian A/B testing?</summary>
+        <p>Expected loss is the average conversion rate you sacrifice by choosing the wrong variant. If you choose B, expected loss = E[max(theta_A - theta_B, 0)]. An expected loss below 0.01% is a common decision threshold. It is more useful than P(B beats A) alone because it accounts for the magnitude of potential mistakes.</p>
+      </details>
+
+      <details>
+        <summary>What are credible intervals and how do they differ from confidence intervals?</summary>
+        <p>A 95% credible interval means there is a 95% probability the true value falls within the interval — the interpretation most people incorrectly give to confidence intervals. With uninformative priors and large samples, credible intervals and confidence intervals are numerically similar, but their philosophical meaning differs fundamentally.</p>
+      </details>
+
+      <details>
+        <summary>When should I use Bayesian vs frequentist A/B testing?</summary>
+        <p>Use Bayesian when you want probability statements (P(B beats A) = 92%), need early decisions, or want to quantify expected loss. Use frequentist when you need strict false positive rate control or traditional significance testing. Many teams use both: frequentist for primary analysis, Bayesian for intuitive interpretation. ABWex <a href="/">supports both modes</a>.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — The frequentist counterpart to Bayesian posterior probabilities</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Frequentist intervals to compare with Bayesian credible intervals</li>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Plan sample sizes for both frequentist and Bayesian tests</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
+        <div class="footer-copy">© 2026 <a href="https://zovo.one">Zovo</a> · 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — Prompts</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script src="/assets/js/share.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confidence Interval Calculator — A/B Test Results | ABWex</title>
+  <meta name="description" content="Calculate confidence intervals for conversion rates and A/B test results. 90%, 95%, and 99% intervals with Wilson score method.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/confidence-interval-calculator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Confidence Interval Calculator — A/B Test Results | ABWex">
+  <meta property="og:description" content="Calculate confidence intervals for conversion rates and A/B test results. 90%, 95%, and 99% intervals with Wilson score method.">
+  <meta property="og:url" content="https://abwex.com/tools/confidence-interval-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Confidence Interval Calculator — A/B Test Results">
+  <meta name="twitter:description" content="Calculate confidence intervals for conversion rates and A/B test results. 90%, 95%, and 99% intervals.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/confidence-interval-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/confidence-interval-calculator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Confidence Interval Calculator for A/B Tests",
+    "url": "https://abwex.com/tools/confidence-interval-calculator.html",
+    "description": "Calculate confidence intervals for conversion rates and A/B test results. 90%, 95%, and 99% intervals with Wilson score method.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "datePublished": "2026-04-10",
+    "dateModified": "2026-04-10"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a confidence interval in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A confidence interval provides a range of plausible values for the true conversion rate or the true difference between variants. A 95% confidence interval means that if you repeated the experiment many times, 95% of the calculated intervals would contain the true value. It quantifies uncertainty: a narrow interval indicates a precise estimate, while a wide interval indicates high uncertainty."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between normal approximation and Wilson score interval?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The normal (Wald) approximation uses p +/- Z * sqrt(p*(1-p)/n), which can produce intervals outside [0,1] for extreme proportions or small samples. The Wilson score interval uses a more complex formula that accounts for the discrete nature of binomial data: (p + Z^2/(2n) +/- Z*sqrt(p*(1-p)/n + Z^2/(4n^2))) / (1 + Z^2/n). Wilson intervals always stay within [0,1], have better coverage probability, and are recommended for conversion rates below 5% or above 95%, or when sample sizes are below 100."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I interpret a confidence interval for the difference between two conversion rates?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If the confidence interval for the difference (p_B - p_A) does not contain zero, the result is statistically significant at that confidence level. If the interval is entirely positive (e.g., [0.005, 0.025]), variant B has a significantly higher conversion rate. If entirely negative, B is worse. The width of the interval tells you the precision of the estimate. For business decisions, check whether the entire interval exceeds your minimum relevant effect size."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What confidence level should I use: 90%, 95%, or 99%?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The 95% level is the standard for most A/B tests, corresponding to a significance level of alpha = 0.05. Use 90% for exploratory tests where you want narrower intervals and are willing to accept more uncertainty. Use 99% for high-stakes decisions like pricing changes or checkout flow modifications. Higher confidence levels produce wider intervals, requiring more data for the same precision."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are confidence intervals related to statistical significance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Confidence intervals and significance tests are two sides of the same coin. A 95% confidence interval for the difference that excludes zero is equivalent to a p-value below 0.05 (two-tailed). However, confidence intervals are strictly more informative: they tell you both whether the result is significant AND the range of plausible effect sizes. Reporting only p-values without confidence intervals is considered poor practice by the American Statistical Association."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/about.html">About</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Confidence Interval Calculator</span></nav>
+      <h1>Confidence Interval Calculator</h1>
+      <p>Compute confidence intervals for conversion rates and the difference between A/B test variants. Understand precision, choose the right method, and report results correctly.</p>
+    </section>
+
+    <section class="explainer-section">
+      <h2>What Confidence Intervals Mean</h2>
+      <p>A confidence interval is a range of values that is likely to contain the true population parameter. In A/B testing, you use confidence intervals for two purposes: estimating the true conversion rate of a single variant, and estimating the true difference in conversion rates between two variants. The interval quantifies how much uncertainty remains in your estimate due to random sampling.</p>
+      <p>The formal interpretation is frequentist: a 95% confidence interval means that if you were to repeat the experiment and compute the interval each time, 95% of those intervals would contain the true value. It does not mean there is a 95% probability that the true value falls within this specific interval — that is a Bayesian credible interval, which requires a prior distribution.</p>
+      <p>In practical A/B testing, the most important confidence interval is on the difference between conversion rates (p_B - p_A). If this interval excludes zero entirely, the difference is statistically significant. If the interval includes both positive and negative values, you cannot determine the direction of the effect with confidence. The width of the interval indicates precision: a narrow interval means your estimate is reliable, while a wide interval suggests you need more data.</p>
+
+      <h2>Normal Approximation vs Wilson Score</h2>
+      <p>The two most common methods for computing confidence intervals on proportions are the Wald (normal approximation) interval and the Wilson score interval.</p>
+      <p>The <strong>Wald interval</strong> is the simpler method: <strong>p +/- Z * sqrt(p * (1-p) / n)</strong>, where p is the observed proportion, n is the sample size, and Z is the critical value (1.645 for 90%, 1.96 for 95%, 2.576 for 99%). This formula is taught in introductory statistics courses and used by many online calculators. However, it has known problems: it can produce intervals that extend below 0 or above 1, and its actual coverage probability can drop well below the nominal level for small samples or extreme proportions.</p>
+      <p>The <strong>Wilson score interval</strong> addresses these issues: <strong>(p + Z^2/(2n) +/- Z * sqrt(p*(1-p)/n + Z^2/(4n^2))) / (1 + Z^2/n)</strong>. It always produces intervals within [0, 1], has better coverage probability across all sample sizes, and is recommended by most modern statistics references. The Wilson interval "shrinks" extreme proportions toward 0.5, which is a form of regularization that improves accuracy.</p>
+      <p>For most A/B testing scenarios (conversion rates between 2% and 50%, sample sizes above 1,000), both methods produce nearly identical results. The difference becomes important when conversion rates are below 1% or above 99%, when sample sizes are below 100, or when you are computing intervals for rare events like error rates or premium subscription conversions.</p>
+
+      <h2>How to Report Confidence Intervals in A/B Tests</h2>
+      <p>Effective reporting of A/B test results should always include confidence intervals, not just p-values. A well-structured report includes the point estimate of the difference (e.g., "+0.8 percentage points"), the relative improvement (e.g., "+16% relative lift"), the 95% confidence interval on the absolute difference (e.g., "[+0.2pp, +1.4pp]"), the p-value, and the sample size for each variant.</p>
+      <p>When presenting to stakeholders, translate the confidence interval into business terms. Instead of saying "the 95% CI for the difference is [0.002, 0.014]," say "we are 95% confident the new design increases conversion rate by 0.2 to 1.4 percentage points, which translates to $12,000 to $84,000 additional annual revenue." This makes the uncertainty tangible and actionable.</p>
+
+      <h2>Relationship Between Confidence Intervals and Significance</h2>
+      <p>Confidence intervals and hypothesis tests are mathematically equivalent for two-sided tests. A 95% confidence interval that excludes the null value (zero for a difference test) corresponds exactly to a p-value below 0.05. This duality means you can use confidence intervals as your primary analysis tool and read off significance directly.</p>
+      <p>However, confidence intervals are strictly more informative than p-values alone. A p-value tells you only whether the result is significant. A confidence interval tells you the range of plausible effect sizes, the precision of your estimate, and whether the effect is practically meaningful — not just statistically detectable. The American Statistical Association's 2016 statement on p-values explicitly recommends reporting confidence intervals alongside or instead of p-values.</p>
+      <p>One important nuance: the relationship between confidence level and significance level is inverse. A 95% confidence interval corresponds to alpha = 0.05, a 90% interval to alpha = 0.10, and a 99% interval to alpha = 0.01. Increasing the confidence level widens the interval, making it harder for the interval to exclude zero and thus harder to achieve significance. This is the same trade-off as choosing a stricter alpha: more protection against false positives at the cost of reduced power.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-04-10">Last updated: April 10, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What is a confidence interval in A/B testing?</summary>
+        <p>A confidence interval provides a range of plausible values for the true conversion rate or the true difference between variants. A 95% CI means that if you repeated the experiment many times, 95% of the calculated intervals would contain the true value. It quantifies the uncertainty in your estimate due to random sampling.</p>
+      </details>
+
+      <details>
+        <summary>What is the difference between normal approximation and Wilson score interval?</summary>
+        <p>The normal (Wald) approximation uses p +/- Z * sqrt(p*(1-p)/n), which can produce invalid intervals outside [0,1]. The Wilson score interval always stays within [0,1] and has better coverage probability. Use Wilson for conversion rates below 5% or above 95%, or sample sizes below 100. For typical A/B tests, both methods give similar results.</p>
+      </details>
+
+      <details>
+        <summary>How do I interpret a confidence interval for the difference between two conversion rates?</summary>
+        <p>If the interval for (p_B - p_A) does not contain zero, the result is statistically significant. An entirely positive interval means B is better; entirely negative means B is worse. The width tells you precision. For business decisions, check whether the entire interval exceeds your minimum relevant effect size.</p>
+      </details>
+
+      <details>
+        <summary>What confidence level should I use: 90%, 95%, or 99%?</summary>
+        <p>Use 95% as the default for most A/B tests. Use 90% for exploratory tests where you accept more uncertainty in exchange for narrower intervals. Use 99% for high-stakes decisions. Higher confidence levels produce wider intervals and require more data for the same precision.</p>
+      </details>
+
+      <details>
+        <summary>How are confidence intervals related to statistical significance?</summary>
+        <p>A 95% CI that excludes zero is equivalent to p &lt; 0.05 (two-tailed). Confidence intervals are more informative than p-values: they show both significance and the range of plausible effect sizes. The American Statistical Association recommends reporting intervals alongside p-values. Use the <a href="/">ABWex calculator</a> to see both.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Compute p-values and test significance directly</li>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Plan sample sizes for precise confidence intervals</li>
+        <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a> — Credible intervals as the Bayesian alternative to confidence intervals</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
+        <div class="footer-copy">© 2026 <a href="https://zovo.one">Zovo</a> · 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — Prompts</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script src="/assets/js/share.js"></script>
+</body>
+</html>
