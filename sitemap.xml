@@ -78,4 +78,22 @@
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
+  <url>
+<loc>https://abwex.com/answers/ab-test-sample-size-calculator.html</loc>
+<lastmod>2026-04-11</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+  <url>
+<loc>https://abwex.com/answers/is-my-ab-test-significant.html</loc>
+<lastmod>2026-04-11</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+  <url>
+<loc>https://abwex.com/answers/how-long-to-run-ab-test.html</loc>
+<lastmod>2026-04-11</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
 </urlset>
