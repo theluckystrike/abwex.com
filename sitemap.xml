@@ -79,6 +79,12 @@
 <priority>0.7</priority>
 </url>
   <url>
+<loc>https://abwex.com/answers/</loc>
+<lastmod>2026-04-14</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.7</priority>
+</url>
+  <url>
 <loc>https://abwex.com/answers/ab-test-sample-size-calculator.html</loc>
 <lastmod>2026-04-11</lastmod>
 <changefreq>monthly</changefreq>
