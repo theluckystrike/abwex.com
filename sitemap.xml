@@ -1,105 +1,111 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-<loc>https://abwex.com/</loc>
-<lastmod>2026-04-06</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1.0</priority>
-</url>
+    <loc>https://abwex.com/</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
   <url>
-<loc>https://abwex.com/about.html</loc>
-<lastmod>2026-04-06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/about.html</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/blog/</loc>
-<lastmod>2026-04-06</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
+    <loc>https://abwex.com/blog/</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
-<loc>https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html</loc>
-<lastmod>2026-04-06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.6</priority>
-</url>
+    <loc>https://abwex.com/blog/bayesian-vs-frequentist-ab-testing.html</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
-<loc>https://abwex.com/blog/ab-testing-sample-size-guide.html</loc>
-<lastmod>2026-04-06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.6</priority>
-</url>
+    <loc>https://abwex.com/blog/ab-testing-sample-size-guide.html</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
-<loc>https://abwex.com/tools/</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/tools/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/tools/sample-size-calculator.html</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/tools/sample-size-calculator.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/tools/p-value-calculator.html</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/tools/p-value-calculator.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/tools/chi-square-test.html</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/tools/chi-square-test.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/tools/confidence-interval-calculator.html</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/tools/confidence-interval-calculator.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/tools/bayesian-ab-testing.html</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
+    <loc>https://abwex.com/tools/bayesian-ab-testing.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
-<loc>https://abwex.com/research/ab-test-duration-calculator.html</loc>
-<lastmod>2026-04-10</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
+    <loc>https://abwex.com/research/ab-test-duration-calculator.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
-<loc>https://abwex.com/research/ab-test-mistakes.html</loc>
-<lastmod>2026-04-11</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
+    <loc>https://abwex.com/research/ab-test-mistakes.html</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
-<loc>https://abwex.com/answers/</loc>
-<lastmod>2026-04-14</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
+    <loc>https://abwex.com/answers/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
-<loc>https://abwex.com/answers/ab-test-sample-size-calculator.html</loc>
-<lastmod>2026-04-11</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
+    <loc>https://abwex.com/answers/ab-test-sample-size-calculator.html</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
   <url>
-<loc>https://abwex.com/answers/is-my-ab-test-significant.html</loc>
-<lastmod>2026-04-11</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
+    <loc>https://abwex.com/answers/is-my-ab-test-significant.html</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
   <url>
-<loc>https://abwex.com/answers/how-long-to-run-ab-test.html</loc>
-<lastmod>2026-04-11</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
+    <loc>https://abwex.com/answers/how-long-to-run-ab-test.html</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abwex.com/guides/chi-square-test-guide.html</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi-Square Test Explained — Step-by-Step Calculator for A/B Testing | Abwex</title>
+  <meta name="description" content="Learn how the chi-square test works with an interactive step-by-step calculator. Covers goodness of fit, test of independence, when to use chi-square vs t-test, effect size with Cramer's V, and real A/B testing examples.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/guides/chi-square-test-guide.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Chi-Square Test Explained — Step-by-Step Calculator for A/B Testing | Abwex">
+  <meta property="og:description" content="Learn how the chi-square test works with an interactive step-by-step calculator. Covers goodness of fit, test of independence, effect size, and real A/B testing examples.">
+  <meta property="og:url" content="https://abwex.com/guides/chi-square-test-guide.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chi-Square Test Explained — Step-by-Step Calculator for A/B Testing">
+  <meta name="twitter:description" content="Interactive chi-square calculator with step-by-step solution, effect size, and real A/B testing examples.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/guides/chi-square-test-guide.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/guides/chi-square-test-guide.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Chi-Square Test Explained — Step-by-Step Calculator for A/B Testing",
+    "description": "Learn how the chi-square test works with an interactive step-by-step calculator. Covers goodness of fit, test of independence, effect size with Cramer's V, and real A/B testing examples.",
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "Zovo Tools", "url": "https://zovo.one" },
+    "datePublished": "2026-05-16",
+    "dateModified": "2026-05-16",
+    "mainEntityOfPage": "https://abwex.com/guides/chi-square-test-guide.html",
+    "image": "https://abwex.com/assets/og-image.png"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Do a Chi-Square Test for A/B Testing",
+    "description": "Step-by-step instructions for performing a chi-square test of independence on A/B test data.",
+    "totalTime": "PT5M",
+    "tool": [
+      { "@type": "HowToTool", "name": "Chi-Square Calculator (this page)" },
+      { "@type": "HowToTool", "name": "Contingency table data from your A/B test" }
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Organize data into a contingency table",
+        "text": "Create a table where rows represent variants (A, B) and columns represent outcomes (Converted, Not Converted). Enter the raw counts for each cell."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Calculate expected frequencies",
+        "text": "For each cell, compute the expected frequency as: E = (Row Total * Column Total) / Grand Total. This tells you what you would expect if there were no association between variant and outcome."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Compute the chi-square statistic",
+        "text": "For each cell, calculate (Observed - Expected)^2 / Expected. Sum all these values to get the chi-square statistic."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Determine degrees of freedom",
+        "text": "Calculate df = (number of rows - 1) * (number of columns - 1). For a standard 2x2 A/B test, df = 1."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Find the p-value and interpret",
+        "text": "Compare the chi-square statistic against the chi-square distribution with the calculated degrees of freedom to obtain a p-value. If p < your significance level (e.g., 0.05), the result is statistically significant."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Calculate effect size",
+        "text": "Compute Cramer's V = sqrt(chi-square / (n * min(r-1, c-1))). This measures the strength of the association independently of sample size."
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the chi-square test used for in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The chi-square test of independence determines whether there is a statistically significant association between two categorical variables. In A/B testing, it tests whether the variant assignment (A or B) and the outcome (converted or not) are independent. A significant result means the conversion rates differ beyond what random chance would produce."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you calculate a chi-square test step by step?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Step 1: Organize data into a contingency table with observed counts. Step 2: Calculate expected frequencies using E = (Row Total * Column Total) / Grand Total. Step 3: For each cell, compute (Observed - Expected)^2 / Expected. Step 4: Sum all cell values to get the chi-square statistic. Step 5: Calculate degrees of freedom as (rows - 1) * (columns - 1). Step 6: Compare the statistic to the chi-square distribution to get the p-value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I use chi-square vs t-test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the chi-square test when both your independent variable and dependent variable are categorical (e.g., variant A/B and converted yes/no). Use the t-test when your independent variable is categorical but your dependent variable is continuous (e.g., variant A/B and revenue per user or time on page). The chi-square test works with frequency counts; the t-test works with means."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Cramer's V and how do I interpret it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cramer's V is an effect size measure for chi-square tests, ranging from 0 (no association) to 1 (perfect association). It is calculated as sqrt(chi-square / (n * min(r-1, c-1))). For A/B tests, V < 0.1 is a small effect, 0.1-0.3 is medium, and > 0.3 is large. Unlike the p-value, Cramer's V does not depend on sample size, making it useful for comparing effect sizes across different experiments."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the minimum sample size for a chi-square test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The standard rule is that all expected cell frequencies must be at least 5. If any expected frequency is below 5, the chi-square approximation becomes unreliable and you should use Fisher's exact test instead. For A/B tests with low conversion rates (below 1%), this can require several thousand visitors per variant to meet the threshold."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between chi-square goodness of fit and test of independence?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The goodness of fit test checks whether one categorical variable follows a hypothesized distribution (e.g., do website visitors distribute evenly across weekdays?). The test of independence checks whether two categorical variables are related (e.g., does variant assignment affect conversion?). In A/B testing, you almost always use the test of independence because you are testing the relationship between two variables: the variant and the outcome."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://abwex.com/guides/"},{"@type":"ListItem","position":3,"name":"Chi-Square Test Guide"}]}</script>
+
+  <style>
+    .guide-article { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .guide-article h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 2.2rem; font-weight: 600; line-height: 1.2; margin-bottom: 0.5rem; }
+    .guide-article .meta { color: #6b7280; font-size: 0.95rem; margin-bottom: 2.5rem; }
+    .guide-article .meta a { color: #6b7280; text-decoration: underline; }
+    .guide-article h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.55rem; font-weight: 600; margin-top: 2.8rem; margin-bottom: 0.8rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+    .guide-article h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.2rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; }
+    .guide-article p { font-size: 1.05rem; line-height: 1.75; margin-bottom: 1rem; color: #1f2937; }
+    .guide-article ul, .guide-article ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    .guide-article li { font-size: 1.05rem; line-height: 1.7; margin-bottom: 0.4rem; color: #1f2937; }
+    .guide-article strong { font-weight: 600; }
+    .guide-article code { font-family: 'Space Mono', monospace; background: #f3f4f6; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.92em; }
+    .guide-article pre { background: #1f2937; color: #e5e7eb; padding: 1.2rem 1.5rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.6; }
+    .guide-article pre code { background: none; padding: 0; color: inherit; }
+    .guide-article .formula-block { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; font-family: 'Space Mono', monospace; font-size: 1rem; }
+    .guide-article .tip-block { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .guide-article .warn-block { background: #fefce8; border-left: 4px solid #eab308; padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .guide-article .tip-block p, .guide-article .warn-block p { margin-bottom: 0.3rem; }
+
+    /* Calculator styles */
+    .calc-container { background: #ffffff; border: 2px solid #e5e7eb; border-radius: 12px; padding: 2rem; margin: 2rem 0; }
+    .calc-container h3 { margin-top: 0; font-size: 1.3rem; }
+    .calc-controls { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
+    .calc-controls label { font-size: 0.9rem; font-weight: 500; color: #374151; }
+    .calc-controls select, .calc-controls input { font-family: 'Space Mono', monospace; font-size: 0.9rem; padding: 0.4rem 0.6rem; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb; }
+    .table-grid { display: grid; gap: 2px; margin-bottom: 1.5rem; background: #d1d5db; border-radius: 8px; overflow: hidden; }
+    .table-cell { background: #ffffff; padding: 0.6rem 0.8rem; text-align: center; font-size: 0.9rem; }
+    .table-cell.header { background: #f3f4f6; font-weight: 600; font-size: 0.85rem; color: #374151; }
+    .table-cell input { width: 80px; font-family: 'Space Mono', monospace; font-size: 0.95rem; padding: 0.35rem 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; text-align: center; background: #f9fafb; }
+    .table-cell input:focus { outline: 2px solid #3b82f6; border-color: #3b82f6; background: #fff; }
+    .calc-btn { font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; font-weight: 600; padding: 0.7rem 2rem; background: #2563eb; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+    .calc-btn:hover { background: #1d4ed8; }
+    .calc-btn:active { background: #1e40af; }
+    .calc-results { display: none; margin-top: 1.5rem; }
+    .calc-results.visible { display: block; }
+    .result-card { background: #f9fafb; border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1rem; border: 1px solid #e5e7eb; }
+    .result-card h4 { font-family: 'IBM Plex Sans', sans-serif; margin: 0 0 0.6rem; font-size: 1rem; color: #374151; }
+    .result-stat { font-family: 'Space Mono', monospace; font-size: 1.8rem; font-weight: 700; color: #1f2937; }
+    .result-stat.significant { color: #16a34a; }
+    .result-stat.not-significant { color: #dc2626; }
+    .result-label { font-size: 0.85rem; color: #6b7280; margin-top: 0.2rem; }
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .step-list { counter-reset: step; list-style: none; padding-left: 0; }
+    .step-list li { counter-increment: step; position: relative; padding-left: 2.5rem; margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; }
+    .step-list li::before { content: counter(step); position: absolute; left: 0; top: 0.1rem; width: 1.8rem; height: 1.8rem; background: #2563eb; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+    .expected-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+    .expected-table th, .expected-table td { border: 1px solid #d1d5db; padding: 0.5rem 0.8rem; text-align: center; }
+    .expected-table th { background: #f3f4f6; font-weight: 600; }
+    .expected-table .highlight { background: #eff6ff; }
+
+    /* Bar chart */
+    .chart-container { margin: 1.5rem 0; }
+    .chart-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.8rem; color: #374151; }
+    .chart-row { display: flex; align-items: center; margin-bottom: 0.5rem; gap: 0.5rem; }
+    .chart-label { width: 100px; font-size: 0.8rem; text-align: right; color: #6b7280; flex-shrink: 0; }
+    .chart-bars { flex: 1; display: flex; gap: 3px; align-items: center; }
+    .chart-bar { height: 24px; border-radius: 3px; transition: width 0.4s ease; min-width: 2px; }
+    .chart-bar.observed { background: #3b82f6; }
+    .chart-bar.expected { background: #f59e0b; }
+    .chart-bar-value { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #6b7280; min-width: 40px; }
+    .chart-legend { display: flex; gap: 1.5rem; margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280; }
+    .chart-legend span::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 0.4rem; vertical-align: middle; }
+    .chart-legend .leg-obs::before { background: #3b82f6; }
+    .chart-legend .leg-exp::before { background: #f59e0b; }
+
+    .conclusion-box { padding: 1.2rem 1.5rem; border-radius: 8px; margin-top: 1rem; }
+    .conclusion-box.sig { background: #f0fdf4; border: 2px solid #22c55e; }
+    .conclusion-box.not-sig { background: #fef2f2; border: 2px solid #ef4444; }
+    .conclusion-box h4 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+    .conclusion-box.sig h4 { color: #16a34a; }
+    .conclusion-box.not-sig h4 { color: #dc2626; }
+    .conclusion-box p { margin: 0; font-size: 0.95rem; color: #374151; }
+
+    /* Comparison table */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.95rem; }
+    .compare-table th, .compare-table td { border: 1px solid #d1d5db; padding: 0.6rem 1rem; text-align: left; }
+    .compare-table th { background: #f3f4f6; font-weight: 600; font-size: 0.9rem; }
+    .compare-table tr:nth-child(even) { background: #f9fafb; }
+    .compare-table td:first-child { font-weight: 500; }
+
+    @media (max-width: 640px) {
+      .guide-article h1 { font-size: 1.6rem; }
+      .calc-container { padding: 1rem; }
+      .table-cell input { width: 60px; }
+      .result-grid { grid-template-columns: 1fr 1fr; }
+      .chart-label { width: 70px; font-size: 0.7rem; }
+      .compare-table { font-size: 0.85rem; }
+      .compare-table th, .compare-table td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <nav class="nav">
+        <a href="/" class="nav-logo">abwex</a>
+        <ul class="nav-links">
+          <li><a href="/">Tool</a></li>
+          <li><a href="/guides/" class="active">Guides</a></li>
+          <li><a href="/tools/">Tools</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <article class="guide-article">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/guides/">Guides</a> <span>/</span> <span>Chi-Square Test Guide</span></nav>
+
+    <h1>Chi-Square Test Explained: Step-by-Step Calculator for A/B Testing</h1>
+    <div class="meta">By <a href="https://zovo.one">Michael Lip</a> &middot; May 16, 2026 &middot; 12 min read</div>
+
+    <p>The chi-square test is one of the most widely used statistical tests in A/B testing, yet it is also one of the most misunderstood. Many practitioners plug numbers into a calculator, get a p-value, and move on without understanding what the test actually measures or whether it was the right test to use.</p>
+
+    <p>This guide breaks down the chi-square test from first principles. You will learn what it measures, when to use it instead of other tests, how to calculate it step by step, and how to interpret the results for real business decisions. The interactive calculator below lets you run a full chi-square analysis with observed values, expected values, effect size, and a visual comparison chart.</p>
+
+    <!-- ===== INTERACTIVE CALCULATOR ===== -->
+    <div class="calc-container" id="calculator">
+      <h3>Interactive Chi-Square Calculator</h3>
+      <p style="font-size:0.9rem;color:#6b7280;margin-bottom:1rem;">Enter your observed frequencies below. The calculator shows every intermediate step.</p>
+
+      <div class="calc-controls">
+        <div>
+          <label for="num-rows">Rows:</label>
+          <select id="num-rows">
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+        <div>
+          <label for="num-cols">Columns:</label>
+          <select id="num-cols">
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+        <div>
+          <label for="sig-level">Significance level:</label>
+          <select id="sig-level">
+            <option value="0.01">0.01</option>
+            <option value="0.05" selected>0.05</option>
+            <option value="0.10">0.10</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="input-table"></div>
+
+      <button class="calc-btn" onclick="runChiSquare()">Calculate Chi-Square</button>
+
+      <div class="calc-results" id="results">
+        <div class="result-grid" id="result-stats"></div>
+
+        <div class="result-card">
+          <h4>Step-by-Step Solution</h4>
+          <ol class="step-list" id="step-list"></ol>
+        </div>
+
+        <div class="result-card" id="expected-card">
+          <h4>Expected Frequencies Table</h4>
+          <div id="expected-table-container"></div>
+        </div>
+
+        <div class="result-card">
+          <h4>Observed vs Expected Comparison</h4>
+          <div class="chart-container" id="chart-container"></div>
+          <div class="chart-legend">
+            <span class="leg-obs">Observed</span>
+            <span class="leg-exp">Expected</span>
+          </div>
+        </div>
+
+        <div id="conclusion-container"></div>
+      </div>
+    </div>
+
+    <p>Need the quick calculator without the guide? Use the <a href="/tools/chi-square-test.html">Chi-Square Test Calculator tool</a> or the <a href="/">main ABWex calculator</a> for standard A/B test significance.</p>
+
+    <!-- ===== SECTION: WHAT IS CHI-SQUARE ===== -->
+    <h2 id="what-is-chi-square">What Is the Chi-Square Test?</h2>
+
+    <p>The chi-square test measures whether there is a meaningful difference between what you <em>observed</em> in your data and what you would <em>expect</em> to see if nothing interesting were happening. The core intuition is simple: if your A/B test variants are truly identical (the null hypothesis), then the conversions should be spread roughly proportionally across both groups. If the actual distribution deviates enough from that proportional spread, the chi-square test flags it as statistically significant.</p>
+
+    <p>Think of it this way. You flip a coin 100 times and get 60 heads. Is the coin fair? A perfectly fair coin should give you about 50 heads. The difference between what you observed (60) and what you expected (50) is the signal. The chi-square test formalizes this intuition by quantifying how far your observations deviate from expectation and telling you whether that deviation is large enough to be meaningful.</p>
+
+    <div class="formula-block">
+      <strong>The Pearson Chi-Square Formula:</strong><br>
+      X&sup2; = &Sigma; (O<sub>i</sub> - E<sub>i</sub>)&sup2; / E<sub>i</sub><br><br>
+      Where O<sub>i</sub> = observed frequency in cell i, E<sub>i</sub> = expected frequency in cell i
+    </div>
+
+    <p>The formula squares each difference (so negative deviations do not cancel out positive ones), divides by the expected value (so deviations in small cells are not overshadowed by large cells), and sums everything up. A larger chi-square statistic means your data deviates more from what you would expect under the null hypothesis.</p>
+
+    <p>Named after Karl Pearson who developed it in 1900, the chi-square test works exclusively with <strong>categorical data</strong> and <strong>frequency counts</strong>. It does not work with means, medians, or continuous measurements. This makes it naturally suited for A/B testing where your data is categorical: each visitor either converts or does not, and each visitor is assigned to either variant A or variant B.</p>
+
+    <!-- ===== SECTION: TYPES ===== -->
+    <h2 id="types-of-chi-square">Three Types of Chi-Square Tests</h2>
+
+    <p>The chi-square family includes three distinct tests. They all use the same formula, but they answer different questions and apply to different experimental designs.</p>
+
+    <h3>1. Chi-Square Goodness of Fit Test</h3>
+
+    <p>The goodness of fit test checks whether a <strong>single categorical variable</strong> follows a hypothesized distribution. You have one variable, a theoretical distribution, and you want to know if the data matches.</p>
+
+    <p><strong>Example:</strong> Your website receives traffic from five channels. You believe the distribution should be 40% organic, 25% paid, 20% direct, 10% social, 5% referral. The goodness of fit test checks whether your actual traffic distribution matches this belief.</p>
+
+    <p><strong>Degrees of freedom:</strong> (number of categories - 1). With five channels, df = 4.</p>
+
+    <h3>2. Chi-Square Test of Independence</h3>
+
+    <p>The test of independence checks whether <strong>two categorical variables</strong> are related. This is the test you use in A/B testing. It answers: "Is the variant assignment associated with the conversion outcome, or are they independent?"</p>
+
+    <p><strong>Example:</strong> You run an A/B test with two button colors and track whether visitors convert. The test of independence determines whether button color and conversion are associated.</p>
+
+    <p><strong>Degrees of freedom:</strong> (rows - 1) * (columns - 1). For a 2x2 A/B test, df = 1.</p>
+
+    <h3>3. Chi-Square Test of Homogeneity</h3>
+
+    <p>The test of homogeneity checks whether <strong>different populations</strong> have the same distribution of a categorical variable. Mathematically identical to the test of independence, the difference is conceptual: you are comparing separate groups rather than testing for association within one sample.</p>
+
+    <p><strong>Example:</strong> You survey customers from three countries about product satisfaction (satisfied, neutral, dissatisfied). The test checks whether the satisfaction distribution is the same across countries.</p>
+
+    <div class="tip-block">
+      <p><strong>For A/B testing:</strong> You almost always use the test of independence. The test of homogeneity applies when you are comparing pre-defined populations rather than randomly assigned groups. The goodness of fit test applies when you are testing one variable against a known distribution.</p>
+    </div>
+
+    <!-- ===== SECTION: STEP BY STEP ===== -->
+    <h2 id="step-by-step">Step-by-Step Chi-Square Calculation with Real A/B Test Data</h2>
+
+    <p>Let us walk through a complete chi-square test using realistic A/B test data. Suppose you are testing a new checkout flow and collected the following data:</p>
+
+    <ul>
+      <li><strong>Variant A (original checkout):</strong> 4,200 visitors, 210 conversions, 3,990 non-conversions (5.00% conversion rate)</li>
+      <li><strong>Variant B (new checkout):</strong> 4,300 visitors, 258 conversions, 4,042 non-conversions (6.00% conversion rate)</li>
+    </ul>
+
+    <h3>Step 1: Build the Contingency Table</h3>
+
+    <p>Organize your data into a contingency table. Rows are variants, columns are outcomes. Use raw counts, not percentages.</p>
+
+    <table class="compare-table">
+      <thead><tr><th></th><th>Converted</th><th>Not Converted</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>Variant A</td><td>210</td><td>3,990</td><td>4,200</td></tr>
+        <tr><td>Variant B</td><td>258</td><td>4,042</td><td>4,300</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>468</strong></td><td><strong>8,032</strong></td><td><strong>8,500</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Step 2: Calculate Expected Frequencies</h3>
+
+    <p>For each cell, the expected frequency assumes the conversion rate is the same for both variants (the null hypothesis). The formula is:</p>
+
+    <div class="formula-block">
+      E<sub>ij</sub> = (Row<sub>i</sub> Total &times; Column<sub>j</sub> Total) / Grand Total
+    </div>
+
+    <p>Working through each cell:</p>
+    <ul>
+      <li>E(A, Converted) = (4,200 &times; 468) / 8,500 = <strong>231.25</strong></li>
+      <li>E(A, Not Converted) = (4,200 &times; 8,032) / 8,500 = <strong>3,968.75</strong></li>
+      <li>E(B, Converted) = (4,300 &times; 468) / 8,500 = <strong>236.75</strong></li>
+      <li>E(B, Not Converted) = (4,300 &times; 8,032) / 8,500 = <strong>4,063.25</strong></li>
+    </ul>
+
+    <p>Notice that the expected values reflect the overall conversion rate (468/8,500 = 5.51%) applied proportionally to each variant's sample size. This is what the data would look like if variant assignment had zero effect on conversion.</p>
+
+    <h3>Step 3: Compute the Chi-Square Statistic</h3>
+
+    <p>For each cell, calculate (O - E)&sup2; / E and sum them:</p>
+
+    <table class="compare-table">
+      <thead><tr><th>Cell</th><th>Observed (O)</th><th>Expected (E)</th><th>O - E</th><th>(O - E)&sup2; / E</th></tr></thead>
+      <tbody>
+        <tr><td>A, Conv</td><td>210</td><td>231.25</td><td>-21.25</td><td>1.952</td></tr>
+        <tr><td>A, No Conv</td><td>3,990</td><td>3,968.75</td><td>21.25</td><td>0.114</td></tr>
+        <tr><td>B, Conv</td><td>258</td><td>236.75</td><td>21.25</td><td>1.907</td></tr>
+        <tr><td>B, No Conv</td><td>4,042</td><td>4,063.25</td><td>-21.25</td><td>0.111</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4"><strong>Chi-Square Statistic (X&sup2;)</strong></td><td><strong>4.084</strong></td></tr></tfoot>
+    </table>
+
+    <h3>Step 4: Determine Degrees of Freedom</h3>
+
+    <p>df = (rows - 1) &times; (columns - 1) = (2 - 1) &times; (2 - 1) = <strong>1</strong></p>
+
+    <h3>Step 5: Find the P-Value</h3>
+
+    <p>Compare X&sup2; = 4.084 against the chi-square distribution with 1 degree of freedom. The critical value at alpha = 0.05 with 1 df is 3.841. Since 4.084 > 3.841, the result is statistically significant.</p>
+
+    <p>The exact p-value is approximately <strong>0.0433</strong>. Since 0.0433 &lt; 0.05, we reject the null hypothesis.</p>
+
+    <h3>Step 6: Calculate Effect Size (Cramer's V)</h3>
+
+    <div class="formula-block">
+      Cramer's V = &radic;(X&sup2; / (n &times; min(r-1, c-1)))<br>
+      V = &radic;(4.084 / (8,500 &times; 1)) = &radic;0.000481 = <strong>0.0219</strong>
+    </div>
+
+    <p>A Cramer's V of 0.022 indicates a very small effect size. The difference is statistically significant but practically small. This is an important distinction that we will explore in the business interpretation section below.</p>
+
+    <!-- ===== SECTION: WHEN TO USE ===== -->
+    <h2 id="when-to-use">When to Use Chi-Square vs Other Tests</h2>
+
+    <p>Choosing the right statistical test is just as important as running it correctly. Using the wrong test can lead to invalid conclusions. Here is how the chi-square test compares to the alternatives you will encounter in A/B testing.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr><th>Test</th><th>Use When</th><th>Data Type</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Chi-Square</strong></td>
+          <td>Both variables are categorical; comparing frequency distributions</td>
+          <td>Counts / frequencies</td>
+          <td>Did button color affect whether users converted?</td>
+        </tr>
+        <tr>
+          <td><strong>Z-Test (two-proportion)</strong></td>
+          <td>Comparing two proportions with binary outcome</td>
+          <td>Proportions</td>
+          <td>Is variant B's 5.2% conversion rate significantly different from A's 4.8%?</td>
+        </tr>
+        <tr>
+          <td><strong>T-Test</strong></td>
+          <td>Comparing means of a continuous variable between two groups</td>
+          <td>Continuous (means)</td>
+          <td>Did the new layout increase average order value?</td>
+        </tr>
+        <tr>
+          <td><strong>Fisher's Exact Test</strong></td>
+          <td>Same as chi-square but with small sample sizes</td>
+          <td>Counts / frequencies</td>
+          <td>2x2 table where expected frequencies are below 5</td>
+        </tr>
+        <tr>
+          <td><strong>Mann-Whitney U</strong></td>
+          <td>Comparing distributions of a continuous variable that is not normally distributed</td>
+          <td>Ordinal / continuous</td>
+          <td>Did the variant change the distribution of time-on-page?</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Chi-Square vs Z-Test: They Are Equivalent for 2x2 Tables</h3>
+
+    <p>For a standard two-variant A/B test with a binary outcome, the chi-square test and the two-proportion Z-test produce <strong>mathematically identical p-values</strong>. The chi-square statistic equals the Z-score squared: X&sup2; = Z&sup2;. In our example above, X&sup2; = 4.084, which means Z = &radic;4.084 = 2.021, and both tests give p = 0.0433.</p>
+
+    <p>The key difference is directionality. The Z-test tells you <em>which</em> variant is better and gives you a confidence interval on the difference. The chi-square test only tells you <em>that</em> the variants differ, without specifying direction. For standard A/B tests, the Z-test is usually more useful because you want to know not just whether a difference exists but which direction it goes.</p>
+
+    <p>The chi-square test becomes the better choice in three scenarios:</p>
+    <ol>
+      <li><strong>Three or more variants:</strong> An A/B/C/D test with four variants is naturally handled by chi-square with a single test. The Z-test would require six pairwise comparisons with multiple testing corrections.</li>
+      <li><strong>Multi-category outcomes:</strong> If your outcome has more than two categories (bounce, browse, add-to-cart, purchase), chi-square handles this directly. The Z-test only works with binary outcomes.</li>
+      <li><strong>Contingency tables from survey data:</strong> When analyzing cross-tabulated survey responses, chi-square is the standard tool.</li>
+    </ol>
+
+    <h3>Chi-Square vs T-Test: Different Data Types</h3>
+
+    <p>The t-test and chi-square test are not interchangeable because they operate on different types of data. The t-test compares <strong>means of continuous variables</strong> (revenue, time-on-page, number of page views). The chi-square test compares <strong>frequency distributions of categorical variables</strong> (converted yes/no, plan selected free/basic/pro).</p>
+
+    <p>A common mistake is converting continuous data to categories just to use a chi-square test (e.g., bucketing revenue into "low" and "high"). This throws away information and reduces statistical power. If your outcome variable is continuous, use a t-test or Mann-Whitney U test.</p>
+
+    <h3>Chi-Square vs Fisher's Exact Test: Sample Size Matters</h3>
+
+    <p>The chi-square test is an approximation. It works well when sample sizes are large enough, but breaks down when expected cell frequencies are small. The standard rule: if any expected cell frequency is below 5, use Fisher's exact test instead. Fisher's exact test computes the exact probability rather than relying on the chi-square approximation, making it reliable at any sample size.</p>
+
+    <p>For most A/B tests with reasonable traffic (hundreds of visitors per variant), the chi-square approximation is fine. Fisher's exact test becomes important when you have very low conversion rates combined with small sample sizes.</p>
+
+    <!-- ===== SECTION: ASSUMPTIONS ===== -->
+    <h2 id="assumptions">Assumptions and When Chi-Square Fails</h2>
+
+    <p>The chi-square test relies on several assumptions. Violating them can produce misleading results. Here is what to check before trusting your chi-square output.</p>
+
+    <h3>Assumption 1: Independence of Observations</h3>
+    <p>Each observation must be independent. In A/B testing, this means each visitor is counted once and assigned to only one variant. This assumption is violated when you count page views instead of unique visitors (the same person appears multiple times), when users can switch between variants, or when there are network effects where one user's behavior influences another's.</p>
+
+    <h3>Assumption 2: Adequate Expected Frequencies</h3>
+    <p>All expected cell frequencies should be at least 5. This is the most commonly violated assumption in A/B testing. It happens when conversion rates are very low (below 1%) combined with moderate sample sizes, or when you use too many categories in a table. If expected frequencies are below 5, use Fisher's exact test for 2x2 tables or combine categories to increase cell counts for larger tables.</p>
+
+    <h3>Assumption 3: Mutually Exclusive Categories</h3>
+    <p>Each observation must fall into exactly one cell. In A/B testing, each visitor is one variant and one outcome. This breaks when you have overlapping outcomes (e.g., a user who both signed up and made a purchase is counted in two outcome categories).</p>
+
+    <h3>Assumption 4: Fixed Totals (for Test of Independence)</h3>
+    <p>The test of independence assumes either the row totals or the column totals (or both) are fixed by the experimental design. In A/B testing, you fix the total number of visitors per variant (or let them accumulate naturally), satisfying this assumption.</p>
+
+    <div class="warn-block">
+      <p><strong>Common failure mode:</strong> Running a chi-square test on percentage data instead of raw counts. The chi-square formula requires actual frequencies. If you input percentages, the test will produce meaningless results because the formula divides by the expected frequency, and the scale matters. Always use raw visitor and conversion counts.</p>
+    </div>
+
+    <!-- ===== SECTION: EFFECT SIZE ===== -->
+    <h2 id="effect-size">Effect Size: Cramer's V Interpretation</h2>
+
+    <p>Statistical significance does not tell you how strong the effect is. A tiny difference can be statistically significant with a large enough sample, and a large difference can be non-significant with a small sample. Effect size measures bridge this gap.</p>
+
+    <p>For chi-square tests, the standard effect size measure is <strong>Cramer's V</strong>, which ranges from 0 (no association) to 1 (perfect association).</p>
+
+    <div class="formula-block">
+      Cramer's V = &radic;(X&sup2; / (n &times; min(r-1, c-1)))<br><br>
+      Where n = total sample size, r = number of rows, c = number of columns
+    </div>
+
+    <p>For a 2x2 table (the most common in A/B testing), min(r-1, c-1) = 1, so the formula simplifies to V = &radic;(X&sup2; / n). This is equivalent to the phi coefficient.</p>
+
+    <h3>Interpreting Cramer's V</h3>
+
+    <table class="compare-table">
+      <thead><tr><th>Cramer's V</th><th>Effect Size</th><th>A/B Test Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td>0.00 - 0.10</td><td>Small / negligible</td><td>The variant has a very minor effect on conversion. May not justify the cost of implementation.</td></tr>
+        <tr><td>0.10 - 0.30</td><td>Medium</td><td>A meaningful effect. The variant noticeably shifts conversion behavior. Usually worth implementing.</td></tr>
+        <tr><td>0.30 - 0.50</td><td>Large</td><td>A strong effect. Rare in typical A/B tests. Usually indicates a fundamental change in user experience.</td></tr>
+        <tr><td>0.50+</td><td>Very large</td><td>Extremely strong association. Unusual in A/B testing. Double-check data quality before trusting.</td></tr>
+      </tbody>
+    </table>
+
+    <p>In practice, most A/B test effects produce Cramer's V values below 0.10. This is normal. Even a 10% relative improvement in conversion rate (e.g., 5% to 5.5%) produces a tiny Cramer's V because the absolute difference in frequencies is small relative to the total sample. Cramer's V is most useful for comparing effect sizes across experiments or for deciding whether a statistically significant result is practically meaningful.</p>
+
+    <div class="tip-block">
+      <p><strong>Practical rule:</strong> If your chi-square test is significant but Cramer's V is below 0.05, ask whether the improvement is large enough in absolute terms to justify implementation. A 0.1% conversion rate increase might be significant with 500,000 visitors but may not move the revenue needle.</p>
+    </div>
+
+    <!-- ===== SECTION: REAL EXAMPLE ===== -->
+    <h2 id="ab-test-example">Real A/B Testing Example with Business Interpretation</h2>
+
+    <p>Let us go beyond the numbers and interpret a chi-square result the way a product team would in practice. Consider this scenario:</p>
+
+    <p><strong>Experiment:</strong> An e-commerce company tests two pricing page designs. Variant A shows three pricing tiers. Variant B shows the same three tiers but highlights the middle tier as "Most Popular" with a visual badge and slightly larger card.</p>
+
+    <p><strong>Data collected over 14 days:</strong></p>
+
+    <table class="compare-table">
+      <thead><tr><th></th><th>Upgraded</th><th>Did Not Upgrade</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>Variant A (no badge)</td><td>340</td><td>6,460</td><td>6,800</td></tr>
+        <tr><td>Variant B (badge)</td><td>412</td><td>6,388</td><td>6,800</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>752</strong></td><td><strong>12,848</strong></td><td><strong>13,600</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p>Variant A: 5.00% conversion. Variant B: 6.06% conversion. Relative improvement: +21.2%.</p>
+
+    <p><strong>Chi-square analysis:</strong></p>
+    <ul>
+      <li>Expected frequencies: A-conv = 376, A-no = 6424, B-conv = 376, B-no = 6424</li>
+      <li>X&sup2; = (340-376)&sup2;/376 + (6460-6424)&sup2;/6424 + (412-376)&sup2;/376 + (6388-6424)&sup2;/6424 = 3.45 + 0.20 + 3.45 + 0.20 = <strong>7.30</strong></li>
+      <li>df = 1, p-value = <strong>0.0069</strong></li>
+      <li>Cramer's V = &radic;(7.30 / 13,600) = <strong>0.023</strong></li>
+    </ul>
+
+    <h3>Business Interpretation</h3>
+
+    <p><strong>Statistical conclusion:</strong> The result is highly significant (p = 0.0069, well below the 0.05 threshold). We can confidently reject the null hypothesis. The "Most Popular" badge is associated with higher upgrade rates.</p>
+
+    <p><strong>Effect size context:</strong> Cramer's V of 0.023 is small, but this is typical for A/B tests. The more meaningful metric is the absolute lift: 1.06 percentage points more visitors upgrading. On 6,800 weekly visitors, that is 72 additional upgrades per week.</p>
+
+    <p><strong>Revenue impact:</strong> If the average plan costs $29/month and the average customer stays 8 months, each additional upgrade is worth $232. At 72 additional upgrades per week, that is $16,704 per week or approximately $868,600 per year in incremental revenue. This single badge change, despite its "small" effect size, has massive business impact.</p>
+
+    <p><strong>The lesson:</strong> Do not dismiss small effect sizes in A/B testing. Cramer's V tells you the strength of the statistical association, not the business value. A 1% conversion lift on a high-traffic, high-value page can dwarf a 20% lift on a low-traffic page. Always translate your statistical results into business metrics before making decisions.</p>
+
+    <!-- ===== SECTION: COMMON MISTAKES ===== -->
+    <h2 id="common-mistakes">Common Mistakes in A/B Testing Statistics</h2>
+
+    <p>After analyzing hundreds of A/B tests, these are the mistakes that appear repeatedly. Each one can invalidate your chi-square results even if the calculation itself is correct.</p>
+
+    <h3>Mistake 1: Peeking at Results Before the Test Ends</h3>
+    <p>Running a chi-square test every day during your experiment and stopping when you see significance inflates your false positive rate dramatically. With daily peeking over a two-week test, your actual false positive rate can reach 25-40% instead of the intended 5%. Either commit to a fixed sample size before starting (use a <a href="/tools/sample-size-calculator.html">sample size calculator</a>) or use sequential testing methods that explicitly account for multiple looks.</p>
+
+    <h3>Mistake 2: Using Percentages Instead of Counts</h3>
+    <p>The chi-square formula requires raw frequencies. Entering "5.0" and "6.0" (percentage conversion rates) instead of "210" and "258" (actual conversions) produces a meaningless chi-square statistic. The formula divides by expected values, so the scale of your input directly affects the result.</p>
+
+    <h3>Mistake 3: Ignoring the Independence Assumption</h3>
+    <p>If the same user visits your site three times and you count them as three observations, your effective sample size is inflated and your p-value is artificially low. Always deduplicate by unique visitors. Use cookies, user IDs, or session-based deduplication to ensure each person is counted once.</p>
+
+    <h3>Mistake 4: Running Too Many Comparisons</h3>
+    <p>If you test five metrics (conversion rate, add-to-cart rate, bounce rate, time on page, revenue) at alpha = 0.05, the probability of at least one false positive is 1 - (0.95)^5 = 22.6%. Apply a Bonferroni correction (divide alpha by the number of tests) or designate one primary metric before the experiment starts.</p>
+
+    <h3>Mistake 5: Confusing Statistical Significance with Practical Significance</h3>
+    <p>A p-value below 0.05 means the difference is unlikely due to chance alone. It does not mean the difference is large enough to matter for your business. Always calculate the absolute effect size, translate it into business metrics (revenue, retention, engagement), and decide whether the improvement justifies the engineering cost of shipping the change.</p>
+
+    <h3>Mistake 6: Small Sample Sizes with Low Conversion Rates</h3>
+    <p>An A/B test with 200 visitors per variant and a 2% conversion rate produces expected cell counts around 4, violating the chi-square assumption. The resulting p-value is unreliable. Either collect more data, use Fisher's exact test, or accept that you do not have enough power to detect the effect you care about.</p>
+
+    <h3>Mistake 7: Treating Non-Significance as Proof of No Effect</h3>
+    <p>A non-significant chi-square result (p > 0.05) does not prove that the variants are equal. It means you do not have enough evidence to conclude they differ. The difference might exist but be too small for your sample size to detect. Calculate statistical power to understand what effects your test was capable of detecting.</p>
+
+    <!-- ===== SECTION: ADVANCED ===== -->
+    <h2 id="advanced-topics">Advanced: Residuals, Post-Hoc Tests, and Yates' Correction</h2>
+
+    <h3>Standardized Residuals</h3>
+    <p>When a chi-square test on a larger table (3x3 or bigger) is significant, you need to know which cells are driving the result. Standardized residuals tell you this. For each cell: residual = (O - E) / &radic;E. Cells with absolute standardized residuals above 2.0 are the primary contributors to the significant result. This is especially useful in multi-variant tests where the overall test is significant but you need to identify which specific variants differ from expectation.</p>
+
+    <h3>Yates' Continuity Correction</h3>
+    <p>For 2x2 tables only, Yates' correction subtracts 0.5 from each |O - E| before squaring. This makes the test more conservative (harder to reach significance) and was designed to improve the chi-square approximation for small samples. Modern statistical practice generally discourages its use because it is overly conservative, reducing power to detect real effects. Use it only when expected frequencies are between 5 and 10. Below 5, switch to Fisher's exact test entirely.</p>
+
+    <h3>Post-Hoc Analysis for Multi-Variant Tests</h3>
+    <p>If you run an A/B/C/D test and the overall chi-square is significant, you know that at least one variant differs from the others, but not which one. Follow up with pairwise chi-square tests (A vs B, A vs C, etc.) using a Bonferroni correction. With four variants, you have six pairwise comparisons, so use alpha = 0.05/6 = 0.0083 for each pairwise test.</p>
+
+    <!-- ===== SECTION: FAQ ===== -->
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <details>
+      <summary>What is the chi-square test used for in A/B testing?</summary>
+      <p>The chi-square test of independence determines whether there is a statistically significant association between variant assignment and conversion outcome. It compares the observed frequency distribution in a contingency table against the expected distribution under the null hypothesis. If the test is significant, the conversion rates differ beyond what random chance would produce. Use the <a href="/tools/chi-square-test.html">chi-square calculator tool</a> to run it on your own data.</p>
+    </details>
+
+    <details>
+      <summary>How do you calculate a chi-square test step by step?</summary>
+      <p>Step 1: Organize data into a contingency table with observed counts. Step 2: Calculate expected frequencies using E = (Row Total * Column Total) / Grand Total. Step 3: For each cell, compute (Observed - Expected)^2 / Expected. Step 4: Sum all cell values to get the chi-square statistic. Step 5: Calculate degrees of freedom as (rows - 1) * (columns - 1). Step 6: Compare the statistic to the chi-square distribution to get the p-value. The interactive calculator at the top of this page shows every step.</p>
+    </details>
+
+    <details>
+      <summary>When should I use chi-square vs t-test?</summary>
+      <p>Use the chi-square test when both your independent variable and dependent variable are categorical (e.g., variant A/B and converted yes/no). Use the t-test when your independent variable is categorical but your dependent variable is continuous (e.g., variant A/B and revenue per user or time on page). The chi-square test works with frequency counts; the t-test works with means.</p>
+    </details>
+
+    <details>
+      <summary>What is Cramer's V and how do I interpret it?</summary>
+      <p>Cramer's V is an effect size measure for chi-square tests, ranging from 0 (no association) to 1 (perfect association). It is calculated as sqrt(chi-square / (n * min(r-1, c-1))). For A/B tests, V &lt; 0.1 is a small effect, 0.1-0.3 is medium, and &gt; 0.3 is large. Unlike the p-value, Cramer's V does not depend on sample size, making it useful for comparing effect sizes across different experiments.</p>
+    </details>
+
+    <details>
+      <summary>What is the minimum sample size for a chi-square test?</summary>
+      <p>All expected cell frequencies must be at least 5. If any expected frequency is below 5, the chi-square approximation becomes unreliable and you should use Fisher's exact test instead. For A/B tests with low conversion rates (below 1%), this can require several thousand visitors per variant to meet the threshold.</p>
+    </details>
+
+    <details>
+      <summary>What is the difference between chi-square goodness of fit and test of independence?</summary>
+      <p>The goodness of fit test checks whether one categorical variable follows a hypothesized distribution (e.g., do website visitors distribute evenly across weekdays?). The test of independence checks whether two categorical variables are related (e.g., does variant assignment affect conversion?). In A/B testing, you almost always use the test of independence.</p>
+    </details>
+
+    <details>
+      <summary>Can I use chi-square for more than two variants?</summary>
+      <p>Yes. The chi-square test handles any number of variants in a single test. For an A/B/C test, you would have a 3x2 contingency table with df = 2. If the overall test is significant, follow up with pairwise comparisons using a Bonferroni correction to identify which specific variants differ.</p>
+    </details>
+
+    <details>
+      <summary>Why is my chi-square result significant but the effect size tiny?</summary>
+      <p>Statistical significance depends on both the effect size and the sample size. With large samples (tens of thousands of visitors), even trivially small differences become statistically significant. This is why you should always report effect size (Cramer's V) alongside the p-value. A significant result with a tiny effect size means the difference is real but may not be practically meaningful.</p>
+    </details>
+
+    <!-- ===== RELATED TOOLS ===== -->
+    <section class="explainer-section" style="margin-top:2.5rem;">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/">ABWex Calculator</a> — Main A/B test significance calculator (frequentist and Bayesian)</li>
+        <li><a href="/tools/chi-square-test.html">Chi-Square Test Calculator</a> — Quick chi-square calculator for contingency tables</li>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate p-values using the two-proportion Z-test</li>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Determine required visitors per variant before starting</li>
+        <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing</a> — Alternative approach using probability of being best</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Calculate CIs for conversion rate differences</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-16">Last updated: May 16, 2026</time></div>
+  </article>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools &amp; Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+// ===== CHI-SQUARE CALCULATOR ENGINE =====
+const chiSquareCritical = {
+  1:  {0.10: 2.706, 0.05: 3.841, 0.01: 6.635},
+  2:  {0.10: 4.605, 0.05: 5.991, 0.01: 9.210},
+  3:  {0.10: 6.251, 0.05: 7.815, 0.01: 11.345},
+  4:  {0.10: 7.779, 0.05: 9.488, 0.01: 13.277},
+  5:  {0.10: 9.236, 0.05: 11.070, 0.01: 15.086},
+  6:  {0.10: 10.645, 0.05: 12.592, 0.01: 16.812},
+  7:  {0.10: 12.017, 0.05: 14.067, 0.01: 18.475},
+  8:  {0.10: 13.362, 0.05: 15.507, 0.01: 20.090},
+  9:  {0.10: 14.684, 0.05: 16.919, 0.01: 21.666}
+};
+
+// Regularized incomplete gamma function for p-value computation
+function gammainc(a, x) {
+  if (x === 0) return 0;
+  if (x < 0) return 0;
+  // Series expansion for lower incomplete gamma
+  if (x < a + 1) {
+    let sum = 1/a, term = 1/a;
+    for (let n = 1; n < 200; n++) {
+      term *= x / (a + n);
+      sum += term;
+      if (Math.abs(term) < 1e-14 * Math.abs(sum)) break;
+    }
+    return sum * Math.exp(-x + a * Math.log(x) - lgamma(a));
+  } else {
+    // Continued fraction for upper incomplete gamma
+    let f = 1, c = 1, d = 1 / (x + 1 - a);
+    f = d;
+    for (let n = 1; n < 200; n++) {
+      let an = -n * (n - a);
+      let bn = x + 2*n + 1 - a;
+      d = bn + an * d;
+      if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = bn + an / c;
+      if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      let delta = c * d;
+      f *= delta;
+      if (Math.abs(delta - 1) < 1e-14) break;
+    }
+    return 1 - f * Math.exp(-x + a * Math.log(x) - lgamma(a));
+  }
+}
+
+function lgamma(x) {
+  const c = [76.18009172947146, -86.50532032941677, 24.01409824083091,
+    -1.231739572450155, 0.001208650973866179, -0.000005395239384953];
+  let y = x, tmp = x + 5.5;
+  tmp -= (x + 0.5) * Math.log(tmp);
+  let ser = 1.000000000190015;
+  for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+  return -tmp + Math.log(2.5066282746310005 * ser / x);
+}
+
+function chiSquarePValue(x2, df) {
+  if (x2 <= 0) return 1;
+  return 1 - gammainc(df / 2, x2 / 2);
+}
+
+let currentRows = 2, currentCols = 2;
+
+function buildTable() {
+  currentRows = parseInt(document.getElementById('num-rows').value);
+  currentCols = parseInt(document.getElementById('num-cols').value);
+  const container = document.getElementById('input-table');
+  const cols = currentCols + 1; // +1 for row labels
+  let html = '<div class="table-grid" style="grid-template-columns: repeat(' + (currentCols + 1) + ', 1fr);">';
+  // Header row
+  html += '<div class="table-cell header"></div>';
+  for (let c = 0; c < currentCols; c++) {
+    html += '<div class="table-cell header">Col ' + (c+1) + '</div>';
+  }
+  // Data rows
+  for (let r = 0; r < currentRows; r++) {
+    html += '<div class="table-cell header">Row ' + (r+1) + '</div>';
+    for (let c = 0; c < currentCols; c++) {
+      let def = '';
+      // Pre-fill with A/B test example for 2x2
+      if (currentRows === 2 && currentCols === 2) {
+        const defaults = [[4200, 210], [4300, 258]];
+        // Swap: col 0 = converted, col 1 = not converted
+        if (c === 0) def = defaults[r][1]; // conversions
+        else def = defaults[r][0] - defaults[r][1]; // non-conversions
+        // Actually let's use the walkthrough example directly
+        const d2 = [[210, 3990],[258, 4042]];
+        def = d2[r][c];
+      }
+      html += '<div class="table-cell"><input type="number" id="cell-' + r + '-' + c + '" min="0" value="' + def + '" placeholder="0"></div>';
+    }
+  }
+  html += '</div>';
+  container.innerHTML = html;
+  document.getElementById('results').classList.remove('visible');
+}
+
+function runChiSquare() {
+  const rows = currentRows, cols = currentCols;
+  const alpha = parseFloat(document.getElementById('sig-level').value);
+
+  // Read observed values
+  const observed = [];
+  for (let r = 0; r < rows; r++) {
+    observed[r] = [];
+    for (let c = 0; c < cols; c++) {
+      const val = parseInt(document.getElementById('cell-' + r + '-' + c).value) || 0;
+      observed[r][c] = val;
+    }
+  }
+
+  // Row totals, column totals, grand total
+  const rowTotals = observed.map(row => row.reduce((a,b) => a+b, 0));
+  const colTotals = [];
+  for (let c = 0; c < cols; c++) {
+    let sum = 0;
+    for (let r = 0; r < rows; r++) sum += observed[r][c];
+    colTotals[c] = sum;
+  }
+  const grandTotal = rowTotals.reduce((a,b) => a+b, 0);
+
+  if (grandTotal === 0) { alert('Enter some data first.'); return; }
+
+  // Expected values
+  const expected = [];
+  for (let r = 0; r < rows; r++) {
+    expected[r] = [];
+    for (let c = 0; c < cols; c++) {
+      expected[r][c] = (rowTotals[r] * colTotals[c]) / grandTotal;
+    }
+  }
+
+  // Chi-square statistic
+  let chiSq = 0;
+  const cellContributions = [];
+  let lowExpected = false;
+  for (let r = 0; r < rows; r++) {
+    cellContributions[r] = [];
+    for (let c = 0; c < cols; c++) {
+      const e = expected[r][c];
+      if (e < 5) lowExpected = true;
+      const contrib = Math.pow(observed[r][c] - e, 2) / e;
+      cellContributions[r][c] = contrib;
+      chiSq += contrib;
+    }
+  }
+
+  const df = (rows - 1) * (cols - 1);
+  const pValue = chiSquarePValue(chiSq, df);
+  const significant = pValue < alpha;
+  const cramersV = Math.sqrt(chiSq / (grandTotal * Math.min(rows - 1, cols - 1)));
+
+  // Critical value
+  const criticalVal = (chiSquareCritical[df] && chiSquareCritical[df][alpha]) ?
+    chiSquareCritical[df][alpha] : 'N/A';
+
+  // === Render Results ===
+
+  // Stats grid
+  const statsHTML = `
+    <div class="result-card">
+      <h4>Chi-Square Statistic (X&sup2;)</h4>
+      <div class="result-stat">${chiSq.toFixed(4)}</div>
+      <div class="result-label">Critical value at &alpha;=${alpha}: ${typeof criticalVal === 'number' ? criticalVal.toFixed(3) : criticalVal}</div>
+    </div>
+    <div class="result-card">
+      <h4>P-Value</h4>
+      <div class="result-stat ${significant ? 'significant' : 'not-significant'}">${pValue < 0.0001 ? '< 0.0001' : pValue.toFixed(4)}</div>
+      <div class="result-label">&alpha; = ${alpha}</div>
+    </div>
+    <div class="result-card">
+      <h4>Degrees of Freedom</h4>
+      <div class="result-stat">${df}</div>
+      <div class="result-label">(${rows}-1) &times; (${cols}-1)</div>
+    </div>
+    <div class="result-card">
+      <h4>Cramer's V (Effect Size)</h4>
+      <div class="result-stat">${cramersV.toFixed(4)}</div>
+      <div class="result-label">${cramersV < 0.1 ? 'Small' : cramersV < 0.3 ? 'Medium' : 'Large'} effect</div>
+    </div>
+  `;
+  document.getElementById('result-stats').innerHTML = statsHTML;
+
+  // Step-by-step
+  let stepsHTML = `
+    <li>Organized data into a ${rows}&times;${cols} contingency table with ${grandTotal.toLocaleString()} total observations.</li>
+    <li>Calculated expected frequencies: E<sub>ij</sub> = (Row Total &times; Col Total) / ${grandTotal.toLocaleString()}. ${lowExpected ? '<strong style="color:#dc2626;">Warning: Some expected frequencies are below 5. Consider using Fisher\'s exact test.</strong>' : 'All expected frequencies are &ge; 5.'}</li>
+    <li>Computed (O - E)&sup2; / E for each cell and summed to get X&sup2; = ${chiSq.toFixed(4)}.</li>
+    <li>Degrees of freedom: df = (${rows}-1) &times; (${cols}-1) = ${df}.</li>
+    <li>P-value = ${pValue < 0.0001 ? '< 0.0001' : pValue.toFixed(4)}. ${significant ? 'Since p < ' + alpha + ', the result is <strong>statistically significant</strong>.' : 'Since p &ge; ' + alpha + ', the result is <strong>not statistically significant</strong>.'}</li>
+    <li>Cramer's V = &radic;(${chiSq.toFixed(4)} / (${grandTotal.toLocaleString()} &times; ${Math.min(rows-1, cols-1)})) = ${cramersV.toFixed(4)} (${cramersV < 0.1 ? 'small' : cramersV < 0.3 ? 'medium' : 'large'} effect size).</li>
+  `;
+  document.getElementById('step-list').innerHTML = stepsHTML;
+
+  // Expected table
+  let etHTML = '<table class="expected-table"><thead><tr><th></th>';
+  for (let c = 0; c < cols; c++) etHTML += '<th>Col ' + (c+1) + '</th>';
+  etHTML += '<th>Total</th></tr></thead><tbody>';
+  for (let r = 0; r < rows; r++) {
+    etHTML += '<tr><th>Row ' + (r+1) + '</th>';
+    for (let c = 0; c < cols; c++) {
+      const e = expected[r][c];
+      const cls = e < 5 ? ' style="background:#fef2f2;color:#dc2626;font-weight:600;"' : ' class="highlight"';
+      etHTML += '<td' + cls + '>' + e.toFixed(2) + '</td>';
+    }
+    etHTML += '<td>' + rowTotals[r].toLocaleString() + '</td></tr>';
+  }
+  etHTML += '<tr><th>Total</th>';
+  for (let c = 0; c < cols; c++) etHTML += '<td>' + colTotals[c].toLocaleString() + '</td>';
+  etHTML += '<td><strong>' + grandTotal.toLocaleString() + '</strong></td></tr>';
+  etHTML += '</tbody></table>';
+  document.getElementById('expected-table-container').innerHTML = etHTML;
+
+  // Bar chart
+  const maxVal = Math.max(
+    ...observed.flat(),
+    ...expected.flat().map(v => Math.ceil(v))
+  );
+  let chartHTML = '<div class="chart-title">Cell-by-Cell: Observed vs Expected</div>';
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const o = observed[r][c];
+      const e = expected[r][c];
+      const oWidth = Math.max((o / maxVal) * 100, 1);
+      const eWidth = Math.max((e / maxVal) * 100, 1);
+      chartHTML += `<div class="chart-row">
+        <div class="chart-label">R${r+1}C${c+1}</div>
+        <div class="chart-bars">
+          <div class="chart-bar observed" style="width:${oWidth}%"></div>
+          <div class="chart-bar-value">${o.toLocaleString()}</div>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label"></div>
+        <div class="chart-bars">
+          <div class="chart-bar expected" style="width:${eWidth}%"></div>
+          <div class="chart-bar-value">${e.toFixed(1)}</div>
+        </div>
+      </div>`;
+    }
+  }
+  document.getElementById('chart-container').innerHTML = chartHTML;
+
+  // Conclusion
+  let concHTML;
+  if (significant) {
+    concHTML = `<div class="conclusion-box sig">
+      <h4>Result: Statistically Significant</h4>
+      <p>X&sup2; = ${chiSq.toFixed(4)}, p = ${pValue < 0.0001 ? '< 0.0001' : pValue.toFixed(4)}, df = ${df}. The observed frequencies deviate significantly from expected frequencies at the &alpha; = ${alpha} level. There is a statistically significant association between the row and column variables. Cramer's V = ${cramersV.toFixed(4)} indicates a ${cramersV < 0.1 ? 'small' : cramersV < 0.3 ? 'medium' : 'large'} effect size.</p>
+    </div>`;
+  } else {
+    concHTML = `<div class="conclusion-box not-sig">
+      <h4>Result: Not Statistically Significant</h4>
+      <p>X&sup2; = ${chiSq.toFixed(4)}, p = ${pValue.toFixed(4)}, df = ${df}. The observed frequencies do not deviate significantly from expected frequencies at the &alpha; = ${alpha} level. There is insufficient evidence to conclude an association between the row and column variables. Cramer's V = ${cramersV.toFixed(4)}.</p>
+    </div>`;
+  }
+  document.getElementById('conclusion-container').innerHTML = concHTML;
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize table on load and on dimension change
+document.getElementById('num-rows').addEventListener('change', buildTable);
+document.getElementById('num-cols').addEventListener('change', buildTable);
+buildTable();
+</script>
+<script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+</body>
+</html>
