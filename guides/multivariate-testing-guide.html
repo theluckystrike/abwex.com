@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multivariate Testing (MVT) Guide — Factorial Design Calculator | ABWex</title>
+  <meta name="description" content="Complete guide to multivariate testing with interactive factorial combination explorer. Calculate total combinations, required traffic, test duration, and fractional factorial designs for MVT experiments.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/guides/multivariate-testing-guide.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Multivariate Testing (MVT) Guide — Factorial Design Calculator | ABWex">
+  <meta property="og:description" content="Complete guide to multivariate testing with interactive factorial combination explorer. Calculate total combinations, required traffic, and fractional factorial designs.">
+  <meta property="og:url" content="https://abwex.com/guides/multivariate-testing-guide.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Multivariate Testing (MVT) Guide — Factorial Design Calculator">
+  <meta name="twitter:description" content="Complete guide to multivariate testing with factorial combination explorer. Calculate required traffic, test duration, and fractional factorial designs.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/guides/multivariate-testing-guide.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/guides/multivariate-testing-guide.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Multivariate Testing (MVT) Guide — Factorial Design Calculator",
+    "url": "https://abwex.com/guides/multivariate-testing-guide.html",
+    "description": "Complete guide to multivariate testing with interactive factorial combination explorer. Calculate total combinations, required traffic, test duration, and fractional factorial designs.",
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-25",
+    "dateModified": "2026-05-25",
+    "mainEntityOfPage": "https://abwex.com/guides/multivariate-testing-guide.html"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is multivariate testing (MVT) and how does it differ from A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Multivariate testing (MVT) tests multiple variables simultaneously on a single page, while A/B testing compares two versions of a page that differ in one element. In an MVT, you might test 3 headlines, 2 CTAs, and 2 images simultaneously — creating 12 combinations. MVT reveals not only which individual elements perform best but also how elements interact with each other (interaction effects). The trade-off is that MVT requires significantly more traffic because each combination needs sufficient data for statistical validity."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I calculate the number of combinations in a multivariate test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Multiply the number of variations for each variable. If you test 3 headlines, 2 CTAs, and 4 images, the total combinations are 3 x 2 x 4 = 24. Each combination is a unique version of the page that some visitors will see. The total required traffic is approximately (sample size per variation) x (number of combinations). With 24 combinations at 1,000 visitors per combination, you need 24,000 total visitors minimum."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a fractional factorial design and when should I use it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A fractional factorial design tests a strategically selected subset of all possible combinations instead of every combination (full factorial). For example, a half-fraction of a 2^4 (16 combination) design tests only 8 combinations while still estimating all main effects. Use fractional factorial when the full factorial requires more traffic than you have. The trade-off is that you cannot estimate all interaction effects — only main effects and possibly some two-way interactions. Fractional factorials assume higher-order interactions are negligible, which is true in most practical experimentation contexts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much traffic do I need for a multivariate test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Total traffic equals the number of combinations multiplied by the per-combination sample size. The per-combination sample size depends on your baseline conversion rate, minimum detectable effect, and desired power — the same factors as A/B testing. For a 5% baseline with a 20% relative MDE at 80% power, you need approximately 8,000 visitors per combination. A 24-combination MVT would therefore require 192,000 total visitors. If your daily traffic is 2,000 visitors, this test would take 96 days — likely too long to be practical."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can multivariate testing detect interaction effects between variables?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, full factorial MVT designs can detect interaction effects — situations where the combined effect of two variables differs from the sum of their individual effects. For example, a bold headline might increase conversions by 5% alone, and a red CTA button might increase by 3% alone, but together they might increase by 12% (a positive interaction) or by only 4% (a negative interaction). Detecting interaction effects requires substantially more traffic because you need sufficient data in each combination cell. Fractional factorial designs sacrifice the ability to detect some interactions in exchange for reduced traffic requirements."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://abwex.com/guides/"},{"@type":"ListItem","position":3,"name":"Multivariate Testing Guide"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/guides/">Guides</a> <span>/</span> <span>Multivariate Testing Guide</span></nav>
+      <h1>Multivariate Testing <span>(MVT)</span> Guide</h1>
+      <p>Design multivariate experiments with the interactive factorial combination explorer. Calculate total combinations, required traffic, estimated test duration, and explore fractional factorial designs that reduce combinations without sacrificing insight.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .mv-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .mv-field{margin-bottom:1rem}
+        .mv-field label{display:block;font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:.3rem;font-weight:500}
+        .mv-field input,.mv-field select{width:100%;padding:.6rem .8rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.95rem;font-family:inherit;box-sizing:border-box}
+        .mv-field input:focus,.mv-field select:focus{outline:none;border-color:#2DD4BF}
+        .mv-btn{display:inline-block;padding:.65rem 1.5rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit}
+        .mv-btn:hover{opacity:.9}
+        .mv-btn-sm{display:inline-block;padding:.45rem 1rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.85rem;cursor:pointer;font-family:inherit}
+        .mv-btn-sm:hover{border-color:#2DD4BF;color:#2DD4BF}
+        .mv-btn-danger{background:transparent;border:1px solid #F97316;color:#F97316}
+        .mv-btn-danger:hover{background:rgba(249,115,22,0.1)}
+        .mv-var-list{margin:1rem 0}
+        .mv-var-item{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;background:var(--input-bg,#0d0d1a);border-radius:8px;margin-bottom:.5rem;flex-wrap:wrap}
+        .mv-var-item .var-name{font-weight:600;min-width:120px;color:var(--text,#e0e0e0)}
+        .mv-var-item .var-count{font-family:'Space Mono',monospace;color:#2DD4BF;min-width:80px}
+        .mv-var-item .var-variations{font-size:.85rem;color:var(--text-muted,#aaa);flex:1}
+        .mv-results{margin-top:1.5rem}
+        .mv-result-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border,#333)}
+        .mv-result-row:last-child{border-bottom:none}
+        .mv-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
+        .mv-result-value{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;color:#2DD4BF}
+        .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        @media(max-width:640px){.mv-grid{grid-template-columns:1fr}}
+        .mv-combo-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:1rem}
+        .mv-combo-table th{background:var(--input-bg,#0d0d1a);padding:.5rem .75rem;text-align:left;border-bottom:1px solid var(--border,#333);color:var(--text-muted,#aaa);font-weight:600;font-size:.8rem}
+        .mv-combo-table td{padding:.4rem .75rem;border-bottom:1px solid rgba(51,51,51,0.4);color:var(--text,#e0e0e0);font-family:'Space Mono',monospace;font-size:.8rem}
+        .mv-combo-table tr:hover td{background:rgba(45,212,191,0.05)}
+        .mv-frac-card{background:var(--input-bg,#0d0d1a);border-radius:8px;padding:1.25rem;margin-top:1rem}
+        .mv-frac-card h4{margin:0 0 .75rem;font-size:.95rem;color:#2DD4BF}
+        .mv-warning{background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);border-radius:8px;padding:1rem 1.25rem;margin-top:1rem;color:#F97316;font-size:.9rem}
+        .mv-ok{background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);border-radius:8px;padding:1rem 1.25rem;margin-top:1rem;color:#2DD4BF;font-size:.9rem}
+        .mv-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .mv-chart-title{font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--text,#e0e0e0)}
+      </style>
+
+      <div class="mv-card">
+        <h2 style="margin-top:0;font-size:1.3rem;">MVT Factorial Design Explorer</h2>
+        <p style="font-size:.9rem;color:var(--text-muted,#aaa);margin-top:0;">Add the variables you want to test. Each variable can have multiple variations (including the control).</p>
+
+        <div id="mv-var-list" class="mv-var-list"></div>
+
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+          <button class="mv-btn-sm" onclick="addVariable('Headline',3)">+ Headline (3)</button>
+          <button class="mv-btn-sm" onclick="addVariable('CTA Button',2)">+ CTA (2)</button>
+          <button class="mv-btn-sm" onclick="addVariable('Hero Image',2)">+ Image (2)</button>
+          <button class="mv-btn-sm" onclick="addVariable('Layout',2)">+ Layout (2)</button>
+          <button class="mv-btn-sm" onclick="addCustomVar()">+ Custom</button>
+        </div>
+
+        <div class="mv-grid">
+          <div class="mv-field">
+            <label for="mv-baseline">Baseline Conversion Rate (%)</label>
+            <input type="number" id="mv-baseline" value="5" min="0.1" max="99" step="0.1">
+          </div>
+          <div class="mv-field">
+            <label for="mv-mde">Minimum Detectable Effect — MDE (%)</label>
+            <input type="number" id="mv-mde" value="15" min="1" max="200" step="1">
+          </div>
+          <div class="mv-field">
+            <label for="mv-daily">Daily Visitors</label>
+            <input type="number" id="mv-daily" value="5000" min="1">
+          </div>
+          <div class="mv-field">
+            <label for="mv-power">Desired Power</label>
+            <select id="mv-power">
+              <option value="0.70">70%</option>
+              <option value="0.80" selected>80%</option>
+              <option value="0.90">90%</option>
+            </select>
+          </div>
+        </div>
+        <button class="mv-btn" onclick="calcMVT()">Calculate MVT Design</button>
+      </div>
+
+      <div id="mv-results-panel" class="mv-results" style="display:none;">
+        <div class="mv-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Full Factorial Design</h3>
+          <div class="mv-result-row"><span class="mv-result-label">Total Combinations</span><span class="mv-result-value" id="mv-r-combos">—</span></div>
+          <div class="mv-result-row"><span class="mv-result-label">Visitors Per Combination</span><span class="mv-result-value" id="mv-r-per-combo">—</span></div>
+          <div class="mv-result-row"><span class="mv-result-label">Total Visitors Required</span><span class="mv-result-value" id="mv-r-total">—</span></div>
+          <div class="mv-result-row"><span class="mv-result-label">Estimated Test Duration</span><span class="mv-result-value" id="mv-r-duration">—</span></div>
+          <div class="mv-result-row"><span class="mv-result-label">Traffic Allocation Per Combination</span><span class="mv-result-value" id="mv-r-alloc">—</span></div>
+          <div id="mv-feasibility"></div>
+        </div>
+
+        <div class="mv-card" id="mv-frac-panel">
+          <h3 style="margin-top:0;font-size:1.15rem;">Fractional Factorial Alternatives</h3>
+          <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:0;">If the full factorial requires too much traffic, consider these reduced designs.</p>
+          <div id="mv-frac-list"></div>
+        </div>
+
+        <div class="mv-chart-wrap">
+          <div class="mv-chart-title">Traffic Allocation Across Combinations</div>
+          <svg id="mv-alloc-chart" viewBox="0 0 700 280" style="width:100%;height:auto;"></svg>
+        </div>
+
+        <div class="mv-card" id="mv-combo-panel">
+          <h3 style="margin-top:0;font-size:1.15rem;">All Combinations <span id="mv-combo-count" style="font-size:.85rem;color:var(--text-muted,#aaa);font-weight:400;"></span></h3>
+          <div id="mv-combo-table-wrap" style="overflow-x:auto;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>What Is Multivariate Testing?</h2>
+      <p>Multivariate testing (MVT) is an experimentation method that simultaneously tests multiple variables on a page to determine which combination produces the best outcome. While A/B testing compares two complete page versions, MVT decomposes the page into individual elements — headlines, calls to action, images, layouts — and tests variations of each element in combination. The result is a comprehensive understanding of not only which individual elements perform best, but how they interact with each other.</p>
+      <p>The mathematical foundation of MVT is factorial experimental design, originally developed by Sir Ronald Fisher for agricultural experiments in the 1920s and 1930s. In a full factorial design, every possible combination of variable levels is tested. If you have three variables with 2, 3, and 2 levels respectively, the full factorial design has 2 x 3 x 2 = 12 treatment combinations. Each combination receives an equal share of traffic, and the results are analyzed using analysis of variance (ANOVA) to decompose the total variation into main effects and interaction effects.</p>
+      <p>The key advantage of MVT over sequential A/B testing is efficiency. Testing three variables one at a time requires three separate A/B tests run sequentially, which takes three times as long and misses interaction effects entirely. MVT tests all three variables simultaneously in a single experiment, capturing both main effects and interactions. The trade-off is traffic: MVT requires enough visitors for each combination to achieve statistical significance, which can be prohibitive for low-traffic sites.</p>
+
+      <h2>Full Factorial vs. Fractional Factorial Designs</h2>
+      <p>A full factorial design tests every possible combination. For k variables each with n_i levels, the total number of combinations is the product of all n_i values. Three variables with 3, 2, and 4 levels produce 3 x 2 x 4 = 24 combinations. If each combination needs 5,000 visitors for adequate power, the full factorial requires 120,000 total visitors. For sites with 2,000 daily visitors, this is a 60-day test — feasible but long.</p>
+      <p>When the full factorial is impractical, fractional factorial designs offer a solution. A fractional factorial tests a carefully chosen subset of combinations that still allows estimation of all main effects and some interaction effects. The most common fractions are 1/2, 1/4, and 1/8 of the full design. A half-fraction of a 24-combination design tests only 12 combinations — cutting the required traffic in half — while still estimating all main effects.</p>
+      <p>The cost of using a fractional design is confounding: some effects become indistinguishable from each other. In a half-fraction, each main effect is confounded with a specific higher-order interaction. The assumption that makes fractional designs work is the sparsity-of-effects principle: in most real systems, main effects and low-order interactions account for the vast majority of variation, and higher-order interactions are negligible. This assumption holds well in digital experimentation, where headline-CTA-image-layout four-way interactions are rarely meaningful.</p>
+
+      <h2>Calculating Required Traffic for MVT</h2>
+      <p>The traffic calculation for MVT starts with the same sample size formula used in A/B testing. For each combination, you need enough visitors to detect the minimum detectable effect at your desired power level. The formula is:</p>
+      <p><strong>n_per_combo = (Z_{alpha/2} + Z_{beta})^2 * [p1*(1-p1) + p2*(1-p2)] / (p2 - p1)^2</strong></p>
+      <p>The total required traffic is n_per_combo multiplied by the number of combinations. The test duration is the total traffic divided by daily traffic. This calculator automates all three computations and flags designs that would require impractically long test durations.</p>
+      <p>A critical nuance is that MVT typically requires a larger MDE than simple A/B tests because the traffic is split across more combinations. If an A/B test at your traffic level can detect a 10% relative MDE in 14 days, the same traffic in a 12-combination MVT can only detect a 34% relative MDE in the same timeframe (because each combination receives 1/12 of the traffic instead of 1/2). This is the fundamental trade-off: MVT provides richer information but requires either more traffic or a larger effect size to be practical.</p>
+
+      <h2>Interaction Effects: The Unique Value of MVT</h2>
+      <p>The most compelling reason to use MVT over sequential A/B testing is the ability to detect interaction effects. An interaction occurs when the effect of one variable depends on the level of another variable. For example, a formal headline might perform best with a blue CTA button, while a casual headline performs best with an orange CTA button. Sequential A/B testing would identify the best headline and the best CTA button independently, but might miss the optimal combination if it depends on the interaction between them.</p>
+      <p>Interaction effects are quantified through the ANOVA decomposition. The total conversion rate variation across all combinations is partitioned into main effects (the independent contribution of each variable), two-way interactions (how pairs of variables modify each other's effects), and higher-order interactions. In practice, main effects typically explain 70-80% of the total variation, two-way interactions explain 15-25%, and higher-order interactions explain less than 5%. This is why fractional factorial designs, which sacrifice higher-order interaction estimation, work well in practice.</p>
+      <p>The practical implication is that MVT is most valuable when you suspect interactions exist. If you are testing a headline, a CTA, and a hero image that are conceptually related (e.g., all part of the same messaging strategy), interactions are likely. If the variables are independent (e.g., footer color vs. header font size), interactions are unlikely and sequential A/B tests would be equally effective and require less traffic.</p>
+
+      <h2>When to Use MVT vs. Sequential A/B Testing</h2>
+      <p>Use multivariate testing when you have sufficient traffic (typically 10,000+ daily visitors for a 4-8 combination design), when you suspect interaction effects between variables, when you want to optimize multiple elements simultaneously, or when the time cost of running sequential A/B tests is prohibitive. MVT is ideal for landing page optimization where headlines, images, and CTAs work together to form a cohesive experience.</p>
+      <p>Use sequential A/B testing when traffic is limited (under 5,000 daily visitors), when variables are independent and interactions are unlikely, when you want to detect small effects (less than 10% relative MDE), or when simplicity of analysis and communication is important. Most organizations should master A/B testing before attempting MVT, as the statistical complexity and traffic requirements are substantially higher.</p>
+      <p>A hybrid approach works well for many teams: use MVT for the initial discovery phase to identify which variables matter and how they interact, then follow up with focused A/B tests on the most promising combinations to confirm results with higher statistical power. This two-phase approach captures the exploratory benefits of MVT while maintaining the rigor of A/B testing for final decisions.</p>
+
+      <h2>Practical Tips for MVT Design</h2>
+      <p>Keep the number of variables between 2 and 4. Each additional variable multiplies the number of combinations and the required traffic. Testing 5 variables with 3 levels each produces 243 combinations — requiring enormous traffic for any reasonable power.</p>
+      <p>Minimize the number of levels per variable. Two or three levels per variable is ideal. If you have many creative options for a headline, pre-screen them qualitatively (user research, heuristic evaluation) and narrow to 2-3 strong candidates before including them in the MVT.</p>
+      <p>Set a realistic MDE. Because traffic is split across more combinations, MVT can only detect larger effects than equivalent A/B tests. A 15-20% relative MDE is realistic for most MVT designs. If you need to detect smaller effects, use a fractional factorial or switch to sequential A/B testing.</p>
+      <p>Run the test for a minimum of two full business weeks. MVT results are more sensitive to day-of-week and promotional effects because each combination has a smaller sample. Two weeks ensures each combination has data from every day of the week and smooths out short-term fluctuations.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What is multivariate testing (MVT) and how does it differ from A/B testing?</summary>
+        <p>MVT tests multiple variables simultaneously — headlines, CTAs, images, layouts — in all combinations. A/B testing compares two whole page versions. MVT reveals interaction effects (how variables influence each other) that sequential A/B tests miss entirely. The trade-off: MVT requires significantly more traffic since each combination needs sufficient visitors.</p>
+      </details>
+
+      <details>
+        <summary>How do I calculate the number of combinations in a multivariate test?</summary>
+        <p>Multiply the number of variations for each variable. Testing 3 headlines, 2 CTAs, and 4 images produces 3 x 2 x 4 = 24 combinations. Total traffic needed is (sample size per combination) x 24. Use the calculator above to compute this automatically with traffic and duration estimates.</p>
+      </details>
+
+      <details>
+        <summary>What is a fractional factorial design and when should I use it?</summary>
+        <p>A fractional factorial tests a strategic subset of all combinations. A half-fraction of 24 combinations tests only 12 while still estimating all main effects. Use it when full factorial traffic requirements exceed what you can achieve in a reasonable timeframe. You sacrifice some interaction effect estimates but keep all main effects.</p>
+      </details>
+
+      <details>
+        <summary>How much traffic do I need for a multivariate test?</summary>
+        <p>Total traffic = combinations x per-combination sample size. For a 5% baseline with 20% relative MDE at 80% power, that is about 8,000 per combination. A 12-combination MVT needs 96,000 visitors. At 5,000 daily visitors, that is about 19 days. The calculator above gives exact estimates for your parameters.</p>
+      </details>
+
+      <details>
+        <summary>Can multivariate testing detect interaction effects between variables?</summary>
+        <p>Yes, full factorial designs detect all interaction effects. For example, a bold headline plus red CTA might convert at 12%, while the sum of their individual effects predicts only 8% — that 4% gap is the interaction effect. Detecting interactions needs more data per cell, which is why MVT requires higher traffic than simple A/B tests.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Calculate required sample size with power curves</li>
+        <li><a href="/tools/bayesian-ab-calculator.html">Bayesian A/B Test Calculator</a> — Posterior distributions and probability of winning</li>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Quick sample size estimation for A/B tests</li>
+        <li><a href="/guides/chi-square-test-guide.html">Chi-Square Test Guide</a> — Statistical test for categorical data comparison</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools & Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script>
+  (function(){
+    var variables = [];
+    var varIdCounter = 0;
+
+    function formatNum(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+    function normInv(p) {
+      if (p <= 0) return -8;
+      if (p >= 1) return 8;
+      if (p < 0.5) return -normInv(1 - p);
+      var t = Math.sqrt(-2 * Math.log(1 - p));
+      var c0 = 2.515517, c1 = 0.802853, c2 = 0.010328;
+      var d1 = 1.432788, d2 = 0.189269, d3 = 0.001308;
+      return t - (c0 + c1 * t + c2 * t * t) / (1 + d1 * t + d2 * t * t + d3 * t * t * t);
+    }
+
+    function calcSampleSize(p1, p2, alpha, power) {
+      var za = normInv(1 - alpha / 2);
+      var zb = normInv(power);
+      var num = Math.pow(za + zb, 2) * (p1 * (1 - p1) + p2 * (1 - p2));
+      var den = Math.pow(p2 - p1, 2);
+      return Math.ceil(num / den);
+    }
+
+    function renderVarList() {
+      var el = document.getElementById('mv-var-list');
+      if (variables.length === 0) {
+        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-muted,#aaa);font-size:.9rem;">No variables added yet. Click the buttons below to add testing variables.</div>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < variables.length; i++) {
+        var v = variables[i];
+        var labels = [];
+        for (var j = 0; j < v.count; j++) labels.push(v.name.charAt(0).toUpperCase() + (j + 1));
+        html += '<div class="mv-var-item">';
+        html += '<span class="var-name">' + v.name + '</span>';
+        html += '<span class="var-count">' + v.count + ' variations</span>';
+        html += '<span class="var-variations">' + labels.join(', ') + '</span>';
+        html += '<button class="mv-btn-sm" onclick="changeVarCount(' + v.id + ',-1)" style="padding:.3rem .6rem;">-</button>';
+        html += '<button class="mv-btn-sm" onclick="changeVarCount(' + v.id + ',1)" style="padding:.3rem .6rem;">+</button>';
+        html += '<button class="mv-btn-sm mv-btn-danger" onclick="removeVariable(' + v.id + ')" style="padding:.3rem .6rem;">Remove</button>';
+        html += '</div>';
+      }
+      el.innerHTML = html;
+    }
+
+    function addVariable(name, count) {
+      variables.push({ id: varIdCounter++, name: name, count: count || 2 });
+      renderVarList();
+    }
+    window.addVariable = addVariable;
+
+    function addCustomVar() {
+      var name = prompt('Variable name (e.g., "Pricing", "Social Proof"):');
+      if (!name) return;
+      var count = parseInt(prompt('Number of variations (including control):', '2'));
+      if (isNaN(count) || count < 2) count = 2;
+      addVariable(name.trim(), count);
+    }
+    window.addCustomVar = addCustomVar;
+
+    function changeVarCount(id, delta) {
+      for (var i = 0; i < variables.length; i++) {
+        if (variables[i].id === id) {
+          variables[i].count = Math.max(2, variables[i].count + delta);
+          break;
+        }
+      }
+      renderVarList();
+    }
+    window.changeVarCount = changeVarCount;
+
+    function removeVariable(id) {
+      variables = variables.filter(function(v) { return v.id !== id; });
+      renderVarList();
+    }
+    window.removeVariable = removeVariable;
+
+    function calcMVT() {
+      if (variables.length === 0) {
+        alert('Add at least one variable before calculating.');
+        return;
+      }
+
+      var baseline = parseFloat(document.getElementById('mv-baseline').value);
+      var mde = parseFloat(document.getElementById('mv-mde').value);
+      var daily = parseInt(document.getElementById('mv-daily').value);
+      var power = parseFloat(document.getElementById('mv-power').value);
+
+      if (isNaN(baseline) || isNaN(mde) || isNaN(daily) || baseline <= 0 || mde <= 0 || daily <= 0) {
+        alert('Please enter valid positive values for all fields.');
+        return;
+      }
+
+      var p1 = baseline / 100;
+      var p2 = p1 * (1 + mde / 100);
+      if (p2 >= 1) p2 = 0.999;
+
+      var totalCombos = 1;
+      for (var i = 0; i < variables.length; i++) totalCombos *= variables[i].count;
+
+      var perCombo = calcSampleSize(p1, p2, 0.05, power);
+      var totalVisitors = perCombo * totalCombos;
+      var duration = Math.ceil(totalVisitors / daily);
+      var allocPct = (100 / totalCombos).toFixed(2);
+
+      document.getElementById('mv-r-combos').textContent = formatNum(totalCombos);
+      document.getElementById('mv-r-per-combo').textContent = formatNum(perCombo);
+      document.getElementById('mv-r-total').textContent = formatNum(totalVisitors);
+      document.getElementById('mv-r-duration').textContent = duration + ' days (' + (duration / 7).toFixed(1) + ' weeks)';
+      document.getElementById('mv-r-alloc').textContent = allocPct + '% each';
+
+      // Feasibility
+      var fDiv = document.getElementById('mv-feasibility');
+      if (duration <= 14) {
+        fDiv.innerHTML = '<div class="mv-ok"><strong>Feasible:</strong> Test can complete in ' + duration + ' days at ' + formatNum(daily) + ' daily visitors. Full factorial design is recommended.</div>';
+      } else if (duration <= 42) {
+        fDiv.innerHTML = '<div class="mv-warning"><strong>Moderate duration:</strong> Test requires ' + duration + ' days. Consider a fractional factorial design to reduce the test duration, or increase MDE to reduce per-combination sample size.</div>';
+      } else {
+        fDiv.innerHTML = '<div class="mv-warning"><strong>Impractical:</strong> Full factorial requires ' + duration + ' days (' + (duration / 7).toFixed(1) + ' weeks). This exceeds the recommended 6-week maximum. Use a fractional factorial design, reduce variables/levels, increase MDE, or consider sequential A/B testing instead.</div>';
+      }
+
+      // Fractional factorial alternatives
+      var fracHtml = '';
+      var fractions = [
+        { label: 'Half Fraction (1/2)', divisor: 2 },
+        { label: 'Quarter Fraction (1/4)', divisor: 4 },
+        { label: 'Eighth Fraction (1/8)', divisor: 8 }
+      ];
+      for (var f = 0; f < fractions.length; f++) {
+        var fracCombos = Math.max(Math.ceil(totalCombos / fractions[f].divisor), variables.length + 1);
+        if (fracCombos >= totalCombos) continue;
+        var fracTotal = perCombo * fracCombos;
+        var fracDur = Math.ceil(fracTotal / daily);
+        var canEstimate = fracCombos >= variables.length + 1 ? 'All main effects' : 'Some main effects';
+        var interactionNote = fractions[f].divisor === 2
+          ? ' + most two-way interactions'
+          : fractions[f].divisor === 4
+          ? ' + some two-way interactions'
+          : ' only (no interactions)';
+        fracHtml += '<div class="mv-frac-card">';
+        fracHtml += '<h4>' + fractions[f].label + '</h4>';
+        fracHtml += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.85rem;">';
+        fracHtml += '<div><span style="color:var(--text-muted,#aaa);">Combinations:</span> <strong style="color:#2DD4BF;">' + fracCombos + '</strong></div>';
+        fracHtml += '<div><span style="color:var(--text-muted,#aaa);">Total visitors:</span> <strong style="color:#2DD4BF;">' + formatNum(fracTotal) + '</strong></div>';
+        fracHtml += '<div><span style="color:var(--text-muted,#aaa);">Duration:</span> <strong style="color:#2DD4BF;">' + fracDur + ' days</strong></div>';
+        fracHtml += '<div><span style="color:var(--text-muted,#aaa);">Estimable:</span> <strong>' + canEstimate + interactionNote + '</strong></div>';
+        fracHtml += '</div>';
+        fracHtml += '<div style="margin-top:.5rem;font-size:.8rem;color:var(--text-muted,#aaa);">Saves ' + formatNum(totalVisitors - fracTotal) + ' visitors (' + ((1 - fracTotal / totalVisitors) * 100).toFixed(0) + '% reduction)</div>';
+        fracHtml += '</div>';
+      }
+      document.getElementById('mv-frac-list').innerHTML = fracHtml || '<p style="color:var(--text-muted,#aaa);font-size:.9rem;">Design is small enough that fractional alternatives are not needed.</p>';
+
+      // Allocation chart
+      drawAllocChart('mv-alloc-chart', totalCombos, perCombo, daily);
+
+      // Combination table (limit to 48 to avoid DOM overload)
+      var showCombos = totalCombos <= 48;
+      document.getElementById('mv-combo-count').textContent = showCombos ? '(' + totalCombos + ' combinations)' : '(' + totalCombos + ' combinations — showing first 48)';
+      if (variables.length > 0) {
+        var tableHtml = '<table class="mv-combo-table"><thead><tr><th>#</th>';
+        for (var i = 0; i < variables.length; i++) tableHtml += '<th>' + variables[i].name + '</th>';
+        tableHtml += '<th>Traffic Share</th></tr></thead><tbody>';
+
+        var maxRows = Math.min(totalCombos, 48);
+        for (var row = 0; row < maxRows; row++) {
+          tableHtml += '<tr><td>' + (row + 1) + '</td>';
+          var rem = row;
+          for (var v = variables.length - 1; v >= 0; v--) {
+            var levelIdx = rem % variables[v].count;
+            rem = Math.floor(rem / variables[v].count);
+            var cellLabel = variables[v].name.charAt(0).toUpperCase() + (levelIdx + 1);
+            tableHtml += '<td>' + cellLabel + '</td>';
+          }
+          tableHtml += '<td>' + allocPct + '%</td></tr>';
+        }
+        if (totalCombos > 48) {
+          tableHtml += '<tr><td colspan="' + (variables.length + 2) + '" style="text-align:center;color:var(--text-muted,#aaa);font-style:italic;">... and ' + (totalCombos - 48) + ' more combinations</td></tr>';
+        }
+        tableHtml += '</tbody></table>';
+        document.getElementById('mv-combo-table-wrap').innerHTML = tableHtml;
+      }
+
+      document.getElementById('mv-results-panel').style.display = 'block';
+    }
+    window.calcMVT = calcMVT;
+
+    function drawAllocChart(svgId, combos, perCombo, daily) {
+      var svg = document.getElementById(svgId);
+      var W = 700, H = 280, ml = 55, mr = 30, mt = 15, mb = 50;
+      var pw = W - ml - mr, ph = H - mt - mb;
+
+      var maxBars = Math.min(combos, 30);
+      var barW = Math.max(4, Math.min(24, (pw - maxBars * 2) / maxBars));
+      var gap = 2;
+      var totalBarW = maxBars * (barW + gap);
+      var startX = ml + (pw - totalBarW) / 2;
+
+      var html = '';
+      // Y axis
+      for (var i = 0; i <= 4; i++) {
+        var y = mt + ph - (i / 4) * ph;
+        var val = Math.round((i / 4) * perCombo);
+        html += '<line x1="' + ml + '" y1="' + y + '" x2="' + (W - mr) + '" y2="' + y + '" stroke="#333" stroke-width="0.5"/>';
+        html += '<text x="' + (ml - 5) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="10" font-family="Space Mono,monospace">' + formatNum(val) + '</text>';
+      }
+
+      // Bars
+      for (var i = 0; i < maxBars; i++) {
+        var x = startX + i * (barW + gap);
+        var barH = ph; // each combo gets the same traffic
+        html += '<rect x="' + x + '" y="' + mt + '" width="' + barW + '" height="' + barH + '" fill="#2DD4BF" opacity="0.7" rx="1"/>';
+      }
+
+      if (combos > maxBars) {
+        html += '<text x="' + (ml + pw / 2) + '" y="' + (mt + ph / 2) + '" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif">Showing ' + maxBars + ' of ' + combos + ' combinations (equal allocation)</text>';
+      }
+
+      // X label
+      html += '<text x="' + (ml + pw / 2) + '" y="' + (H - 8) + '" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif">Combinations (equal traffic: ' + formatNum(perCombo) + ' visitors each)</text>';
+
+      // Target line
+      var dailyPerCombo = daily / combos;
+      var daysToFill = Math.ceil(perCombo / dailyPerCombo);
+      html += '<text x="' + (W - mr) + '" y="' + (mt + 15) + '" text-anchor="end" fill="#2DD4BF" font-size="11" font-family="Space Mono,monospace">' + formatNum(perCombo) + ' visitors/combo</text>';
+      html += '<text x="' + (W - mr) + '" y="' + (mt + 30) + '" text-anchor="end" fill="#aaa" font-size="10" font-family="Space Mono,monospace">' + daysToFill + ' days to fill</text>';
+
+      svg.innerHTML = html;
+    }
+
+    // Initialize with default variables
+    addVariable('Headline', 3);
+    addVariable('CTA Button', 2);
+    addVariable('Hero Image', 2);
+    renderVarList();
+  })();
+  </script>
+  <script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+</body>
+</html>

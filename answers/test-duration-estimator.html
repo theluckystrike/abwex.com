@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Test Duration Estimator with Early Stopping Analysis | ABWex</title>
+  <meta name="description" content="Free A/B test duration estimator with early stopping analysis. Calculate minimum test runtime from traffic, baseline rate, MDE, and power. Sequential testing boundaries, alpha spending functions, and peeking penalty calculator.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/answers/test-duration-estimator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="A/B Test Duration Estimator with Early Stopping Analysis | ABWex">
+  <meta property="og:description" content="Free A/B test duration estimator. Calculate minimum runtime, sequential testing boundaries, alpha spending function, and peeking penalty for your A/B tests.">
+  <meta property="og:url" content="https://abwex.com/answers/test-duration-estimator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A/B Test Duration Estimator with Early Stopping Analysis">
+  <meta name="twitter:description" content="Free A/B test duration estimator. Calculate minimum runtime, sequential testing boundaries, and peeking penalty for A/B tests.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/answers/test-duration-estimator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/answers/test-duration-estimator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "A/B Test Duration Estimator with Early Stopping Analysis",
+    "url": "https://abwex.com/answers/test-duration-estimator.html",
+    "description": "Free A/B test duration estimator with early stopping analysis. Calculate minimum test runtime from daily traffic, baseline conversion rate, MDE, significance level, and power. Includes sequential testing boundaries, alpha spending functions, and peeking penalty calculator.",
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-25",
+    "dateModified": "2026-05-25",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://abwex.com/answers/test-duration-estimator.html"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How long should I run my A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The minimum duration depends on four factors: your daily traffic, baseline conversion rate, minimum detectable effect (MDE), and desired statistical power. The formula derives from the sample size requirement n = (z_alpha/2 + z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2 per variant, divided by your daily traffic per variant. For example, with 1,000 daily visitors, a 5% baseline rate, 10% relative MDE, and 80% power, you need approximately 31,000 visitors per variant, or about 62 days. Always run for at least one full business week cycle to capture day-of-week effects."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is early stopping in A/B testing and why is it dangerous?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Early stopping means ending an A/B test before the pre-determined sample size is reached, typically because the results look significant at an interim analysis. This is dangerous because it inflates the false positive rate far beyond the nominal alpha level. If you check your test daily at alpha = 0.05, the cumulative false positive rate after 10 checks can exceed 25%. Sequential testing methods like the O'Brien-Fleming or Pocock boundaries provide a principled framework for early stopping that controls the overall Type I error rate by using stricter significance thresholds at early interim analyses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is an alpha spending function?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An alpha spending function controls how the total Type I error budget (typically 0.05) is distributed across interim analyses during a sequential test. The O'Brien-Fleming spending function spends very little alpha early (making early stopping difficult unless the effect is enormous) and most alpha at the final analysis, preserving nearly the full power of a fixed-sample test. The Pocock spending function distributes alpha more evenly, using similar critical values at each look but requiring a larger total sample size. The Lan-DeMets approach generalizes this by defining a continuous spending function alpha(t) where t is the information fraction."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does peeking at A/B test results inflate false positives?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Each time you check a running test for significance, you create an additional opportunity for a random fluctuation to cross the significance threshold. Under the null hypothesis, the test statistic follows a random walk, and the probability that it ever crosses a fixed boundary increases with the number of checks. With daily peeking over 30 days at alpha = 0.05, the true false positive rate can reach 14-20%, depending on the traffic pattern. The peeking penalty calculator quantifies this inflation so you can see exactly how much your effective alpha increases with each additional look."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use O'Brien-Fleming or Pocock boundaries for my sequential test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O'Brien-Fleming boundaries are preferred for most A/B testing scenarios because they preserve nearly all the statistical power of a fixed-sample test while still allowing early stopping for very large effects. The final-analysis critical value is close to 1.96, so you lose almost nothing if the test runs to completion. Pocock boundaries use equal critical values at each look, making early stopping easier but requiring a 15-30% larger total sample size to maintain the same power. Choose Pocock only when you strongly expect a large effect and want maximum flexibility to stop early. For routine optimization tests with expected small effects, O'Brien-Fleming is almost always the better choice."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Answers","item":"https://abwex.com/answers/"},{"@type":"ListItem","position":3,"name":"A/B Test Duration Estimator"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/answers/">Answers</a> <span>/</span> <span>A/B Test Duration Estimator</span></nav>
+      <h1>A/B Test Duration <span>Estimator</span></h1>
+      <p>Calculate the minimum runtime for your A/B test based on daily traffic, baseline conversion rate, minimum detectable effect, and statistical power. Includes early stopping analysis with sequential testing boundaries, alpha spending functions, and a peeking penalty calculator that shows how checking results early inflates your false positive rate. All computation runs in your browser.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .td-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .td-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        @media(max-width:640px){.td-grid{grid-template-columns:1fr}}
+        .td-field label{display:block;font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:.35rem;font-weight:500}
+        .td-field input,.td-field select{width:100%;padding:.6rem .8rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.95rem;font-family:inherit}
+        .td-field input:focus,.td-field select:focus{outline:none;border-color:#2DD4BF}
+        .td-btn{display:inline-block;padding:.75rem 2rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:1rem;font-family:inherit}
+        .td-btn:hover{opacity:.9}
+        .td-btn-secondary{background:transparent;border:1px solid #2DD4BF;color:#2DD4BF;padding:.5rem 1.2rem;font-size:.9rem}
+        .td-btn-secondary:hover{background:#2DD4BF;color:#0d0d1a}
+        .td-results{margin-top:1.5rem}
+        .td-result-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border,#333)}
+        .td-result-row:last-child{border-bottom:none}
+        .td-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
+        .td-result-value{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;color:#2DD4BF}
+        .td-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .td-chart-title{font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--text,#e0e0e0)}
+        .td-toggle{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+        .td-toggle button{padding:.4rem 1rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:4px;color:var(--text-muted,#aaa);cursor:pointer;font-size:.85rem;font-family:inherit}
+        .td-toggle button.active{background:#2DD4BF;color:#0d0d1a;border-color:#2DD4BF;font-weight:600}
+        .td-info{background:var(--input-bg,#0d0d1a);border-left:3px solid #2DD4BF;padding:1rem 1.25rem;border-radius:0 6px 6px 0;margin-top:1rem;font-size:.9rem;color:var(--text-muted,#aaa);line-height:1.6}
+        .td-sig-table{width:100%;border-collapse:collapse;margin-top:1rem}
+        .td-sig-table th,.td-sig-table td{padding:.6rem .8rem;border:1px solid var(--border,#333);font-size:.85rem;text-align:center}
+        .td-sig-table th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);font-weight:500}
+        .td-sig-table td{color:var(--text,#e0e0e0);font-family:'Space Mono',monospace}
+        .td-highlight{color:#22c55e;font-weight:700}
+        .td-warn{color:#F97316;font-weight:700}
+        .td-danger{color:#ef4444;font-weight:700}
+        .td-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:1rem}
+        .td-cal-header{font-size:.75rem;color:var(--text-muted,#aaa);text-align:center;padding:.3rem;font-weight:600}
+        .td-cal-day{font-size:.7rem;text-align:center;padding:.35rem .2rem;border-radius:4px;background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa)}
+        .td-cal-day.active{background:#2DD4BF22;color:#2DD4BF;font-weight:600;border:1px solid #2DD4BF44}
+        .td-cal-day.today{border:1px solid #F97316;color:#F97316}
+        .td-cal-day.empty{background:transparent}
+        .td-cal-month{font-size:.85rem;font-weight:600;color:var(--text,#e0e0e0);margin-bottom:.5rem;margin-top:1rem}
+      </style>
+
+      <!-- Main Input Card -->
+      <div class="td-card">
+        <h2 style="margin-top:0;font-size:1.3rem;">Test Parameters</h2>
+        <div class="td-grid">
+          <div class="td-field">
+            <label for="td-traffic">Daily Visitors (total across all variants)</label>
+            <input type="number" id="td-traffic" value="5000" min="10" step="100">
+          </div>
+          <div class="td-field">
+            <label for="td-baseline">Baseline Conversion Rate (%)</label>
+            <input type="number" id="td-baseline" value="5" min="0.1" max="99.9" step="0.1">
+          </div>
+        </div>
+        <div class="td-grid" style="margin-top:1rem;">
+          <div class="td-field">
+            <label for="td-mde">Minimum Detectable Effect (% relative)</label>
+            <input type="number" id="td-mde" value="10" min="1" max="100" step="1">
+          </div>
+          <div class="td-field">
+            <label for="td-variants">Number of Variants (including control)</label>
+            <select id="td-variants">
+              <option value="2" selected>2 (A/B)</option>
+              <option value="3">3 (A/B/C)</option>
+              <option value="4">4 (A/B/C/D)</option>
+            </select>
+          </div>
+        </div>
+        <div class="td-grid" style="margin-top:1rem;">
+          <div class="td-field">
+            <label for="td-alpha">Significance Level (&alpha;)</label>
+            <select id="td-alpha">
+              <option value="0.10">0.10 (90% confidence)</option>
+              <option value="0.05" selected>0.05 (95% confidence)</option>
+              <option value="0.01">0.01 (99% confidence)</option>
+            </select>
+          </div>
+          <div class="td-field">
+            <label for="td-power">Statistical Power (1 - &beta;)</label>
+            <select id="td-power">
+              <option value="0.80" selected>80%</option>
+              <option value="0.90">90%</option>
+              <option value="0.95">95%</option>
+            </select>
+          </div>
+        </div>
+        <button class="td-btn" onclick="calcDuration()">Calculate Duration</button>
+      </div>
+
+      <!-- Results Section -->
+      <div id="td-output" style="display:none;">
+        <div class="td-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Minimum Test Duration</h3>
+          <div class="td-results">
+            <div class="td-result-row"><span class="td-result-label">Required Sample Size (per variant)</span><span class="td-result-value" id="td-res-sample">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Total Sample Size (all variants)</span><span class="td-result-value" id="td-res-total">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Minimum Duration</span><span class="td-result-value" id="td-res-days">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Recommended Duration (full weeks)</span><span class="td-result-value" id="td-res-weeks">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Absolute Effect Size</span><span class="td-result-value" id="td-res-abs">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Detectable Range</span><span class="td-result-value" id="td-res-range">--</span></div>
+          </div>
+          <div class="td-info" id="td-res-note" style="display:none;"></div>
+        </div>
+
+        <!-- Calendar View -->
+        <div class="td-card" id="td-calendar-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Recommended Run Period</h3>
+          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.5rem;">Green days show your minimum test window. Start date is tomorrow. Full-week alignment is recommended.</p>
+          <div id="td-calendar-wrap"></div>
+        </div>
+
+        <!-- Sequential Testing Boundaries -->
+        <div class="td-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Sequential Testing Boundaries (Early Stopping)</h3>
+          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">Critical z-values at each interim look. A test statistic exceeding the boundary allows early stopping while controlling the overall false positive rate.</p>
+          <div class="td-toggle">
+            <button class="active" id="td-seq-obf" onclick="setSeqMethod('obf')">O'Brien-Fleming</button>
+            <button id="td-seq-poc" onclick="setSeqMethod('pocock')">Pocock</button>
+          </div>
+          <div id="td-seq-table-wrap"></div>
+          <div class="td-chart-wrap" style="border:none;padding:0;margin-top:1rem;">
+            <div class="td-chart-title">Sequential Boundary Plot</div>
+            <svg id="td-seq-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
+          </div>
+        </div>
+
+        <!-- Peeking Penalty Calculator -->
+        <div class="td-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Peeking Penalty Calculator</h3>
+          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">See how checking your test results early inflates the false positive rate above the nominal &alpha;.</p>
+          <div class="td-grid">
+            <div class="td-field">
+              <label for="td-peek-times">Number of Times You Peek</label>
+              <input type="number" id="td-peek-times" value="10" min="1" max="100" step="1">
+            </div>
+            <div class="td-field">
+              <label for="td-peek-alpha">Nominal &alpha; Per Peek</label>
+              <input type="number" id="td-peek-alpha" value="0.05" min="0.001" max="0.20" step="0.005">
+            </div>
+          </div>
+          <button class="td-btn" onclick="calcPeeking()">Calculate Peeking Penalty</button>
+          <div id="td-peek-output" class="td-results" style="display:none;">
+            <div class="td-result-row"><span class="td-result-label">Nominal False Positive Rate</span><span class="td-result-value" id="td-peek-nominal">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Actual False Positive Rate (upper bound)</span><span class="td-result-value" id="td-peek-actual">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Inflation Factor</span><span class="td-result-value" id="td-peek-factor">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Corrected &alpha; Per Peek (Bonferroni)</span><span class="td-result-value" id="td-peek-corrected">--</span></div>
+            <div class="td-result-row"><span class="td-result-label">Corrected &alpha; Per Peek (Sidak)</span><span class="td-result-value" id="td-peek-sidak">--</span></div>
+          </div>
+          <div id="td-peek-table-wrap" style="margin-top:1rem;"></div>
+        </div>
+
+        <!-- Alpha Spending Function Chart -->
+        <div class="td-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Alpha Spending Function</h3>
+          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">How the total &alpha; budget is distributed across interim analyses under each spending approach.</p>
+          <div class="td-chart-wrap" style="border:none;padding:0;">
+            <svg id="td-alpha-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
+          </div>
+          <div class="td-info">O'Brien-Fleming spends almost no alpha early and nearly all at the final look, preserving maximum power. Pocock spends alpha more evenly, enabling earlier stopping but requiring a larger total sample. The linear spending function (Lan-DeMets) provides a middle ground.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>How A/B Test Duration Is Calculated</h2>
+      <p>The minimum duration for an A/B test is determined by the required sample size, which depends on four key inputs: the baseline conversion rate, the minimum detectable effect (MDE), the significance level (alpha), and the statistical power (1 minus beta). The sample size formula for a two-proportion z-test is n = (z_{alpha/2} + z_{beta})^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2 per variant, where p1 is the baseline rate, p2 is p1 * (1 + MDE/100) for a relative MDE, and the z-values correspond to the standard normal quantiles for the chosen alpha and power levels.</p>
+      <p>Once you have the per-variant sample size, dividing by the daily traffic per variant gives the minimum number of days. However, this raw number should always be rounded up to complete full weeks. Day-of-week effects are real and substantial in most businesses: weekend traffic often differs dramatically from weekday traffic in both volume and behavior. A test that runs from Monday to Friday captures a biased sample. Always run in full seven-day increments to capture the complete weekly cycle, and consider extending to two or three full weeks if your traffic has strong weekly seasonality.</p>
+
+      <h2>The Danger of Peeking at Results</h2>
+      <p>One of the most common mistakes in A/B testing is repeatedly checking whether results are significant before the planned sample size is reached. This practice, known as peeking or optional stopping, dramatically inflates the false positive rate. The intuition is straightforward: under the null hypothesis, the z-statistic follows a random walk. Given enough time, a random walk will eventually cross any fixed boundary. Each peek gives the random walk another chance to cross the significance threshold by chance.</p>
+      <p>The mathematics confirm this intuition. If you peek k times during a test at a nominal alpha of 0.05, the actual false positive rate is bounded above by 1 - (1 - alpha)^k (the union bound). For 10 peeks, this gives an actual alpha of approximately 0.40, eight times the nominal rate. In practice, the actual inflation is somewhat less severe because the peeks are correlated (the z-statistic does not reset between checks), but simulation studies consistently show that daily peeking over a 30-day test raises the effective alpha from 0.05 to somewhere between 0.14 and 0.20, depending on the traffic accumulation pattern.</p>
+      <p>The peeking penalty calculator in this tool computes both the union bound (worst case) and the Sidak correction (which accounts for some correlation). It also shows the Bonferroni-corrected alpha per peek that you would need to use at each check in order to maintain the desired overall false positive rate. For most practical purposes, the solution is simpler: determine your sample size in advance, commit to the full test duration, and only analyze results after the planned sample is collected.</p>
+
+      <h2>Sequential Testing: Principled Early Stopping</h2>
+      <p>Sequential testing methods provide a mathematically rigorous framework for looking at your data during the test without inflating the false positive rate. The core idea is to use progressively stricter or more lenient significance boundaries at each interim analysis, carefully budgeting the total alpha across all looks. The two most common approaches are the O'Brien-Fleming and Pocock group sequential boundaries.</p>
+      <p>O'Brien-Fleming boundaries start extremely conservative and become progressively more lenient. At the first interim look (say, 20% of the planned sample), the critical z-value might be 4.56, making early stopping virtually impossible unless the effect is enormous. By the final analysis, the critical z-value is approximately 2.04 for a 5-look design, barely more than the standard 1.96. This means you lose almost no power compared to a fixed-sample test. The O'Brien-Fleming approach is ideal when you expect moderate effects and want the option to stop early only for surprisingly large effects.</p>
+      <p>Pocock boundaries use the same critical z-value at every interim look. For a 5-look design at alpha = 0.05, each look uses z = 2.41. This makes early stopping easier than O'Brien-Fleming but requires a larger total sample size (typically 15-30% more) to maintain equivalent power. The Pocock approach is appropriate when you believe the effect could be very large and want maximum early stopping flexibility.</p>
+      <p>The alpha spending function generalizes these approaches. The O'Brien-Fleming spending function is alpha(t) = 2 - 2 * Phi(z_{alpha/2} / sqrt(t)), where t is the information fraction (proportion of planned sample collected) and Phi is the standard normal CDF. The Pocock spending function is alpha(t) = alpha * ln(1 + (e - 1) * t). The Lan-DeMets approach allows you to define any spending function and derive the appropriate boundaries, even when the interim analyses are not equally spaced.</p>
+
+      <h2>Calendar Planning for A/B Tests</h2>
+      <p>Beyond the raw number of days, practical test planning requires calendar awareness. Avoid starting tests on holidays or during promotional periods that alter normal behavior. If your business has strong seasonal patterns (e-commerce around Black Friday, tax software in March), tests conducted during atypical periods may not generalize. The calendar view in this tool shows your recommended run period starting from tomorrow, aligned to full weeks, so you can immediately identify whether the test window overlaps with any known disruptions.</p>
+      <p>For multi-variant tests (A/B/C/D), the traffic is split across more variants, so each variant receives fewer daily visitors and the test takes proportionally longer. With 4 variants and fixed total daily traffic, the test takes twice as long as a simple A/B test. This is one reason to be judicious about the number of variants: each additional variant significantly extends the required duration. If you must test many variants, consider a multi-armed bandit approach or a preliminary screening phase followed by a confirmatory A/B test of the top candidates.</p>
+
+      <h2>Interpreting the Results</h2>
+      <p>The sample size calculator gives you a minimum requirement, not a sufficient one. Several factors can increase the actual duration needed. First, real-world traffic fluctuates: weekends and holidays reduce daily visitors, extending the calendar time to reach the planned sample. Second, if users return multiple times during the test, you have fewer independent observations than raw pageviews suggest. Third, the sample size formula assumes a two-sided test; if you are testing a directional hypothesis, a one-sided test requires a smaller sample. Fourth, if you are running multiple tests simultaneously on the same traffic, the interference between tests can bias results.</p>
+      <p>A useful rule of thumb: take the calculator's minimum duration, round up to the next full week, and add one additional week as a buffer. If the result is fewer than 14 days, run for at least 14 days regardless. Two full weeks captures two complete weekly cycles and provides enough data to detect day-of-week interactions. If your sample size requirement is very large (exceeding three months of traffic), reconsider whether the MDE is realistic or whether you should focus on larger changes that are easier to detect.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>How long should I run my A/B test?</summary>
+        <p>The minimum duration depends on your daily traffic, baseline conversion rate, minimum detectable effect, and desired power. Use the formula n = (z_{alpha/2} + z_{beta})^2 * (p1*(1-p1) + p2*(1-p2)) / delta^2 per variant, divided by daily visitors per variant. Always round up to full weeks to capture day-of-week effects.</p>
+      </details>
+
+      <details>
+        <summary>What is early stopping in A/B testing and why is it dangerous?</summary>
+        <p>Early stopping means ending a test before the planned sample size because interim results look significant. This inflates false positive rates far beyond the nominal alpha. With daily peeking at alpha = 0.05 over 30 days, the actual false positive rate can exceed 20%. Use sequential testing boundaries (O'Brien-Fleming or Pocock) for principled early stopping.</p>
+      </details>
+
+      <details>
+        <summary>What is an alpha spending function?</summary>
+        <p>An alpha spending function controls how the total Type I error budget is distributed across interim analyses. O'Brien-Fleming spends very little alpha early, preserving power. Pocock distributes alpha evenly. The Lan-DeMets approach generalizes this with a continuous function alpha(t) where t is the information fraction.</p>
+      </details>
+
+      <details>
+        <summary>How does peeking at A/B test results inflate false positives?</summary>
+        <p>Each peek gives the test statistic's random walk another chance to cross the significance boundary by chance. With 10 peeks at alpha = 0.05, the actual false positive rate can reach 14-40%. The peeking penalty calculator quantifies this inflation and shows the corrected alpha you need per peek.</p>
+      </details>
+
+      <details>
+        <summary>Should I use O'Brien-Fleming or Pocock boundaries for my sequential test?</summary>
+        <p>O'Brien-Fleming is preferred for most A/B tests. It preserves nearly all power of a fixed-sample test and the final critical value is close to 1.96. Pocock uses equal boundaries, making early stopping easier but requiring 15-30% more total samples. Choose Pocock only when you strongly expect a large effect.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Quick sample size estimation for A/B tests</li>
+        <li><a href="/tools/conversion-rate-calculator.html">Conversion Rate Calculator</a> — Conversion rates with confidence intervals</li>
+        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Determine required sample size with power curves</li>
+        <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a> — Deep-dive guide on test duration planning</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools & Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script>
+  (function(){
+    /* ===== UTILITIES ===== */
+    function normCdf(x){if(x<-8)return 0;if(x>8)return 1;var t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327,p=d*Math.exp(-x*x/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.3302744))));return x>0?1-p:p;}
+    function normInv(p){if(p<=0)return-8;if(p>=1)return 8;if(p<.5)return-normInv(1-p);var t=Math.sqrt(-2*Math.log(1-p)),c0=2.515517,c1=.802853,c2=.010328,d1=1.432788,d2=.189269,d3=.001308;return t-(c0+c1*t+c2*t*t)/(1+d1*t+d2*t*t+d3*t*t*t);}
+    function fmt(v,d){return Number(v).toFixed(d===undefined?4:d);}
+    function fmtPct(v,d){return fmt(v,d===undefined?2:d)+'%';}
+    function fmtInt(v){return Math.ceil(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+
+    /* State */
+    var seqMethod='obf';
+    var lastCalc=null;
+
+    window.setSeqMethod=function(m){
+      seqMethod=m;
+      document.getElementById('td-seq-obf').className=m==='obf'?'active':'';
+      document.getElementById('td-seq-poc').className=m==='pocock'?'active':'';
+      if(lastCalc)renderSequential(lastCalc);
+    };
+
+    /* ===== SAMPLE SIZE CALCULATION ===== */
+    function calcSampleSize(p1,p2,alpha,power){
+      var za=normInv(1-alpha/2);
+      var zb=normInv(power);
+      var n=Math.pow(za+zb,2)*(p1*(1-p1)+p2*(1-p2))/Math.pow(p2-p1,2);
+      return Math.ceil(n);
+    }
+
+    /* ===== O'BRIEN-FLEMING BOUNDARIES ===== */
+    function obfBoundary(k,K){
+      /* O'Brien-Fleming: z_k = z_final * sqrt(K/k) */
+      /* Approximate z_final for K looks at alpha=0.05 */
+      var zFinals={1:1.96,2:2.025,3:2.044,4:2.056,5:2.064,6:2.070,7:2.075,8:2.079,10:2.085};
+      var zF=zFinals[K]||2.085;
+      return zF*Math.sqrt(K/k);
+    }
+
+    /* ===== POCOCK BOUNDARIES ===== */
+    function pocockBoundary(K){
+      /* Pocock: constant boundary, approximate values */
+      var vals={1:1.96,2:2.178,3:2.289,4:2.361,5:2.413,6:2.453,7:2.485,8:2.512,10:2.555};
+      return vals[K]||2.555;
+    }
+
+    /* ===== ALPHA SPENDING FUNCTIONS ===== */
+    function alphaSpendOBF(t,alpha){
+      var za=normInv(1-alpha/2);
+      if(t<=0)return 0;
+      if(t>=1)return alpha;
+      return 2-2*normCdf(za/Math.sqrt(t));
+    }
+    function alphaSpendPocock(t,alpha){
+      if(t<=0)return 0;
+      if(t>=1)return alpha;
+      return alpha*Math.log(1+(Math.E-1)*t);
+    }
+    function alphaSpendLinear(t,alpha){
+      if(t<=0)return 0;
+      if(t>=1)return alpha;
+      return alpha*t;
+    }
+
+    /* ===== MAIN CALCULATION ===== */
+    window.calcDuration=function(){
+      var dailyTraffic=parseInt(document.getElementById('td-traffic').value)||100;
+      var baseline=parseFloat(document.getElementById('td-baseline').value)||5;
+      var mde=parseFloat(document.getElementById('td-mde').value)||10;
+      var numVariants=parseInt(document.getElementById('td-variants').value)||2;
+      var alpha=parseFloat(document.getElementById('td-alpha').value);
+      var power=parseFloat(document.getElementById('td-power').value);
+
+      var p1=baseline/100;
+      var p2=p1*(1+mde/100);
+      var perVariant=calcSampleSize(p1,p2,alpha,power);
+      var totalSample=perVariant*numVariants;
+      var dailyPerVariant=Math.floor(dailyTraffic/numVariants);
+      var minDays=Math.ceil(perVariant/dailyPerVariant);
+      var fullWeeks=Math.ceil(minDays/7)*7;
+      if(fullWeeks<14)fullWeeks=14;
+
+      lastCalc={perVariant:perVariant,totalSample:totalSample,minDays:minDays,fullWeeks:fullWeeks,p1:p1,p2:p2,alpha:alpha,power:power,numVariants:numVariants,dailyTraffic:dailyTraffic};
+
+      document.getElementById('td-output').style.display='block';
+      document.getElementById('td-res-sample').textContent=fmtInt(perVariant);
+      document.getElementById('td-res-total').textContent=fmtInt(totalSample);
+      document.getElementById('td-res-days').textContent=minDays+' days';
+      document.getElementById('td-res-weeks').textContent=fullWeeks+' days ('+Math.round(fullWeeks/7)+' weeks)';
+      document.getElementById('td-res-abs').textContent=fmtPct(Math.abs(p2-p1)*100,2)+' absolute ('+fmtPct(mde,0)+' relative)';
+      document.getElementById('td-res-range').textContent=fmtPct(p1*100,2)+' to '+fmtPct(p2*100,2);
+
+      var note='';
+      if(minDays>90)note='This test requires more than 3 months. Consider increasing the MDE, reducing variants, or focusing on higher-impact changes.';
+      else if(minDays>30)note='This test requires more than a month. Ensure you have budget and traffic stability for the full duration.';
+      else if(minDays<7)note='Sample size is reached in under a week, but always run for at least 2 full weeks to capture day-of-week effects.';
+      if(note){
+        document.getElementById('td-res-note').style.display='block';
+        document.getElementById('td-res-note').textContent=note;
+      }else{
+        document.getElementById('td-res-note').style.display='none';
+      }
+
+      renderCalendar(fullWeeks);
+      renderSequential(lastCalc);
+      renderAlphaSpending(lastCalc);
+    };
+
+    /* ===== CALENDAR RENDERING ===== */
+    function renderCalendar(days){
+      var today=new Date();
+      var start=new Date(today);
+      start.setDate(start.getDate()+1);
+      var end=new Date(start);
+      end.setDate(end.getDate()+days-1);
+
+      /* Show months that span the test */
+      var calStart=new Date(start.getFullYear(),start.getMonth(),1);
+      var calEnd=new Date(end.getFullYear(),end.getMonth()+1,0);
+
+      var html='';
+      var cur=new Date(calStart);
+      var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+      var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+      while(cur<=calEnd){
+        var y=cur.getFullYear(),m=cur.getMonth();
+        html+='<div class="td-cal-month">'+months[m]+' '+y+'</div>';
+        html+='<div class="td-calendar">';
+        for(var d=0;d<7;d++)html+='<div class="td-cal-header">'+dayNames[d]+'</div>';
+        var firstDay=new Date(y,m,1).getDay();
+        var daysInMonth=new Date(y,m+1,0).getDate();
+        for(var d=0;d<firstDay;d++)html+='<div class="td-cal-day empty"></div>';
+        for(var d=1;d<=daysInMonth;d++){
+          var thisDate=new Date(y,m,d);
+          var isActive=thisDate>=start&&thisDate<=end;
+          var isToday=thisDate.toDateString()===today.toDateString();
+          var cls='td-cal-day';
+          if(isActive)cls+=' active';
+          if(isToday)cls+=' today';
+          html+='<div class="'+cls+'">'+d+'</div>';
+        }
+        html+='</div>';
+        cur=new Date(y,m+1,1);
+      }
+
+      document.getElementById('td-calendar-wrap').innerHTML=html;
+    }
+
+    /* ===== SEQUENTIAL TESTING TABLE + CHART ===== */
+    function renderSequential(calc){
+      var K=5;/* 5 interim looks */
+      var boundaries=[];
+      for(var k=1;k<=K;k++){
+        var fraction=k/K;
+        var info=Math.round(fraction*calc.perVariant);
+        var day=Math.ceil(fraction*calc.minDays);
+        var zOBF=obfBoundary(k,K);
+        var zPoc=pocockBoundary(K);
+        boundaries.push({look:k,fraction:fraction,info:info,day:day,obf:zOBF,pocock:zPoc});
+      }
+
+      /* Table */
+      var method=seqMethod;
+      var html='<table class="td-sig-table"><thead><tr><th>Look</th><th>Info Fraction</th><th>Sample/Variant</th><th>~Day</th><th>Critical z-value</th><th>Equivalent p-value</th></tr></thead><tbody>';
+      for(var i=0;i<boundaries.length;i++){
+        var b=boundaries[i];
+        var z=method==='obf'?b.obf:b.pocock;
+        var pVal=2*(1-normCdf(z));
+        html+='<tr>';
+        html+='<td>'+b.look+' of '+K+'</td>';
+        html+='<td>'+fmtPct(b.fraction*100,0)+'</td>';
+        html+='<td>'+fmtInt(b.info)+'</td>';
+        html+='<td>'+b.day+'</td>';
+        html+='<td style="color:#2DD4BF;font-weight:700;">'+fmt(z,3)+'</td>';
+        html+='<td>'+(pVal<0.0001?'< 0.0001':fmt(pVal,6))+'</td>';
+        html+='</tr>';
+      }
+      html+='</tbody></table>';
+      document.getElementById('td-seq-table-wrap').innerHTML=html;
+
+      /* Chart */
+      var svg=document.getElementById('td-seq-chart');
+      var W=700,H=320,ml=60,mr=25,mt=25,mb=55;
+      var pw=W-ml-mr,ph=H-mt-mb;
+
+      var maxZ=0;
+      for(var i=0;i<boundaries.length;i++){
+        maxZ=Math.max(maxZ,boundaries[i].obf,boundaries[i].pocock);
+      }
+      maxZ=Math.ceil(maxZ+0.5);
+
+      var s='';
+      /* Grid lines */
+      for(var i=0;i<=5;i++){
+        var y=mt+ph-(i/5)*ph;
+        var val=(i/5)*maxZ;
+        s+='<line x1="'+ml+'" y1="'+y+'" x2="'+(W-mr)+'" y2="'+y+'" stroke="#333" stroke-width="0.5"/>';
+        s+='<text x="'+(ml-8)+'" y="'+(y+4)+'" text-anchor="end" fill="#888" font-size="11" font-family="Space Mono,monospace">'+fmt(val,1)+'</text>';
+      }
+      /* X axis labels */
+      for(var i=0;i<boundaries.length;i++){
+        var b=boundaries[i];
+        var x=ml+(b.fraction*pw);
+        s+='<text x="'+fmt(x,1)+'" y="'+(H-mb+18)+'" text-anchor="middle" fill="#888" font-size="10" font-family="IBM Plex Sans,sans-serif">Look '+b.look+'</text>';
+        s+='<text x="'+fmt(x,1)+'" y="'+(H-mb+32)+'" text-anchor="middle" fill="#666" font-size="9" font-family="IBM Plex Sans,sans-serif">'+fmtPct(b.fraction*100,0)+'</text>';
+      }
+
+      /* Reference line at 1.96 */
+      var refY=mt+ph-(1.96/maxZ)*ph;
+      s+='<line x1="'+ml+'" y1="'+fmt(refY,1)+'" x2="'+(W-mr)+'" y2="'+fmt(refY,1)+'" stroke="#666" stroke-width="1" stroke-dasharray="6,4"/>';
+      s+='<text x="'+(W-mr+3)+'" y="'+fmt(refY+4,1)+'" fill="#666" font-size="9" font-family="Space Mono,monospace">1.96</text>';
+
+      /* O'Brien-Fleming line */
+      var obfPath='M';
+      for(var i=0;i<boundaries.length;i++){
+        var b=boundaries[i];
+        var x=ml+(b.fraction*pw);
+        var y=mt+ph-(b.obf/maxZ)*ph;
+        obfPath+=(i>0?' L':'')+fmt(x,1)+' '+fmt(y,1);
+      }
+      s+='<path d="'+obfPath+'" fill="none" stroke="#2DD4BF" stroke-width="2.5"/>';
+      for(var i=0;i<boundaries.length;i++){
+        var b=boundaries[i];
+        var x=ml+(b.fraction*pw);
+        var y=mt+ph-(b.obf/maxZ)*ph;
+        s+='<circle cx="'+fmt(x,1)+'" cy="'+fmt(y,1)+'" r="4" fill="#2DD4BF"/>';
+        if(method==='obf')s+='<text x="'+fmt(x,1)+'" y="'+fmt(y-10,1)+'" text-anchor="middle" fill="#2DD4BF" font-size="10" font-weight="700" font-family="Space Mono,monospace">'+fmt(b.obf,2)+'</text>';
+      }
+
+      /* Pocock line */
+      var pocZ=pocockBoundary(K);
+      var pocY=mt+ph-(pocZ/maxZ)*ph;
+      s+='<line x1="'+ml+'" y1="'+fmt(pocY,1)+'" x2="'+(ml+pw)+'" y2="'+fmt(pocY,1)+'" stroke="#F97316" stroke-width="2.5"/>';
+      for(var i=0;i<boundaries.length;i++){
+        var b=boundaries[i];
+        var x=ml+(b.fraction*pw);
+        s+='<circle cx="'+fmt(x,1)+'" cy="'+fmt(pocY,1)+'" r="4" fill="#F97316"/>';
+      }
+      if(method==='pocock')s+='<text x="'+fmt(ml+pw/2,1)+'" y="'+fmt(pocY-10,1)+'" text-anchor="middle" fill="#F97316" font-size="10" font-weight="700" font-family="Space Mono,monospace">'+fmt(pocZ,2)+'</text>';
+
+      /* Legend */
+      s+='<rect x="'+ml+'" y="'+(H-15)+'" width="12" height="3" fill="#2DD4BF"/>';
+      s+='<text x="'+(ml+16)+'" y="'+(H-11)+'" fill="#aaa" font-size="10" font-family="IBM Plex Sans,sans-serif">O\'Brien-Fleming</text>';
+      s+='<rect x="'+(ml+130)+'" y="'+(H-15)+'" width="12" height="3" fill="#F97316"/>';
+      s+='<text x="'+(ml+146)+'" y="'+(H-11)+'" fill="#aaa" font-size="10" font-family="IBM Plex Sans,sans-serif">Pocock</text>';
+      s+='<line x1="'+(ml+225)+'" y1="'+(H-14)+'" x2="'+(ml+237)+'" y2="'+(H-14)+'" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>';
+      s+='<text x="'+(ml+241)+'" y="'+(H-11)+'" fill="#aaa" font-size="10" font-family="IBM Plex Sans,sans-serif">Fixed boundary (z=1.96)</text>';
+
+      /* Axis labels */
+      s+='<text x="15" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif" transform="rotate(-90,15,'+(mt+ph/2)+')">Critical z-value</text>';
+
+      svg.innerHTML=s;
+    }
+
+    /* ===== ALPHA SPENDING CHART ===== */
+    function renderAlphaSpending(calc){
+      var svg=document.getElementById('td-alpha-chart');
+      var W=700,H=320,ml=60,mr=25,mt=25,mb=50;
+      var pw=W-ml-mr,ph=H-mt-mb;
+      var alpha=calc.alpha;
+      var steps=50;
+
+      var s='';
+      /* Grid */
+      for(var i=0;i<=5;i++){
+        var y=mt+ph-(i/5)*ph;
+        var val=(i/5)*alpha;
+        s+='<line x1="'+ml+'" y1="'+y+'" x2="'+(W-mr)+'" y2="'+y+'" stroke="#333" stroke-width="0.5"/>';
+        s+='<text x="'+(ml-8)+'" y="'+(y+4)+'" text-anchor="end" fill="#888" font-size="11" font-family="Space Mono,monospace">'+fmt(val,4)+'</text>';
+      }
+      /* X axis */
+      for(var i=0;i<=5;i++){
+        var x=ml+(i/5)*pw;
+        var val=i*20;
+        s+='<text x="'+fmt(x,1)+'" y="'+(H-mb+18)+'" text-anchor="middle" fill="#888" font-size="10" font-family="IBM Plex Sans,sans-serif">'+val+'%</text>';
+      }
+
+      /* Lines for each spending function */
+      var colors=['#2DD4BF','#F97316','#A78BFA'];
+      var fns=[alphaSpendOBF,alphaSpendPocock,alphaSpendLinear];
+      var labels=["O'Brien-Fleming",'Pocock','Linear (Lan-DeMets)'];
+
+      for(var f=0;f<3;f++){
+        var path='M';
+        for(var i=0;i<=steps;i++){
+          var t=i/steps;
+          var val=fns[f](t,alpha);
+          var x=ml+t*pw;
+          var y=mt+ph-(val/alpha)*ph;
+          path+=(i>0?' L':'')+fmt(x,1)+' '+fmt(y,1);
+        }
+        s+='<path d="'+path+'" fill="none" stroke="'+colors[f]+'" stroke-width="2"/>';
+      }
+
+      /* Legend */
+      for(var f=0;f<3;f++){
+        var lx=ml+f*170;
+        s+='<rect x="'+lx+'" y="'+(H-12)+'" width="12" height="3" fill="'+colors[f]+'"/>';
+        s+='<text x="'+(lx+16)+'" y="'+(H-8)+'" fill="#aaa" font-size="10" font-family="IBM Plex Sans,sans-serif">'+labels[f]+'</text>';
+      }
+
+      /* Axis labels */
+      s+='<text x="15" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif" transform="rotate(-90,15,'+(mt+ph/2)+')">Cumulative alpha spent</text>';
+      s+='<text x="'+(ml+pw/2)+'" y="'+(H-mb+38)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif">Information Fraction (% of planned sample)</text>';
+
+      svg.innerHTML=s;
+    }
+
+    /* ===== PEEKING PENALTY ===== */
+    window.calcPeeking=function(){
+      var numPeeks=parseInt(document.getElementById('td-peek-times').value)||1;
+      var nomAlpha=parseFloat(document.getElementById('td-peek-alpha').value)||0.05;
+
+      /* Union bound (upper bound on actual FPR) */
+      var actualUpper=1-Math.pow(1-nomAlpha,numPeeks);
+      /* Inflation factor */
+      var inflation=actualUpper/nomAlpha;
+      /* Bonferroni correction */
+      var bonferroni=nomAlpha/numPeeks;
+      /* Sidak correction */
+      var sidak=1-Math.pow(1-nomAlpha,1/numPeeks);
+
+      document.getElementById('td-peek-output').style.display='block';
+      document.getElementById('td-peek-nominal').textContent=fmtPct(nomAlpha*100,1);
+      document.getElementById('td-peek-actual').innerHTML='<span style="color:'+(actualUpper>0.10?'#ef4444':actualUpper>0.05?'#F97316':'#22c55e')+'">'+fmtPct(actualUpper*100,1)+'</span>';
+      document.getElementById('td-peek-factor').innerHTML='<span style="color:'+(inflation>3?'#ef4444':inflation>1.5?'#F97316':'#22c55e')+'">'+fmt(inflation,1)+'x</span>';
+      document.getElementById('td-peek-corrected').textContent=fmt(bonferroni,6);
+      document.getElementById('td-peek-sidak').textContent=fmt(sidak,6);
+
+      /* Build progressive peeking table */
+      var peekSteps=[1,2,3,5,7,10,15,20,30,50,75,100];
+      var html='<table class="td-sig-table"><thead><tr><th>Peeks</th><th>Actual FPR (upper bound)</th><th>Inflation</th><th>Bonferroni &alpha;</th><th>Sidak &alpha;</th></tr></thead><tbody>';
+      for(var i=0;i<peekSteps.length;i++){
+        var pk=peekSteps[i];
+        if(pk>numPeeks*2&&pk>10)break;
+        var act=1-Math.pow(1-nomAlpha,pk);
+        var inf=act/nomAlpha;
+        var bon=nomAlpha/pk;
+        var sid=1-Math.pow(1-nomAlpha,1/pk);
+        var isCurrent=pk===numPeeks;
+        var rowStyle=isCurrent?' style="background:#2DD4BF11;"':'';
+        html+='<tr'+rowStyle+'>';
+        html+='<td'+(isCurrent?' style="color:#2DD4BF;font-weight:700;"':'')+'>'+pk+'</td>';
+        html+='<td style="color:'+(act>0.10?'#ef4444':act>0.05?'#F97316':'#22c55e')+'">'+fmtPct(act*100,1)+'</td>';
+        html+='<td>'+fmt(inf,1)+'x</td>';
+        html+='<td>'+fmt(bon,6)+'</td>';
+        html+='<td>'+fmt(sid,6)+'</td>';
+        html+='</tr>';
+      }
+      html+='</tbody></table>';
+      document.getElementById('td-peek-table-wrap').innerHTML=html;
+    };
+
+    /* ===== INIT ===== */
+    calcDuration();
+  })();
+  </script>
+  <script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+</body>
+</html>

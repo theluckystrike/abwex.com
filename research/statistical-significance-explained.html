@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz | ABWex</title>
+  <meta name="description" content="Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/research/statistical-significance-explained.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz | ABWex">
+  <meta property="og:description" content="Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes.">
+  <meta property="og:url" content="https://abwex.com/research/statistical-significance-explained.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz">
+  <meta name="twitter:description" content="Interactive guide to statistical significance. Explore p-values visually, take the misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/research/statistical-significance-explained.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/statistical-significance-explained.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz",
+    "url": "https://abwex.com/research/statistical-significance-explained.html",
+    "description": "Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.",
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-25",
+    "dateModified": "2026-05-25",
+    "mainEntityOfPage": "https://abwex.com/research/statistical-significance-explained.html",
+    "image": "https://abwex.com/assets/og-image.png"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does a p-value actually tell you?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A p-value is the probability of observing data at least as extreme as the collected data, assuming the null hypothesis is true. It does NOT tell you the probability that the null hypothesis is true, nor the probability that your result occurred by chance. A p-value of 0.03 means that if there were truly no effect, you would see data this extreme only 3% of the time. It says nothing about the size or practical importance of the effect."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is a p-value of 0.05 a reliable threshold for significance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The 0.05 threshold is a convention, not a law of nature. Ronald Fisher originally proposed it as a convenient reference point, not a rigid cutoff. A p-value of 0.049 and 0.051 represent nearly identical evidence, yet one is 'significant' and the other is not. Many fields are moving toward reporting exact p-values with effect sizes and confidence intervals rather than relying on binary significant/not-significant decisions. Some journals now require alpha of 0.005 for claims of new discoveries."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between statistical significance and practical significance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Statistical significance means the observed effect is unlikely to be due to random chance alone. Practical significance means the effect is large enough to matter in the real world. With a large enough sample, even trivially small effects become statistically significant. For example, an A/B test with 10 million visitors might detect a 0.01 percentage point conversion rate increase (p < 0.05), but this difference has no practical business value. Always pair p-values with effect size measures like Cohen's d or confidence intervals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do researchers misinterpret p-values so often?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "P-value misinterpretation is widespread because the definition is counterintuitive. It requires reasoning about the probability of data given a hypothesis, not the probability of a hypothesis given data (which is what most people actually want to know). Common errors include believing p-values measure the probability the null is true, that 1 minus p equals the probability the alternative is true, or that a non-significant result means no effect exists. These are all incorrect. Bayesian methods directly answer the question most people are actually asking."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do effect sizes like Cohen's d complement p-values?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Effect sizes quantify how large an observed difference is, independent of sample size. Cohen's d measures the standardized mean difference (difference divided by pooled standard deviation). Values of 0.2, 0.5, and 0.8 are conventionally considered small, medium, and large effects. Unlike p-values, effect sizes do not change with sample size — a Cohen's d of 0.3 means the same thing whether you have 100 or 100,000 observations. Reporting both p-values and effect sizes gives a complete picture: the p-value addresses whether the effect is real, and the effect size addresses whether it matters."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://abwex.com/research/"},{"@type":"ListItem","position":3,"name":"Statistical Significance Explained"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>Statistical Significance Explained</span></nav>
+      <h1>Statistical Significance <span>Explained</span></h1>
+      <p>Explore p-values interactively with distribution overlap visualization, challenge your understanding with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w. All computation runs in your browser.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .ss-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .ss-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        @media(max-width:640px){.ss-grid{grid-template-columns:1fr}}
+        .ss-field label{display:block;font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:.35rem;font-weight:500}
+        .ss-field input,.ss-field select{width:100%;padding:.6rem .8rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.95rem;font-family:inherit}
+        .ss-field input:focus,.ss-field select:focus{outline:none;border-color:#2DD4BF}
+        .ss-btn{display:inline-block;padding:.75rem 2rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:1rem;font-family:inherit}
+        .ss-btn:hover{opacity:.9}
+        .ss-btn-secondary{background:transparent;border:1px solid #2DD4BF;color:#2DD4BF}
+        .ss-btn-secondary:hover{background:#2DD4BF;color:#0d0d1a}
+        .ss-results{margin-top:1.5rem}
+        .ss-result-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border,#333)}
+        .ss-result-row:last-child{border-bottom:none}
+        .ss-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
+        .ss-result-value{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;color:#2DD4BF}
+        .ss-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .ss-chart-title{font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--text,#e0e0e0)}
+        .ss-info{background:var(--input-bg,#0d0d1a);border-left:3px solid #2DD4BF;padding:1rem 1.25rem;border-radius:0 6px 6px 0;margin-top:1rem;font-size:.9rem;color:var(--text-muted,#aaa);line-height:1.6}
+        .ss-quiz-option{display:block;width:100%;text-align:left;padding:.75rem 1rem;margin:.4rem 0;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);cursor:pointer;font-size:.9rem;font-family:inherit;transition:border-color .2s}
+        .ss-quiz-option:hover{border-color:#2DD4BF}
+        .ss-quiz-option.correct{border-color:#22c55e;background:rgba(34,197,94,.1)}
+        .ss-quiz-option.incorrect{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .ss-quiz-option.reveal{border-color:#22c55e;background:rgba(34,197,94,.05)}
+        .ss-quiz-explain{display:none;padding:.75rem 1rem;margin-top:.5rem;font-size:.85rem;color:var(--text-muted,#aaa);line-height:1.5;border-left:3px solid #2DD4BF;background:var(--input-bg,#0d0d1a);border-radius:0 6px 6px 0}
+        .ss-quiz-counter{font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:.75rem}
+        .ss-quiz-score{font-size:1.2rem;font-weight:700;color:#2DD4BF;text-align:center;padding:1.5rem}
+        .ss-tab-bar{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+        .ss-tab{padding:.5rem 1.2rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text-muted,#aaa);cursor:pointer;font-size:.85rem;font-family:inherit}
+        .ss-tab.active{background:#2DD4BF;color:#0d0d1a;border-color:#2DD4BF;font-weight:600}
+        .ss-tab-panel{display:none}
+        .ss-tab-panel.active{display:block}
+      </style>
+
+      <!-- Tab Navigation -->
+      <div class="ss-tab-bar">
+        <button class="ss-tab active" onclick="switchTab('pvalue')">P-Value Explorer</button>
+        <button class="ss-tab" onclick="switchTab('quiz')">Misconceptions Quiz</button>
+        <button class="ss-tab" onclick="switchTab('ci')">Confidence Intervals</button>
+        <button class="ss-tab" onclick="switchTab('effect')">Effect Size Calculator</button>
+      </div>
+
+      <!-- TAB 1: P-Value Interactive Explorer -->
+      <div id="tab-pvalue" class="ss-tab-panel active">
+        <div class="ss-card">
+          <h2 style="margin-top:0;font-size:1.3rem;">P-Value Interactive Explorer</h2>
+          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Adjust sample size, effect size, and alpha to see how two distributions overlap and where the p-value region falls.</p>
+          <div class="ss-grid">
+            <div class="ss-field">
+              <label for="pv-n">Sample Size (per group)</label>
+              <input type="number" id="pv-n" value="100" min="10" max="100000" step="10">
+            </div>
+            <div class="ss-field">
+              <label for="pv-effect">True Effect Size (Cohen's d)</label>
+              <input type="number" id="pv-effect" value="0.5" min="0" max="3" step="0.05">
+            </div>
+            <div class="ss-field">
+              <label for="pv-alpha">Significance Level (alpha)</label>
+              <select id="pv-alpha">
+                <option value="0.01">0.01 (99% confidence)</option>
+                <option value="0.05" selected>0.05 (95% confidence)</option>
+                <option value="0.10">0.10 (90% confidence)</option>
+              </select>
+            </div>
+            <div class="ss-field">
+              <label for="pv-tails">Test Type</label>
+              <select id="pv-tails">
+                <option value="two" selected>Two-Tailed</option>
+                <option value="one">One-Tailed (right)</option>
+              </select>
+            </div>
+          </div>
+          <button class="ss-btn" onclick="updatePVExplorer()">Update Visualization</button>
+        </div>
+
+        <div class="ss-chart-wrap">
+          <div class="ss-chart-title">Distribution Overlap — Null vs. Alternative Hypothesis</div>
+          <svg id="pv-chart" viewBox="0 0 700 350" style="width:100%;height:auto;"></svg>
+        </div>
+
+        <div id="pv-results" class="ss-card" style="margin-top:1.5rem;">
+          <div class="ss-result-row"><span class="ss-result-label">Observed Test Statistic (z)</span><span class="ss-result-value" id="pv-r-z">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">P-Value</span><span class="ss-result-value" id="pv-r-pval">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Critical Value</span><span class="ss-result-value" id="pv-r-crit">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Statistical Power</span><span class="ss-result-value" id="pv-r-power">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Decision</span><span class="ss-result-value" id="pv-r-decision">--</span></div>
+        </div>
+        <div class="ss-info">The shaded teal region shows where p-values fall below alpha. The orange curve is the alternative hypothesis distribution. Greater separation means higher power and smaller p-values.</div>
+      </div>
+
+      <!-- TAB 2: Misconceptions Quiz -->
+      <div id="tab-quiz" class="ss-tab-panel">
+        <div class="ss-card">
+          <h2 style="margin-top:0;font-size:1.3rem;">P-Value Misconceptions Quiz</h2>
+          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1rem;">Test your understanding of statistical significance. 10 questions on common p-value myths and misinterpretations.</p>
+          <div class="ss-quiz-counter" id="quiz-counter">Question 1 of 10</div>
+          <div id="quiz-question" style="font-size:1.05rem;font-weight:500;margin-bottom:1rem;line-height:1.5;"></div>
+          <div id="quiz-options"></div>
+          <div class="ss-quiz-explain" id="quiz-explain"></div>
+          <div style="margin-top:1rem;display:flex;gap:.75rem;">
+            <button class="ss-btn" id="quiz-next" onclick="nextQuestion()" style="display:none;">Next Question</button>
+            <button class="ss-btn ss-btn-secondary" id="quiz-restart" onclick="restartQuiz()" style="display:none;">Restart Quiz</button>
+          </div>
+          <div class="ss-quiz-score" id="quiz-score" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Confidence Interval Visualizer -->
+      <div id="tab-ci" class="ss-tab-panel">
+        <div class="ss-card">
+          <h2 style="margin-top:0;font-size:1.3rem;">Confidence Interval Visualizer</h2>
+          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Enter your sample data and visualize confidence intervals at different levels. See how sample size and variance affect interval width.</p>
+          <div class="ss-grid">
+            <div class="ss-field">
+              <label for="ci-mean">Sample Mean</label>
+              <input type="number" id="ci-mean" value="52" step="0.1">
+            </div>
+            <div class="ss-field">
+              <label for="ci-sd">Sample Standard Deviation</label>
+              <input type="number" id="ci-sd" value="10" min="0.01" step="0.1">
+            </div>
+            <div class="ss-field">
+              <label for="ci-n">Sample Size</label>
+              <input type="number" id="ci-n" value="30" min="2" step="1">
+            </div>
+            <div class="ss-field">
+              <label for="ci-null">Null Hypothesis Value</label>
+              <input type="number" id="ci-null" value="50" step="0.1">
+            </div>
+          </div>
+          <button class="ss-btn" onclick="updateCI()">Visualize Intervals</button>
+        </div>
+        <div class="ss-chart-wrap">
+          <div class="ss-chart-title">Confidence Intervals at 90%, 95%, and 99%</div>
+          <svg id="ci-chart" viewBox="0 0 700 250" style="width:100%;height:auto;"></svg>
+        </div>
+        <div id="ci-results" class="ss-card" style="margin-top:1.5rem;">
+          <div class="ss-result-row"><span class="ss-result-label">90% CI</span><span class="ss-result-value" id="ci-r-90">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">95% CI</span><span class="ss-result-value" id="ci-r-95">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">99% CI</span><span class="ss-result-value" id="ci-r-99">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Standard Error</span><span class="ss-result-value" id="ci-r-se">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Margin of Error (95%)</span><span class="ss-result-value" id="ci-r-moe">--</span></div>
+        </div>
+        <div class="ss-info">Wider intervals mean more uncertainty. If the null hypothesis value (dashed line) falls outside the confidence interval, the result is significant at that level.</div>
+      </div>
+
+      <!-- TAB 4: Effect Size Calculator -->
+      <div id="tab-effect" class="ss-tab-panel">
+        <div class="ss-card">
+          <h2 style="margin-top:0;font-size:1.3rem;">Effect Size Calculator</h2>
+          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Calculate Cohen's d (means), Cohen's h (proportions), and Cohen's w (chi-square) with magnitude interpretation.</p>
+          <div class="ss-tab-bar">
+            <button class="ss-tab active" id="es-tab-d" onclick="switchEffectTab('d')">Cohen's d</button>
+            <button class="ss-tab" id="es-tab-h" onclick="switchEffectTab('h')">Cohen's h</button>
+            <button class="ss-tab" id="es-tab-w" onclick="switchEffectTab('w')">Cohen's w</button>
+          </div>
+
+          <div id="es-panel-d">
+            <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Standardized mean difference between two groups.</p>
+            <div class="ss-grid">
+              <div class="ss-field">
+                <label for="es-d-m1">Group 1 Mean</label>
+                <input type="number" id="es-d-m1" value="50" step="0.1">
+              </div>
+              <div class="ss-field">
+                <label for="es-d-m2">Group 2 Mean</label>
+                <input type="number" id="es-d-m2" value="55" step="0.1">
+              </div>
+              <div class="ss-field">
+                <label for="es-d-sd1">Group 1 SD</label>
+                <input type="number" id="es-d-sd1" value="10" min="0.01" step="0.1">
+              </div>
+              <div class="ss-field">
+                <label for="es-d-sd2">Group 2 SD</label>
+                <input type="number" id="es-d-sd2" value="10" min="0.01" step="0.1">
+              </div>
+            </div>
+            <button class="ss-btn" onclick="calcCohenD()">Calculate Cohen's d</button>
+          </div>
+
+          <div id="es-panel-h" style="display:none;">
+            <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Effect size for comparing two proportions (arcsine transformation).</p>
+            <div class="ss-grid">
+              <div class="ss-field">
+                <label for="es-h-p1">Proportion 1 (%)</label>
+                <input type="number" id="es-h-p1" value="5" min="0.1" max="99.9" step="0.1">
+              </div>
+              <div class="ss-field">
+                <label for="es-h-p2">Proportion 2 (%)</label>
+                <input type="number" id="es-h-p2" value="8" min="0.1" max="99.9" step="0.1">
+              </div>
+            </div>
+            <button class="ss-btn" onclick="calcCohenH()">Calculate Cohen's h</button>
+          </div>
+
+          <div id="es-panel-w" style="display:none;">
+            <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Effect size for chi-square tests of independence or goodness-of-fit.</p>
+            <div class="ss-grid">
+              <div class="ss-field">
+                <label for="es-w-chi2">Chi-Square Statistic</label>
+                <input type="number" id="es-w-chi2" value="12.5" min="0" step="0.1">
+              </div>
+              <div class="ss-field">
+                <label for="es-w-n">Total Sample Size</label>
+                <input type="number" id="es-w-n" value="200" min="1" step="1">
+              </div>
+            </div>
+            <button class="ss-btn" onclick="calcCohenW()">Calculate Cohen's w</button>
+          </div>
+        </div>
+
+        <div id="es-results" class="ss-card" style="margin-top:1.5rem;">
+          <div class="ss-result-row"><span class="ss-result-label">Effect Size</span><span class="ss-result-value" id="es-r-val">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Magnitude</span><span class="ss-result-value" id="es-r-mag">--</span></div>
+          <div class="ss-result-row"><span class="ss-result-label">Interpretation</span><span class="ss-result-value" id="es-r-interp" style="font-size:.85rem;font-weight:500;">--</span></div>
+        </div>
+        <div class="ss-info">Cohen's d: 0.2 = small, 0.5 = medium, 0.8 = large. Cohen's h: same thresholds via arcsine transform. Cohen's w: 0.1 = small, 0.3 = medium, 0.5 = large.</div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>What Statistical Significance Really Means</h2>
+      <p>Statistical significance is one of the most important and most misunderstood concepts in data-driven decision making. At its core, statistical significance is a statement about the compatibility of observed data with a null hypothesis. When a result is "statistically significant at the 0.05 level," it means that if the null hypothesis were true, there would be less than a 5% probability of observing data as extreme as what was collected. That is the entire claim. It says nothing about the probability that the null hypothesis is true, nothing about the size of the effect, and nothing about whether the result matters in practice.</p>
+      <p>The concept was formalized in the early 20th century by Ronald Fisher, Jerzy Neyman, and Egon Pearson, though their frameworks were fundamentally different. Fisher viewed the p-value as a continuous measure of evidence against the null hypothesis, while Neyman and Pearson developed the hypothesis testing framework with fixed error rates (Type I and Type II errors). Modern practice awkwardly merges both approaches, using Fisher's p-values within Neyman-Pearson's decision framework, which creates confusion that persists to this day.</p>
+
+      <h2>The Anatomy of a P-Value</h2>
+      <p>A p-value is calculated in three steps. First, you define a null hypothesis, typically that there is no effect or no difference. Second, you compute a test statistic that summarizes how far your observed data deviate from what the null hypothesis predicts. Third, you calculate the probability of observing a test statistic at least as extreme as yours, assuming the null hypothesis is true. This probability is the p-value.</p>
+      <p>The p-value explorer above visualizes this process. The gray curve represents the null hypothesis distribution, which is the sampling distribution of the test statistic if there is truly no effect. The teal shaded region represents values more extreme than the critical value. When the observed test statistic falls in this region, the p-value is below alpha and the result is deemed statistically significant. The orange curve represents the alternative hypothesis, showing where the test statistic would likely fall if the true effect equals Cohen's d. The overlap between these curves determines statistical power.</p>
+      <p>Understanding this geometry is essential. When you increase the sample size, both distributions become narrower (lower standard error), which separates them further and increases power. When you increase the effect size, the alternative distribution shifts further from the null, again increasing separation. When you decrease alpha, the critical value moves outward, making significance harder to achieve but reducing false positives.</p>
+
+      <h2>Ten Things P-Values Do NOT Tell You</h2>
+      <p>The misconceptions quiz in this tool targets the ten most common misinterpretations of p-values, drawn from research by Goodman (2008), Greenland et al. (2016), and the American Statistical Association's 2016 statement on p-values. Here is a summary of what p-values do not mean:</p>
+      <p>First, the p-value is not the probability that the null hypothesis is true. This is the most pervasive error. The p-value is P(data | H0), not P(H0 | data). Converting from one to the other requires Bayes' theorem and a prior probability for H0, which the frequentist framework does not provide. Second, 1 minus the p-value is not the probability that the alternative hypothesis is true. Third, a p-value of 0.05 does not mean there is a 5% chance the result is a false positive. The false positive rate depends on the base rate of true effects and the power of the study, not just alpha.</p>
+      <p>Fourth, a non-significant p-value does not mean there is no effect. It means the data are compatible with the null hypothesis, but they may also be compatible with meaningful effects, especially if the study was underpowered. Fifth, a significant p-value does not mean the effect is large or important. Sixth, two studies with p = 0.04 and p = 0.06 do not provide meaningfully different evidence. Seventh, the p-value does not measure the reliability or replicability of a finding. Eighth, "highly significant" results (p = 0.001) are not necessarily more important than marginally significant ones (p = 0.04). Ninth, p-values from different studies are not directly comparable without accounting for power and effect sizes. Tenth, the p-value does not account for multiple comparisons, data dredging, or selective reporting unless explicitly adjusted.</p>
+
+      <h2>Confidence Intervals: The Better Communicator</h2>
+      <p>Confidence intervals convey the same statistical information as p-values but in a more interpretable format. A 95% confidence interval provides a range of parameter values that are compatible with the observed data. If the interval excludes the null hypothesis value, the result is significant at the 0.05 level. But the interval also communicates the precision of the estimate and the range of plausible effect sizes, something a p-value alone cannot do.</p>
+      <p>The confidence interval visualizer in this tool shows how the interval width depends on sample size, variability, and confidence level. The relationship is governed by the formula: CI = mean plus or minus z * (SD / sqrt(n)). Doubling the sample size narrows the interval by a factor of sqrt(2), roughly 29%. Increasing from 95% to 99% confidence widens the interval by about 30% because the critical z-value increases from 1.96 to 2.576.</p>
+      <p>A common misinterpretation of confidence intervals mirrors the p-value confusion: a 95% CI does not mean there is a 95% probability the true parameter lies within the interval. It means that if you repeated the experiment many times, 95% of the constructed intervals would contain the true parameter. Any single interval either contains the true value or it does not. This frequentist interpretation is admittedly awkward, which is why Bayesian credible intervals, which do provide direct probability statements about parameters, are gaining popularity.</p>
+
+      <h2>Effect Sizes: The Missing Piece</h2>
+      <p>Effect sizes answer the question that p-values cannot: how large is the observed difference? Cohen's d, h, and w are standardized effect size measures that allow comparisons across different scales and contexts. Cohen's d divides the mean difference by the pooled standard deviation, yielding a scale-free measure. A Cohen's d of 0.5 means the two groups differ by half a standard deviation, regardless of whether you are measuring response time in milliseconds or revenue in dollars.</p>
+      <p>Cohen's h applies the arcsine transformation to proportions before computing the difference. This is necessary because the variance of a proportion depends on the proportion itself, so the same absolute difference (e.g., 3 percentage points) has different statistical properties at a 5% baseline versus a 50% baseline. Cohen's h normalizes this, making effects comparable across different baseline rates. In A/B testing, this is particularly valuable when comparing experiments across pages with very different conversion rates.</p>
+      <p>Cohen's w is the effect size for chi-square tests. It is defined as the square root of the chi-square statistic divided by the sample size: w = sqrt(chi-square / n). Like d and h, it has conventional thresholds: 0.1 (small), 0.3 (medium), and 0.5 (large). The effect size calculator in this tool computes all three measures and provides magnitude interpretations based on Cohen's 1988 benchmarks, while noting that these benchmarks are domain-dependent and should be calibrated to your specific field.</p>
+
+      <h2>Practical Recommendations for A/B Testers</h2>
+      <p>Report p-values alongside confidence intervals and effect sizes. Never make decisions based on p-values alone. Pre-register your hypothesis, sample size, and analysis plan before running the test. Use power analysis to ensure your test can detect the minimum effect size that matters to your business. Adjust for multiple comparisons when testing multiple metrics or variants. Consider Bayesian methods when you need direct probability statements about your hypotheses. And always remember that statistical significance is a necessary but insufficient condition for practical significance.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What does a p-value actually tell you?</summary>
+        <p>A p-value is the probability of observing data at least as extreme as the collected data, assuming the null hypothesis is true. It does NOT tell you the probability that the null hypothesis is true, nor the probability that your result occurred by chance. A p-value of 0.03 means that if there were truly no effect, you would see data this extreme only 3% of the time.</p>
+      </details>
+
+      <details>
+        <summary>Is a p-value of 0.05 a reliable threshold for significance?</summary>
+        <p>The 0.05 threshold is a convention, not a law of nature. A p-value of 0.049 and 0.051 represent nearly identical evidence. Many fields now recommend reporting exact p-values with effect sizes and confidence intervals. Some journals require alpha of 0.005 for claims of new discoveries.</p>
+      </details>
+
+      <details>
+        <summary>What is the difference between statistical significance and practical significance?</summary>
+        <p>Statistical significance means the observed effect is unlikely due to chance. Practical significance means the effect is large enough to matter. With a large enough sample, trivially small effects become statistically significant. Always pair p-values with effect size measures.</p>
+      </details>
+
+      <details>
+        <summary>Why do researchers misinterpret p-values so often?</summary>
+        <p>P-value misinterpretation is widespread because the definition requires reasoning about the probability of data given a hypothesis, not the probability of a hypothesis given data (which is what most people want to know). Bayesian methods directly answer the question most people are actually asking.</p>
+      </details>
+
+      <details>
+        <summary>How do effect sizes like Cohen's d complement p-values?</summary>
+        <p>Effect sizes quantify how large an observed difference is, independent of sample size. Cohen's d of 0.5 means the groups differ by half a standard deviation. Unlike p-values, effect sizes do not shrink with more data. Reporting both gives a complete picture: the p-value addresses whether the effect is real, and the effect size addresses whether it matters.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate statistical significance for your test results</li>
+        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Determine required sample size with power curves</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Compute CIs for proportions and means</li>
+        <li><a href="/tools/chi-square-test.html">Chi-Square Test Calculator</a> — Test independence and goodness-of-fit</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools & Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script>
+  (function(){
+    /* ===== UTILITY FUNCTIONS ===== */
+    function normCdf(x){if(x<-8)return 0;if(x>8)return 1;var t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327,p=d*Math.exp(-x*x/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.3302744))));return x>0?1-p:p;}
+    function normInv(p){if(p<=0)return-8;if(p>=1)return 8;if(p<.5)return-normInv(1-p);var t=Math.sqrt(-2*Math.log(1-p)),c0=2.515517,c1=.802853,c2=.010328,d1=1.432788,d2=.189269,d3=.001308;return t-(c0+c1*t+c2*t*t)/(1+d1*t+d2*t*t+d3*t*t*t);}
+    function normPdf(x){return Math.exp(-x*x/2)/Math.sqrt(2*Math.PI);}
+    function fmt(v,d){return Number(v).toFixed(d===undefined?4:d);}
+
+    /* ===== TAB SWITCHING ===== */
+    window.switchTab=function(id){
+      document.querySelectorAll('.ss-tab-panel').forEach(function(p){p.classList.remove('active');});
+      document.querySelectorAll('.ss-tab-bar > .ss-tab').forEach(function(t){t.classList.remove('active');});
+      document.getElementById('tab-'+id).classList.add('active');
+      var tabs=document.querySelectorAll('.ss-tab-bar')[0].children;
+      var map={pvalue:0,quiz:1,ci:2,effect:3};
+      if(tabs[map[id]])tabs[map[id]].classList.add('active');
+    };
+
+    /* ===== P-VALUE EXPLORER ===== */
+    function drawPVChart(n,d,alpha,tails){
+      var svg=document.getElementById('pv-chart');
+      var W=700,H=350,ml=55,mr=25,mt=20,mb=45;
+      var pw=W-ml-mr,ph=H-mt-mb;
+      var se=Math.sqrt(2/n);
+      var zObs=d/se;
+      var zCrit=tails==='two'?normInv(1-alpha/2):normInv(1-alpha);
+      var pVal=tails==='two'?2*(1-normCdf(Math.abs(zObs))):1-normCdf(zObs);
+      if(pVal>1)pVal=1;if(pVal<0)pVal=0;
+      var power=tails==='two'?1-normCdf(zCrit-zObs)+normCdf(-zCrit-zObs):normCdf(zObs-zCrit);
+
+      document.getElementById('pv-r-z').textContent=fmt(zObs,3);
+      document.getElementById('pv-r-pval').textContent=pVal<.0001?'< 0.0001':fmt(pVal,4);
+      document.getElementById('pv-r-crit').textContent=(tails==='two'?'\u00B1':'')+fmt(zCrit,3);
+      document.getElementById('pv-r-power').textContent=fmt(power*100,1)+'%';
+      document.getElementById('pv-r-decision').textContent=pVal<alpha?'Reject H\u2080 (Significant)':'Fail to Reject H\u2080';
+      document.getElementById('pv-r-decision').style.color=pVal<alpha?'#22c55e':'#ef4444';
+
+      var lo=-4,hi=Math.max(4,zObs+3);
+      var steps=200;
+      var html='';
+
+      // grid
+      for(var i=0;i<=4;i++){var y=mt+ph-(i/4)*ph;html+='<line x1="'+ml+'" y1="'+y+'" x2="'+(W-mr)+'" y2="'+y+'" stroke="#333" stroke-width="0.5"/>';}
+      for(var i=0;i<=5;i++){var x=ml+(i/5)*pw;var v=lo+(hi-lo)*(i/5);html+='<text x="'+x+'" y="'+(H-mb+18)+'" text-anchor="middle" fill="#888" font-size="11" font-family="Space Mono,monospace">'+fmt(v,1)+'</text>';}
+      html+='<text x="'+(ml+pw/2)+'" y="'+(H-5)+'" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif">z-score</text>';
+
+      var maxPdf=normPdf(0);
+      function toX(z){return ml+((z-lo)/(hi-lo))*pw;}
+      function toY(pdf){return mt+ph-(pdf/maxPdf)*ph*.85;}
+
+      // Shade rejection region under null
+      var shadePts=[];
+      if(tails==='two'){
+        // Right tail
+        for(var i=0;i<=60;i++){var z=zCrit+(hi-zCrit)*(i/60);shadePts.push(fmt(toX(z),1)+','+fmt(toY(normPdf(z)),1));}
+        shadePts.push(fmt(toX(hi),1)+','+fmt(mt+ph,1));
+        shadePts.push(fmt(toX(zCrit),1)+','+fmt(mt+ph,1));
+        html+='<polygon points="'+shadePts.join(' ')+'" fill="#2DD4BF" opacity="0.2"/>';
+        // Left tail
+        shadePts=[];
+        for(var i=0;i<=60;i++){var z=lo+(-zCrit-lo)*(i/60);shadePts.push(fmt(toX(z),1)+','+fmt(toY(normPdf(z)),1));}
+        shadePts.push(fmt(toX(-zCrit),1)+','+fmt(mt+ph,1));
+        shadePts.push(fmt(toX(lo),1)+','+fmt(mt+ph,1));
+        html+='<polygon points="'+shadePts.join(' ')+'" fill="#2DD4BF" opacity="0.2"/>';
+      }else{
+        for(var i=0;i<=60;i++){var z=zCrit+(hi-zCrit)*(i/60);shadePts.push(fmt(toX(z),1)+','+fmt(toY(normPdf(z)),1));}
+        shadePts.push(fmt(toX(hi),1)+','+fmt(mt+ph,1));
+        shadePts.push(fmt(toX(zCrit),1)+','+fmt(mt+ph,1));
+        html+='<polygon points="'+shadePts.join(' ')+'" fill="#2DD4BF" opacity="0.2"/>';
+      }
+
+      // Null distribution curve (gray)
+      var pts=[];
+      for(var i=0;i<=steps;i++){var z=lo+(hi-lo)*(i/steps);pts.push(fmt(toX(z),1)+','+fmt(toY(normPdf(z)),1));}
+      html+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#888" stroke-width="2"/>';
+      html+='<text x="'+fmt(toX(0),1)+'" y="'+(mt+10)+'" text-anchor="middle" fill="#888" font-size="11" font-family="IBM Plex Sans,sans-serif">H\u2080 (Null)</text>';
+
+      // Alternative distribution curve (orange)
+      var altPts=[];
+      var maxAltPdf=normPdf(0);
+      for(var i=0;i<=steps;i++){var z=lo+(hi-lo)*(i/steps);var pdf=normPdf(z-zObs);altPts.push(fmt(toX(z),1)+','+fmt(toY(pdf),1));}
+      html+='<polyline points="'+altPts.join(' ')+'" fill="none" stroke="#F97316" stroke-width="2"/>';
+      if(zObs>0.3){html+='<text x="'+fmt(toX(zObs),1)+'" y="'+(mt+10)+'" text-anchor="middle" fill="#F97316" font-size="11" font-family="IBM Plex Sans,sans-serif">H\u2081 (Alt)</text>';}
+
+      // Critical value line
+      html+='<line x1="'+fmt(toX(zCrit),1)+'" y1="'+mt+'" x2="'+fmt(toX(zCrit),1)+'" y2="'+(H-mb)+'" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="5,4" opacity="0.7"/>';
+      html+='<text x="'+fmt(toX(zCrit)+5,1)+'" y="'+(mt+ph-5)+'" fill="#2DD4BF" font-size="10" font-family="Space Mono,monospace">\u03B1 crit</text>';
+      if(tails==='two'){
+        html+='<line x1="'+fmt(toX(-zCrit),1)+'" y1="'+mt+'" x2="'+fmt(toX(-zCrit),1)+'" y2="'+(H-mb)+'" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="5,4" opacity="0.7"/>';
+      }
+
+      // Observed z line
+      if(Math.abs(zObs)>0.01){
+        html+='<line x1="'+fmt(toX(zObs),1)+'" y1="'+mt+'" x2="'+fmt(toX(zObs),1)+'" y2="'+(H-mb)+'" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,3"/>';
+        html+='<text x="'+fmt(toX(zObs)+5,1)+'" y="'+(H-mb-5)+'" fill="#F97316" font-size="10" font-family="Space Mono,monospace">z='+fmt(zObs,2)+'</text>';
+      }
+
+      svg.innerHTML=html;
+    }
+
+    window.updatePVExplorer=function(){
+      var n=parseInt(document.getElementById('pv-n').value)||100;
+      var d=parseFloat(document.getElementById('pv-effect').value)||0;
+      var alpha=parseFloat(document.getElementById('pv-alpha').value);
+      var tails=document.getElementById('pv-tails').value;
+      drawPVChart(n,d,alpha,tails);
+    };
+
+    /* ===== MISCONCEPTIONS QUIZ ===== */
+    var quizData=[
+      {q:"A p-value of 0.03 means there is a 3% probability the null hypothesis is true.",correct:1,options:["True","False"],explain:"False. The p-value is P(data | H0), not P(H0 | data). It tells you how likely the data are assuming H0 is true, not the probability that H0 is true. Converting between these requires Bayes' theorem and a prior."},
+      {q:"If my A/B test returns p = 0.04, there is a 96% chance the treatment works.",correct:1,options:["True","False"],explain:"False. 1 - p is not the probability the alternative hypothesis is true. The p-value only measures data extremity under the null. The actual probability the treatment works depends on the prior probability and statistical power."},
+      {q:"A non-significant result (p = 0.35) proves there is no real effect.",correct:1,options:["True","False"],explain:"False. A non-significant result means you cannot reject the null hypothesis, not that it is true. The study may have been underpowered. Absence of evidence is not evidence of absence."},
+      {q:"If two experiments give p = 0.04 and p = 0.06, the first found an effect and the second did not.",correct:1,options:["True","False"],explain:"False. These p-values are very close and represent nearly identical evidence. The difference between 'significant' and 'not significant' is not itself statistically significant. Treating 0.05 as a bright line creates a false dichotomy."},
+      {q:"Replicating a study and getting p = 0.03 again confirms the original finding is reliable.",correct:1,options:["True","False"],explain:"False. While replication with consistent results is encouraging, two p-values of 0.03 do not guarantee the effect is real. Both could be false positives, especially if the prior probability of the effect is low. Effect size consistency matters more than p-value consistency."},
+      {q:"What does 'statistical power' measure?",correct:2,options:["The probability of getting a significant result","The probability the null hypothesis is false","The probability of detecting a real effect when one exists","The strength of the observed effect"],explain:"Power is the probability of correctly rejecting the null hypothesis when the alternative is true. It equals 1 - beta, where beta is the Type II error rate. Power is NOT the probability of getting any significant result (that includes false positives)."},
+      {q:"A researcher tests 20 hypotheses and finds one with p < 0.05. What should they conclude?",correct:1,options:["The significant result is a real finding","The result is likely a false positive without correction","The other 19 results are definitely null effects","The study needs more participants"],explain:"With 20 independent tests at alpha = 0.05, the expected number of false positives is 1 (20 * 0.05 = 1). Without multiple comparison correction (Bonferroni, FDR, etc.), this single significant result is likely a false positive. This is the multiple comparisons problem."},
+      {q:"What happens to the p-value if you double the sample size but the effect stays the same?",correct:0,options:["The p-value decreases","The p-value stays the same","The p-value increases","It depends on the variance"],explain:"With a fixed true effect, increasing sample size reduces the standard error, which increases the test statistic, which decreases the p-value. This is why any effect, no matter how small, becomes 'significant' with enough data. This illustrates why p-values alone are insufficient."},
+      {q:"A confidence interval of [0.2, 4.8] for a mean difference tells you:",correct:2,options:["The true difference is definitely between 0.2 and 4.8","There is a 95% chance the true difference is in this range","Values between 0.2 and 4.8 are compatible with the observed data","The effect size is large"],explain:"A confidence interval shows the set of parameter values that are compatible with the data at a given confidence level. The frequentist interpretation is that 95% of such intervals from repeated experiments would contain the true value. It does NOT mean there is a 95% probability this specific interval contains the truth."},
+      {q:"Which provides more information about an A/B test result?",correct:2,options:["The p-value alone","The effect size alone","The confidence interval for the effect size","The sample size alone"],explain:"The confidence interval for the effect size provides the most information because it encodes three things simultaneously: the point estimate (center), the precision (width), and statistical significance (whether it excludes zero). A p-value discards the magnitude, and an effect size alone discards the uncertainty."}
+    ];
+    var quizIdx=0,quizScore=0,quizAnswered=false;
+
+    function renderQuestion(){
+      var q=quizData[quizIdx];
+      document.getElementById('quiz-counter').textContent='Question '+(quizIdx+1)+' of '+quizData.length;
+      document.getElementById('quiz-question').textContent=q.q;
+      var html='';
+      for(var i=0;i<q.options.length;i++){html+='<button class="ss-quiz-option" data-idx="'+i+'" onclick="answerQuiz('+i+')">'+q.options[i]+'</button>';}
+      document.getElementById('quiz-options').innerHTML=html;
+      document.getElementById('quiz-explain').style.display='none';
+      document.getElementById('quiz-next').style.display='none';
+      document.getElementById('quiz-restart').style.display='none';
+      document.getElementById('quiz-score').style.display='none';
+      quizAnswered=false;
+    }
+
+    window.answerQuiz=function(idx){
+      if(quizAnswered)return;
+      quizAnswered=true;
+      var q=quizData[quizIdx];
+      var btns=document.querySelectorAll('#quiz-options .ss-quiz-option');
+      for(var i=0;i<btns.length;i++){
+        if(i===q.correct)btns[i].classList.add(i===idx?'correct':'reveal');
+        else if(i===idx)btns[i].classList.add('incorrect');
+      }
+      if(idx===q.correct)quizScore++;
+      document.getElementById('quiz-explain').textContent=q.explain;
+      document.getElementById('quiz-explain').style.display='block';
+      if(quizIdx<quizData.length-1){document.getElementById('quiz-next').style.display='inline-block';}
+      else{
+        document.getElementById('quiz-score').textContent='Score: '+quizScore+' / '+quizData.length+' ('+Math.round(quizScore/quizData.length*100)+'%)';
+        document.getElementById('quiz-score').style.display='block';
+        document.getElementById('quiz-restart').style.display='inline-block';
+      }
+    };
+
+    window.nextQuestion=function(){quizIdx++;renderQuestion();};
+    window.restartQuiz=function(){quizIdx=0;quizScore=0;renderQuestion();};
+
+    /* ===== CONFIDENCE INTERVAL VISUALIZER ===== */
+    window.updateCI=function(){
+      var mean=parseFloat(document.getElementById('ci-mean').value);
+      var sd=parseFloat(document.getElementById('ci-sd').value);
+      var n=parseInt(document.getElementById('ci-n').value);
+      var nullVal=parseFloat(document.getElementById('ci-null').value);
+      if(isNaN(mean)||isNaN(sd)||isNaN(n)||sd<=0||n<2)return;
+
+      var se=sd/Math.sqrt(n);
+      var z90=1.645,z95=1.96,z99=2.576;
+      var ci90=[mean-z90*se,mean+z90*se];
+      var ci95=[mean-z95*se,mean+z95*se];
+      var ci99=[mean-z99*se,mean+z99*se];
+
+      document.getElementById('ci-r-90').textContent='['+fmt(ci90[0],3)+', '+fmt(ci90[1],3)+']';
+      document.getElementById('ci-r-95').textContent='['+fmt(ci95[0],3)+', '+fmt(ci95[1],3)+']';
+      document.getElementById('ci-r-99').textContent='['+fmt(ci99[0],3)+', '+fmt(ci99[1],3)+']';
+      document.getElementById('ci-r-se').textContent=fmt(se,4);
+      document.getElementById('ci-r-moe').textContent='\u00B1'+fmt(z95*se,3);
+
+      // Draw chart
+      var svg=document.getElementById('ci-chart');
+      var W=700,H=250,ml=55,mr=25,mt=25,mb=40;
+      var pw=W-ml-mr,ph=H-mt-mb;
+      var lo=Math.min(ci99[0],nullVal)-se*1.5;
+      var hi=Math.max(ci99[1],nullVal)+se*1.5;
+      var range=hi-lo;
+      function toX(v){return ml+((v-lo)/range)*pw;}
+
+      var html='';
+      // Grid
+      for(var i=0;i<=5;i++){var x=ml+(i/5)*pw;var v=lo+range*(i/5);html+='<line x1="'+x+'" y1="'+mt+'" x2="'+x+'" y2="'+(H-mb)+'" stroke="#333" stroke-width="0.5"/>';html+='<text x="'+x+'" y="'+(H-mb+18)+'" text-anchor="middle" fill="#888" font-size="11" font-family="Space Mono,monospace">'+fmt(v,1)+'</text>';}
+
+      // Null value line
+      var nx=toX(nullVal);
+      html+='<line x1="'+fmt(nx,1)+'" y1="'+mt+'" x2="'+fmt(nx,1)+'" y2="'+(H-mb)+'" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,4"/>';
+      html+='<text x="'+fmt(nx+5,1)+'" y="'+(mt+12)+'" fill="#ef4444" font-size="10" font-family="Space Mono,monospace">H\u2080='+fmt(nullVal,1)+'</text>';
+
+      var levels=[{ci:ci99,color:'#A78BFA',y:mt+ph*0.25,label:'99%'},{ci:ci95,color:'#2DD4BF',y:mt+ph*0.5,label:'95%'},{ci:ci90,color:'#F97316',y:mt+ph*0.75,label:'90%'}];
+      for(var i=0;i<levels.length;i++){
+        var L=levels[i];
+        var x1=toX(L.ci[0]),x2=toX(L.ci[1]),y=L.y;
+        html+='<line x1="'+fmt(x1,1)+'" y1="'+fmt(y,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y,1)+'" stroke="'+L.color+'" stroke-width="3"/>';
+        html+='<line x1="'+fmt(x1,1)+'" y1="'+fmt(y-8,1)+'" x2="'+fmt(x1,1)+'" y2="'+fmt(y+8,1)+'" stroke="'+L.color+'" stroke-width="2"/>';
+        html+='<line x1="'+fmt(x2,1)+'" y1="'+fmt(y-8,1)+'" x2="'+fmt(x2,1)+'" y2="'+fmt(y+8,1)+'" stroke="'+L.color+'" stroke-width="2"/>';
+        var mx=toX(mean);
+        html+='<circle cx="'+fmt(mx,1)+'" cy="'+fmt(y,1)+'" r="5" fill="'+L.color+'"/>';
+        html+='<text x="'+fmt(x2+8,1)+'" y="'+fmt(y+4,1)+'" fill="'+L.color+'" font-size="11" font-family="Space Mono,monospace">'+L.label+'</text>';
+      }
+      svg.innerHTML=html;
+    };
+
+    /* ===== EFFECT SIZE CALCULATOR ===== */
+    window.switchEffectTab=function(t){
+      ['d','h','w'].forEach(function(k){
+        document.getElementById('es-panel-'+k).style.display=k===t?'block':'none';
+        document.getElementById('es-tab-'+k).className=k===t?'ss-tab active':'ss-tab';
+      });
+    };
+
+    function showEffectResult(val,type){
+      document.getElementById('es-r-val').textContent=fmt(Math.abs(val),4);
+      var mag,interp;
+      if(type==='w'){
+        if(Math.abs(val)<.1){mag='Negligible';interp='No practical significance.';}
+        else if(Math.abs(val)<.3){mag='Small';interp='Detectable only with large samples. Unlikely to be practically meaningful.';}
+        else if(Math.abs(val)<.5){mag='Medium';interp='Noticeable effect. Likely meaningful in most contexts.';}
+        else{mag='Large';interp='Substantial effect. Clearly important in practice.';}
+      }else{
+        if(Math.abs(val)<.2){mag='Negligible';interp='Very small effect. Requires very large samples to detect.';}
+        else if(Math.abs(val)<.5){mag='Small';interp='Subtle but real effect. Common in behavioral and social sciences.';}
+        else if(Math.abs(val)<.8){mag='Medium';interp='Moderate effect. Visible to a careful observer.';}
+        else{mag='Large';interp='Substantial effect. Obvious in most contexts.';}
+      }
+      document.getElementById('es-r-mag').textContent=mag;
+      document.getElementById('es-r-interp').textContent=interp;
+    }
+
+    window.calcCohenD=function(){
+      var m1=parseFloat(document.getElementById('es-d-m1').value);
+      var m2=parseFloat(document.getElementById('es-d-m2').value);
+      var sd1=parseFloat(document.getElementById('es-d-sd1').value);
+      var sd2=parseFloat(document.getElementById('es-d-sd2').value);
+      if(isNaN(m1)||isNaN(m2)||isNaN(sd1)||isNaN(sd2)||sd1<=0||sd2<=0)return;
+      var pooledSd=Math.sqrt((sd1*sd1+sd2*sd2)/2);
+      var d=(m2-m1)/pooledSd;
+      showEffectResult(d,'d');
+    };
+
+    window.calcCohenH=function(){
+      var p1=parseFloat(document.getElementById('es-h-p1').value)/100;
+      var p2=parseFloat(document.getElementById('es-h-p2').value)/100;
+      if(isNaN(p1)||isNaN(p2)||p1<=0||p1>=1||p2<=0||p2>=1)return;
+      var h=2*Math.asin(Math.sqrt(p2))-2*Math.asin(Math.sqrt(p1));
+      showEffectResult(h,'h');
+    };
+
+    window.calcCohenW=function(){
+      var chi2=parseFloat(document.getElementById('es-w-chi2').value);
+      var n=parseInt(document.getElementById('es-w-n').value);
+      if(isNaN(chi2)||isNaN(n)||chi2<0||n<1)return;
+      var w=Math.sqrt(chi2/n);
+      showEffectResult(w,'w');
+    };
+
+    /* ===== INIT ===== */
+    updatePVExplorer();
+    renderQuestion();
+    updateCI();
+    calcCohenD();
+  })();
+  </script>
+  <script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversion Rate Calculator with Confidence Intervals | ABWex</title>
+  <meta name="description" content="Free conversion rate calculator with Wilson, Clopper-Pearson, and Normal confidence intervals. Compare up to 4 variants, visualize error bars, test significance between pairs, and project revenue impact.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/conversion-rate-calculator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Conversion Rate Calculator with Confidence Intervals | ABWex">
+  <meta property="og:description" content="Free conversion rate calculator with Wilson, Clopper-Pearson, and Normal confidence intervals. Compare up to 4 variants with error bar visualization.">
+  <meta property="og:url" content="https://abwex.com/tools/conversion-rate-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Conversion Rate Calculator with Confidence Intervals">
+  <meta name="twitter:description" content="Free conversion rate calculator. Compare up to 4 variants with Wilson, Clopper-Pearson, and Normal confidence intervals. SVG error bar charts.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/conversion-rate-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/conversion-rate-calculator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Conversion Rate Calculator",
+    "url": "https://abwex.com/tools/conversion-rate-calculator.html",
+    "description": "Free conversion rate calculator with Wilson, Clopper-Pearson, and Normal confidence intervals. Compare up to 4 variants simultaneously, visualize rates with error bars, test statistical significance between pairs, and project revenue impact.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-25",
+    "dateModified": "2026-05-25",
+    "featureList": ["Wilson score confidence intervals", "Clopper-Pearson exact intervals", "Normal approximation intervals", "Compare up to 4 variants", "SVG error bar visualization", "Statistical significance between pairs", "Revenue impact projector"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a conversion rate and how do you calculate it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A conversion rate is the percentage of visitors who complete a desired action, calculated as (number of conversions / number of visitors) * 100. For example, if 150 out of 5,000 visitors make a purchase, the conversion rate is 3.0%. However, a point estimate alone is incomplete — you should always report a confidence interval to convey the uncertainty around this estimate. The width of the interval depends on sample size: more visitors yield a narrower, more precise interval."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Wilson score confidence interval and why is it preferred?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Wilson score interval is a method for computing confidence intervals for proportions that performs well at any sample size and any proportion, including near 0% or 100%. Unlike the Normal approximation, the Wilson interval never produces impossible bounds (below 0 or above 1) and has coverage probability close to the nominal level even for small samples. It is calculated using the formula that centers the interval on a weighted average of the observed proportion and 0.5, with weights depending on sample size and z-value. Most statisticians recommend it as the default choice for proportion confidence intervals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many visitors do I need for a reliable conversion rate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The reliability of a conversion rate depends on the width of its confidence interval, which shrinks proportionally to 1/sqrt(n). As a rough guide: at a 5% conversion rate, you need about 73 visitors for a 95% CI width of plus or minus 5 percentage points, 292 visitors for plus or minus 2.5 pp, and 1,825 visitors for plus or minus 1 pp. For comparing two variants in an A/B test, you typically need thousands to tens of thousands of visitors per variant, depending on the effect size you want to detect."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I test if two conversion rates are significantly different?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To test whether two conversion rates differ significantly, use a two-proportion z-test or chi-square test. The z-test computes z = (p1 - p2) / sqrt(p_pooled * (1 - p_pooled) * (1/n1 + 1/n2)), where p_pooled is the combined conversion rate. If the absolute z-value exceeds the critical value (1.96 for alpha = 0.05), the difference is statistically significant. This calculator performs this test automatically for every pair of variants and reports both the z-statistic and p-value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between Clopper-Pearson and Wilson intervals?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Clopper-Pearson is an exact method based on the binomial distribution that guarantees at least the nominal coverage probability, meaning a 95% Clopper-Pearson interval covers the true proportion at least 95% of the time. However, it is conservative — it often substantially exceeds 95% coverage, producing wider intervals than necessary. The Wilson interval is approximate but achieves coverage much closer to the nominal level on average, producing tighter intervals. For most practical purposes, the Wilson interval is preferred because it provides a better balance of coverage and precision."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Conversion Rate Calculator"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Conversion Rate Calculator</span></nav>
+      <h1>Conversion Rate <span>Calculator</span></h1>
+      <p>Calculate conversion rates with Wilson, Clopper-Pearson, and Normal confidence intervals. Compare up to 4 variants simultaneously with error bar visualization, significance testing between pairs, and revenue impact projection. All computation runs in your browser.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .cr-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .cr-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        @media(max-width:640px){.cr-grid{grid-template-columns:1fr}}
+        .cr-field label{display:block;font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:.35rem;font-weight:500}
+        .cr-field input,.cr-field select{width:100%;padding:.6rem .8rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.95rem;font-family:inherit}
+        .cr-field input:focus,.cr-field select:focus{outline:none;border-color:#2DD4BF}
+        .cr-btn{display:inline-block;padding:.75rem 2rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:1rem;font-family:inherit}
+        .cr-btn:hover{opacity:.9}
+        .cr-btn-secondary{background:transparent;border:1px solid #2DD4BF;color:#2DD4BF;padding:.5rem 1.2rem;font-size:.9rem}
+        .cr-btn-secondary:hover{background:#2DD4BF;color:#0d0d1a}
+        .cr-btn-remove{background:transparent;border:1px solid #ef4444;color:#ef4444;padding:.35rem .8rem;font-size:.8rem;border-radius:4px;cursor:pointer;font-family:inherit}
+        .cr-btn-remove:hover{background:#ef4444;color:#fff}
+        .cr-results{margin-top:1.5rem}
+        .cr-result-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border,#333)}
+        .cr-result-row:last-child{border-bottom:none}
+        .cr-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
+        .cr-result-value{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;color:#2DD4BF}
+        .cr-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .cr-chart-title{font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--text,#e0e0e0)}
+        .cr-toggle{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+        .cr-toggle button{padding:.4rem 1rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:4px;color:var(--text-muted,#aaa);cursor:pointer;font-size:.85rem;font-family:inherit}
+        .cr-toggle button.active{background:#2DD4BF;color:#0d0d1a;border-color:#2DD4BF;font-weight:600}
+        .cr-info{background:var(--input-bg,#0d0d1a);border-left:3px solid #2DD4BF;padding:1rem 1.25rem;border-radius:0 6px 6px 0;margin-top:1rem;font-size:.9rem;color:var(--text-muted,#aaa);line-height:1.6}
+        .cr-variant-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+        .cr-variant-name{font-weight:600;font-size:1.05rem}
+        .cr-sig-table{width:100%;border-collapse:collapse;margin-top:1rem}
+        .cr-sig-table th,.cr-sig-table td{padding:.6rem .8rem;border:1px solid var(--border,#333);font-size:.85rem;text-align:center}
+        .cr-sig-table th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);font-weight:500}
+        .cr-sig-table td{color:var(--text,#e0e0e0);font-family:'Space Mono',monospace}
+        .cr-sig-yes{color:#22c55e;font-weight:700}
+        .cr-sig-no{color:#888}
+      </style>
+
+      <div class="cr-card">
+        <h2 style="margin-top:0;font-size:1.3rem;">Enter Your Variant Data</h2>
+        <div class="cr-toggle">
+          <button class="active" id="cr-ci-wilson" onclick="setCIMethod('wilson')">Wilson Score</button>
+          <button id="cr-ci-cp" onclick="setCIMethod('cp')">Clopper-Pearson</button>
+          <button id="cr-ci-normal" onclick="setCIMethod('normal')">Normal Approx.</button>
+        </div>
+        <div class="cr-grid" style="margin-bottom:.5rem;">
+          <div class="cr-field">
+            <label for="cr-conf">Confidence Level</label>
+            <select id="cr-conf">
+              <option value="0.90">90%</option>
+              <option value="0.95" selected>95%</option>
+              <option value="0.99">99%</option>
+            </select>
+          </div>
+          <div></div>
+        </div>
+        <div id="cr-variants"></div>
+        <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+          <button class="cr-btn" onclick="calcCR()">Calculate Rates</button>
+          <button class="cr-btn cr-btn-secondary" id="cr-add-btn" onclick="addVariant()">+ Add Variant</button>
+        </div>
+      </div>
+
+      <div id="cr-output" style="display:none;">
+        <!-- Results cards rendered here -->
+        <div id="cr-results-cards"></div>
+
+        <div class="cr-chart-wrap">
+          <div class="cr-chart-title">Conversion Rates with Confidence Intervals</div>
+          <svg id="cr-chart" viewBox="0 0 700 300" style="width:100%;height:auto;"></svg>
+        </div>
+
+        <div id="cr-sig-panel" class="cr-card" style="display:none;">
+          <h3 style="margin-top:0;font-size:1.15rem;">Pairwise Significance Testing</h3>
+          <div id="cr-sig-table-wrap"></div>
+        </div>
+
+        <div class="cr-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Revenue Impact Projector</h3>
+          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">Estimate the revenue impact of switching from the control to the best-performing variant.</p>
+          <div class="cr-grid">
+            <div class="cr-field">
+              <label for="cr-rev-visitors">Monthly Visitors</label>
+              <input type="number" id="cr-rev-visitors" value="100000" min="1" step="1000">
+            </div>
+            <div class="cr-field">
+              <label for="cr-rev-aov">Average Order Value ($)</label>
+              <input type="number" id="cr-rev-aov" value="50" min="0.01" step="0.01">
+            </div>
+          </div>
+          <button class="cr-btn" onclick="calcRevenue()">Project Revenue</button>
+          <div id="cr-rev-results" class="cr-results" style="display:none;">
+            <div class="cr-result-row"><span class="cr-result-label">Control Monthly Revenue</span><span class="cr-result-value" id="cr-rev-control">--</span></div>
+            <div class="cr-result-row"><span class="cr-result-label">Best Variant Monthly Revenue</span><span class="cr-result-value" id="cr-rev-best">--</span></div>
+            <div class="cr-result-row"><span class="cr-result-label">Incremental Revenue (monthly)</span><span class="cr-result-value" id="cr-rev-diff">--</span></div>
+            <div class="cr-result-row"><span class="cr-result-label">Incremental Revenue (annual)</span><span class="cr-result-value" id="cr-rev-annual">--</span></div>
+            <div class="cr-result-row"><span class="cr-result-label">Relative Improvement</span><span class="cr-result-value" id="cr-rev-pct">--</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>Understanding Conversion Rate Calculation</h2>
+      <p>The conversion rate is the single most important metric for any website or application that depends on user actions. Whether you are measuring purchases, sign-ups, downloads, or clicks, the conversion rate quantifies the fraction of visitors who complete the desired action. The basic formula is deceptively simple: conversion rate equals conversions divided by visitors, multiplied by 100 to express as a percentage. But this point estimate alone tells an incomplete story. Without a confidence interval, you have no way of knowing whether your 3.2% conversion rate is precisely measured or wildly uncertain.</p>
+      <p>This calculator computes conversion rates with three different confidence interval methods, each with distinct properties and use cases. It also supports comparing up to four variants simultaneously, making it ideal for A/B/n tests. The pairwise significance testing automatically identifies which differences are statistically meaningful, and the revenue impact projector translates statistical results into dollar figures your business stakeholders can understand.</p>
+
+      <h2>Three Confidence Interval Methods Compared</h2>
+      <p>The Normal approximation is the simplest method: CI = p plus or minus z * sqrt(p(1-p)/n). It works well when the sample size is large and the proportion is not too close to 0 or 1. However, it fails badly for small samples (n below 30) or extreme proportions (below 5% or above 95%), where it can produce bounds below 0% or above 100%. Despite its limitations, it remains widely taught and used because of its simplicity.</p>
+      <p>The Wilson score interval corrects the main deficiencies of the Normal approximation. Developed by Edwin Wilson in 1927, it centers the interval on a shrinkage estimator that pulls the observed proportion toward 0.5, with the shrinkage diminishing as sample size grows. The formula is more complex, but the result is an interval that never exceeds the [0, 1] bounds and maintains coverage probability close to the nominal level even for small samples and extreme proportions. It is the recommended default for most applications.</p>
+      <p>The Clopper-Pearson interval, also called the exact interval, is derived directly from the binomial distribution without any normal approximation. It inverts two one-sided binomial tests to find the smallest and largest proportion values that would not be rejected at the alpha/2 level. This guarantees that the true coverage probability is at least as large as the stated confidence level. The trade-off is conservatism: the actual coverage often substantially exceeds the nominal level, producing unnecessarily wide intervals. Use Clopper-Pearson when guaranteed minimum coverage is essential, such as in regulatory submissions or safety-critical applications.</p>
+
+      <h2>Comparing Multiple Variants</h2>
+      <p>When comparing conversion rates across variants, the key question is whether the observed differences are statistically significant or merely due to random sampling variation. This calculator uses the two-proportion z-test for each pair of variants. The test statistic is z = (p1 - p2) / sqrt(p_pooled * (1 - p_pooled) * (1/n1 + 1/n2)), where p_pooled is the combined conversion rate across both variants. A z-value exceeding 1.96 in absolute value (for a two-tailed test at alpha = 0.05) indicates statistical significance.</p>
+      <p>When comparing more than two variants, the multiple comparisons problem arises. With 4 variants, there are 6 pairwise comparisons, and the probability of at least one false positive at alpha = 0.05 is 1 - (1 - 0.05)^6 = 26.5%. This calculator reports raw p-values for transparency; apply a Bonferroni correction (divide alpha by the number of comparisons) or the Benjamini-Hochberg procedure for more rigorous inference. The significance table flags results at both the nominal and Bonferroni-corrected levels.</p>
+
+      <h2>The Error Bar Chart Explained</h2>
+      <p>The SVG chart displays each variant as a bar whose height represents the point estimate of the conversion rate, with whiskers extending to the confidence interval bounds. Overlapping intervals suggest that the difference may not be significant, though this is only a rough heuristic. Two intervals can overlap and still show a significant difference in a formal test, because the test uses pooled variance. Conversely, non-overlapping intervals always indicate significance. Use the pairwise test table for definitive results.</p>
+      <p>The chart uses the interval method you selected (Wilson, Clopper-Pearson, or Normal), so switching methods lets you visually compare how each approach affects the interval width. For typical web analytics data with thousands of visitors and conversion rates between 1% and 20%, the three methods produce very similar results. Differences become apparent at small sample sizes (below 50) or extreme proportions (below 1% or above 99%).</p>
+
+      <h2>Revenue Impact Projection</h2>
+      <p>Statistical significance tells you whether a difference is real, but revenue projection tells you whether it matters. This calculator takes the conversion rates from your control and best-performing variant, combines them with your monthly visitor count and average order value, and computes the incremental revenue from switching to the winning variant. The formula is straightforward: incremental monthly revenue = monthly visitors * (best rate - control rate) * AOV.</p>
+      <p>However, projections should be interpreted cautiously. They assume the A/B test conversion rates will hold in production at full traffic, which may not be true if the test suffered from novelty effects, sample ratio mismatch, or weekday/weekend bias. They also assume constant traffic and AOV, which may vary seasonally. Use the projection as a rough order-of-magnitude estimate, not a precise forecast. A useful rule of thumb is to discount the projected lift by 20-30% to account for regression to the mean.</p>
+
+      <h2>Best Practices for Conversion Rate Analysis</h2>
+      <p>Always collect enough data before drawing conclusions. A common mistake is checking conversion rates daily and declaring a winner as soon as the rate looks good. This is a form of optional stopping that inflates false positive rates. Pre-determine your sample size using power analysis and wait until the full sample is collected. Use the Wilson interval as your default confidence interval method. Report effect sizes alongside significance tests. And always consider practical significance: a statistically significant difference of 0.01 percentage points is real but irrelevant.</p>
+      <p>When presenting results to stakeholders, lead with the revenue impact and confidence interval rather than the p-value. Business decision-makers care about the range of plausible outcomes and the financial implications, not the probability of data under a null hypothesis. Frame your results as "the best variant shows a conversion rate of X% with a 95% confidence interval of [Y%, Z%], which translates to an estimated $A to $B in additional monthly revenue" rather than "the p-value is 0.032."</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What is a conversion rate and how do you calculate it?</summary>
+        <p>A conversion rate is the percentage of visitors who complete a desired action: (conversions / visitors) * 100. For example, 150 out of 5,000 visitors purchasing gives a 3.0% rate. Always report a confidence interval alongside the point estimate to convey measurement uncertainty.</p>
+      </details>
+
+      <details>
+        <summary>What is the Wilson score confidence interval and why is it preferred?</summary>
+        <p>The Wilson score interval is a method for computing confidence intervals for proportions that works well at any sample size and any proportion. Unlike the Normal approximation, it never produces bounds below 0 or above 1. Most statisticians recommend it as the default for proportion confidence intervals.</p>
+      </details>
+
+      <details>
+        <summary>How many visitors do I need for a reliable conversion rate?</summary>
+        <p>At a 5% conversion rate, you need about 73 visitors for a 95% CI of plus or minus 5 percentage points, 292 visitors for plus or minus 2.5 pp, and 1,825 visitors for plus or minus 1 pp. For comparing variants in an A/B test, you typically need thousands per variant.</p>
+      </details>
+
+      <details>
+        <summary>How do I test if two conversion rates are significantly different?</summary>
+        <p>Use a two-proportion z-test. The calculator computes z = (p1 - p2) / sqrt(p_pooled * (1 - p_pooled) * (1/n1 + 1/n2)). If |z| exceeds 1.96 at alpha = 0.05, the difference is statistically significant. This calculator performs the test automatically for every pair of variants.</p>
+      </details>
+
+      <details>
+        <summary>What is the difference between Clopper-Pearson and Wilson intervals?</summary>
+        <p>Clopper-Pearson is exact and guarantees at least the nominal coverage, but is conservative (wider intervals). Wilson is approximate but achieves coverage closer to the nominal level, producing tighter, more practical intervals. Use Wilson for most applications and Clopper-Pearson when guaranteed minimum coverage is required.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Quick sample size estimation for A/B tests</li>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate statistical significance for your test results</li>
+        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Determine required sample size with power curves</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Compute CIs for proportions and means</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools & Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script>
+  (function(){
+    /* ===== UTILITIES ===== */
+    function normCdf(x){if(x<-8)return 0;if(x>8)return 1;var t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327,p=d*Math.exp(-x*x/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.3302744))));return x>0?1-p:p;}
+    function normInv(p){if(p<=0)return-8;if(p>=1)return 8;if(p<.5)return-normInv(1-p);var t=Math.sqrt(-2*Math.log(1-p)),c0=2.515517,c1=.802853,c2=.010328,d1=1.432788,d2=.189269,d3=.001308;return t-(c0+c1*t+c2*t*t)/(1+d1*t+d2*t*t+d3*t*t*t);}
+    function fmt(v,d){return Number(v).toFixed(d===undefined?4:d);}
+    function fmtPct(v,d){return fmt(v*100,d===undefined?2:d)+'%';}
+    function fmtMoney(v){return '$'+v.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+
+    /* Beta inverse via Newton-Raphson for Clopper-Pearson */
+    function betaIncomplete(a,b,x){
+      if(x<=0)return 0;if(x>=1)return 1;
+      var bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+      if(x<(a+1)/(a+b+2))return bt*betaCf(a,b,x)/a;
+      return 1-bt*betaCf(b,a,1-x)/b;
+    }
+    function lgamma(x){var c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.001208650973866179,-5.395239384953e-6];var y=x,t=x+5.5;t-=(x+.5)*Math.log(t);var s=1.000000000190015;for(var j=0;j<6;j++)s+=c[j]/++y;return-t+Math.log(2.5066282746310005*s/x);}
+    function betaCf(a,b,x){var m2,aa,c=1,d=1-((a+b)*x/(a+1));if(Math.abs(d)<1e-30)d=1e-30;d=1/d;var h=d;for(var m=1;m<=200;m++){m2=2*m;aa=m*(b-m)*x/((a-1+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;h*=d*c;aa=-(a+m)*(a+b+m)*x/((a+m2)*(a+1+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;var del=d*c;h*=del;if(Math.abs(del-1)<3e-7)break;}return h;}
+    function betaInv(p,a,b){if(p<=0)return 0;if(p>=1)return 1;var x=.5,lo=0,hi=1;for(var i=0;i<100;i++){var v=betaIncomplete(a,b,x);if(Math.abs(v-p)<1e-10)break;if(v<p)lo=x;else hi=x;x=(lo+hi)/2;}return x;}
+
+    /* Confidence interval methods */
+    function wilsonCI(k,n,z){
+      var p=k/n,denom=1+z*z/n;
+      var center=(p+z*z/(2*n))/denom;
+      var margin=z*Math.sqrt((p*(1-p)+z*z/(4*n))/n)/denom;
+      return[Math.max(0,center-margin),Math.min(1,center+margin)];
+    }
+    function cpCI(k,n,alpha){
+      var lo=k===0?0:betaInv(alpha/2,k,n-k+1);
+      var hi=k===n?1:betaInv(1-alpha/2,k+1,n-k);
+      return[lo,hi];
+    }
+    function normalCI(k,n,z){
+      var p=k/n,se=Math.sqrt(p*(1-p)/n);
+      return[Math.max(0,p-z*se),Math.min(1,p+z*se)];
+    }
+
+    /* State */
+    var ciMethod='wilson';
+    var variants=[{name:'Control',visitors:5000,conversions:150},{name:'Variant B',visitors:5000,conversions:180}];
+    var variantColors=['#2DD4BF','#F97316','#A78BFA','#F472B6'];
+    var lastResults=null;
+
+    window.setCIMethod=function(m){
+      ciMethod=m;
+      ['wilson','cp','normal'].forEach(function(k){
+        var el=document.getElementById('cr-ci-'+k);
+        if(el)el.className=k===m?'active':'';
+      });
+    };
+
+    function renderVariants(){
+      var html='';
+      for(var i=0;i<variants.length;i++){
+        var v=variants[i];
+        html+='<div class="cr-card" style="border-left:3px solid '+variantColors[i]+';padding:1.25rem;">';
+        html+='<div class="cr-variant-header"><span class="cr-variant-name" style="color:'+variantColors[i]+'">'+v.name+'</span>';
+        if(i>0)html+='<button class="cr-btn-remove" onclick="removeVariant('+i+')">Remove</button>';
+        html+='</div>';
+        html+='<div class="cr-grid">';
+        html+='<div class="cr-field"><label>Visitors</label><input type="number" id="cr-v-'+i+'" value="'+v.visitors+'" min="1" step="1" onchange="updateVariant('+i+')"></div>';
+        html+='<div class="cr-field"><label>Conversions</label><input type="number" id="cr-c-'+i+'" value="'+v.conversions+'" min="0" step="1" onchange="updateVariant('+i+')"></div>';
+        html+='</div></div>';
+      }
+      document.getElementById('cr-variants').innerHTML=html;
+      document.getElementById('cr-add-btn').style.display=variants.length>=4?'none':'inline-block';
+    }
+
+    window.updateVariant=function(i){
+      variants[i].visitors=parseInt(document.getElementById('cr-v-'+i).value)||1;
+      variants[i].conversions=parseInt(document.getElementById('cr-c-'+i).value)||0;
+      if(variants[i].conversions>variants[i].visitors)variants[i].conversions=variants[i].visitors;
+    };
+
+    window.addVariant=function(){
+      if(variants.length>=4)return;
+      var names=['Control','Variant B','Variant C','Variant D'];
+      variants.push({name:names[variants.length],visitors:5000,conversions:150});
+      renderVariants();
+    };
+
+    window.removeVariant=function(i){
+      if(variants.length<=2)return;
+      variants.splice(i,1);
+      var names=['Control','Variant B','Variant C','Variant D'];
+      for(var j=0;j<variants.length;j++)variants[j].name=names[j];
+      renderVariants();
+    };
+
+    /* Main calculation */
+    window.calcCR=function(){
+      // Read inputs
+      for(var i=0;i<variants.length;i++){
+        variants[i].visitors=parseInt(document.getElementById('cr-v-'+i).value)||1;
+        variants[i].conversions=Math.min(parseInt(document.getElementById('cr-c-'+i).value)||0,variants[i].visitors);
+      }
+      var conf=parseFloat(document.getElementById('cr-conf').value);
+      var alpha=1-conf;
+      var z=normInv(1-alpha/2);
+      var results=[];
+
+      for(var i=0;i<variants.length;i++){
+        var v=variants[i],n=v.visitors,k=v.conversions;
+        var rate=k/n;
+        var ci;
+        if(ciMethod==='wilson')ci=wilsonCI(k,n,z);
+        else if(ciMethod==='cp')ci=cpCI(k,n,alpha);
+        else ci=normalCI(k,n,z);
+        results.push({name:v.name,rate:rate,ci:ci,n:n,k:k,color:variantColors[i]});
+      }
+
+      lastResults=results;
+      document.getElementById('cr-output').style.display='block';
+
+      // Render result cards
+      var html='';
+      for(var i=0;i<results.length;i++){
+        var r=results[i];
+        html+='<div class="cr-card" style="border-left:3px solid '+r.color+';">';
+        html+='<h3 style="margin-top:0;font-size:1.1rem;color:'+r.color+';">'+r.name+'</h3>';
+        html+='<div class="cr-result-row"><span class="cr-result-label">Conversion Rate</span><span class="cr-result-value">'+fmtPct(r.rate)+'</span></div>';
+        html+='<div class="cr-result-row"><span class="cr-result-label">'+fmt(conf*100,0)+'% CI ('+ciMethod.charAt(0).toUpperCase()+ciMethod.slice(1)+')</span><span class="cr-result-value">['+fmtPct(r.ci[0])+', '+fmtPct(r.ci[1])+']</span></div>';
+        html+='<div class="cr-result-row"><span class="cr-result-label">Conversions / Visitors</span><span class="cr-result-value">'+r.k+' / '+r.n+'</span></div>';
+        if(i>0){
+          var diff=r.rate-results[0].rate;
+          var relDiff=results[0].rate>0?(diff/results[0].rate*100):0;
+          html+='<div class="cr-result-row"><span class="cr-result-label">Difference vs. Control</span><span class="cr-result-value" style="color:'+(diff>=0?'#22c55e':'#ef4444')+'">'+((diff>=0?'+':'')+fmtPct(diff))+' ('+((diff>=0?'+':'')+fmt(relDiff,1))+'% rel.)</span></div>';
+        }
+        html+='</div>';
+      }
+      document.getElementById('cr-results-cards').innerHTML=html;
+
+      // Draw chart
+      drawChart(results,conf);
+
+      // Significance table
+      if(results.length>=2){
+        document.getElementById('cr-sig-panel').style.display='block';
+        drawSigTable(results);
+      }else{
+        document.getElementById('cr-sig-panel').style.display='none';
+      }
+    };
+
+    function drawChart(results,conf){
+      var svg=document.getElementById('cr-chart');
+      var W=700,H=300,ml=65,mr=25,mt=25,mb=50;
+      var pw=W-ml-mr,ph=H-mt-mb;
+      var n=results.length;
+      var barW=Math.min(80,pw/(n*1.8));
+      var gap=(pw-n*barW)/(n+1);
+
+      // Compute y range
+      var maxVal=0;
+      for(var i=0;i<n;i++){maxVal=Math.max(maxVal,results[i].ci[1]);}
+      maxVal=Math.ceil(maxVal*100+1)/100;
+      if(maxVal<0.01)maxVal=0.01;
+
+      var html='';
+      // Grid
+      for(var i=0;i<=5;i++){
+        var y=mt+ph-(i/5)*ph;
+        var val=(i/5)*maxVal*100;
+        html+='<line x1="'+ml+'" y1="'+y+'" x2="'+(W-mr)+'" y2="'+y+'" stroke="#333" stroke-width="0.5"/>';
+        html+='<text x="'+(ml-8)+'" y="'+(y+4)+'" text-anchor="end" fill="#888" font-size="11" font-family="Space Mono,monospace">'+fmt(val,1)+'%</text>';
+      }
+
+      // Bars and whiskers
+      for(var i=0;i<n;i++){
+        var r=results[i];
+        var cx=ml+gap+(barW/2)+i*(barW+gap);
+        var barH=(r.rate/maxVal)*ph;
+        var by=mt+ph-barH;
+        var ciLo=mt+ph-(r.ci[0]/maxVal)*ph;
+        var ciHi=mt+ph-(r.ci[1]/maxVal)*ph;
+
+        // Bar
+        html+='<rect x="'+fmt(cx-barW/2,1)+'" y="'+fmt(by,1)+'" width="'+barW+'" height="'+fmt(barH,1)+'" fill="'+r.color+'" opacity="0.7" rx="3"/>';
+        // Whisker line
+        html+='<line x1="'+fmt(cx,1)+'" y1="'+fmt(ciHi,1)+'" x2="'+fmt(cx,1)+'" y2="'+fmt(ciLo,1)+'" stroke="'+r.color+'" stroke-width="2"/>';
+        // Top cap
+        html+='<line x1="'+fmt(cx-12,1)+'" y1="'+fmt(ciHi,1)+'" x2="'+fmt(cx+12,1)+'" y2="'+fmt(ciHi,1)+'" stroke="'+r.color+'" stroke-width="2"/>';
+        // Bottom cap
+        html+='<line x1="'+fmt(cx-12,1)+'" y1="'+fmt(ciLo,1)+'" x2="'+fmt(cx+12,1)+'" y2="'+fmt(ciLo,1)+'" stroke="'+r.color+'" stroke-width="2"/>';
+        // Rate label
+        html+='<text x="'+fmt(cx,1)+'" y="'+fmt(by-8,1)+'" text-anchor="middle" fill="'+r.color+'" font-size="12" font-weight="700" font-family="Space Mono,monospace">'+fmtPct(r.rate)+'</text>';
+        // Name label
+        html+='<text x="'+fmt(cx,1)+'" y="'+(H-mb+20)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif">'+r.name+'</text>';
+      }
+
+      // Y-axis label
+      html+='<text x="15" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif" transform="rotate(-90,15,'+(mt+ph/2)+')">Conversion Rate</text>';
+
+      svg.innerHTML=html;
+    }
+
+    function drawSigTable(results){
+      var n=results.length;
+      var nComp=n*(n-1)/2;
+      var bonf=0.05/nComp;
+      var html='<table class="cr-sig-table"><thead><tr><th>Pair</th><th>Difference</th><th>z-stat</th><th>p-value</th><th>Sig. (\u03B1=0.05)</th><th>Sig. (Bonferroni)</th></tr></thead><tbody>';
+      for(var i=0;i<n;i++){
+        for(var j=i+1;j<n;j++){
+          var r1=results[i],r2=results[j];
+          var p1=r1.rate,p2=r2.rate,n1=r1.n,n2=r2.n;
+          var pPool=(r1.k+r2.k)/(n1+n2);
+          var se=Math.sqrt(pPool*(1-pPool)*(1/n1+1/n2));
+          var z=se>0?(p2-p1)/se:0;
+          var pVal=2*(1-normCdf(Math.abs(z)));
+          var diff=p2-p1;
+          var sig05=pVal<0.05;
+          var sigBonf=pVal<bonf;
+          html+='<tr>';
+          html+='<td>'+r1.name+' vs. '+r2.name+'</td>';
+          html+='<td>'+((diff>=0?'+':'')+fmtPct(diff))+'</td>';
+          html+='<td>'+fmt(z,3)+'</td>';
+          html+='<td>'+(pVal<0.0001?'< 0.0001':fmt(pVal,4))+'</td>';
+          html+='<td class="'+(sig05?'cr-sig-yes':'cr-sig-no')+'">'+(sig05?'Yes':'No')+'</td>';
+          html+='<td class="'+(sigBonf?'cr-sig-yes':'cr-sig-no')+'">'+(sigBonf?'Yes':'No')+'</td>';
+          html+='</tr>';
+        }
+      }
+      html+='</tbody></table>';
+      if(nComp>1)html+='<p style="font-size:.8rem;color:var(--text-muted,#aaa);margin-top:.75rem;">Bonferroni-corrected \u03B1 = 0.05 / '+nComp+' = '+fmt(bonf,4)+' (accounts for '+nComp+' pairwise comparisons)</p>';
+      document.getElementById('cr-sig-table-wrap').innerHTML=html;
+    }
+
+    /* Revenue projector */
+    window.calcRevenue=function(){
+      if(!lastResults||lastResults.length<2)return;
+      var visitors=parseInt(document.getElementById('cr-rev-visitors').value)||0;
+      var aov=parseFloat(document.getElementById('cr-rev-aov').value)||0;
+      var controlRate=lastResults[0].rate;
+      var bestRate=controlRate,bestIdx=0;
+      for(var i=1;i<lastResults.length;i++){
+        if(lastResults[i].rate>bestRate){bestRate=lastResults[i].rate;bestIdx=i;}
+      }
+      var revControl=visitors*controlRate*aov;
+      var revBest=visitors*bestRate*aov;
+      var diff=revBest-revControl;
+      var pctDiff=controlRate>0?((bestRate-controlRate)/controlRate*100):0;
+
+      document.getElementById('cr-rev-control').textContent=fmtMoney(revControl);
+      document.getElementById('cr-rev-best').textContent=fmtMoney(revBest)+' ('+lastResults[bestIdx].name+')';
+      document.getElementById('cr-rev-diff').textContent=(diff>=0?'+':'')+fmtMoney(diff);
+      document.getElementById('cr-rev-annual').textContent=(diff>=0?'+':'')+fmtMoney(diff*12);
+      document.getElementById('cr-rev-pct').textContent=(pctDiff>=0?'+':'')+fmt(pctDiff,1)+'%';
+      document.getElementById('cr-rev-results').style.display='block';
+    };
+
+    /* ===== INIT ===== */
+    renderVariants();
+    calcCR();
+  })();
+  </script>
+  <script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistical Power Analysis Calculator for A/B Tests | ABWex</title>
+  <meta name="description" content="Free power analysis calculator for A/B testing. Compute required sample size, visualize power curves, support one-tailed and two-tailed tests, and calculate Cohen's h effect size.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/power-analysis-calculator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Statistical Power Analysis Calculator for A/B Tests | ABWex">
+  <meta property="og:description" content="Free power analysis calculator for A/B testing. Compute required sample size, visualize power curves, support one-tailed and two-tailed tests, and calculate Cohen's h effect size.">
+  <meta property="og:url" content="https://abwex.com/tools/power-analysis-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Statistical Power Analysis Calculator for A/B Tests">
+  <meta name="twitter:description" content="Free power analysis calculator for A/B testing. Compute required sample size, visualize power curves, and calculate Cohen's h effect size.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/power-analysis-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/power-analysis-calculator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Statistical Power Analysis Calculator",
+    "url": "https://abwex.com/tools/power-analysis-calculator.html",
+    "description": "Free power analysis calculator for A/B testing. Compute required sample size, visualize power curves, support one-tailed and two-tailed tests, and calculate Cohen's h effect size.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-25",
+    "dateModified": "2026-05-25",
+    "featureList": ["Power curve visualization", "One-tailed and two-tailed tests", "Cohen's h effect size calculation", "Sample size estimation", "Multiple significance levels", "Interactive SVG charts"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is statistical power in A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Statistical power is the probability that your A/B test will correctly detect a real difference between variants when one exists. A power of 80% means that if variant B truly outperforms variant A, your test will detect it 80% of the time. The remaining 20% represents the false negative rate (Type II error). Power depends on sample size, effect size, significance level, and the variance of your metric. Increasing sample size is the most common way to increase power."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Cohen's h and why does it matter for A/B testing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cohen's h is an effect size measure for comparing two proportions, calculated as h = 2 * arcsin(sqrt(p2)) - 2 * arcsin(sqrt(p1)). Unlike the raw difference between conversion rates, Cohen's h accounts for the fact that a 1 percentage point change has different practical significance at different baseline rates. A change from 2% to 3% (h = 0.12) is more detectable than a change from 50% to 51% (h = 0.02) despite both being 1 percentage point. Cohen's h values of 0.2, 0.5, and 0.8 are conventionally considered small, medium, and large effects."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use a one-tailed or two-tailed test for my A/B test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use a two-tailed test when you want to detect any difference between variants, including the possibility that the variant performs worse. Use a one-tailed test only when you are exclusively interested in whether the variant is better (not worse) than the control, and you would take the same action regardless of how much worse it might be. Two-tailed tests are more conservative and are the standard in most experimentation platforms. One-tailed tests require about 20% less sample size but cannot detect harmful effects."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does power increase with sample size?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "As sample size increases, the standard error of the estimated conversion rate decreases proportionally to 1/sqrt(n). This narrows the sampling distribution, making it easier to distinguish a real effect from random noise. With more data, even small differences become detectable because the noise floor drops. The relationship is non-linear: doubling sample size does not double power. Power follows an S-curve that rises steeply in the middle range and flattens as it approaches 100%."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the relationship between significance level and power?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Significance level (alpha) and power are inversely related when sample size is held constant. A stricter significance level (e.g., alpha = 0.01 instead of 0.05) reduces the false positive rate but also reduces power, increasing the chance of missing a real effect. To maintain the same power at a stricter alpha, you must increase sample size. For example, moving from alpha = 0.05 to alpha = 0.01 at 80% power requires roughly 50% more sample per variant."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Power Analysis Calculator"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+          <div class="nav-right">
+      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+    </div>
+  </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Power Analysis Calculator</span></nav>
+      <h1>Statistical Power Analysis <span>Calculator</span></h1>
+      <p>Calculate required sample size for your A/B test with interactive power curves. Support for one-tailed and two-tailed tests, Cohen's h effect size, and multiple significance levels. All computation runs in your browser.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .pa-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .pa-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        @media(max-width:640px){.pa-grid{grid-template-columns:1fr}}
+        .pa-field label{display:block;font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:.35rem;font-weight:500}
+        .pa-field input,.pa-field select{width:100%;padding:.6rem .8rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.95rem;font-family:inherit}
+        .pa-field input:focus,.pa-field select:focus{outline:none;border-color:#2DD4BF}
+        .pa-btn{display:inline-block;padding:.75rem 2rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:1rem;font-family:inherit}
+        .pa-btn:hover{opacity:.9}
+        .pa-results{margin-top:1.5rem}
+        .pa-result-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border,#333)}
+        .pa-result-row:last-child{border-bottom:none}
+        .pa-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
+        .pa-result-value{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;color:#2DD4BF}
+        .pa-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .pa-chart-title{font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--text,#e0e0e0)}
+        .pa-toggle{display:flex;gap:.5rem;margin-bottom:1rem}
+        .pa-toggle button{padding:.4rem 1rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:4px;color:var(--text-muted,#aaa);cursor:pointer;font-size:.85rem;font-family:inherit}
+        .pa-toggle button.active{background:#2DD4BF;color:#0d0d1a;border-color:#2DD4BF;font-weight:600}
+        .pa-info{background:var(--input-bg,#0d0d1a);border-left:3px solid #2DD4BF;padding:1rem 1.25rem;border-radius:0 6px 6px 0;margin-top:1rem;font-size:.9rem;color:var(--text-muted,#aaa);line-height:1.6}
+      </style>
+
+      <div class="pa-card">
+        <h2 style="margin-top:0;font-size:1.3rem;">Configure Your Power Analysis</h2>
+        <div class="pa-grid">
+          <div class="pa-field">
+            <label for="pa-baseline">Baseline Conversion Rate (%)</label>
+            <input type="number" id="pa-baseline" value="5" min="0.1" max="99" step="0.1">
+          </div>
+          <div class="pa-field">
+            <label for="pa-mde">Minimum Detectable Effect — MDE (%)</label>
+            <input type="number" id="pa-mde" value="10" min="0.1" max="500" step="0.1">
+          </div>
+          <div class="pa-field">
+            <label for="pa-alpha">Significance Level (alpha)</label>
+            <select id="pa-alpha">
+              <option value="0.01">0.01 (99% confidence)</option>
+              <option value="0.05" selected>0.05 (95% confidence)</option>
+              <option value="0.10">0.10 (90% confidence)</option>
+            </select>
+          </div>
+          <div class="pa-field">
+            <label for="pa-power">Desired Power (1 - beta)</label>
+            <select id="pa-power">
+              <option value="0.70">70%</option>
+              <option value="0.80" selected>80%</option>
+              <option value="0.90">90%</option>
+              <option value="0.95">95%</option>
+            </select>
+          </div>
+        </div>
+        <div class="pa-toggle" style="margin-top:1rem;">
+          <button id="pa-two-tailed" class="active" onclick="setTailMode('two')">Two-Tailed</button>
+          <button id="pa-one-tailed" onclick="setTailMode('one')">One-Tailed</button>
+        </div>
+        <div class="pa-info" id="pa-tail-info">Two-tailed test: detects differences in either direction (variant better OR worse). Recommended for most A/B tests.</div>
+        <button class="pa-btn" onclick="runPowerAnalysis()">Calculate Power Analysis</button>
+      </div>
+
+      <div id="pa-results-panel" class="pa-results" style="display:none;">
+        <div class="pa-card">
+          <h3 style="margin-top:0;font-size:1.15rem;">Results</h3>
+          <div class="pa-result-row"><span class="pa-result-label">Required Sample Size (per variant)</span><span class="pa-result-value" id="pa-r-n">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Total Visitors Needed (both variants)</span><span class="pa-result-value" id="pa-r-total">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Baseline Conversion Rate</span><span class="pa-result-value" id="pa-r-p1">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Expected Variant Conversion Rate</span><span class="pa-result-value" id="pa-r-p2">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Absolute Effect Size</span><span class="pa-result-value" id="pa-r-abs">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Cohen's h Effect Size</span><span class="pa-result-value" id="pa-r-cohen">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Effect Magnitude</span><span class="pa-result-value" id="pa-r-mag">—</span></div>
+          <div class="pa-result-row"><span class="pa-result-label">Test Type</span><span class="pa-result-value" id="pa-r-tail">—</span></div>
+        </div>
+
+        <div class="pa-chart-wrap">
+          <div class="pa-chart-title">Power vs. Sample Size</div>
+          <svg id="pa-power-chart" viewBox="0 0 700 350" style="width:100%;height:auto;"></svg>
+        </div>
+
+        <div class="pa-chart-wrap">
+          <div class="pa-chart-title">Power at Different Significance Levels</div>
+          <svg id="pa-alpha-chart" viewBox="0 0 700 350" style="width:100%;height:auto;"></svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>Understanding Statistical Power Analysis for A/B Testing</h2>
+      <p>Statistical power analysis is the cornerstone of proper experiment design. Before launching any A/B test, you must answer a fundamental question: how many visitors do I need to detect a meaningful difference? Running a test without adequate sample size wastes time and resources, producing inconclusive results that cannot reliably guide decisions. Power analysis provides the mathematical framework to answer this question with precision.</p>
+      <p>The concept of statistical power was formalized by Jerzy Neyman and Egon Pearson in the 1930s as part of their hypothesis testing framework. Power is defined as 1 minus beta, where beta is the Type II error rate — the probability of failing to reject a false null hypothesis. In A/B testing terms, power is the probability that your test will detect a real improvement in conversion rate when one exists. The industry standard is 80% power, though some organizations use 90% for high-stakes experiments.</p>
+      <p>Power analysis involves four interconnected parameters: sample size (n), effect size (delta), significance level (alpha), and power (1 - beta). Given any three, you can solve for the fourth. In practice, most teams fix alpha at 0.05, power at 0.80, and the minimum detectable effect (MDE) at whatever is business-relevant, then solve for the required sample size. This calculator automates that process and visualizes the relationship between these parameters through interactive power curves.</p>
+
+      <h2>The Mathematics Behind the Calculator</h2>
+      <p>The sample size formula for comparing two proportions is derived from the normal approximation to the binomial distribution. For a two-tailed test, the formula is:</p>
+      <p><strong>n = (Z_{alpha/2} + Z_{beta})^2 * [p1(1-p1) + p2(1-p2)] / (p2 - p1)^2</strong></p>
+      <p>Where p1 is the baseline conversion rate, p2 is the expected variant rate (p1 * (1 + MDE/100)), Z_{alpha/2} is the critical value for the chosen significance level (1.96 for alpha = 0.05), and Z_{beta} is the critical value for the desired power (0.84 for 80% power). For a one-tailed test, Z_{alpha/2} is replaced with Z_{alpha} (1.645 for alpha = 0.05), which reduces the required sample size by approximately 20%.</p>
+      <p>The formula reveals several important relationships. Sample size is inversely proportional to the square of the effect size: halving the MDE quadruples the required traffic. Sample size increases as the baseline conversion rate moves away from 50% in either direction, because extreme proportions have lower variance per observation. And sample size increases roughly linearly with the sum (Z_{alpha/2} + Z_{beta})^2, meaning that increasing power from 80% to 90% adds about 30% more traffic.</p>
+
+      <h2>Cohen's h: A Better Effect Size Measure</h2>
+      <p>Raw differences between proportions can be misleading because the same absolute difference has different statistical properties at different baseline rates. Cohen's h addresses this by applying the arcsine transformation:</p>
+      <p><strong>h = 2 * arcsin(sqrt(p2)) - 2 * arcsin(sqrt(p1))</strong></p>
+      <p>This transformation stabilizes the variance, making h comparable across different baseline rates. Jacob Cohen proposed conventional benchmarks: h = 0.2 is a small effect, h = 0.5 is medium, and h = 0.8 is large. In A/B testing, most experiments target effects in the small to medium range (h between 0.05 and 0.3).</p>
+      <p>The practical value of Cohen's h is in comparing experiments across different contexts. A test on a checkout page with a 70% completion rate and a test on a sign-up page with a 3% conversion rate may both have meaningful business impact, but the raw percentage point differences are not directly comparable. Cohen's h normalizes these differences, allowing you to assess whether one experiment has a fundamentally larger effect than another.</p>
+
+      <h2>One-Tailed vs. Two-Tailed Tests</h2>
+      <p>The choice between one-tailed and two-tailed tests affects both the required sample size and the interpretation of results. A two-tailed test detects differences in either direction — it can identify both improvements and degradations. A one-tailed test only detects differences in one pre-specified direction, typically improvement.</p>
+      <p>Two-tailed tests are the standard recommendation for A/B testing because they protect against shipping changes that actually harm performance. If you run a one-tailed test looking for improvement, you cannot statistically detect a degradation. This is dangerous in practice: many A/B tests reveal that the variant is worse than the control, and this information is valuable for avoiding harmful changes.</p>
+      <p>The trade-off is sample size. One-tailed tests require approximately 20% fewer visitors to achieve the same power for the same effect size. This is because the critical value at alpha = 0.05 is 1.645 for one-tailed vs. 1.96 for two-tailed. For teams with severe traffic constraints, a one-tailed test may be acceptable if the business context truly makes one direction irrelevant — for example, testing whether a price increase reduces conversions (you would not ship a price increase that helps conversions without other business considerations).</p>
+
+      <h2>Interpreting Power Curves</h2>
+      <p>The power curve shows how statistical power changes as a function of sample size, holding effect size and significance level constant. The curve has a characteristic S-shape: power starts near alpha (the false positive rate) at very small sample sizes, rises steeply through the mid-range, and asymptotically approaches 1.0 at large sample sizes.</p>
+      <p>The inflection point of the power curve — where it rises most steeply — corresponds to the sample size range where additional data has the highest marginal value. Below this point, the test is severely underpowered and additional data provides modest improvement. Above this point, returns diminish rapidly. The optimal sample size usually falls slightly above the inflection point, at the conventionally chosen 80% power level.</p>
+      <p>Reading the power chart in this calculator, the vertical dashed line marks your calculated required sample size, and the horizontal dashed line marks your target power level. The intersection of these lines confirms the calculation. You can visually assess how much additional traffic would be needed to reach 90% or 95% power, or how much power you would sacrifice by running with fewer visitors.</p>
+
+      <h2>Common Pitfalls in Power Analysis</h2>
+      <p>The most frequent mistake is choosing an unrealistically small MDE to justify a short test. If your test can only run for two weeks and you have 500 daily visitors, the achievable sample size is 7,000 per variant. At a 5% baseline, this only gives 80% power to detect a 25% relative MDE or larger. Forcing a 5% MDE into this constraint requires 112,000 visitors per variant — a 32-week test. Accept the MDE your traffic supports or do not run the test.</p>
+      <p>Another common error is ignoring the multiple comparisons problem. If you test 5 metrics simultaneously, your effective Type I error rate is approximately 1 - (1 - 0.05)^5 = 22.6%, not 5%. Power analysis should account for the Bonferroni correction or similar adjustment, which effectively reduces alpha and increases the required sample size. This calculator focuses on single-metric power analysis; adjust your alpha input manually for multiple comparisons.</p>
+      <p>Finally, power analysis assumes fixed sample sizes and no early stopping. If you plan to peek at results before the test concludes, you need sequential testing methods (group sequential designs or always-valid p-values) that adjust the significance threshold over time. Using a fixed-sample power calculation with interim analyses inflates the actual false positive rate substantially.</p>
+
+      <h2>Practical Guidelines for Choosing Parameters</h2>
+      <p>For significance level, 0.05 is the industry default. Use 0.01 for high-stakes tests where false positives are costly (pricing changes, core product modifications). Use 0.10 for exploratory tests where you are willing to accept more false positives in exchange for detecting smaller effects with less traffic.</p>
+      <p>For power, 0.80 is standard. Use 0.90 when the cost of missing a real effect is high — for example, when testing a change that took months to develop and cannot easily be re-tested. Use 0.70 only for early-stage screening tests where you plan to follow up with a confirmatory test.</p>
+      <p>For MDE, think in terms of business impact. Calculate the smallest improvement that would justify shipping the change, accounting for implementation cost, maintenance burden, and opportunity cost. If a 2% relative lift in conversion rate translates to $500/month in additional revenue but the implementation costs $10,000, the break-even point is 20 months — probably not worth it. Set your MDE at the threshold where the economics become clearly favorable.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What is statistical power in A/B testing?</summary>
+        <p>Statistical power is the probability that your A/B test will correctly detect a real difference between variants when one exists. A power of 80% means that if variant B truly outperforms variant A, your test will detect it 80% of the time. The remaining 20% is the false negative rate (Type II error). Power depends on sample size, effect size, significance level, and metric variance. Use this calculator to determine the sample size needed for your target power.</p>
+      </details>
+
+      <details>
+        <summary>What is Cohen's h and why does it matter for A/B testing?</summary>
+        <p>Cohen's h is an effect size measure for comparing two proportions, calculated as h = 2 * arcsin(sqrt(p2)) - 2 * arcsin(sqrt(p1)). It normalizes the difference so that effects at different baseline rates are comparable. Values of 0.2, 0.5, and 0.8 represent small, medium, and large effects. Most A/B tests target effects in the 0.05 to 0.3 range.</p>
+      </details>
+
+      <details>
+        <summary>Should I use a one-tailed or two-tailed test for my A/B test?</summary>
+        <p>Use a two-tailed test in most cases. It detects both improvements and degradations, protecting you from shipping changes that hurt performance. One-tailed tests require about 20% less traffic but cannot detect harmful effects. Only use one-tailed when you genuinely do not care about detecting a negative impact.</p>
+      </details>
+
+      <details>
+        <summary>Why does power increase with sample size?</summary>
+        <p>Larger samples reduce the standard error of the estimated conversion rate proportionally to 1/sqrt(n), narrowing the sampling distribution and making it easier to distinguish real effects from noise. The relationship follows an S-curve — power rises steeply in the mid-range and flattens near 100%. Doubling your sample size does not double your power.</p>
+      </details>
+
+      <details>
+        <summary>What is the relationship between significance level and power?</summary>
+        <p>They are inversely related at fixed sample size. Stricter alpha (e.g., 0.01 instead of 0.05) reduces false positives but also reduces power. To maintain 80% power at alpha = 0.01, you need roughly 50% more traffic than at alpha = 0.05. This calculator lets you compare power curves at different significance levels to find the right balance.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Quick sample size estimation for A/B tests</li>
+        <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a> — Learn the Beta-Binomial method for A/B testing</li>
+        <li><a href="/tools/bayesian-ab-calculator.html">Bayesian A/B Test Calculator</a> — Posterior distribution visualization and probability of winning</li>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate statistical significance for your test results</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools & Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+  <script>
+  (function(){
+    var tailMode = 'two';
+
+    function setTailMode(mode) {
+      tailMode = mode;
+      document.getElementById('pa-two-tailed').className = mode === 'two' ? 'active' : '';
+      document.getElementById('pa-one-tailed').className = mode === 'one' ? 'active' : '';
+      document.getElementById('pa-tail-info').textContent = mode === 'two'
+        ? 'Two-tailed test: detects differences in either direction (variant better OR worse). Recommended for most A/B tests.'
+        : 'One-tailed test: only detects improvement. Requires ~20% less traffic but cannot detect harmful effects.';
+    }
+    window.setTailMode = setTailMode;
+
+    // Normal CDF approximation (Abramowitz & Stegun)
+    function normCdf(x) {
+      if (x < -8) return 0;
+      if (x > 8) return 1;
+      var t = 1 / (1 + 0.2316419 * Math.abs(x));
+      var d = 0.3989422804014327;
+      var p = d * Math.exp(-x * x / 2) * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.8212560 + t * 1.3302744))));
+      return x > 0 ? 1 - p : p;
+    }
+
+    // Inverse normal (rational approximation)
+    function normInv(p) {
+      if (p <= 0) return -8;
+      if (p >= 1) return 8;
+      if (p < 0.5) return -normInv(1 - p);
+      var t = Math.sqrt(-2 * Math.log(1 - p));
+      var c0 = 2.515517, c1 = 0.802853, c2 = 0.010328;
+      var d1 = 1.432788, d2 = 0.189269, d3 = 0.001308;
+      return t - (c0 + c1 * t + c2 * t * t) / (1 + d1 * t + d2 * t * t + d3 * t * t * t);
+    }
+
+    function calcSampleSize(p1, p2, alpha, power, tails) {
+      var za = tails === 'two' ? normInv(1 - alpha / 2) : normInv(1 - alpha);
+      var zb = normInv(power);
+      var num = Math.pow(za + zb, 2) * (p1 * (1 - p1) + p2 * (1 - p2));
+      var den = Math.pow(p2 - p1, 2);
+      return Math.ceil(num / den);
+    }
+
+    function calcPower(p1, p2, n, alpha, tails) {
+      var za = tails === 'two' ? normInv(1 - alpha / 2) : normInv(1 - alpha);
+      var se = Math.sqrt(p1 * (1 - p1) / n + p2 * (1 - p2) / n);
+      if (se === 0) return 1;
+      var z = (Math.abs(p2 - p1) / se) - za;
+      return normCdf(z);
+    }
+
+    function cohenH(p1, p2) {
+      return 2 * Math.asin(Math.sqrt(p2)) - 2 * Math.asin(Math.sqrt(p1));
+    }
+
+    function magnitudeLabel(h) {
+      var ah = Math.abs(h);
+      if (ah < 0.2) return 'Small';
+      if (ah < 0.5) return 'Medium';
+      if (ah < 0.8) return 'Large';
+      return 'Very Large';
+    }
+
+    function formatNum(n) {
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function drawPowerCurve(svgId, p1, p2, alpha, targetPower, targetN, tails) {
+      var svg = document.getElementById(svgId);
+      var W = 700, H = 350, ml = 65, mr = 30, mt = 20, mb = 50;
+      var pw = W - ml - mr, ph = H - mt - mb;
+      var maxN = Math.max(targetN * 2.5, 500);
+      var steps = 100;
+
+      var html = '';
+      // Grid lines
+      for (var i = 0; i <= 5; i++) {
+        var y = mt + ph - (i / 5) * ph;
+        html += '<line x1="' + ml + '" y1="' + y + '" x2="' + (W - mr) + '" y2="' + y + '" stroke="#333" stroke-width="0.5"/>';
+        html += '<text x="' + (ml - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="11" font-family="Space Mono,monospace">' + (i * 20) + '%</text>';
+      }
+      // X axis labels
+      for (var i = 0; i <= 5; i++) {
+        var x = ml + (i / 5) * pw;
+        var val = Math.round((i / 5) * maxN);
+        html += '<line x1="' + x + '" y1="' + (H - mb) + '" x2="' + x + '" y2="' + (H - mb + 5) + '" stroke="#888" stroke-width="1"/>';
+        html += '<text x="' + x + '" y="' + (H - mb + 20) + '" text-anchor="middle" fill="#888" font-size="11" font-family="Space Mono,monospace">' + formatNum(val) + '</text>';
+      }
+      // Axis labels
+      html += '<text x="' + (ml + pw / 2) + '" y="' + (H - 5) + '" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif">Sample Size (per variant)</text>';
+      html += '<text x="15" y="' + (mt + ph / 2) + '" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif" transform="rotate(-90,15,' + (mt + ph / 2) + ')">Power</text>';
+
+      // Power curve
+      var pts = [];
+      for (var i = 0; i <= steps; i++) {
+        var n = Math.max(10, Math.round((i / steps) * maxN));
+        var pwr = calcPower(p1, p2, n, alpha, tails);
+        var x = ml + (n / maxN) * pw;
+        var y = mt + ph - pwr * ph;
+        pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+      }
+      html += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="#2DD4BF" stroke-width="2.5"/>';
+
+      // Target lines
+      var tx = ml + (targetN / maxN) * pw;
+      var ty = mt + ph - targetPower * ph;
+      html += '<line x1="' + tx + '" y1="' + mt + '" x2="' + tx + '" y2="' + (H - mb) + '" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="5,4" opacity="0.6"/>';
+      html += '<line x1="' + ml + '" y1="' + ty + '" x2="' + (W - mr) + '" y2="' + ty + '" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="5,4" opacity="0.6"/>';
+      html += '<circle cx="' + tx + '" cy="' + ty + '" r="5" fill="#2DD4BF"/>';
+      html += '<text x="' + (tx + 8) + '" y="' + (ty - 8) + '" fill="#2DD4BF" font-size="11" font-family="Space Mono,monospace">n=' + formatNum(targetN) + '</text>';
+
+      // 80% line if not target
+      if (Math.abs(targetPower - 0.8) > 0.01) {
+        var y80 = mt + ph - 0.8 * ph;
+        html += '<line x1="' + ml + '" y1="' + y80 + '" x2="' + (W - mr) + '" y2="' + y80 + '" stroke="#666" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>';
+      }
+
+      svg.innerHTML = html;
+    }
+
+    function drawAlphaChart(svgId, p1, p2, targetN, tails) {
+      var svg = document.getElementById(svgId);
+      var W = 700, H = 350, ml = 65, mr = 30, mt = 20, mb = 50;
+      var pw = W - ml - mr, ph = H - mt - mb;
+      var maxN = Math.max(targetN * 2.5, 500);
+      var steps = 80;
+      var alphas = [
+        { val: 0.01, color: '#F97316', label: 'alpha=0.01' },
+        { val: 0.05, color: '#2DD4BF', label: 'alpha=0.05' },
+        { val: 0.10, color: '#A78BFA', label: 'alpha=0.10' }
+      ];
+
+      var html = '';
+      // Grid
+      for (var i = 0; i <= 5; i++) {
+        var y = mt + ph - (i / 5) * ph;
+        html += '<line x1="' + ml + '" y1="' + y + '" x2="' + (W - mr) + '" y2="' + y + '" stroke="#333" stroke-width="0.5"/>';
+        html += '<text x="' + (ml - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#888" font-size="11" font-family="Space Mono,monospace">' + (i * 20) + '%</text>';
+      }
+      for (var i = 0; i <= 5; i++) {
+        var x = ml + (i / 5) * pw;
+        var val = Math.round((i / 5) * maxN);
+        html += '<line x1="' + x + '" y1="' + (H - mb) + '" x2="' + x + '" y2="' + (H - mb + 5) + '" stroke="#888" stroke-width="1"/>';
+        html += '<text x="' + x + '" y="' + (H - mb + 20) + '" text-anchor="middle" fill="#888" font-size="11" font-family="Space Mono,monospace">' + formatNum(val) + '</text>';
+      }
+      html += '<text x="' + (ml + pw / 2) + '" y="' + (H - 5) + '" text-anchor="middle" fill="#aaa" font-size="12" font-family="IBM Plex Sans,sans-serif">Sample Size (per variant)</text>';
+
+      // Curves
+      for (var a = 0; a < alphas.length; a++) {
+        var pts = [];
+        for (var i = 0; i <= steps; i++) {
+          var n = Math.max(10, Math.round((i / steps) * maxN));
+          var pwr = calcPower(p1, p2, n, alphas[a].val, tails);
+          var x = ml + (n / maxN) * pw;
+          var y = mt + ph - pwr * ph;
+          pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+        }
+        html += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + alphas[a].color + '" stroke-width="2"/>';
+      }
+
+      // Legend
+      var lx = ml + pw - 140, ly = mt + 15;
+      for (var a = 0; a < alphas.length; a++) {
+        html += '<line x1="' + lx + '" y1="' + (ly + a * 18) + '" x2="' + (lx + 20) + '" y2="' + (ly + a * 18) + '" stroke="' + alphas[a].color + '" stroke-width="2"/>';
+        html += '<text x="' + (lx + 25) + '" y="' + (ly + a * 18 + 4) + '" fill="' + alphas[a].color + '" font-size="11" font-family="Space Mono,monospace">' + alphas[a].label + '</text>';
+      }
+
+      // 80% line
+      var y80 = mt + ph - 0.8 * ph;
+      html += '<line x1="' + ml + '" y1="' + y80 + '" x2="' + (W - mr) + '" y2="' + y80 + '" stroke="#666" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>';
+      html += '<text x="' + (W - mr - 5) + '" y="' + (y80 - 5) + '" text-anchor="end" fill="#666" font-size="10" font-family="Space Mono,monospace">80% power</text>';
+
+      svg.innerHTML = html;
+    }
+
+    function runPowerAnalysis() {
+      var baseline = parseFloat(document.getElementById('pa-baseline').value);
+      var mde = parseFloat(document.getElementById('pa-mde').value);
+      var alpha = parseFloat(document.getElementById('pa-alpha').value);
+      var power = parseFloat(document.getElementById('pa-power').value);
+
+      if (isNaN(baseline) || isNaN(mde) || baseline <= 0 || baseline >= 100 || mde <= 0) {
+        alert('Please enter valid values. Baseline must be between 0.1% and 99%, and MDE must be positive.');
+        return;
+      }
+
+      var p1 = baseline / 100;
+      var p2 = p1 * (1 + mde / 100);
+      if (p2 >= 1) p2 = 0.999;
+
+      var n = calcSampleSize(p1, p2, alpha, power, tailMode);
+      var h = cohenH(p1, p2);
+
+      document.getElementById('pa-r-n').textContent = formatNum(n);
+      document.getElementById('pa-r-total').textContent = formatNum(n * 2);
+      document.getElementById('pa-r-p1').textContent = (p1 * 100).toFixed(2) + '%';
+      document.getElementById('pa-r-p2').textContent = (p2 * 100).toFixed(2) + '%';
+      document.getElementById('pa-r-abs').textContent = ((p2 - p1) * 100).toFixed(3) + ' pp';
+      document.getElementById('pa-r-cohen').textContent = Math.abs(h).toFixed(4);
+      document.getElementById('pa-r-mag').textContent = magnitudeLabel(h);
+      document.getElementById('pa-r-tail').textContent = tailMode === 'two' ? 'Two-Tailed' : 'One-Tailed';
+
+      document.getElementById('pa-results-panel').style.display = 'block';
+
+      drawPowerCurve('pa-power-chart', p1, p2, alpha, power, n, tailMode);
+      drawAlphaChart('pa-alpha-chart', p1, p2, n, tailMode);
+    }
+    window.runPowerAnalysis = runPowerAnalysis;
+
+    // Run on load
+    runPowerAnalysis();
+  })();
+  </script>
+  <script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+</body>
+</html>
