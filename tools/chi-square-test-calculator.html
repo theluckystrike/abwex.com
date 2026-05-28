@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi-Square Test Calculator — Statistical Independence Testing | ABWex</title>
+  <meta name="description" content="Free chi-square test of independence calculator. Input observed vs expected frequency tables from 2x2 to 5x5. Computes chi-square statistic, degrees of freedom, p-value, and renders a bar chart with critical value shading.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/chi-square-test-calculator.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Chi-Square Test Calculator — Statistical Independence Testing | ABWex">
+  <meta property="og:description" content="Free chi-square test calculator. Dynamic 2x2–5x5 frequency table. Computes chi-square statistic, degrees of freedom, p-value, and visual critical region shading.">
+  <meta property="og:url" content="https://abwex.com/tools/chi-square-test-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chi-Square Test Calculator — Statistical Independence Testing">
+  <meta name="twitter:description" content="Free chi-square test calculator with dynamic frequency tables and visual critical region shading.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/chi-square-test-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/chi-square-test-calculator.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Chi-Square Test Calculator",
+    "url": "https://abwex.com/tools/chi-square-test-calculator.html",
+    "description": "Free chi-square test of independence calculator supporting dynamic 2x2 to 5x5 frequency tables. Computes chi-square statistic, degrees of freedom, p-value, and visualizes observed vs expected counts with critical region shading.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-28",
+    "dateModified": "2026-05-28",
+    "featureList": ["Dynamic 2x2 to 5x5 contingency table", "Chi-square statistic calculation", "Degrees of freedom computation", "P-value with chi-square CDF", "Bar chart of observed vs expected", "Critical value region shading", "Pass/fail verdict at alpha 0.05 and 0.01"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Chi-Square Test Calculator — Statistical Independence Testing",
+    "description": "How to use a chi-square test of independence to determine whether two categorical variables are associated, with a worked example and step-by-step interpretation guide.",
+    "url": "https://abwex.com/tools/chi-square-test-calculator.html",
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-28",
+    "dateModified": "2026-05-28"
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Chi-Square Test Calculator"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/" class="active">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+        <div class="nav-right">
+          <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+          <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Chi-Square Test Calculator</span></nav>
+      <h1>Chi-Square Test <span>Calculator</span></h1>
+      <p>Enter observed frequencies in the table below. The calculator computes expected frequencies, the chi-square statistic, degrees of freedom, and exact p-value. Adjust the table size from 2&times;2 to 5&times;5. All computation runs in your browser — no data is sent anywhere.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .cq-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .cq-controls{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+        .cq-controls label{font-size:.875rem;color:var(--text-muted,#aaa);font-weight:500}
+        .cq-controls select{background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.9rem;padding:.4rem .7rem;font-family:inherit;cursor:pointer}
+        .cq-controls select:focus{outline:none;border-color:#2DD4BF}
+        .cq-table-wrap{overflow-x:auto;margin-bottom:1.25rem}
+        table.cq-table{border-collapse:collapse;width:100%;min-width:320px}
+        .cq-table th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);font-size:.8rem;font-weight:600;padding:.5rem .6rem;text-align:center;letter-spacing:.04em}
+        .cq-table td{padding:.3rem .4rem;text-align:center}
+        .cq-table input[type=number]{width:70px;padding:.45rem .5rem;background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:5px;color:var(--text,#e0e0e0);font-size:.9rem;font-family:'Space Mono',monospace;text-align:center;box-sizing:border-box}
+        .cq-table input[type=number]:focus{outline:none;border-color:#2DD4BF}
+        .cq-table .row-total,.cq-table .col-total,.cq-table .grand-total{font-family:'Space Mono',monospace;font-size:.85rem;color:#2DD4BF;padding:.45rem .6rem}
+        .cq-btn{display:inline-block;padding:.7rem 1.8rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:.25rem}
+        .cq-btn:hover{opacity:.9}
+        .cq-btn-sec{background:transparent;color:var(--text-muted,#aaa);border:1px solid var(--border,#333);margin-left:.75rem}
+        .cq-btn-sec:hover{color:var(--text,#e0e0e0);border-color:#2DD4BF;opacity:1}
+        .cq-results{margin-top:1.5rem}
+        .cq-result-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--border,#333)}
+        .cq-result-row:last-child{border-bottom:none}
+        .cq-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
+        .cq-result-value{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:#2DD4BF}
+        .cq-verdict{padding:1.2rem;border-radius:8px;margin-top:1.25rem;font-size:.95rem;line-height:1.6}
+        .cq-verdict.reject{background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);color:#2DD4BF}
+        .cq-verdict.fail{background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#F97316}
+        .cq-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .cq-chart-title{font-size:1rem;font-weight:600;margin-bottom:.75rem;color:var(--text,#e0e0e0)}
+        .cq-exp-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.85rem}
+        .cq-exp-table th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);padding:.4rem .6rem;text-align:center}
+        .cq-exp-table td{padding:.35rem .6rem;text-align:center;font-family:'Space Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.05)}
+        .cq-exp-table .warn{color:#F97316}
+        .cq-alpha-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+        @media(max-width:500px){.cq-alpha-grid{grid-template-columns:1fr}}
+        .cq-alpha-item{background:var(--input-bg,#0d0d1a);border-radius:8px;padding:1rem;text-align:center}
+        .cq-alpha-item .alabel{font-size:.8rem;color:var(--text-muted,#aaa);margin-bottom:.35rem}
+        .cq-alpha-item .avalue{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700}
+      </style>
+
+      <div class="cq-card">
+        <h2 style="margin-top:0;font-size:1.25rem;">Observed Frequency Table</h2>
+        <div class="cq-controls">
+          <div>
+            <label for="cq-rows">Rows</label>
+            <select id="cq-rows" onchange="buildTable()">
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <label for="cq-cols">Columns</label>
+            <select id="cq-cols" onchange="buildTable()">
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <label for="cq-alpha">Alpha</label>
+            <select id="cq-alpha">
+              <option value="0.05" selected>0.05</option>
+              <option value="0.01">0.01</option>
+              <option value="0.10">0.10</option>
+            </select>
+          </div>
+        </div>
+        <div class="cq-table-wrap" id="cq-table-wrap"></div>
+        <button class="cq-btn" onclick="runChiSquare()">Run Test</button>
+        <button class="cq-btn cq-btn-sec" onclick="loadExample()">Load Example</button>
+      </div>
+
+      <div id="cq-results-panel" style="display:none;">
+        <div class="cq-card cq-results">
+          <h3 style="margin-top:0;font-size:1.1rem;">Test Results</h3>
+          <div class="cq-result-row"><span class="cq-result-label">Chi-Square Statistic (&chi;&sup2;)</span><span class="cq-result-value" id="cq-r-chi">—</span></div>
+          <div class="cq-result-row"><span class="cq-result-label">Degrees of Freedom</span><span class="cq-result-value" id="cq-r-df">—</span></div>
+          <div class="cq-result-row"><span class="cq-result-label">P-Value</span><span class="cq-result-value" id="cq-r-pval">—</span></div>
+          <div class="cq-result-row"><span class="cq-result-label">Critical Value (&alpha; = <span id="cq-alpha-disp">0.05</span>)</span><span class="cq-result-value" id="cq-r-crit">—</span></div>
+          <div class="cq-result-row"><span class="cq-result-label">Total Observations (N)</span><span class="cq-result-value" id="cq-r-n">—</span></div>
+          <div class="cq-result-row"><span class="cq-result-label">Cramér's V (effect size)</span><span class="cq-result-value" id="cq-r-v">—</span></div>
+        </div>
+
+        <div id="cq-verdict-box" class="cq-verdict fail"></div>
+
+        <div class="cq-alpha-grid" id="cq-alpha-grid">
+          <div class="cq-alpha-item">
+            <div class="alabel">&alpha; = 0.05 (5% level)</div>
+            <div class="avalue" id="cq-a05">—</div>
+          </div>
+          <div class="cq-alpha-item">
+            <div class="alabel">&alpha; = 0.01 (1% level)</div>
+            <div class="avalue" id="cq-a01">—</div>
+          </div>
+        </div>
+
+        <div class="cq-chart-wrap">
+          <div class="cq-chart-title">Observed vs Expected Counts — per cell</div>
+          <svg id="cq-bar-chart" viewBox="0 0 700 300" style="width:100%;height:auto;display:block;"></svg>
+        </div>
+
+        <div class="cq-card" style="margin-top:1.5rem;">
+          <h3 style="margin-top:0;font-size:1.1rem;">Expected Frequencies &amp; Cell Contributions</h3>
+          <p style="font-size:.82rem;color:var(--text-muted,#aaa);margin-top:0;">Cells with expected frequency &lt; 5 are flagged in orange — the chi-square approximation may be unreliable.</p>
+          <div style="overflow-x:auto;" id="cq-exp-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>How the Chi-Square Test of Independence Works</h2>
+      <p>The chi-square test of independence determines whether two categorical variables are associated or independent. The null hypothesis states that the variables are independent — knowing the value of one variable tells you nothing about the distribution of the other. The alternative hypothesis says an association exists. The test statistic measures the discrepancy between what you observed and what you would expect if independence were true.</p>
+      <p>For each cell in your contingency table, the expected frequency is computed as: E<sub>ij</sub> = (row total<sub>i</sub> &times; column total<sub>j</sub>) / grand total. This is the count you would expect if the row and column variables were perfectly independent. The chi-square statistic sums the squared standardized deviations across all cells: &chi;&sup2; = &sum; (O<sub>ij</sub> &minus; E<sub>ij</sub>)<sup>2</sup> / E<sub>ij</sub>. Large values of &chi;&sup2; indicate large departures from independence.</p>
+      <p>The degrees of freedom for an r&times;c contingency table are (r &minus; 1) &times; (c &minus; 1). For a 2&times;2 table, df = 1. For a 3&times;4 table, df = 6. Under the null hypothesis, the test statistic follows a chi-square distribution with these degrees of freedom, and the p-value is the probability of observing a &chi;&sup2; value as large or larger if independence were true.</p>
+
+      <h2>Interpreting P-Values and Critical Values</h2>
+      <p>The p-value tells you the probability of obtaining your observed data (or more extreme data) under the assumption of independence. A small p-value means the observed pattern is unlikely to arise by chance alone. The most common significance threshold is &alpha; = 0.05: if p &lt; 0.05, you reject the null hypothesis of independence and conclude the variables are associated.</p>
+      <p>The critical value is the threshold your &chi;&sup2; statistic must exceed to reject H<sub>0</sub>. For df = 1 at &alpha; = 0.05, the critical value is 3.841. For df = 4 at &alpha; = 0.05, it is 9.488. Equivalently, if &chi;&sup2; &gt; critical value, then p &lt; &alpha;. Both comparisons give identical decisions — they are two ways of expressing the same calculation.</p>
+      <p>The bar chart visualizes the magnitude of discrepancy for each cell. Cells where observed counts far exceed expected counts drive the chi-square statistic upward. Identifying which cells contribute most to the overall &chi;&sup2; helps you understand the nature of the association — not just whether one exists, but where it is concentrated.</p>
+
+      <h2>Effect Size: Cramér's V</h2>
+      <p>Statistical significance does not measure practical importance. With a large sample, even a tiny association produces a statistically significant result. Cramér's V corrects for this by normalizing the chi-square statistic: V = &radic;(&chi;&sup2; / (N &times; min(r&minus;1, c&minus;1))). V ranges from 0 (no association) to 1 (perfect association). Conventional benchmarks for effect size are: small &asymp; 0.10, medium &asymp; 0.30, large &asymp; 0.50. These thresholds apply to 2&times;2 tables; for larger tables the benchmarks shift slightly.</p>
+      <p>In A/B testing contexts, always report both the p-value and Cramér's V. A p-value of 0.001 with V = 0.04 means you have detected a real but practically irrelevant association — perhaps because your sample size is enormous. Conversely, V = 0.35 with p = 0.08 means a potentially meaningful pattern that your sample size was too small to confirm statistically.</p>
+
+      <h2>When the Chi-Square Approximation Fails</h2>
+      <p>The chi-square distribution is an approximation that becomes accurate when expected frequencies are not too small. The standard rule of thumb is that all expected cell frequencies should be 5 or greater. When this condition is violated, the chi-square p-value is unreliable — typically anticonservative, meaning it reports more significance than truly exists. This calculator flags cells with expected frequency below 5 in orange to alert you to this issue.</p>
+      <p>When you have a 2&times;2 table with small expected frequencies, consider applying Yates' continuity correction, using Fisher's exact test, or collecting more data before running the test. For larger tables, collapsing categories with small counts is often appropriate. The key insight is that the chi-square test requires adequate data in every cell, not just in total — a large N does not protect against small expected frequencies in sparse cells.</p>
+
+      <h2>Chi-Square Test vs. Z-Test for A/B Tests</h2>
+      <p>For a standard A/B test comparing two conversion rates, both the two-proportion Z-test and the chi-square test of independence give identical results. The chi-square statistic equals the Z-statistic squared: &chi;&sup2; = Z&sup2;. The p-values are identical. The Z-test is more commonly reported because it supports directional (one-tailed) hypotheses and more directly expresses the difference between proportions. Use the chi-square test when you have more than two variants, when your outcome variable has more than two categories, or when comparing distributions across multiple groups simultaneously.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-28">Last updated: May 28, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>What does it mean when p &lt; 0.05 in a chi-square test?</summary>
+        <p>It means that if the two variables were truly independent, you would observe data as extreme as yours less than 5% of the time. You reject the null hypothesis of independence and conclude that an association exists between the row and column variables. The threshold 0.05 is a convention — the right threshold depends on how much false-positive risk you are willing to accept for your specific decision.</p>
+      </details>
+
+      <details>
+        <summary>How are degrees of freedom calculated?</summary>
+        <p>For an r&times;c contingency table, degrees of freedom = (r &minus; 1) &times; (c &minus; 1). A 2&times;2 table has 1 degree of freedom. A 3&times;3 table has 4. Degrees of freedom reflect how many cell counts can vary freely once the row and column totals are fixed — the remaining cells are determined by the constraint that row and column sums must match the observed marginals.</p>
+      </details>
+
+      <details>
+        <summary>Why are some expected frequencies flagged in orange?</summary>
+        <p>The chi-square approximation is unreliable when expected frequencies fall below 5. Small expected frequencies cause the p-value to be inaccurate — typically too small (false significance). When this happens, consider collecting more data, merging sparse categories, or using Fisher's exact test for 2&times;2 tables.</p>
+      </details>
+
+      <details>
+        <summary>What is Cramér's V and how large should it be?</summary>
+        <p>Cramér's V measures the strength of association, independent of sample size. It ranges from 0 (no association) to 1 (perfect association). Conventional thresholds for 2&times;2 tables: small = 0.10, medium = 0.30, large = 0.50. Statistical significance (p &lt; 0.05) only tells you an association is real; Cramér's V tells you how strong it is. Both metrics are needed for a complete interpretation.</p>
+      </details>
+
+      <details>
+        <summary>When should I use chi-square instead of a Z-test?</summary>
+        <p>Use chi-square when you have more than 2 variants, when your outcome has more than 2 categories, or when comparing distributions across multiple groups simultaneously. For a simple 2-variant, binary-outcome A/B test, both methods give identical p-values. The Z-test is preferred when you need directional (one-tailed) inference or want to directly express the difference between proportions.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Two-proportion Z-test with significance interpretation</li>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Determine required visitors before launching your test</li>
+        <li><a href="/tools/bayesian-ab-calculator.html">Bayesian A/B Calculator</a> — Posterior distributions and probability of winning</li>
+        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Wilson and Clopper-Pearson intervals</li>
+        <li><a href="/tools/sequential-testing-tool.html">Sequential Testing Tool</a> — Stop A/B tests early with O'Brien-Fleming boundaries</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools &amp; Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---- Chi-square CDF via regularized incomplete gamma ---- */
+  function lnGamma(z){
+    var g=7,c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+    if(z<0.5) return Math.log(Math.PI/Math.sin(Math.PI*z))-lnGamma(1-z);
+    z-=1; var x=c[0];
+    for(var i=1;i<g+2;i++) x+=c[i]/(z+i);
+    var t=z+g+0.5;
+    return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x);
+  }
+
+  function gammaIncLower(a, x){
+    // Series expansion for regularized lower incomplete gamma P(a,x)
+    if(x<0) return 0;
+    if(x===0) return 0;
+    var sum=1/a, term=1/a, n=1;
+    for(var i=0;i<300;i++){
+      term*=x/(a+n); sum+=term; n++;
+      if(Math.abs(term)<1e-14*Math.abs(sum)) break;
+    }
+    return sum*Math.exp(-x+a*Math.log(x)-lnGamma(a));
+  }
+
+  function gammaIncUpper(a, x){
+    // Continued fraction for regularized upper incomplete gamma Q(a,x)
+    var b=x+1-a, c=1/1e-30, d=1/b, h=d, n=1;
+    for(var i=0;i<300;i++){
+      var an=-n*(n-a); b+=2; d=an*d+b; if(Math.abs(d)<1e-30) d=1e-30;
+      c=b+an/c; if(Math.abs(c)<1e-30) c=1e-30;
+      d=1/d; var del=d*c; h*=del; n++;
+      if(Math.abs(del-1)<1e-14) break;
+    }
+    return Math.exp(-x+a*Math.log(x)-lnGamma(a))*h;
+  }
+
+  function chiSquarePValue(chi2, df){
+    // P(X >= chi2) where X ~ chi-square(df)
+    if(chi2<=0) return 1;
+    var a=df/2, x=chi2/2;
+    // Use series for small x, continued fraction for large x
+    if(x < a+1) return 1 - gammaIncLower(a, x);
+    return gammaIncUpper(a, x);
+  }
+
+  // Chi-square quantile (critical value) via bisection
+  function chiSquareCritical(alpha, df){
+    // Find x such that P(X >= x) = alpha
+    var lo=0, hi=200;
+    for(var i=0;i<100;i++){
+      var mid=(lo+hi)/2;
+      if(chiSquarePValue(mid,df) > alpha) lo=mid; else hi=mid;
+      if(hi-lo<1e-8) break;
+    }
+    return (lo+hi)/2;
+  }
+
+  /* ---- Table building ---- */
+  var DEFAULT_2x2 = [[120,80],[50,150]];
+
+  function getRows(){ return parseInt(document.getElementById('cq-rows').value); }
+  function getCols(){ return parseInt(document.getElementById('cq-cols').value); }
+
+  function buildTable(){
+    var r=getRows(), c=getCols();
+    var wrap=document.getElementById('cq-table-wrap');
+    var html='<table class="cq-table"><thead><tr><th></th>';
+    for(var j=0;j<c;j++) html+='<th>Col '+(j+1)+'</th>';
+    html+='<th>Row Total</th></tr></thead><tbody>';
+    for(var i=0;i<r;i++){
+      html+='<tr><th>Row '+(i+1)+'</th>';
+      for(var j=0;j<c;j++){
+        var val=2; if(r===2&&c===2&&i<2&&j<2) val=DEFAULT_2x2[i][j];
+        html+='<td><input type="number" id="cq-cell-'+i+'-'+j+'" value="'+val+'" min="0" oninput="updateTotals()"></td>';
+      }
+      html+='<td class="row-total" id="cq-row-'+i+'">—</td></tr>';
+    }
+    html+='<tr><th>Col Total</th>';
+    for(var j=0;j<c;j++) html+='<td class="col-total" id="cq-col-'+j+'">—</td>';
+    html+='<td class="grand-total" id="cq-grand">—</td></tr>';
+    html+='</tbody></table>';
+    wrap.innerHTML=html;
+    updateTotals();
+    document.getElementById('cq-results-panel').style.display='none';
+  }
+
+  function getObs(){
+    var r=getRows(), c=getCols(), obs=[];
+    for(var i=0;i<r;i++){
+      obs.push([]);
+      for(var j=0;j<c;j++){
+        var v=parseFloat(document.getElementById('cq-cell-'+i+'-'+j).value);
+        obs[i].push(isNaN(v)||v<0?0:v);
+      }
+    }
+    return obs;
+  }
+
+  function updateTotals(){
+    var r=getRows(), c=getCols(), obs=getObs();
+    var rowSums=[], colSums=[], grand=0;
+    for(var i=0;i<r;i++){
+      var s=0; for(var j=0;j<c;j++) s+=obs[i][j];
+      rowSums.push(s); grand+=s;
+    }
+    for(var j=0;j<c;j++){
+      var s=0; for(var i=0;i<r;i++) s+=obs[i][j];
+      colSums.push(s);
+    }
+    for(var i=0;i<r;i++) document.getElementById('cq-row-'+i).textContent=rowSums[i];
+    for(var j=0;j<c;j++) document.getElementById('cq-col-'+j).textContent=colSums[j];
+    document.getElementById('cq-grand').textContent=grand;
+  }
+
+  function loadExample(){
+    document.getElementById('cq-rows').value='2';
+    document.getElementById('cq-cols').value='2';
+    buildTable();
+    // Already seeded with DEFAULT_2x2 values above
+    runChiSquare();
+  }
+
+  function runChiSquare(){
+    var r=getRows(), c=getCols(), obs=getObs();
+    var alpha=parseFloat(document.getElementById('cq-alpha').value);
+    var rowSums=[], colSums=[], grand=0;
+    for(var i=0;i<r;i++){
+      var s=0; for(var j=0;j<c;j++) s+=obs[i][j];
+      rowSums.push(s); grand+=s;
+    }
+    for(var j=0;j<c;j++){
+      var s=0; for(var i=0;i<r;i++) s+=obs[i][j];
+      colSums.push(s);
+    }
+
+    if(grand<1){ alert('Please enter some observed counts.'); return; }
+
+    // Expected frequencies
+    var exp=[], chi2=0, cells=[];
+    for(var i=0;i<r;i++){
+      exp.push([]);
+      for(var j=0;j<c;j++){
+        var e=rowSums[i]*colSums[j]/grand;
+        exp[i].push(e);
+        var contrib=e>0?Math.pow(obs[i][j]-e,2)/e:0;
+        chi2+=contrib;
+        cells.push({i:i,j:j,obs:obs[i][j],exp:e,contrib:contrib});
+      }
+    }
+
+    var df=(r-1)*(c-1);
+    var pval=chiSquarePValue(chi2,df);
+    var crit=chiSquareCritical(alpha,df);
+    var crit05=chiSquareCritical(0.05,df);
+    var crit01=chiSquareCritical(0.01,df);
+    var minK=Math.min(r,c)-1;
+    var cramV=minK>0?Math.sqrt(chi2/(grand*minK)):0;
+
+    // Display
+    document.getElementById('cq-r-chi').textContent=chi2.toFixed(4);
+    document.getElementById('cq-r-df').textContent=df;
+    document.getElementById('cq-r-pval').textContent=pval<0.0001?'< 0.0001':pval.toFixed(4);
+    document.getElementById('cq-r-crit').textContent=crit.toFixed(4);
+    document.getElementById('cq-r-n').textContent=grand;
+    document.getElementById('cq-r-v').textContent=cramV.toFixed(4);
+    document.getElementById('cq-alpha-disp').textContent=alpha;
+
+    var vbox=document.getElementById('cq-verdict-box');
+    if(chi2>crit){
+      vbox.className='cq-verdict reject';
+      vbox.innerHTML='<strong>REJECT H&#8320; — Significant association detected</strong><br>&chi;&sup2; = '+chi2.toFixed(4)+' exceeds critical value '+crit.toFixed(4)+' at &alpha; = '+alpha+'. p = '+(pval<0.0001?'&lt; 0.0001':pval.toFixed(4))+'. The variables are not independent. Cramér\'s V = '+cramV.toFixed(4)+' ('+(cramV<0.1?'negligible':cramV<0.3?'small':cramV<0.5?'medium':'large')+' effect).';
+    } else {
+      vbox.className='cq-verdict fail';
+      vbox.innerHTML='<strong>FAIL TO REJECT H&#8320; — No significant association</strong><br>&chi;&sup2; = '+chi2.toFixed(4)+' does not exceed critical value '+crit.toFixed(4)+' at &alpha; = '+alpha+'. p = '+(pval<0.0001?'&lt; 0.0001':pval.toFixed(4))+'. Insufficient evidence to conclude the variables are associated. Cramér\'s V = '+cramV.toFixed(4)+'.';
+    }
+
+    // Alpha grid
+    function alphaLabel(chi2val, critVal, alphaStr){
+      if(chi2val>critVal) return '<span style="color:#2DD4BF;">REJECT (p &lt; '+alphaStr+')</span>';
+      return '<span style="color:#F97316;">FAIL TO REJECT</span>';
+    }
+    document.getElementById('cq-a05').innerHTML=alphaLabel(chi2,crit05,'0.05');
+    document.getElementById('cq-a01').innerHTML=alphaLabel(chi2,crit01,'0.01');
+
+    // Expected table
+    var expHtml='<table class="cq-exp-table"><thead><tr><th>Cell</th><th>Observed</th><th>Expected</th><th>Contribution to &chi;&sup2;</th></tr></thead><tbody>';
+    for(var k=0;k<cells.length;k++){
+      var cl=cells[k];
+      var warn=cl.exp<5?' class="warn"':'';
+      expHtml+='<tr><td>R'+(cl.i+1)+'C'+(cl.j+1)+'</td><td>'+cl.obs+'</td><td'+warn+'>'+cl.exp.toFixed(2)+(cl.exp<5?' &#9888;':'')+'</td><td>'+cl.contrib.toFixed(4)+'</td></tr>';
+    }
+    expHtml+='</tbody></table>';
+    document.getElementById('cq-exp-wrap').innerHTML=expHtml;
+
+    // Bar chart
+    drawBarChart(cells);
+
+    document.getElementById('cq-results-panel').style.display='block';
+  }
+
+  function drawBarChart(cells){
+    var svg=document.getElementById('cq-bar-chart');
+    var W=700,H=300,ml=45,mr=20,mt=20,mb=60;
+    var pw=W-ml-mr, ph=H-mt-mb;
+    var n=cells.length;
+    var maxVal=0;
+    for(var k=0;k<n;k++){
+      if(cells[k].obs>maxVal) maxVal=cells[k].obs;
+      if(cells[k].exp>maxVal) maxVal=cells[k].exp;
+    }
+    maxVal=maxVal*1.15;
+    var groupW=pw/n;
+    var barW=Math.max(4,groupW*0.35);
+    var html='';
+
+    // Grid lines
+    for(var g=0;g<=4;g++){
+      var gy=mt+ph-(g/4)*ph;
+      var gval=Math.round(maxVal*g/4);
+      html+='<line x1="'+ml+'" y1="'+gy+'" x2="'+(W-mr)+'" y2="'+gy+'" stroke="#2a2a3e" stroke-width="1"/>';
+      html+='<text x="'+(ml-6)+'" y="'+(gy+4)+'" text-anchor="end" fill="#666" font-size="10" font-family="Space Mono,monospace">'+gval+'</text>';
+    }
+
+    // Bars
+    for(var k=0;k<n;k++){
+      var cx=ml+k*groupW+groupW/2;
+      var obsH=(cells[k].obs/maxVal)*ph;
+      var expH=(cells[k].exp/maxVal)*ph;
+      var ox=cx-barW-2, ex=cx+2;
+
+      // Observed bar (teal)
+      html+='<rect x="'+ox.toFixed(1)+'" y="'+(mt+ph-obsH).toFixed(1)+'" width="'+barW.toFixed(1)+'" height="'+obsH.toFixed(1)+'" fill="#2DD4BF" rx="2" opacity="0.85"/>';
+      // Expected bar (orange outline)
+      html+='<rect x="'+ex.toFixed(1)+'" y="'+(mt+ph-expH).toFixed(1)+'" width="'+barW.toFixed(1)+'" height="'+expH.toFixed(1)+'" fill="#F97316" rx="2" opacity="0.65"/>';
+
+      // Cell label
+      var label='R'+(cells[k].i+1)+'C'+(cells[k].j+1);
+      html+='<text x="'+cx.toFixed(1)+'" y="'+(mt+ph+16)+'" text-anchor="middle" fill="#888" font-size="10" font-family="IBM Plex Sans,sans-serif">'+label+'</text>';
+    }
+
+    // Legend
+    html+='<rect x="'+(ml+10)+'" y="'+(mt+4)+'" width="12" height="10" fill="#2DD4BF" rx="2"/>';
+    html+='<text x="'+(ml+26)+'" y="'+(mt+13)+'" fill="#2DD4BF" font-size="11" font-family="IBM Plex Sans,sans-serif">Observed</text>';
+    html+='<rect x="'+(ml+110)+'" y="'+(mt+4)+'" width="12" height="10" fill="#F97316" rx="2"/>';
+    html+='<text x="'+(ml+126)+'" y="'+(mt+13)+'" fill="#F97316" font-size="11" font-family="IBM Plex Sans,sans-serif">Expected</text>';
+
+    // X axis label
+    html+='<text x="'+(ml+pw/2)+'" y="'+(H-5)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif">Cell (Row &times; Column)</text>';
+
+    svg.innerHTML=html;
+  }
+
+  // Expose globals
+  window.buildTable=buildTable;
+  window.updateTotals=updateTotals;
+  window.runChiSquare=runChiSquare;
+  window.loadExample=loadExample;
+
+  // Initialize
+  buildTable();
+})();
+</script>
+<script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+
+<section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
+<h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
+<ul style="list-style:none;padding:0;display:grid;gap:8px;">
+<li><a href="/tools/p-value-calculator.html" style="color:#3b82f6;text-decoration:none;">P-Value Calculator — Two-Proportion Z-Test for A/B Tests</a></li>
+<li><a href="/tools/bayesian-ab-calculator.html" style="color:#3b82f6;text-decoration:none;">Bayesian A/B Test Calculator — Posterior Distributions &amp; Probability of Winning</a></li>
+<li><a href="/tools/sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">Sample Size Calculator — Required Visitors Before Launching</a></li>
+<li><a href="/tools/sequential-testing-tool.html" style="color:#3b82f6;text-decoration:none;">Sequential Testing Tool — Stop A/B Tests Early With Confidence</a></li>
+</ul>
+</section>
+
+</body>
+</html>

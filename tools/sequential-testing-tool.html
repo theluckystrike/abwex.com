@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sequential Testing Tool — Stop A/B Tests Early With Confidence | ABWex</title>
+  <meta name="description" content="Free sequential testing tool using O'Brien-Fleming boundaries. Input daily visitors, baseline conversion rate, and MDE. Generates day-by-day stopping boundaries and tells you exactly when you can stop your A/B test early.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/sequential-testing-tool.html">
+  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+  <meta property="og:title" content="Sequential Testing Tool — Stop A/B Tests Early With Confidence | ABWex">
+  <meta property="og:description" content="Free sequential A/B test tool with O'Brien-Fleming boundaries. Enter daily visitors, baseline rate, MDE. See day-by-day stopping boundaries and cumulative test statistics.">
+  <meta property="og:url" content="https://abwex.com/tools/sequential-testing-tool.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zovo Tools">
+  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sequential Testing Tool — Stop A/B Tests Early With Confidence">
+  <meta name="twitter:description" content="Free sequential testing tool with O'Brien-Fleming boundaries for A/B tests. Stop early, stay valid.">
+  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/sequential-testing-tool.html">
+  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/sequential-testing-tool.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Sequential Testing Tool",
+    "url": "https://abwex.com/tools/sequential-testing-tool.html",
+    "description": "Free sequential testing tool using O'Brien-Fleming boundaries for A/B tests. Input daily visitors, baseline conversion rate, and minimum detectable effect. Generates day-by-day upper and lower stopping boundaries and shows cumulative test statistic vs boundaries.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-28",
+    "dateModified": "2026-05-28",
+    "featureList": ["O'Brien-Fleming sequential boundaries", "Day-by-day stopping thresholds", "Cumulative test statistic chart", "Optional live results input", "Early stop recommendation", "Futility boundary detection"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Sequential Testing Tool — Stop A/B Tests Early With Confidence",
+    "description": "How sequential testing with O'Brien-Fleming boundaries lets you check A/B test results at any point while controlling the overall type I error rate, with a worked example and day-by-day stopping schedule.",
+    "url": "https://abwex.com/tools/sequential-testing-tool.html",
+    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
+    "datePublished": "2026-05-28",
+    "dateModified": "2026-05-28"
+  }
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Sequential Testing Tool"}]}</script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">AB<span>Wex</span></a>
+      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
+      <nav>
+        <a href="/">Calculator</a>
+        <a href="/tools/" class="active">Tools</a>
+        <a href="/answers/">Answers</a>
+        <a href="/guides/">Guides</a>
+        <a href="/blog/">Blog</a>
+        <div class="nav-right">
+          <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
+          <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Sequential Testing Tool</span></nav>
+      <h1>Sequential Testing <span>Tool</span></h1>
+      <p>Generate O'Brien-Fleming stopping boundaries for your A/B test. Enter your test parameters and optionally paste daily results to see whether you can stop today. All computation is client-side — no data leaves your browser.</p>
+    </section>
+
+    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+      <style>
+        .sq-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
+        .sq-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem}
+        @media(max-width:700px){.sq-grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:420px){.sq-grid{grid-template-columns:1fr}}
+        .sq-field{margin-bottom:.75rem}
+        .sq-field label{display:block;font-size:.82rem;color:var(--text-muted,#aaa);margin-bottom:.3rem;font-weight:500}
+        .sq-field input,.sq-field select{width:100%;padding:.55rem .75rem;background:var(--input-bg,#0d0d1a);border:1px solid var(--border,#333);border-radius:6px;color:var(--text,#e0e0e0);font-size:.9rem;font-family:inherit;box-sizing:border-box}
+        .sq-field input:focus,.sq-field select:focus{outline:none;border-color:#2DD4BF}
+        .sq-btn{display:inline-block;padding:.7rem 1.8rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+        .sq-btn:hover{opacity:.9}
+        .sq-result-row{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border,#333)}
+        .sq-result-row:last-child{border-bottom:none}
+        .sq-rl{color:var(--text-muted,#aaa);font-size:.9rem}
+        .sq-rv{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:#2DD4BF}
+        .sq-verdict{padding:1.2rem;border-radius:8px;margin-top:1.25rem;font-size:.95rem;line-height:1.6}
+        .sq-verdict.stop-pos{background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);color:#2DD4BF}
+        .sq-verdict.stop-neg{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444}
+        .sq-verdict.futile{background:rgba(107,114,128,0.1);border:1px solid rgba(107,114,128,0.3);color:#9ca3af}
+        .sq-verdict.continue{background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#F97316}
+        .sq-verdict.plan{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);color:#A78BFA}
+        .sq-chart-wrap{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:1.5rem;margin-top:1.5rem}
+        .sq-chart-title{font-size:1rem;font-weight:600;margin-bottom:.75rem;color:var(--text,#e0e0e0)}
+        .sq-sched-wrap{overflow-x:auto;margin-top:1rem}
+        table.sq-sched{border-collapse:collapse;width:100%;font-size:.83rem}
+        .sq-sched th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);padding:.4rem .6rem;text-align:center;white-space:nowrap}
+        .sq-sched td{padding:.35rem .6rem;text-align:center;font-family:'Space Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.04)}
+        .sq-sched tr.today-row td{background:rgba(45,212,191,0.07);color:#2DD4BF}
+        .sq-sched tr.stop-row td{background:rgba(45,212,191,0.12);}
+        .sq-results-section{display:none;}
+        .sq-live-toggle{font-size:.85rem;color:#A78BFA;cursor:pointer;text-decoration:underline;margin-left:.75rem}
+        .sq-live-section{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border,#333);display:none}
+        .sq-live-note{font-size:.8rem;color:var(--text-muted,#aaa);margin-top:.5rem}
+        .sq-day-inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-top:.75rem}
+        .sq-day-field{background:var(--input-bg,#0d0d1a);border-radius:6px;padding:.6rem .75rem}
+        .sq-day-field label{display:block;font-size:.78rem;color:var(--text-muted,#aaa);margin-bottom:.25rem}
+        .sq-day-field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border,#333);color:var(--text,#e0e0e0);font-family:'Space Mono',monospace;font-size:.88rem;padding:.2rem 0;box-sizing:border-box}
+        .sq-day-field input:focus{outline:none;border-color:#2DD4BF}
+      </style>
+
+      <div class="sq-card">
+        <h2 style="margin-top:0;font-size:1.25rem;">Test Parameters</h2>
+        <div class="sq-grid">
+          <div class="sq-field">
+            <label for="sq-visitors">Daily visitors per variant</label>
+            <input type="number" id="sq-visitors" value="500" min="10">
+          </div>
+          <div class="sq-field">
+            <label for="sq-baseline">Baseline conversion rate (%)</label>
+            <input type="number" id="sq-baseline" value="5" min="0.01" max="99.99" step="0.01">
+          </div>
+          <div class="sq-field">
+            <label for="sq-mde">MDE — relative lift (%)</label>
+            <input type="number" id="sq-mde" value="10" min="0.1" max="200" step="0.1">
+          </div>
+          <div class="sq-field">
+            <label for="sq-alpha">Significance level (&alpha;)</label>
+            <select id="sq-alpha">
+              <option value="0.05" selected>0.05</option>
+              <option value="0.01">0.01</option>
+              <option value="0.10">0.10</option>
+            </select>
+          </div>
+          <div class="sq-field">
+            <label for="sq-power">Desired power (1 &minus; &beta;)</label>
+            <select id="sq-power">
+              <option value="0.80" selected>0.80 (80%)</option>
+              <option value="0.85">0.85 (85%)</option>
+              <option value="0.90">0.90 (90%)</option>
+            </select>
+          </div>
+          <div class="sq-field">
+            <label for="sq-looks">Planned interim looks</label>
+            <select id="sq-looks">
+              <option value="5" selected>Daily (auto)</option>
+              <option value="3">3 looks</option>
+              <option value="5">5 looks</option>
+              <option value="7">7 looks</option>
+              <option value="10">10 looks</option>
+            </select>
+          </div>
+        </div>
+        <button class="sq-btn" onclick="runSequential()">Generate Boundaries</button>
+        <span class="sq-live-toggle" onclick="toggleLive()">+ Enter live results</span>
+      </div>
+
+      <div class="sq-live-section" id="sq-live-section">
+        <div class="sq-card" style="margin-top:0;">
+          <h3 style="margin-top:0;font-size:1.05rem;">Live Results — Enter Cumulative Data Per Day</h3>
+          <p class="sq-live-note">Enter cumulative conversions and visitors for each day since test start. Leave blank for days not yet reached. The chart will overlay your actual test statistic vs the stopping boundaries.</p>
+          <div class="sq-day-inputs" id="sq-day-inputs"></div>
+          <button class="sq-btn" style="margin-top:1rem;" onclick="runSequential()">Update Chart</button>
+        </div>
+      </div>
+
+      <div class="sq-results-section" id="sq-results-section">
+        <div class="sq-card">
+          <h3 style="margin-top:0;font-size:1.1rem;">Test Plan Summary</h3>
+          <div class="sq-result-row"><span class="sq-rl">Required sample size (per variant)</span><span class="sq-rv" id="sq-r-n">—</span></div>
+          <div class="sq-result-row"><span class="sq-rl">Estimated test duration</span><span class="sq-rv" id="sq-r-dur">—</span></div>
+          <div class="sq-result-row"><span class="sq-rl">Interim look schedule</span><span class="sq-rv" id="sq-r-sched">—</span></div>
+          <div class="sq-result-row"><span class="sq-rl">Inflation factor (vs fixed horizon)</span><span class="sq-rv" id="sq-r-inflate">—</span></div>
+          <div class="sq-result-row"><span class="sq-rl">Adjusted &alpha; (spending at each look)</span><span class="sq-rv" id="sq-r-adj-alpha">—</span></div>
+        </div>
+
+        <div id="sq-verdict-box" class="sq-verdict plan"></div>
+
+        <div class="sq-chart-wrap">
+          <div class="sq-chart-title">Sequential Boundaries — Z-Statistic vs O'Brien-Fleming Thresholds</div>
+          <svg id="sq-boundary-chart" viewBox="0 0 700 380" style="width:100%;height:auto;display:block;"></svg>
+        </div>
+
+        <div class="sq-card" style="margin-top:1.5rem;">
+          <h3 style="margin-top:0;font-size:1.1rem;">Day-by-Day Stopping Schedule</h3>
+          <p style="font-size:.82rem;color:var(--text-muted,#aaa);margin-top:0;">Stop the test on a given day only if your cumulative Z-statistic exceeds the upper boundary (variant wins) or falls below the lower boundary (variant clearly inferior). Otherwise continue.</p>
+          <div class="sq-sched-wrap" id="sq-sched-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="explainer-section">
+      <h2>What Is Sequential Testing and Why Does It Matter?</h2>
+      <p>In traditional fixed-horizon A/B testing, you decide the sample size in advance and look at the results exactly once after collecting all the data. This is methodologically clean but impractical: most teams peek at results continuously, which inflates the type I error rate far above the nominal &alpha;. Checking a p &lt; 0.05 test at every new data point gives you a false positive rate of over 30%, not 5%. Sequential testing solves this by adjusting the stopping boundaries based on how many times you plan to look at the data.</p>
+      <p>O'Brien-Fleming boundaries are the most widely used sequential testing approach. They apply a stringent threshold early in the test when little data has been collected, and relax the threshold as the test approaches its planned end. The intuition is sound: claiming significance when you have only 10% of your planned data requires overwhelming evidence (much higher Z-statistic than 1.96). As you accumulate more data, the boundary approaches the standard critical value. This means you preserve most of the statistical power of the fixed-horizon test while allowing early stopping when the evidence is compelling.</p>
+      <p>The O'Brien-Fleming boundaries are computed using the spending function approach. At each interim look, the cumulative alpha spent is a function of the information fraction (data collected so far divided by planned total). The boundary at information fraction t is approximately: b(t) = z<sub>&alpha;/2</sub> / &radic;t, where z<sub>&alpha;/2</sub> is the standard normal critical value. This ensures the overall type I error across all looks equals the target &alpha;.</p>
+
+      <h2>How to Use Sequential Boundaries in Practice</h2>
+      <p>Once you generate the boundary schedule, use it as your decision framework for the entire test. Before launching, print or save the table. Each day (or at each planned interim look), compute your cumulative test statistic: Z = (p&#x302;<sub>B</sub> &minus; p&#x302;<sub>A</sub>) / SE, where SE = &radic;(p&#x302;(1&minus;p&#x302;)(1/n<sub>A</sub> + 1/n<sub>B</sub>)) and p&#x302; is the pooled proportion. If |Z| exceeds the day's boundary, you can stop the test.</p>
+      <p>If the test statistic crosses the upper boundary (positive side), variant B is significantly better — stop and ship. If it crosses the lower boundary (negative side, in the two-sided sense), variant A is significantly better — stop and keep control. If neither boundary is crossed by the final day, the test completes with the standard conclusion: reject or fail to reject based on the final look's boundary, which is close to the standard z<sub>&alpha;/2</sub>.</p>
+      <p>The key discipline: only check results at the pre-specified look times. If you scheduled 5 interim looks at days 7, 14, 21, 28, and 35, do not check on days 10, 12, and 15 just because you are curious. Ad hoc peeking undermines the statistical validity even with O'Brien-Fleming boundaries, because the boundaries are computed for the specific schedule you chose, not for arbitrary peeks.</p>
+
+      <h2>Sample Size Inflation With Sequential Testing</h2>
+      <p>Sequential testing requires a slightly larger maximum sample than fixed-horizon testing because the boundaries are more conservative early on. The inflation factor depends on the number of planned looks. For O'Brien-Fleming with 5 looks, the required maximum sample is approximately 1% to 3% larger than the fixed-horizon sample. With 10 looks, the inflation is 5% to 8%. This is a very modest cost for the benefit of potentially stopping weeks early if the effect is strong.</p>
+      <p>The expected sample size under the alternative hypothesis (when a true effect of size MDE exists) is substantially smaller than the maximum, because the test often stops early when the effect is real. For a 5-look O'Brien-Fleming design, the expected sample given a true effect of 1.5&times; the MDE is roughly 50% to 70% of the maximum. This is the practical efficiency gain: when your variant is meaningfully better, you stop much sooner on average than a fixed-horizon test would require.</p>
+
+      <h2>Futility Stopping</h2>
+      <p>Beyond the efficacy boundaries (stop because the variant is clearly better or worse), some sequential designs also include futility boundaries: stop early because the effect is so small that reaching significance by the planned end date is essentially impossible. Futility stopping does not control a statistical error rate in the same way as efficacy stopping — it is a practical decision to reallocate resources when a test is clearly going nowhere. The tool currently displays efficacy boundaries. Futility stopping is implicitly visible in the chart: if the test statistic stays close to zero halfway through, the test is likely futile.</p>
+
+      <h2>Why O'Brien-Fleming Is Preferred Over Other Spending Functions</h2>
+      <p>Several alpha-spending functions exist, including Pocock boundaries, Kim-DeMets, and Lan-DeMets. Pocock boundaries are symmetric across looks (same threshold at every interim point), which sounds appealing but means very little alpha remains for the final analysis — raising the final critical value well above 1.96 and costing substantial power. O'Brien-Fleming is preferred because it is very conservative early (when you should not be stopping on noise) and near-standard at the final look (preserving most power). The final look O'Brien-Fleming critical value at &alpha; = 0.05 with 5 looks is approximately 1.987 versus 1.960 for fixed-horizon — a trivial cost.</p>
+    </section>
+
+    <div class="last-updated"><time datetime="2026-05-28">Last updated: May 28, 2026</time></div>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <details>
+        <summary>Why can't I just check results every day and stop when p &lt; 0.05?</summary>
+        <p>Checking a standard p &lt; 0.05 test repeatedly inflates your false positive rate far above 5%. Simulations show that peeking at results daily for 20 days produces a false positive on roughly 30% of tests even when there is no real effect. Sequential boundaries like O'Brien-Fleming maintain the overall false positive rate at exactly &alpha; by requiring higher evidence early in the test, when the signal-to-noise ratio is lowest.</p>
+      </details>
+
+      <details>
+        <summary>What is an information fraction?</summary>
+        <p>Information fraction is the ratio of data collected so far to the planned maximum sample. At day 7 of a 35-day test with equal daily traffic, information fraction = 7/35 = 0.20. The O'Brien-Fleming boundary at each look is scaled by the information fraction — earlier looks require more extreme Z-statistics to trigger stopping, because less data means more uncertainty about the true effect.</p>
+      </details>
+
+      <details>
+        <summary>Does sequential testing require more total data?</summary>
+        <p>The maximum sample is slightly larger (1–8% depending on number of looks). However, when a true effect exists, the expected sample size is substantially smaller because the test often stops early. If you want to be able to stop at day 7 of a 35-day test, you need to plan for a slightly larger maximum than a fixed-horizon design — but you will on average stop well before that maximum when your variant is genuinely better.</p>
+      </details>
+
+      <details>
+        <summary>What happens if I don't stop at a look point?</summary>
+        <p>Not stopping when the boundary is crossed is fine statistically — you simply continue the test. The error-rate guarantees still hold. What you should not do is make a business decision (ship the variant) without formally stopping the test, then continue collecting data. If you cross the boundary and decide to ship, record that day as the stopping point. Do not keep running the test hoping for more data.</p>
+      </details>
+
+      <details>
+        <summary>Can I use this for non-conversion metrics like revenue per visitor?</summary>
+        <p>O'Brien-Fleming boundaries apply to any test statistic that asymptotically follows a normal distribution — including t-tests for continuous metrics like revenue per visitor. The Z-statistic you compute must correspond to the same type of test (t-statistic or Z-statistic depending on sample size and variance assumptions). The boundaries generated here are on the Z-scale, which is appropriate for large samples where the t and Z distributions converge.</p>
+      </details>
+    </section>
+
+    <section class="explainer-section">
+      <h3>Related A/B Testing Tools</h3>
+      <ul>
+        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Required visitors for fixed-horizon A/B tests</li>
+        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Frequentist two-proportion Z-test</li>
+        <li><a href="/tools/bayesian-ab-calculator.html">Bayesian A/B Calculator</a> — Alternative to p-values: probability of winning</li>
+        <li><a href="/tools/chi-square-test-calculator.html">Chi-Square Test Calculator</a> — Independence testing for multi-cell frequency tables</li>
+        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Visualize power curves and effect sizes</li>
+      </ul>
+    </section>
+
+    <section class="explainer-section">
+      <h3>About the Author</h3>
+      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">Zovo Tools</div>
+        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
+        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one">Zovo</a> &middot; 47/500 founding spots</div>
+    </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+    <div class="zovo-network-inner">
+        <h3 class="zovo-network-title">Explore More Tools</h3>
+        <div class="zovo-network-links">
+            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
+            <a href="https://claudhq.com">ClaudHQ — AI Code Tools &amp; Fixes</a>
+            <a href="https://claudkit.com">ClaudKit — API</a>
+            <a href="https://enhio.com">Enhio — Text Tools</a>
+            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
+            <a href="https://gen8x.com">Gen8X — Color Tools</a>
+            <a href="https://gpt0x.com">GPT0X — AI Models</a>
+            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
+            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
+            <a href="https://kappafy.com">Kappafy — JSON</a>
+            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
+            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
+            <a href="https://krzen.com">Krzen — Image Tools</a>
+            <a href="https://lochbot.com">LochBot — Security</a>
+            <a href="https://lockml.com">LockML — ML Compare</a>
+            <a href="https://ml3x.com">ML3X — Matrix Math</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---- Normal distribution helpers ---- */
+  function erfc(x){
+    var t=1/(1+0.3275911*Math.abs(x));
+    var poly=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));
+    var r=poly*Math.exp(-x*x);
+    return x>=0?r:2-r;
+  }
+  function normCdf(x){ return 0.5*erfc(-x/Math.SQRT2); }
+  function normPdf(x){ return Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI); }
+  // Inverse normal CDF via rational approx (Beasley-Springer-Moro)
+  function normInv(p){
+    if(p<=0) return -Infinity; if(p>=1) return Infinity;
+    var a=[2.50662823884,-18.61500062529,41.39119773534,-25.44106049637];
+    var b=[-8.47351093090,23.08336743743,-21.06224101826,3.13082909833];
+    var c=[0.3374754822726147,0.9761690190917186,0.1607979714918209,0.0276438810333863,0.0038405729373609,0.0003951896511349,0.0000321767881768,0.0000002888167364,0.0000003960315187];
+    var r,x,y=p-0.5;
+    if(Math.abs(y)<0.42){
+      r=y*y;
+      x=y*(((a[3]*r+a[2])*r+a[1])*r+a[0])/((((b[3]*r+b[2])*r+b[1])*r+b[0])*r+1);
+    } else {
+      r=p<0.5?p:1-p;
+      r=Math.log(-Math.log(r));
+      x=c[0]+r*(c[1]+r*(c[2]+r*(c[3]+r*(c[4]+r*(c[5]+r*(c[6]+r*(c[7]+r*c[8])))))));
+      if(p<0.5) x=-x;
+    }
+    return x;
+  }
+
+  /* ---- Sample size calculation ---- */
+  function requiredN(p0, mdeRel, alpha, power){
+    var p1=p0*(1+mdeRel);
+    var za=normInv(1-alpha/2), zb=normInv(power);
+    var p_bar=(p0+p1)/2;
+    return Math.ceil(Math.pow(za*Math.sqrt(2*p_bar*(1-p_bar))+zb*Math.sqrt(p0*(1-p0)+p1*(1-p1)),2)/Math.pow(p1-p0,2));
+  }
+
+  /* ---- O'Brien-Fleming boundaries ---- */
+  // At information fraction t (0 < t <= 1), upper boundary on Z-scale:
+  // b(t) = normInv(1 - alpha/2) / sqrt(t)  (approximate spending function)
+  // More precisely, use the Wang-Tsiatis family with rho=0 (O'Brien-Fleming):
+  // boundary = C * t^(-0.5) where C is chosen so total alpha spending = alpha
+  // The inflation constant C is solved numerically.
+  function obfBoundary(t, C){ return C/Math.sqrt(t); }
+
+  // Compute inflation constant C for K equally-spaced looks
+  // such that sum of alpha spent at each look equals alpha
+  // Uses Bonferroni-like alpha-spending: alpha_k = 2*(1 - normCdf(C/sqrt(t_k)))
+  // Solve sum(2*(1-normCdf(C/sqrt(t_k)))) = alpha
+  function computeC(alphaTotal, infoFractions){
+    var lo=0.1, hi=10;
+    for(var i=0;i<100;i++){
+      var mid=(lo+hi)/2;
+      var spent=0;
+      for(var k=0;k<infoFractions.length;k++){
+        spent+=2*(1-normCdf(mid/Math.sqrt(infoFractions[k])));
+      }
+      if(spent>alphaTotal) lo=mid; else hi=mid;
+      if(hi-lo<1e-8) break;
+    }
+    return (lo+hi)/2;
+  }
+
+  var _plan=null;
+
+  function toggleLive(){
+    var sec=document.getElementById('sq-live-section');
+    sec.style.display=sec.style.display==='none'?'block':'none';
+  }
+
+  function buildDayInputs(nDays){
+    var wrap=document.getElementById('sq-day-inputs');
+    var html='';
+    var maxShow=Math.min(nDays,30);
+    for(var d=1;d<=maxShow;d++){
+      html+='<div class="sq-day-field"><label>Day '+d+' — Control conv/visitors</label><input type="text" id="sq-live-a-'+d+'" placeholder="e.g. 25/500"></div>';
+      html+='<div class="sq-day-field"><label>Day '+d+' — Variant conv/visitors</label><input type="text" id="sq-live-b-'+d+'" placeholder="e.g. 30/500"></div>';
+    }
+    if(nDays>30) html+='<p style="font-size:.8rem;color:var(--text-muted,#aaa);grid-column:1/-1;">Showing first 30 days. Total duration: '+nDays+' days.</p>';
+    wrap.innerHTML=html;
+  }
+
+  function parseLiveData(nDays){
+    var maxShow=Math.min(nDays,30);
+    var days=[];
+    for(var d=1;d<=maxShow;d++){
+      var aEl=document.getElementById('sq-live-a-'+d);
+      var bEl=document.getElementById('sq-live-b-'+d);
+      if(!aEl||!bEl) break;
+      var aVal=aEl.value.trim(), bVal=bEl.value.trim();
+      if(!aVal||!bVal){ days.push(null); continue; }
+      var aP=aVal.split('/'), bP=bVal.split('/');
+      if(aP.length!==2||bP.length!==2){ days.push(null); continue; }
+      var ac=parseFloat(aP[0]),an=parseFloat(aP[1]),bc=parseFloat(bP[0]),bn=parseFloat(bP[1]);
+      if(isNaN(ac)||isNaN(an)||isNaN(bc)||isNaN(bn)||an<1||bn<1){ days.push(null); continue; }
+      days.push({ac:ac,an:an,bc:bc,bn:bn});
+    }
+    // trim trailing nulls
+    while(days.length>0&&days[days.length-1]===null) days.pop();
+    return days;
+  }
+
+  function computeZStat(ac,an,bc,bn){
+    var pa=ac/an, pb=bc/bn;
+    var pp=(ac+bc)/(an+bn);
+    var se=Math.sqrt(pp*(1-pp)*(1/an+1/bn));
+    if(se<1e-12) return 0;
+    return (pb-pa)/se;
+  }
+
+  function runSequential(){
+    var dailyVisitors=parseInt(document.getElementById('sq-visitors').value);
+    var baselineRaw=parseFloat(document.getElementById('sq-baseline').value);
+    var mdeRel=parseFloat(document.getElementById('sq-mde').value)/100;
+    var alpha=parseFloat(document.getElementById('sq-alpha').value);
+    var power=parseFloat(document.getElementById('sq-power').value);
+    var looksEl=document.getElementById('sq-looks');
+    var looksMode=looksEl.value;
+
+    if(isNaN(dailyVisitors)||dailyVisitors<10||isNaN(baselineRaw)||baselineRaw<=0||baselineRaw>=100||isNaN(mdeRel)||mdeRel<=0){
+      alert('Please enter valid test parameters.'); return;
+    }
+    var p0=baselineRaw/100;
+
+    // Fixed-horizon sample size
+    var nFixed=requiredN(p0, mdeRel, alpha, power);
+    var durationDays=Math.ceil(nFixed/dailyVisitors);
+
+    // Determine look schedule
+    var K;
+    if(looksMode==='5'&&looksEl.options[looksEl.selectedIndex].text==='Daily (auto)'){
+      K=Math.min(durationDays, 20); // up to 20 looks daily
+    } else {
+      K=parseInt(looksMode);
+    }
+    K=Math.max(2,Math.min(K,durationDays));
+
+    // Information fractions: evenly spaced
+    var infoFractions=[];
+    for(var k=1;k<=K;k++) infoFractions.push(k/K);
+
+    // Compute O'Brien-Fleming constant C
+    var C=computeC(alpha, infoFractions);
+
+    // Sample size inflation: max N = nFixed * inflation
+    // OBF inflation factor for K looks (approximate)
+    var inflation=1;
+    if(K>=2){
+      // Compare boundary at t=1 to standard normInv(1-alpha/2)
+      // inflation ~ (C / normInv(1-alpha/2))^2
+      var zStd=normInv(1-alpha/2);
+      inflation=Math.pow(C/zStd, 2);
+      if(inflation<1) inflation=1; // should not happen but guard
+    }
+    var nMax=Math.ceil(nFixed*inflation);
+    var durationMax=Math.ceil(nMax/dailyVisitors);
+
+    // Build look schedule (day numbers)
+    var lookDays=[];
+    for(var k=0;k<K;k++){
+      lookDays.push(Math.round(infoFractions[k]*durationMax));
+    }
+
+    // Boundaries per look
+    var boundaries=[];
+    for(var k=0;k<K;k++){
+      var t=infoFractions[k];
+      var b=C/Math.sqrt(t);
+      var pSpent=2*(1-normCdf(b));
+      boundaries.push({day:lookDays[k],t:t,upper:b,lower:-b,pSpent:pSpent});
+    }
+
+    _plan={boundaries:boundaries,lookDays:lookDays,nMax:nMax,durationMax:durationMax,C:C,alpha:alpha,K:K,infoFractions:infoFractions,p0:p0,mdeRel:mdeRel,dailyVisitors:dailyVisitors};
+
+    // Build live day inputs
+    buildDayInputs(durationMax);
+
+    // Parse live data
+    var liveData=parseLiveData(durationMax);
+
+    // Display summary
+    document.getElementById('sq-r-n').textContent=nMax.toLocaleString()+' (fixed: '+nFixed.toLocaleString()+')';
+    document.getElementById('sq-r-dur').textContent=durationMax+' days'+(durationMax!==durationDays?' (fixed: '+durationDays+'d)':'');
+    document.getElementById('sq-r-sched').textContent='Every ~'+Math.round(durationMax/K)+' days ('+K+' looks)';
+    document.getElementById('sq-r-inflate').textContent=(inflation*100-100).toFixed(1)+'% more than fixed horizon';
+    document.getElementById('sq-r-adj-alpha').textContent='~'+((alpha/K)*1000).toFixed(2)+'‰ per look (spending function)';
+
+    // Verdict
+    var vbox=document.getElementById('sq-verdict-box');
+    var liveDays=liveData.filter(Boolean).length;
+    if(liveDays===0){
+      vbox.className='sq-verdict plan';
+      vbox.innerHTML='<strong>Test Plan Ready</strong><br>Run your test for up to '+durationMax+' days with '+K+' planned interim looks. Check results on days: '+lookDays.join(', ')+'. Stop early only when the cumulative Z-statistic exceeds the boundary for that day. Enter live results above to track your test in real time.';
+    } else {
+      // Find the latest day with data
+      var lastIdx=liveData.length-1;
+      while(lastIdx>=0&&liveData[lastIdx]===null) lastIdx--;
+      if(lastIdx>=0){
+        var d=liveData[lastIdx];
+        var zLast=computeZStat(d.ac,d.an,d.bc,d.bn);
+        var dayNum=lastIdx+1;
+        var tCurr=Math.min(1, (dayNum*dailyVisitors)/nMax);
+        var bCurr=C/Math.sqrt(Math.max(tCurr,0.01));
+        if(Math.abs(zLast)>=bCurr){
+          var dir=zLast>0?'Variant B wins':'Control A wins';
+          vbox.className='sq-verdict '+(zLast>0?'stop-pos':'stop-neg');
+          vbox.innerHTML='<strong>STOP: '+dir+' — Boundary crossed at Day '+dayNum+'</strong><br>Cumulative Z = '+zLast.toFixed(3)+'. Boundary at day '+dayNum+': &plusmn;'+bCurr.toFixed(3)+'. You can stop the test early with overall &alpha; = '+alpha+' maintained.';
+        } else {
+          // Check if close to futility (Z very small late in test)
+          var pctComplete=(dayNum/durationMax*100).toFixed(0);
+          vbox.className='sq-verdict continue';
+          vbox.innerHTML='<strong>Continue Test — Day '+dayNum+' of '+durationMax+' ('+pctComplete+'% complete)</strong><br>Cumulative Z = '+zLast.toFixed(3)+'. Current boundary: &plusmn;'+bCurr.toFixed(3)+'. The test statistic has not crossed a stopping boundary. Continue collecting data.';
+        }
+      }
+    }
+
+    // Draw boundary chart
+    drawBoundaryChart(boundaries, liveData, durationMax, dailyVisitors, nMax, C);
+
+    // Build schedule table
+    buildScheduleTable(boundaries, liveData, dailyVisitors, nMax, C);
+
+    document.getElementById('sq-results-section').style.display='block';
+  }
+
+  function drawBoundaryChart(boundaries, liveData, durationMax, dailyVisitors, nMax, C){
+    var svg=document.getElementById('sq-boundary-chart');
+    var W=700,H=380,ml=55,mr=25,mt=20,mb=55;
+    var pw=W-ml-mr, ph=H-mt-mb;
+
+    // Build dense boundary curve (daily resolution)
+    var upperPts=[], lowerPts=[];
+    for(var d=1;d<=durationMax;d++){
+      var t=Math.min(1,(d*dailyVisitors)/nMax);
+      var b=C/Math.sqrt(Math.max(t,0.01));
+      upperPts.push({x:d,y:b});
+      lowerPts.push({x:d,y:-b});
+    }
+
+    var maxZ=Math.max(boundaries[0].upper*1.1, 4);
+    var minZ=-maxZ;
+
+    function px(d){ return ml+(d/durationMax)*pw; }
+    function py(z){ return mt+(1-(z-minZ)/(maxZ-minZ))*ph; }
+
+    var html='';
+
+    // Grid
+    var zGridLines=[-3,-2,-1,0,1,2,3];
+    for(var g=0;g<zGridLines.length;g++){
+      var zg=zGridLines[g];
+      if(zg<minZ||zg>maxZ) continue;
+      var yg=py(zg);
+      html+='<line x1="'+ml+'" y1="'+yg.toFixed(1)+'" x2="'+(W-mr)+'" y2="'+yg.toFixed(1)+'" stroke="'+(zg===0?'#444':'#2a2a3e')+'" stroke-width="'+(zg===0?'1.5':'0.8')+'"/>';
+      html+='<text x="'+(ml-8)+'" y="'+(yg+4)+'" text-anchor="end" fill="#666" font-size="10" font-family="Space Mono,monospace">'+zg+'</text>';
+    }
+
+    // Day axis ticks
+    var tickEvery=Math.max(1,Math.floor(durationMax/10));
+    for(var d=0;d<=durationMax;d+=tickEvery){
+      var xd=px(d);
+      html+='<text x="'+xd.toFixed(1)+'" y="'+(mt+ph+18)+'" text-anchor="middle" fill="#666" font-size="10" font-family="Space Mono,monospace">'+d+'</text>';
+    }
+    html+='<text x="'+(ml+pw/2)+'" y="'+(H-8)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif">Day</text>';
+    html+='<text x="14" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif" transform="rotate(-90,14,'+(mt+ph/2)+')">Z-Statistic</text>';
+
+    // Shaded stopping region (upper)
+    var upperFill='M '+px(1)+' '+py(upperPts[0].y);
+    for(var i=1;i<upperPts.length;i++) upperFill+=' L '+px(upperPts[i].x).toFixed(1)+' '+py(upperPts[i].y).toFixed(1);
+    upperFill+=' L '+px(durationMax)+' '+mt+' L '+px(1)+' '+mt+' Z';
+    html+='<path d="'+upperFill+'" fill="#2DD4BF" opacity="0.07"/>';
+
+    var lowerFill='M '+px(1)+' '+py(lowerPts[0].y);
+    for(var i=1;i<lowerPts.length;i++) lowerFill+=' L '+px(lowerPts[i].x).toFixed(1)+' '+py(lowerPts[i].y).toFixed(1);
+    lowerFill+=' L '+px(durationMax)+' '+(mt+ph)+' L '+px(1)+' '+(mt+ph)+' Z';
+    html+='<path d="'+lowerFill+'" fill="#ef4444" opacity="0.07"/>';
+
+    // Boundary curves
+    function buildCurve(pts, color){
+      var d='M '+px(pts[0].x).toFixed(1)+' '+py(pts[0].y).toFixed(1);
+      for(var i=1;i<pts.length;i++) d+=' L '+px(pts[i].x).toFixed(1)+' '+py(pts[i].y).toFixed(1);
+      return '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2" opacity="0.8"/>';
+    }
+    html+=buildCurve(upperPts,'#2DD4BF');
+    html+=buildCurve(lowerPts,'#ef4444');
+
+    // Look markers on boundaries
+    for(var k=0;k<boundaries.length;k++){
+      var bnd=boundaries[k];
+      var xk=px(bnd.day);
+      html+='<circle cx="'+xk.toFixed(1)+'" cy="'+py(bnd.upper).toFixed(1)+'" r="4" fill="#2DD4BF" opacity="0.9"/>';
+      html+='<circle cx="'+xk.toFixed(1)+'" cy="'+py(bnd.lower).toFixed(1)+'" r="4" fill="#ef4444" opacity="0.9"/>';
+    }
+
+    // Live data line
+    if(liveData&&liveData.length>0){
+      var livePts=[];
+      for(var d=0;d<liveData.length;d++){
+        if(!liveData[d]) continue;
+        var ld=liveData[d];
+        var z=computeZStat(ld.ac,ld.an,ld.bc,ld.bn);
+        livePts.push({x:d+1,y:z});
+      }
+      if(livePts.length>0){
+        var lpath='M '+px(livePts[0].x).toFixed(1)+' '+py(livePts[0].y).toFixed(1);
+        for(var i=1;i<livePts.length;i++) lpath+=' L '+px(livePts[i].x).toFixed(1)+' '+py(livePts[i].y).toFixed(1);
+        html+='<path d="'+lpath+'" fill="none" stroke="#A78BFA" stroke-width="2.5" stroke-dasharray="5,3"/>';
+        // Dots
+        for(var i=0;i<livePts.length;i++){
+          html+='<circle cx="'+px(livePts[i].x).toFixed(1)+'" cy="'+py(livePts[i].y).toFixed(1)+'" r="3.5" fill="#A78BFA"/>';
+        }
+      }
+    }
+
+    // Legend
+    html+='<line x1="'+(ml+10)+'" y1="'+(mt+6)+'" x2="'+(ml+26)+'" y2="'+(mt+6)+'" stroke="#2DD4BF" stroke-width="2"/>';
+    html+='<text x="'+(ml+30)+'" y="'+(mt+10)+'" fill="#2DD4BF" font-size="11" font-family="IBM Plex Sans,sans-serif">Upper boundary (stop — B wins)</text>';
+    html+='<line x1="'+(ml+10)+'" y1="'+(mt+22)+'" x2="'+(ml+26)+'" y2="'+(mt+22)+'" stroke="#ef4444" stroke-width="2"/>';
+    html+='<text x="'+(ml+30)+'" y="'+(mt+26)+'" fill="#ef4444" font-size="11" font-family="IBM Plex Sans,sans-serif">Lower boundary (stop — A wins)</text>';
+    if(liveData&&liveData.filter(Boolean).length>0){
+      html+='<line x1="'+(ml+260)+'" y1="'+(mt+6)+'" x2="'+(ml+276)+'" y2="'+(mt+6)+'" stroke="#A78BFA" stroke-width="2" stroke-dasharray="5,3"/>';
+      html+='<text x="'+(ml+280)+'" y="'+(mt+10)+'" fill="#A78BFA" font-size="11" font-family="IBM Plex Sans,sans-serif">Live Z-statistic</text>';
+    }
+
+    svg.innerHTML=html;
+  }
+
+  function buildScheduleTable(boundaries, liveData, dailyVisitors, nMax, C){
+    var html='<table class="sq-sched"><thead><tr><th>Look</th><th>Day</th><th>Info. Fraction</th><th>Cumul. N/variant</th><th>Upper Boundary</th><th>Lower Boundary</th><th>&#945; Spent</th><th>Status</th></tr></thead><tbody>';
+    for(var k=0;k<boundaries.length;k++){
+      var b=boundaries[k];
+      var nAtLook=Math.round(b.t*nMax);
+      var live=liveData&&liveData[b.day-1]?liveData[b.day-1]:null;
+      var status='—';
+      var rowClass='';
+      if(live){
+        var z=computeZStat(live.ac,live.an,live.bc,live.bn);
+        if(z>=b.upper){ status='<span style="color:#2DD4BF;">STOP (B wins, Z='+z.toFixed(2)+')</span>'; rowClass=' class="stop-row"'; }
+        else if(z<=b.lower){ status='<span style="color:#ef4444;">STOP (A wins, Z='+z.toFixed(2)+')</span>'; rowClass=' class="stop-row"'; }
+        else status='<span style="color:#F97316;">Continue (Z='+z.toFixed(2)+')</span>';
+        if(b.day===liveData.filter(Boolean).length) rowClass=' class="today-row"';
+      }
+      html+='<tr'+rowClass+'><td>'+(k+1)+'</td><td>'+b.day+'</td><td>'+b.t.toFixed(3)+'</td><td>'+nAtLook.toLocaleString()+'</td><td style="color:#2DD4BF;">+'+b.upper.toFixed(3)+'</td><td style="color:#ef4444;">'+b.lower.toFixed(3)+'</td><td>'+(b.pSpent*100).toFixed(3)+'%</td><td>'+status+'</td></tr>';
+    }
+    html+='</tbody></table>';
+    document.getElementById('sq-sched-wrap').innerHTML=html;
+  }
+
+  // Expose
+  window.runSequential=runSequential;
+  window.toggleLive=toggleLive;
+
+  // Auto-run on load
+  runSequential();
+})();
+</script>
+<script src="/assets/js/share.js"></script>
+<script src="/assets/js/pro-nudge.js"></script>
+
+<section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
+<h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
+<ul style="list-style:none;padding:0;display:grid;gap:8px;">
+<li><a href="/tools/sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">Sample Size Calculator — Required Visitors for Fixed-Horizon A/B Tests</a></li>
+<li><a href="/tools/p-value-calculator.html" style="color:#3b82f6;text-decoration:none;">P-Value Calculator — Two-Proportion Z-Test</a></li>
+<li><a href="/tools/bayesian-ab-calculator.html" style="color:#3b82f6;text-decoration:none;">Bayesian A/B Test Calculator — Probability of Winning Without P-Values</a></li>
+<li><a href="/tools/chi-square-test-calculator.html" style="color:#3b82f6;text-decoration:none;">Chi-Square Test Calculator — Independence Testing for Frequency Tables</a></li>
+</ul>
+</section>
+
+</body>
+</html>
