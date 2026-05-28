@@ -4,26 +4,23 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sequential Testing Tool — Stop A/B Tests Early With Confidence | ABWex</title>
-  <meta name="description" content="Free sequential testing tool using O'Brien-Fleming boundaries. Input daily visitors, baseline conversion rate, and MDE. Generates day-by-day stopping boundaries and tells you exactly when you can stop your A/B test early.">
+  <title>Sequential Testing Tool | ABWex</title>
+  <meta name="description" content="Free sequential testing tool with O'Brien-Fleming boundaries. Input daily visitors, baseline rate, and MDE to see day-by-day stopping thresholds.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://abwex.com/tools/sequential-testing-tool.html">
   <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="Sequential Testing Tool — Stop A/B Tests Early With Confidence | ABWex">
+  <meta property="og:title" content="Sequential Testing Tool | ABWex">
   <meta property="og:description" content="Free sequential A/B test tool with O'Brien-Fleming boundaries. Enter daily visitors, baseline rate, MDE. See day-by-day stopping boundaries and cumulative test statistics.">
   <meta property="og:url" content="https://abwex.com/tools/sequential-testing-tool.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zovo Tools">
   <meta property="og:image" content="https://abwex.com/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Sequential Testing Tool — Stop A/B Tests Early With Confidence">
+  <meta name="twitter:title" content="Sequential Testing Tool | ABWex">
   <meta name="twitter:description" content="Free sequential testing tool with O'Brien-Fleming boundaries for A/B tests. Stop early, stay valid.">
   <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
   <link rel="alternate" hreflang="en" href="https://abwex.com/tools/sequential-testing-tool.html">
   <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/sequential-testing-tool.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
   <script type="application/ld+json">
   {
@@ -47,7 +44,7 @@
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Sequential Testing Tool — Stop A/B Tests Early With Confidence",
+    "headline": "Sequential Testing Tool",
     "description": "How sequential testing with O'Brien-Fleming boundaries lets you check A/B test results at any point while controlling the overall type I error rate, with a worked example and day-by-day stopping schedule.",
     "url": "https://abwex.com/tools/sequential-testing-tool.html",
     "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
@@ -99,7 +96,7 @@
         .sq-result-row{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border,#333)}
         .sq-result-row:last-child{border-bottom:none}
         .sq-rl{color:var(--text-muted,#aaa);font-size:.9rem}
-        .sq-rv{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:#2DD4BF}
+        .sq-rv{font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:1rem;font-weight:700;color:#2DD4BF}
         .sq-verdict{padding:1.2rem;border-radius:8px;margin-top:1.25rem;font-size:.95rem;line-height:1.6}
         .sq-verdict.stop-pos{background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);color:#2DD4BF}
         .sq-verdict.stop-neg{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444}
@@ -111,7 +108,7 @@
         .sq-sched-wrap{overflow-x:auto;margin-top:1rem}
         table.sq-sched{border-collapse:collapse;width:100%;font-size:.83rem}
         .sq-sched th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);padding:.4rem .6rem;text-align:center;white-space:nowrap}
-        .sq-sched td{padding:.35rem .6rem;text-align:center;font-family:'Space Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.04)}
+        .sq-sched td{padding:.35rem .6rem;text-align:center;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;border-bottom:1px solid rgba(255,255,255,0.04)}
         .sq-sched tr.today-row td{background:rgba(45,212,191,0.07);color:#2DD4BF}
         .sq-sched tr.stop-row td{background:rgba(45,212,191,0.12);}
         .sq-results-section{display:none;}
@@ -121,7 +118,7 @@
         .sq-day-inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-top:.75rem}
         .sq-day-field{background:var(--input-bg,#0d0d1a);border-radius:6px;padding:.6rem .75rem}
         .sq-day-field label{display:block;font-size:.78rem;color:var(--text-muted,#aaa);margin-bottom:.25rem}
-        .sq-day-field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border,#333);color:var(--text,#e0e0e0);font-family:'Space Mono',monospace;font-size:.88rem;padding:.2rem 0;box-sizing:border-box}
+        .sq-day-field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border,#333);color:var(--text,#e0e0e0);font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:.88rem;padding:.2rem 0;box-sizing:border-box}
         .sq-day-field input:focus{outline:none;border-color:#2DD4BF}
       </style>
 
@@ -565,17 +562,17 @@
       if(zg<minZ||zg>maxZ) continue;
       var yg=py(zg);
       html+='<line x1="'+ml+'" y1="'+yg.toFixed(1)+'" x2="'+(W-mr)+'" y2="'+yg.toFixed(1)+'" stroke="'+(zg===0?'#444':'#2a2a3e')+'" stroke-width="'+(zg===0?'1.5':'0.8')+'"/>';
-      html+='<text x="'+(ml-8)+'" y="'+(yg+4)+'" text-anchor="end" fill="#666" font-size="10" font-family="Space Mono,monospace">'+zg+'</text>';
+      html+='<text x="'+(ml-8)+'" y="'+(yg+4)+'" text-anchor="end" fill="#666" font-size="10" font-family="SF Mono,Fira Code,Cascadia Code,monospace">'+zg+'</text>';
     }
 
     // Day axis ticks
     var tickEvery=Math.max(1,Math.floor(durationMax/10));
     for(var d=0;d<=durationMax;d+=tickEvery){
       var xd=px(d);
-      html+='<text x="'+xd.toFixed(1)+'" y="'+(mt+ph+18)+'" text-anchor="middle" fill="#666" font-size="10" font-family="Space Mono,monospace">'+d+'</text>';
+      html+='<text x="'+xd.toFixed(1)+'" y="'+(mt+ph+18)+'" text-anchor="middle" fill="#666" font-size="10" font-family="SF Mono,Fira Code,Cascadia Code,monospace">'+d+'</text>';
     }
-    html+='<text x="'+(ml+pw/2)+'" y="'+(H-8)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif">Day</text>';
-    html+='<text x="14" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif" transform="rotate(-90,14,'+(mt+ph/2)+')">Z-Statistic</text>';
+    html+='<text x="'+(ml+pw/2)+'" y="'+(H-8)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Day</text>';
+    html+='<text x="14" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif" transform="rotate(-90,14,'+(mt+ph/2)+')">Z-Statistic</text>';
 
     // Shaded stopping region (upper)
     var upperFill='M '+px(1)+' '+py(upperPts[0].y);
@@ -627,12 +624,12 @@
 
     // Legend
     html+='<line x1="'+(ml+10)+'" y1="'+(mt+6)+'" x2="'+(ml+26)+'" y2="'+(mt+6)+'" stroke="#2DD4BF" stroke-width="2"/>';
-    html+='<text x="'+(ml+30)+'" y="'+(mt+10)+'" fill="#2DD4BF" font-size="11" font-family="IBM Plex Sans,sans-serif">Upper boundary (stop — B wins)</text>';
+    html+='<text x="'+(ml+30)+'" y="'+(mt+10)+'" fill="#2DD4BF" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Upper boundary (stop — B wins)</text>';
     html+='<line x1="'+(ml+10)+'" y1="'+(mt+22)+'" x2="'+(ml+26)+'" y2="'+(mt+22)+'" stroke="#ef4444" stroke-width="2"/>';
-    html+='<text x="'+(ml+30)+'" y="'+(mt+26)+'" fill="#ef4444" font-size="11" font-family="IBM Plex Sans,sans-serif">Lower boundary (stop — A wins)</text>';
+    html+='<text x="'+(ml+30)+'" y="'+(mt+26)+'" fill="#ef4444" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Lower boundary (stop — A wins)</text>';
     if(liveData&&liveData.filter(Boolean).length>0){
       html+='<line x1="'+(ml+260)+'" y1="'+(mt+6)+'" x2="'+(ml+276)+'" y2="'+(mt+6)+'" stroke="#A78BFA" stroke-width="2" stroke-dasharray="5,3"/>';
-      html+='<text x="'+(ml+280)+'" y="'+(mt+10)+'" fill="#A78BFA" font-size="11" font-family="IBM Plex Sans,sans-serif">Live Z-statistic</text>';
+      html+='<text x="'+(ml+280)+'" y="'+(mt+10)+'" fill="#A78BFA" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Live Z-statistic</text>';
     }
 
     svg.innerHTML=html;

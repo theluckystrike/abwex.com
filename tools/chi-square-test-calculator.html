@@ -4,26 +4,23 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chi-Square Test Calculator — Statistical Independence Testing | ABWex</title>
-  <meta name="description" content="Free chi-square test of independence calculator. Input observed vs expected frequency tables from 2x2 to 5x5. Computes chi-square statistic, degrees of freedom, p-value, and renders a bar chart with critical value shading.">
+  <title>Chi-Square Test Calculator | ABWex</title>
+  <meta name="description" content="Free chi-square test of independence calculator. Input observed vs expected frequency tables from 2x2 to 5x5. Computes chi-square statistic and p-value.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://abwex.com/tools/chi-square-test-calculator.html">
   <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="Chi-Square Test Calculator — Statistical Independence Testing | ABWex">
+  <meta property="og:title" content="Chi-Square Test Calculator | ABWex">
   <meta property="og:description" content="Free chi-square test calculator. Dynamic 2x2–5x5 frequency table. Computes chi-square statistic, degrees of freedom, p-value, and visual critical region shading.">
   <meta property="og:url" content="https://abwex.com/tools/chi-square-test-calculator.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zovo Tools">
   <meta property="og:image" content="https://abwex.com/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Chi-Square Test Calculator — Statistical Independence Testing">
+  <meta name="twitter:title" content="Chi-Square Test Calculator | ABWex">
   <meta name="twitter:description" content="Free chi-square test calculator with dynamic frequency tables and visual critical region shading.">
   <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
   <link rel="alternate" hreflang="en" href="https://abwex.com/tools/chi-square-test-calculator.html">
   <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/chi-square-test-calculator.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
   <script type="application/ld+json">
   {
@@ -47,7 +44,7 @@
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Chi-Square Test Calculator — Statistical Independence Testing",
+    "headline": "Chi-Square Test Calculator",
     "description": "How to use a chi-square test of independence to determine whether two categorical variables are associated, with a worked example and step-by-step interpretation guide.",
     "url": "https://abwex.com/tools/chi-square-test-calculator.html",
     "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
@@ -95,9 +92,9 @@
         table.cq-table{border-collapse:collapse;width:100%;min-width:320px}
         .cq-table th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);font-size:.8rem;font-weight:600;padding:.5rem .6rem;text-align:center;letter-spacing:.04em}
         .cq-table td{padding:.3rem .4rem;text-align:center}
-        .cq-table input[type=number]{width:70px;padding:.45rem .5rem;background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:5px;color:var(--text,#e0e0e0);font-size:.9rem;font-family:'Space Mono',monospace;text-align:center;box-sizing:border-box}
+        .cq-table input[type=number]{width:70px;padding:.45rem .5rem;background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:5px;color:var(--text,#e0e0e0);font-size:.9rem;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;text-align:center;box-sizing:border-box}
         .cq-table input[type=number]:focus{outline:none;border-color:#2DD4BF}
-        .cq-table .row-total,.cq-table .col-total,.cq-table .grand-total{font-family:'Space Mono',monospace;font-size:.85rem;color:#2DD4BF;padding:.45rem .6rem}
+        .cq-table .row-total,.cq-table .col-total,.cq-table .grand-total{font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:.85rem;color:#2DD4BF;padding:.45rem .6rem}
         .cq-btn{display:inline-block;padding:.7rem 1.8rem;background:#2DD4BF;color:#0d0d1a;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:.25rem}
         .cq-btn:hover{opacity:.9}
         .cq-btn-sec{background:transparent;color:var(--text-muted,#aaa);border:1px solid var(--border,#333);margin-left:.75rem}
@@ -106,7 +103,7 @@
         .cq-result-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--border,#333)}
         .cq-result-row:last-child{border-bottom:none}
         .cq-result-label{color:var(--text-muted,#aaa);font-size:.9rem}
-        .cq-result-value{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:#2DD4BF}
+        .cq-result-value{font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:1rem;font-weight:700;color:#2DD4BF}
         .cq-verdict{padding:1.2rem;border-radius:8px;margin-top:1.25rem;font-size:.95rem;line-height:1.6}
         .cq-verdict.reject{background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);color:#2DD4BF}
         .cq-verdict.fail{background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#F97316}
@@ -114,13 +111,13 @@
         .cq-chart-title{font-size:1rem;font-weight:600;margin-bottom:.75rem;color:var(--text,#e0e0e0)}
         .cq-exp-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.85rem}
         .cq-exp-table th{background:var(--input-bg,#0d0d1a);color:var(--text-muted,#aaa);padding:.4rem .6rem;text-align:center}
-        .cq-exp-table td{padding:.35rem .6rem;text-align:center;font-family:'Space Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.05)}
+        .cq-exp-table td{padding:.35rem .6rem;text-align:center;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;border-bottom:1px solid rgba(255,255,255,0.05)}
         .cq-exp-table .warn{color:#F97316}
         .cq-alpha-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
         @media(max-width:500px){.cq-alpha-grid{grid-template-columns:1fr}}
         .cq-alpha-item{background:var(--input-bg,#0d0d1a);border-radius:8px;padding:1rem;text-align:center}
         .cq-alpha-item .alabel{font-size:.8rem;color:var(--text-muted,#aaa);margin-bottom:.35rem}
-        .cq-alpha-item .avalue{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700}
+        .cq-alpha-item .avalue{font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:1.05rem;font-weight:700}
       </style>
 
       <div class="cq-card">
@@ -521,7 +518,7 @@
       var gy=mt+ph-(g/4)*ph;
       var gval=Math.round(maxVal*g/4);
       html+='<line x1="'+ml+'" y1="'+gy+'" x2="'+(W-mr)+'" y2="'+gy+'" stroke="#2a2a3e" stroke-width="1"/>';
-      html+='<text x="'+(ml-6)+'" y="'+(gy+4)+'" text-anchor="end" fill="#666" font-size="10" font-family="Space Mono,monospace">'+gval+'</text>';
+      html+='<text x="'+(ml-6)+'" y="'+(gy+4)+'" text-anchor="end" fill="#666" font-size="10" font-family="SF Mono,Fira Code,Cascadia Code,monospace">'+gval+'</text>';
     }
 
     // Bars
@@ -538,17 +535,17 @@
 
       // Cell label
       var label='R'+(cells[k].i+1)+'C'+(cells[k].j+1);
-      html+='<text x="'+cx.toFixed(1)+'" y="'+(mt+ph+16)+'" text-anchor="middle" fill="#888" font-size="10" font-family="IBM Plex Sans,sans-serif">'+label+'</text>';
+      html+='<text x="'+cx.toFixed(1)+'" y="'+(mt+ph+16)+'" text-anchor="middle" fill="#888" font-size="10" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">'+label+'</text>';
     }
 
     // Legend
     html+='<rect x="'+(ml+10)+'" y="'+(mt+4)+'" width="12" height="10" fill="#2DD4BF" rx="2"/>';
-    html+='<text x="'+(ml+26)+'" y="'+(mt+13)+'" fill="#2DD4BF" font-size="11" font-family="IBM Plex Sans,sans-serif">Observed</text>';
+    html+='<text x="'+(ml+26)+'" y="'+(mt+13)+'" fill="#2DD4BF" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Observed</text>';
     html+='<rect x="'+(ml+110)+'" y="'+(mt+4)+'" width="12" height="10" fill="#F97316" rx="2"/>';
-    html+='<text x="'+(ml+126)+'" y="'+(mt+13)+'" fill="#F97316" font-size="11" font-family="IBM Plex Sans,sans-serif">Expected</text>';
+    html+='<text x="'+(ml+126)+'" y="'+(mt+13)+'" fill="#F97316" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Expected</text>';
 
     // X axis label
-    html+='<text x="'+(ml+pw/2)+'" y="'+(H-5)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="IBM Plex Sans,sans-serif">Cell (Row &times; Column)</text>';
+    html+='<text x="'+(ml+pw/2)+'" y="'+(H-5)+'" text-anchor="middle" fill="#aaa" font-size="11" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif">Cell (Row &times; Column)</text>';
 
     svg.innerHTML=html;
   }
