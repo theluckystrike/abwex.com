@@ -27,4 +27,10 @@
   <url><loc>https://abwex.com/tools/p-value-calculator.html</loc></url>
   <url><loc>https://abwex.com/tools/power-analysis-calculator.html</loc></url>
   <url><loc>https://abwex.com/tools/sample-size-calculator.html</loc></url>
+  <url>
+    <loc>https://abwex.com/tools/confidence-interval-calculator-mean-proportion-difference</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
