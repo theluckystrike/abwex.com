@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Z-Score Calculator — Standard Score & Probability Lookup | abwex.com</title>
+  <meta name="description" content="Interactive Z-Score calculator: compute z-score from raw score, probability from z, or inverse z from probability. Includes normal curve visualization, step-by-step, and z-table.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/z-score-calculator">
+  <!-- JSON-LD FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a Z-Score?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Z-score measures how many standard deviations a data point is from the mean. It is calculated as (x - μ) / σ."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you find probability from a Z-Score?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the cumulative distribution function (CDF) of the standard normal distribution. The calculator provides cumulative probability, percentile rank, and probability between ±z."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to find Z-Score from probability?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the inverse normal function (quantile function). Enter the cumulative probability (0 to 1) to get the corresponding z-score."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #f1f5f9;
+    }
+    h1 span {
+      color: #38bdf8;
+    }
+    .subhead {
+      color: #94a3b8;
+      margin-top: 0.25rem;
+      font-size: 1rem;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 24px;
+      padding: 1.8rem 1.8rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
+      border: 1px solid #2d3a52;
+    }
+    .mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid #2d3a52;
+      padding-bottom: 0.75rem;
+    }
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 0.95rem;
+    }
+    .mode-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+    .mode-btn:hover:not(.active) {
+      background: #2d3a52;
+      color: #e2e8f0;
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 700px) {
+      .calc-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+    .input-group {
+      margin-bottom: 1.2rem;
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 0.3rem;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      color: #f1f5f9;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    .input-group input:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    .input-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .input-row .input-group {
+      flex: 1;
+      min-width: 80px;
+    }
+    .action-btn {
+      background: #38bdf8;
+      border: none;
+      color: #0f172a;
+      font-weight: 600;
+      padding: 0.8rem 1.8rem;
+      border-radius: 40px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.15s;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+    .action-btn:hover {
+      background: #7dd3fc;
+      transform: scale(0.98);
+    }
+    .result-area {
+      background: #0f172a;
+      border-radius: 20px;
+      padding: 1.4rem 1.5rem;
+      margin-top: 1rem;
+      border: 1px solid #2d3a52;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #1e2a3a;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+    }
+    .result-label {
+      color: #94a3b8;
+    }
+    .result-value {
+      font-weight: 600;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .accent-value {
+      color: #38bdf8;
+    }
+    .canvas-wrapper {
+      margin-top: 1.5rem;
+      background: #0f172a;
+      border-radius: 20px;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    canvas {
+      width: 100%;
+      height: auto;
+      max-width: 500px;
+      background: #0f172a;
+      border-radius: 16px;
+      display: block;
+      margin: 0 auto;
+    }
+    .step-detail {
+      margin-top: 1.5rem;
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      font-size: 0.9rem;
+      border-left: 4px solid #38bdf8;
+    }
+    .step-detail code {
+      background: #0f172a;
+      padding: 0.1rem 0.4rem;
+      border-radius: 8px;
+      color: #f1f5f9;
+    }
+    .z-table-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      color: #38bdf8;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .z-table-link:hover {
+      color: #7dd3fc;
+    }
+    footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      color: #475569;
+      font-size: 0.9rem;
+      border-top: 1px solid #1e293b;
+      padding-top: 1.5rem;
+    }
+    .inline-math {
+      color: #e2e8f0;
+    }
+    .note {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>⚡ <span>Z-Score</span> Calculator</h1>
+    <div class="subhead">Standard score &amp; probability lookup · abwex.com</div>
+  </header>
+
+  <div class="card">
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="1">Mode 1: Raw → Z</button>
+      <button class="mode-btn" data-mode="2">Mode 2: Z → Probability</button>
+      <button class="mode-btn" data-mode="3">Mode 3: Probability → Z</button>
+    </div>
+
+    <!-- dynamic form -->
+    <div id="formContainer"></div>
+
+    <!-- results + curve -->
+    <div id="resultsContainer" class="result-area" style="display: none;">
+      <div id="resultItems"></div>
+      <div class="canvas-wrapper">
+        <canvas id="normalCurve" width="500" height="250"></canvas>
+      </div>
+      <div id="stepDetail" class="step-detail"></div>
+      <div class="z-table-link" id="zTableToggle">📖 View Z-Table (reference)</div>
+      <div id="zTableContent" style="display: none; margin-top: 0.8rem; background: #0f172a; padding: 0.8rem; border-radius: 16px; max-height: 200px; overflow-y: auto; font-size: 0.8rem; border: 1px solid #2d3a52;">
+        <pre style="color: #cbd5e1; font-family: monospace;">z     | 0.00   0.01   0.02   0.03   0.04   0.05   0.06   0.07   0.08   0.09
+0.0  | 0.5000 0.5040 0.5080 0.5120 0.5160 0.5199 0.5239 0.5279 0.5319 0.5359
+0.5  | 0.6915 0.6950 0.6985 0.7019 0.7054 0.7088 0.7123 0.7157 0.7190 0.7224
+1.0  | 0.8413 0.8438 0.8461 0.8485 0.8508 0.8531 0.8554 0.8577 0.8599 0.8621
+1.5  | 0.9332 0.9345 0.9357 0.9370 0.9382 0.9394 0.9406 0.9418 0.9429 0.9441
+2.0  | 0.9772 0.9778 0.9783 0.9788 0.9793 0.9798 0.9803 0.9808 0.9812 0.9817
+2.5  | 0.9938 0.9940 0.9941 0.9943 0.9945 0.9946 0.9948 0.9949 0.9951 0.9952
+3.0  | 0.9987 0.9987 0.9987 0.9988 0.9988 0.9989 0.9989 0.9989 0.9990 0.9990
+        </pre>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 abwex.com</footer>
+</div>
+
+<script>
+  (function() {
+    // ----- normal CDF / inverse (approx) -----
+    function cdf(x) {
+      // Abramowitz & Stegun approximation
+      const a1 =  0.254829592;
+      const a2 = -0.284496736;
+      const a3 =  1.421413741;
+      const a4 = -1.453152027;
+      const a5 =  1.061405429;
+      const p  =  0.3275911;
+      const sign = x < 0 ? -1 : 1;
+      x = Math.abs(x) / Math.SQRT2;
+      const t = 1.0 / (1.0 + p * x);
+      const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+      return 0.5 * (1.0 + sign * y);
+    }
+
+    function invCDF(p) {
+      // rational approximation (Peter Acklam)
+      if (p <= 0) return -8.209; if (p >= 1) return 8.209;
+      const a = [-3.969683028665376e+01,  2.209460984245205e+02, -2.759285104469687e+02, 1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00];
+      const b = [-5.447609879822406e+01,  1.615858368580409e+02, -1.556989798598866e+02, 6.680131188771972e+01, -1.328068155288572e+01];
+      const c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00, -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00];
+      const d = [7.784695709041462e-03,  3.224671290700398e-01,  2.445134137142996e+00,  3.754408661907416e+00];
+      let q, r;
+      if (p < 0.02425) {
+        q = Math.sqrt(-2 * Math.log(p));
+        return (((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1);
+      } else if (p > 0.97575) {
+        q = Math.sqrt(-2 * Math.log(1 - p));
+        return -((((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1));
+      } else {
+        q = p - 0.5;
+        r = q * q;
+        return (((((a[0]*r + a[1])*r + a[2])*r + a[3])*r + a[4])*r + a[5]) * q / (((((b[0]*r + b[1])*r + b[2])*r + b[3])*r + b[4])*r + 1);
+      }
+    }
+
+    // ----- DOM refs -----
+    const formContainer = document.getElementById('formContainer');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const resultItems = document.getElementById('resultItems');
+    const stepDetail = document.getElementById('stepDetail');
+    const canvas = document.getElementById('normalCurve');
+    const ctx = canvas.getContext('2d');
+    const zTableToggle = document.getElementById('zTableToggle');
+    const zTableContent = document.getElementById('zTableContent');
+
+    zTableToggle.addEventListener('click', () => {
+      zTableContent.style.display = zTableContent.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // ----- state -----
+    let currentMode = 1;
+    let lastResult = null; // {z, cumProb, percentile, betweenProb, raw, mean, sd, mode, stepText}
+
+    // ----- render form -----
+    function renderForm(mode) {
+      let html = '';
+      if (mode === 1) {
+        html = `
+          <div class="input-row">
+            <div class="input-group"><label>Raw score (x)</label><input type="number" id="rawScore" step="any" value="85" /></div>
+            <div class="input-group"><label>Mean (μ)</label><input type="number" id="meanVal" step="any" value="100" /></div>
+            <div class="input-group"><label>SD (σ)</label><input type="number" id="sdVal" step="any" value="15" /></div>
+          </div>
+          <button class="action-btn" id="calcBtn">Calculate Z &amp; Probability</button>
+        `;
+      } else if (mode === 2) {
+        html = `
+          <div class="input-group"><label>Z-Score</label><input type="number" id="zInput" step="any" value="1.5" /></div>
+          <button class="action-btn" id="calcBtn">Compute Probability</button>
+        `;
+      } else if (mode === 3) {
+        html = `
+          <div class="input-group"><label>Cumulative Probability (0 to 1)</label><input type="number" id="probInput" step="any" min="0" max="1" value="0.9332" /></div>
+          <button class="action-btn" id="calcBtn">Find Z-Score</button>
+        `;
+      }
+      formContainer.innerHTML = html;
+      document.getElementById('calcBtn')?.addEventListener('click', compute);
+    }
+
+    // ----- compute -----
+    function compute() {
+      const mode = currentMode;
+      let z, cumProb, raw, mean, sd, stepText = '';
+      let betweenProb = 0, percentile = 0;
+
+      if (mode === 1) {
+        raw = parseFloat(document.getElementById('rawScore').value);
+        mean = parseFloat(document.getElementById('meanVal').value);
+        sd = parseFloat(document.getElementById('sdVal').value);
+        if (isNaN(raw) || isNaN(mean) || isNaN(sd) || sd <= 0) {
+          alert('Please enter valid numbers (SD > 0).');
+          return;
+        }
+        z = (raw - mean) / sd;
+        cumProb = cdf(z);
+        percentile = cumProb * 100;
+        betweenProb = cdf(z) - cdf(-z);
+        stepText = `Step 1: z = (${raw} - ${mean}) / ${sd} = ${z.toFixed(4)}`;
+        stepText += `\nStep 2: Φ(z) = ${cumProb.toFixed(6)} (cumulative)`;
+        lastResult = { z, cumProb, percentile, betweenProb, raw, mean, sd, mode, stepText };
+      } 
+      else if (mode === 2) {
+        z = parseFloat(document.getElementById('zInput').value);
+        if (isNaN(z)) { alert('Enter a valid z-score.'); return; }
+        cumProb = cdf(z);
+        percentile = cumProb * 100;
+        betweenProb = cdf(z) - cdf(-z);
+        stepText = `Given z = ${z.toFixed(4)}`;
+        stepText += `\nΦ(z) = ${cumProb.toFixed(6)} (cumulative)`;
+        lastResult = { z, cumProb, percentile, betweenProb, mode, stepText };
+      } 
+      else if (mode === 3) {
+        const p = parseFloat(document.getElementById('probInput').value);
+        if (isNaN(p) || p <= 0 || p >= 1) { alert('Enter probability between 0 and 1 (exclusive).'); return; }
+        z = invCDF(p);
+        cumProb = p;
+        percentile = p * 100;
+        betweenProb = cdf(z) - cdf(-z);
+        stepText = `Inverse: p = ${p.toFixed(6)} → z ≈ ${z.toFixed(4)}`;
+        lastResult = { z, cumProb, percentile, betweenProb, mode, stepText };
+      }
+
+      displayResults(lastResult);
+    }
+
+    // ----- display results + draw curve -----
+    function displayResults(r) {
+      resultsContainer.style.display = 'block';
+      const { z, cumProb, percentile, betweenProb, stepText } = r;
+      const zFormatted = z.toFixed(4);
+      const cumFormatted = cumProb.toFixed(6);
+      const percFormatted = percentile.toFixed(2);
+      const betweenFormatted = betweenProb.toFixed(6);
+
+      resultItems.innerHTML = `
+        <div class="result-item"><span class="result-label">Z-Score</span><span class="result-value accent-value">${zFormatted}</span></div>
+        <div class="result-item"><span class="result-label">Cumulative Probability Φ(z)</span><span class="result-value">${cumFormatted}</span></div>
+        <div class="result-item"><span class="result-label">Percentile Rank</span><span class="result-value">${percFormatted}%</span></div>
+        <div class="result-item"><span class="result-label">Probability between ±z</span><span class="result-value">${betweenFormatted}</span></div>
+      `;
+      stepDetail.innerHTML = `<strong>📐 Step-by-step</strong><br><code>${stepText.replace(/\n/g, '<br>')}</code>`;
+
+      drawCurve(z, cumProb);
+    }
+
+    // ----- draw normal curve with shading -----
+    function drawCurve(z, cumProb) {
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const padding = 30;
+      const plotW = w - 2 * padding;
+      const plotH = h - 2 * padding;
+      const xMin = -4.0, xMax = 4.0;
+      const yMax = 0.4;
+
+      function toX(x) { return padding + (x - xMin) / (xMax - xMin) * plotW; }
+      function toY(y) { return padding + plotH - (y / yMax) * plotH; }
+
+      // shade area
+      if (z >= xMin && z <= xMax) {
+        const xStart = xMin;
+        const xEnd = z;
+        ctx.beginPath();
+        ctx.moveTo(toX(xStart), toY(0));
+        for (let x = xStart; x <= xEnd; x += 0.01) {
+          const y = Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+          ctx.lineTo(toX(x), toY(y));
+        }
+        ctx.lineTo(toX(xEnd), toY(0));
+        ctx.closePath();
+        ctx.fillStyle = '#38bdf880';
+        ctx.fill();
+      }
+
+      // draw curve
+      ctx.beginPath();
+      for (let x = xMin; x <= xMax; x += 0.02) {
+        const y = Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+        const px = toX(x), py = toY(y);
+        if (x === xMin) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // axis
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padding, toY(0));
+      ctx.lineTo(w - padding, toY(0));
+      ctx.stroke();
+
+      // z line
+      if (z >= xMin && z <= xMax) {
+        ctx.beginPath();
+        ctx.moveTo(toX(z), toY(0));
+        ctx.lineTo(toX(z), toY(Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI)));
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '12px monospace';
+        ctx.fillText('z=' + z.toFixed(2), toX(z) - 20, toY(0) + 18);
+      }
+
+      // labels
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11px monospace';
+      ctx.fillText('-4', toX(-4), toY(0) + 18);
+      ctx.fillText('0', toX(0) - 4, toY(0) + 18);
+      ctx.fillText('4', toX(4) - 8, toY(0) + 18);
+    }
+
+    // ----- mode switching -----
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentMode = parseInt(this.dataset.mode);
+        renderForm(currentMode);
+        resultsContainer.style.display = 'none';
+        // auto compute after form render? we'll let user click
+      });
+    });
+
+    // init
+    renderForm(1);
+    // auto compute on load
+    setTimeout(() => {
+      compute();
+    }, 50);
+
+    // re-compute on enter? we rely on button.
+  })();
+</script>
+</body>
+</html>
