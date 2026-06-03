@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Effect Size Calculator — Cohen's d, Hedges' g & Glass's</title>
+  <meta name="description" content="Free interactive effect size calculator: compute Cohen's d, Hedges' g, Glass's delta, CLES, overlap percentage. Visualize overlapping normal...">
+  <meta name="keywords" content="effect size, cohen's d, hedges' g, glass's delta, CLES, probability of superiority, overlap, normal distribution, statistics, abwex">
+  <meta property="og:title" content="Effect Size Calculator — Cohen's d, Hedges' g & Glass's Delta">
+  <meta property="og:description" content="Compute Cohen's d, Hedges' g, Glass's delta, CLES, and overlap. Interactive dark theme calculator with distribution curves.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://abwex.com/tools/effect-size-calculator">
+  <meta property="og:locale" content="en_US">
+  <link rel="canonical" href="https://abwex.com/tools/effect-size-calculator">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Effect Size Calculator",
+    "url": "https://abwex.com/tools/effect-size-calculator",
+    "description": "Interactive calculator for Cohen's d, Hedges' g, Glass's delta, CLES, and overlap percentage with visual normal curves.",
+    "applicationCategory": "Statistics",
+    "operatingSystem": "All",
+    "browserRequirements": "JavaScript enabled",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "abwex.com"
+    },
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Cohen's d?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cohen's d measures the standardized difference between two means: (M1 - M2) / pooled SD. Values around 0.2 are small, 0.5 medium, 0.8 large."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Hedges' g different from Cohen's d?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Hedges' g applies a bias correction factor to Cohen's d, especially recommended for small sample sizes (n < 20)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does CLES (probability of superiority) mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CLES is the probability that a randomly selected person from Group 1 has a higher score than a randomly selected person from Group 2. It ranges from 0.5 (no effect) to 1 (complete separation)."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #f1f5f9;
+      border-bottom: 2px solid #38bdf8;
+      display: inline-block;
+      padding-bottom: 0.25rem;
+    }
+    .subhead {
+      color: #94a3b8;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid #334155;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .input-group {
+      margin-bottom: 1.25rem;
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 0.3rem;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+      color: #f1f5f9;
+      font-size: 1rem;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .input-group input:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+    }
+    .input-group input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .input-group input[type="number"]::-webkit-outer-spin-button,
+    .input-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .btn {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: 100%;
+      max-width: 300px;
+      display: block;
+      margin: 1.5rem auto 0.5rem;
+      letter-spacing: 0.3px;
+    }
+    .btn:hover {
+      background: #7dd3fc;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 1rem;
+    }
+    .stat-box {
+      background: #0f172a;
+      border-radius: 1rem;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+    .stat-box .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #38bdf8;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .stat-box .label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 0.3rem;
+    }
+    .interpret {
+      background: #0f172a;
+      border-radius: 1rem;
+      padding: 0.8rem 1.2rem;
+      border-left: 4px solid #38bdf8;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    .interpret strong {
+      color: #f1f5f9;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #0f172a;
+      border-radius: 1rem;
+      margin: 1.5rem 0 0.5rem;
+      border: 1px solid #334155;
+      aspect-ratio: 800 / 300;
+    }
+    .faq {
+      background: #1e293b;
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .faq h3 {
+      color: #38bdf8;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .faq p {
+      margin-bottom: 1.2rem;
+      color: #cbd5e1;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      color: #64748b;
+      font-size: 0.9rem;
+      border-top: 1px solid #1e293b;
+      padding-top: 1.5rem;
+      width: 100%;
+    }
+    @media (max-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      .card {
+        padding: 1.25rem 1rem;
+      }
+      .stat-box .value {
+        font-size: 1.5rem;
+      }
+      .btn {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>⚡ Effect Size Calculator</h1>
+    <div class="subhead">Cohen's d · Hedges' g · Glass's Δ · CLES · Overlap</div>
+  </header>
+
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <div class="input-group">
+          <label>Group 1 (Mean)</label>
+          <input type="number" id="mean1" step="any" value="5.5" placeholder="e.g. 5.5">
+        </div>
+        <div class="input-group">
+          <label>Group 1 (SD)</label>
+          <input type="number" id="sd1" step="any" value="1.2" placeholder="e.g. 1.2">
+        </div>
+        <div class="input-group">
+          <label>Group 1 (n)</label>
+          <input type="number" id="n1" step="1" min="2" value="30" placeholder="e.g. 30">
+        </div>
+      </div>
+      <div>
+        <div class="input-group">
+          <label>Group 2 (Mean)</label>
+          <input type="number" id="mean2" step="any" value="4.2" placeholder="e.g. 4.2">
+        </div>
+        <div class="input-group">
+          <label>Group 2 (SD)</label>
+          <input type="number" id="sd2" step="any" value="1.0" placeholder="e.g. 1.0">
+        </div>
+        <div class="input-group">
+          <label>Group 2 (n)</label>
+          <input type="number" id="n2" step="1" min="2" value="30" placeholder="e.g. 30">
+        </div>
+      </div>
+    </div>
+    <button class="btn" id="calculateBtn">Calculate</button>
+  </div>
+
+  <div class="card" id="resultsCard">
+    <div class="results-grid" id="resultsGrid">
+      <div class="stat-box"><div class="value" id="dValue">0.00</div><div class="label">Cohen's d</div></div>
+      <div class="stat-box"><div class="value" id="gValue">0.00</div><div class="label">Hedges' g</div></div>
+      <div class="stat-box"><div class="value" id="deltaValue">0.00</div><div class="label">Glass's Δ</div></div>
+      <div class="stat-box"><div class="value" id="clesValue">0.00</div><div class="label">CLES</div></div>
+      <div class="stat-box"><div class="value" id="overlapValue">0.0%</div><div class="label">Overlap</div></div>
+    </div>
+    <div class="interpret" id="interpretBox">
+      <strong>Interpretation:</strong> <span id="interpretText">Cohen's d ≈ 0.00 (negligible)</span>
+    </div>
+    <canvas id="distCanvas" width="800" height="300"></canvas>
+  </div>
+
+  <div class="faq">
+    <h3>📖 FAQ</h3>
+    <p><strong>What is Cohen's d?</strong> Standardized difference: (M1−M2)/pooled SD. Small=0.2, Medium=0.5, Large=0.8.</p>
+    <p><strong>How is Hedges' g different?</strong> It applies a bias correction to Cohen's d, better for small samples.</p>
+    <p><strong>What does CLES mean?</strong> Probability that a random person from Group 1 exceeds Group 2. 0.5 = no effect.</p>
+  </div>
+
+  <footer>© 2025 abwex.com — Free Statistics Tools</footer>
+</div>
+
+<script>
+  (function() {
+    const mean1 = document.getElementById('mean1');
+    const sd1 = document.getElementById('sd1');
+    const n1 = document.getElementById('n1');
+    const mean2 = document.getElementById('mean2');
+    const sd2 = document.getElementById('sd2');
+    const n2 = document.getElementById('n2');
+    const calcBtn = document.getElementById('calculateBtn');
+
+    const dValue = document.getElementById('dValue');
+    const gValue = document.getElementById('gValue');
+    const deltaValue = document.getElementById('deltaValue');
+    const clesValue = document.getElementById('clesValue');
+    const overlapValue = document.getElementById('overlapValue');
+    const interpretText = document.getElementById('interpretText');
+    const canvas = document.getElementById('distCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function normalPDF(x, mean, sd) {
+      const variance = sd * sd;
+      const exponent = -((x - mean) ** 2) / (2 * variance);
+      return (1 / Math.sqrt(2 * Math.PI * variance)) * Math.exp(exponent);
+    }
+
+    function computeEffectSizes() {
+      const m1 = parseFloat(mean1.value);
+      const s1 = parseFloat(sd1.value);
+      const n1v = parseInt(n1.value, 10);
+      const m2 = parseFloat(mean2.value);
+      const s2 = parseFloat(sd2.value);
+      const n2v = parseInt(n2.value, 10);
+
+      if (isNaN(m1) || isNaN(s1) || isNaN(n1v) || isNaN(m2) || isNaN(s2) || isNaN(n2v) || s1 <= 0 || s2 <= 0 || n1v < 2 || n2v < 2) {
+        dValue.textContent = '—';
+        gValue.textContent = '—';
+        deltaValue.textContent = '—';
+        clesValue.textContent = '—';
+        overlapValue.textContent = '—';
+        interpretText.textContent = 'Please enter valid numbers (SD > 0, n ≥ 2).';
+        drawCurves(0, 1, 0, 1, 0, 0);
+        return;
+      }
+
+      const diff = m1 - m2;
+      // pooled SD
+      const pooledVar = ((n1v - 1) * s1 * s1 + (n2v - 1) * s2 * s2) / (n1v + n2v - 2);
+      const pooledSD = Math.sqrt(pooledVar);
+      const cohenD = diff / pooledSD;
+
+      // Hedges' g bias correction
+      const df = n1v + n2v - 2;
+      const h = 1 - (3 / (4 * df - 1));
+      const hedgesG = cohenD * h;
+
+      // Glass's delta (using control SD = group2 SD)
+      const glassDelta = diff / s2;
+
+      // CLES (probability of superiority) using Cohen's d
+      const z = cohenD / Math.sqrt(2);
+      const cles = normCDF(z);
+
+      // Overlap percentage (overlap coefficient) for two normals
+      // compute overlap integral numerically
+      const minMean = Math.min(m1, m2);
+      const maxMean = Math.max(m1, m2);
+      const sdMax = Math.max(s1, s2);
+      const lo = minMean - 4 * sdMax;
+      const hi = maxMean + 4 * sdMax;
+      const steps = 2000;
+      const dx = (hi - lo) / steps;
+      let overlap = 0;
+      for (let i = 0; i < steps; i++) {
+        const x = lo + (i + 0.5) * dx;
+        const pdf1 = normalPDF(x, m1, s1);
+        const pdf2 = normalPDF(x, m2, s2);
+        overlap += Math.min(pdf1, pdf2) * dx;
+      }
+      const overlapPercent = Math.min(100, Math.max(0, overlap * 100));
+
+      // Display
+      dValue.textContent = cohenD.toFixed(4);
+      gValue.textContent = hedgesG.toFixed(4);
+      deltaValue.textContent = glassDelta.toFixed(4);
+      clesValue.textContent = cles.toFixed(4);
+      overlapValue.textContent = overlapPercent.toFixed(1) + '%';
+
+      // Interpretation
+      const absD = Math.abs(cohenD);
+      let interp = '';
+      if (absD < 0.2) interp = 'negligible (d < 0.2)';
+      else if (absD < 0.5) interp = 'small (d ≈ 0.2–0.5)';
+      else if (absD < 0.8) interp = 'medium (d ≈ 0.5–0.8)';
+      else interp = 'large (d ≥ 0.8)';
+      interpretText.textContent = `Cohen's d = ${cohenD.toFixed(3)} (${interp})`;
+
+      // Draw curves
+      drawCurves(m1, s1, m2, s2, cohenD, cles);
+    }
+
+    // standard normal CDF (approximation)
+    function normCDF(x) {
+      const a1 =  0.254829592;
+      const a2 = -0.284496736;
+      const a3 =  1.421413741;
+      const a4 = -1.453152027;
+      const a5 =  1.061405429;
+      const p  =  0.3275911;
+      const sign = x < 0 ? -1 : 1;
+      x = Math.abs(x) / Math.sqrt(2);
+      const t = 1.0 / (1.0 + p * x);
+      const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+      return 0.5 * (1.0 + sign * y);
+    }
+
+    function drawCurves(m1, s1, m2, s2, d, cles) {
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // Determine range
+      const minMean = Math.min(m1, m2);
+      const maxMean = Math.max(m1, m2);
+      const sdMax = Math.max(s1, s2);
+      const lo = minMean - 4.5 * sdMax;
+      const hi = maxMean + 4.5 * sdMax;
+      const range = hi - lo;
+      if (range < 1e-12) return;
+
+      const scaleX = w / range;
+      const scaleY = h / 2.5;  // max pdf height ~0.4
+
+      // Helper to map x coordinate
+      const xPos = (x) => (x - lo) * scaleX;
+
+      // Draw axes
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, h - 10);
+      ctx.lineTo(w, h - 10);
+      ctx.stroke();
+
+      // Draw group 1 curve
+      ctx.beginPath();
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      let first = true;
+      for (let px = 0; px <= w; px += 1) {
+        const x = lo + px / scaleX;
+        const y = normalPDF(x, m1, s1) * scaleY;
+        const canvasY = h - 10 - y;
+        if (first) {
+          ctx.moveTo(px, canvasY);
+          first = false;
+        } else {
+          ctx.lineTo(px, canvasY);
+        }
+      }
+      ctx.stroke();
+
+      // Fill group 1 area (semi-transparent)
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+      first = true;
+      for (let px = 0; px <= w; px += 1) {
+        const x = lo + px / scaleX;
+        const y = normalPDF(x, m1, s1) * scaleY;
+        const canvasY = h - 10 - y;
+        if (first) {
+          ctx.moveTo(px, h - 10);
+          ctx.lineTo(px, canvasY);
+          first = false;
+        } else {
+          ctx.lineTo(px, canvasY);
+        }
+      }
+      ctx.lineTo(w, h - 10);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw group 2 curve
+      ctx.beginPath();
+      ctx.strokeStyle = '#f472b6';
+      ctx.lineWidth = 2.5;
+      first = true;
+      for (let px = 0; px <= w; px += 1) {
+        const x = lo + px / scaleX;
+        const y = normalPDF(x, m2, s2) * scaleY;
+        const canvasY = h - 10 - y;
+        if (first) {
+          ctx.moveTo(px, canvasY);
+          first = false;
+        } else {
+          ctx.lineTo(px, canvasY);
+        }
+      }
+      ctx.stroke();
+
+      // Fill group 2 area
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(244, 114, 182, 0.15)';
+      first = true;
+      for (let px = 0; px <= w; px += 1) {
+        const x = lo + px / scaleX;
+        const y = normalPDF(x, m2, s2) * scaleY;
+        const canvasY = h - 10 - y;
+        if (first) {
+          ctx.moveTo(px, h - 10);
+          ctx.lineTo(px, canvasY);
+          first = false;
+        } else {
+          ctx.lineTo(px, canvasY);
+        }
+      }
+      ctx.lineTo(w, h - 10);
+      ctx.closePath();
+      ctx.fill();
+
+      // Labels
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11px system-ui, sans-serif';
+      ctx.fillText('Group 1', 10, 20);
+      ctx.fillStyle = '#f472b6';
+      ctx.fillText('Group 2', w - 80, 20);
+      ctx.fillStyle = '#64748b';
+      ctx.font = '10px system-ui, sans-serif';
+      const meanPos1 = xPos(m1);
+      const meanPos2 = xPos(m2);
+      ctx.fillText('μ₁', meanPos1 - 8, h - 18);
+      ctx.fillText('μ₂', meanPos2 - 8, h - 18);
+    }
+
+    // initial calculation on load
+    window.addEventListener('load', function() {
+      computeEffectSizes();
+    });
+
+    calcBtn.addEventListener('click', computeEffectSizes);
+
+    // also update on Enter key? optional
+    const inputs = [mean1, sd1, n1, mean2, sd2, n2];
+    inputs.forEach(inp => inp.addEventListener('change', computeEffectSizes));
+    // but button is main
+  })();
+</script>
+</body>
+</html>

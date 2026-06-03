@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Statistical Power Visualizer — See How Power Changes</title>
+  <meta name="description" content="Interactive tool to visualize statistical power, Type I & Type II errors. Adjust effect size, sample size, alpha, and tail type in real time.">
+  <meta name="keywords" content="statistical power, effect size, sample size, alpha, Type I error, Type II error, visualization, abwex">
+  <link rel="canonical" href="https://abwex.com/tools/statistical-power-visualizer">
+  <!-- JSON-LD FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is statistical power?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Statistical power is the probability that a test correctly rejects a false null hypothesis (i.e., detects a true effect). It is calculated as 1 − β, where β is the Type II error rate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Type I error?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Type I error (α) is the probability of rejecting the null hypothesis when it is actually true — a false positive."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Type II error?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Type II error (β) is the probability of failing to reject the null hypothesis when it is false — a false negative."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+      color: #f1f5f9;
+    }
+    .subhead {
+      color: #94a3b8;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      border-left: 3px solid #38bdf8;
+      padding-left: 1rem;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 900px) {
+      .tool-grid {
+        grid-template-columns: 340px 1fr;
+      }
+    }
+    /* Controls panel */
+    .controls {
+      background: #1e293b;
+      border-radius: 1.5rem;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      border: 1px solid #334155;
+    }
+    .control-group {
+      margin-bottom: 1.8rem;
+    }
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+    }
+    .control-label span:last-child {
+      color: #38bdf8;
+      font-weight: 600;
+      background: #0f172a;
+      padding: 0.1rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      background: #334155;
+      border-radius: 10px;
+      outline: none;
+      transition: background 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: #38bdf8;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px #38bdf8aa;
+      border: 2px solid #0f172a;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: #38bdf8;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #0f172a;
+    }
+    .toggle-wrap {
+      display: flex;
+      gap: 0.8rem;
+      background: #0f172a;
+      padding: 0.4rem;
+      border-radius: 40px;
+      margin-top: 0.3rem;
+    }
+    .toggle-btn {
+      flex: 1;
+      text-align: center;
+      padding: 0.5rem 0;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #94a3b8;
+      background: transparent;
+      border: none;
+      font-size: 0.9rem;
+    }
+    .toggle-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      box-shadow: 0 2px 8px #38bdf866;
+    }
+    .stats-box {
+      background: #0f172a;
+      border-radius: 1rem;
+      padding: 1.2rem 1rem;
+      margin-top: 1.8rem;
+      border: 1px solid #2d3a52;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #1e2a3a;
+      font-size: 0.95rem;
+    }
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+    .stat-value {
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .stat-value.power {
+      color: #22c55e;
+    }
+    .stat-value.beta {
+      color: #f97316;
+    }
+    .stat-value.alpha {
+      color: #ef4444;
+    }
+    .stat-value.sample {
+      color: #a78bfa;
+    }
+    .badge {
+      background: #1e293b;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    /* Canvas */
+    .canvas-wrap {
+      background: #1e293b;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      border: 1px solid #334155;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #0f172a;
+      border-radius: 1rem;
+      aspect-ratio: 16/9;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem 2rem;
+      margin-top: 1rem;
+      padding: 0.5rem 0.2rem;
+      color: #cbd5e1;
+      font-size: 0.85rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .legend-color {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+    }
+    .footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: #475569;
+      font-size: 0.9rem;
+      border-top: 1px solid #1e293b;
+      padding-top: 2rem;
+      width: 100%;
+    }
+    .faq-note {
+      background: #1e293b;
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
+      margin-top: 2rem;
+      border-left: 4px solid #38bdf8;
+      font-size: 0.9rem;
+    }
+    .faq-note strong {
+      color: #f1f5f9;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .controls { padding: 1.2rem; }
+    }
+  </style>
+
+    <meta property="og:title" content="Statistical Power Visualizer — See How Power Changes">
+    <meta property="og:description" content="Interactive tool to visualize statistical power, Type I & Type II errors. Adjust effect size, sample size, alpha, and tail type in real time.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abwex.com/tools/statistical-power-visualizer">
+</head>
+<body>
+<div class="container">
+  <h1>⚡ Statistical Power Visualizer</h1>
+  <div class="subhead">See how power, Type I &amp; Type II errors change with effect size, sample size, alpha &amp; tails</div>
+
+  <div class="tool-grid">
+    <!-- Controls -->
+    <div class="controls">
+      <div class="control-group">
+        <div class="control-label"><span>Effect size (d)</span><span id="effectDisplay">0.50</span></div>
+        <input type="range" id="effectSlider" min="0.01" max="2.0" step="0.01" value="0.50">
+      </div>
+      <div class="control-group">
+        <div class="control-label"><span>Sample size (n)</span><span id="sampleDisplay">100</span></div>
+        <input type="range" id="sampleSlider" min="10" max="10000" step="1" value="100">
+      </div>
+      <div class="control-group">
+        <div class="control-label"><span>Alpha (α)</span><span id="alphaDisplay">0.05</span></div>
+        <input type="range" id="alphaSlider" min="0.01" max="0.10" step="0.001" value="0.05">
+      </div>
+      <div class="control-group">
+        <div class="control-label"><span>Test type</span></div>
+        <div class="toggle-wrap" id="tailToggle">
+          <button class="toggle-btn active" data-tail="one">One-tailed</button>
+          <button class="toggle-btn" data-tail="two">Two-tailed</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-box">
+        <div class="stat-row"><span>🔵 Power (1−β)</span><span class="stat-value power" id="powerValue">0.516</span></div>
+        <div class="stat-row"><span>🟠 Beta (Type II error)</span><span class="stat-value beta" id="betaValue">0.484</span></div>
+        <div class="stat-row"><span>🔴 Alpha (Type I error)</span><span class="stat-value alpha" id="alphaStat">0.050</span></div>
+        <div class="stat-row"><span>🟣 n for 80% power</span><span class="stat-value sample" id="requiredN">193</span></div>
+      </div>
+      <div style="margin-top: 0.8rem; font-size: 0.8rem; color: #64748b; text-align: center;">⚡ Adjust sliders — distributions update instantly</div>
+    </div>
+
+    <!-- Canvas -->
+    <div class="canvas-wrap">
+      <canvas id="powerCanvas" width="800" height="450"></canvas>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-color" style="background:#3b82f6;"></span> Null</span>
+        <span class="legend-item"><span class="legend-color" style="background:#22c55e;"></span> Alternative</span>
+        <span class="legend-item"><span class="legend-color" style="background:#ef4444;"></span> α (Type I)</span>
+        <span class="legend-item"><span class="legend-color" style="background:#f97316;"></span> β (Type II)</span>
+        <span class="legend-item"><span class="legend-color" style="background:#a78bfa;"></span> Power</span>
+        <span class="legend-item"><span style="border-left:3px solid #facc15; height:16px;"></span> Critical value</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ / explanation -->
+  <div class="faq-note">
+    <strong>📘 Type I error (α):</strong> Rejecting true null — false positive. &nbsp;|&nbsp; 
+    <strong>📙 Type II error (β):</strong> Failing to reject false null — false negative. &nbsp;|&nbsp; 
+    <strong>✅ Power (1−β):</strong> Probability of detecting a true effect. 
+    <span style="display:inline-block; margin-left: 0.5rem; color:#94a3b8;">(Shaded areas correspond to legend)</span>
+  </div>
+
+  <div class="footer">© 2025 abwex.com</div>
+</div>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('powerCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // DOM elements
+    const effectSlider = document.getElementById('effectSlider');
+    const sampleSlider = document.getElementById('sampleSlider');
+    const alphaSlider = document.getElementById('alphaSlider');
+    const effectDisplay = document.getElementById('effectDisplay');
+    const sampleDisplay = document.getElementById('sampleDisplay');
+    const alphaDisplay = document.getElementById('alphaDisplay');
+    const powerValue = document.getElementById('powerValue');
+    const betaValue = document.getElementById('betaValue');
+    const alphaStat = document.getElementById('alphaStat');
+    const requiredN = document.getElementById('requiredN');
+    const tailToggle = document.getElementById('tailToggle');
+
+    let tail = 'one'; // 'one' or 'two'
+
+    // Tail toggle
+    tailToggle.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        tailToggle.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        tail = this.dataset.tail;
+        updateAll();
+      });
+    });
+
+    // Helper: normal PDF
+    function normalPDF(x, mean = 0, sd = 1) {
+      const invSqrt2PI = 1 / Math.sqrt(2 * Math.PI);
+      const z = (x - mean) / sd;
+      return invSqrt2PI * Math.exp(-0.5 * z * z) / sd;
+    }
+
+    // Helper: cumulative normal (approx)
+    function normalCDF(x, mean = 0, sd = 1) {
+      const z = (x - mean) / sd;
+      const a1 =  0.254829592;
+      const a2 = -0.284496736;
+      const a3 =  1.421413741;
+      const a4 = -1.453152027;
+      const a5 =  1.061405429;
+      const p  =  0.3275911;
+      const sign = z < 0 ? -1 : 1;
+      const absZ = Math.abs(z);
+      const t = 1.0 / (1.0 + p * absZ);
+      const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-absZ * absZ);
+      return 0.5 * (1.0 + sign * y);
+    }
+
+    // Cohen's d -> non-centrality parameter (for two-sample t-test approx)
+    // For visualization we treat null N(0,1), alternative N(d*sqrt(n/2), 1) approx for two-sample equal n.
+    // We'll use standard error scaling: delta = d * sqrt(n/2)
+    function getDelta(d, n) {
+      return d * Math.sqrt(n / 2);
+    }
+
+    // Compute critical value(s) and power
+    function computePower(effect, n, alpha, tailType) {
+      const delta = getDelta(effect, n);
+      let crit, power, beta;
+      const df = 2 * n - 2; // not used directly, but for reference
+      // For visualization we use normal approx: null ~ N(0,1), alt ~ N(delta,1)
+      if (tailType === 'one') {
+        crit = normalCDF(1 - alpha, 0, 1); // get quantile
+        // inverse: find z such that P(Z < z) = 1-alpha
+        // use simple approximation for quantile
+        const zAlpha = quantileNormal(1 - alpha);
+        crit = zAlpha;
+        // power = P( alt > crit )
+        power = 1 - normalCDF(crit, delta, 1);
+        beta = normalCDF(crit, delta, 1);
+      } else {
+        // two-tailed
+        const alphaHalf = alpha / 2;
+        const zLow = quantileNormal(alphaHalf);
+        const zHigh = quantileNormal(1 - alphaHalf);
+        // power = P(alt < zLow) + P(alt > zHigh)
+        const pLow = normalCDF(zLow, delta, 1);
+        const pHigh = 1 - normalCDF(zHigh, delta, 1);
+        power = pLow + pHigh;
+        beta = 1 - power;
+        crit = zHigh; // show upper critical for visualization
+      }
+      return { power, beta, crit, delta };
+    }
+
+    // Quantile normal (rational approximation)
+    function quantileNormal(p) {
+      if (p < 0.5) return -quantileNormal(1 - p);
+      const a = [-3.969683028665376e+01,  2.209460984245205e+02,
+                 -2.759285104469687e+02,  1.383577518672690e+02,
+                 -3.066479806614716e+01,  2.506628277459239e+00];
+      const b = [-5.447609879822406e+01,  1.615858368580409e+02,
+                 -1.556989798598866e+02,  6.680131188771972e+01,
+                 -1.328068155288572e+01];
+      const c = [-7.784894002430293e-03, -3.223964580411365e-01,
+                 -2.400758277161838e+00, -2.549732539343734e+00,
+                  4.374664141464968e+00,  2.938163982698783e+00];
+      const d = [7.784695709041462e-03,  3.224671290700398e-01,
+                 2.445134137142996e+00,  3.754408661907416e+00];
+      const q = p - 0.5;
+      let r, x;
+      if (Math.abs(q) <= 0.425) {
+        r = 0.180625 - q * q;
+        x = q * (((((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * r + a[6]) * r + a[7]) /
+                (((((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + b[5]) * r + b[6]) * r + b[7]);
+      } else {
+        r = Math.sqrt(-Math.log(Math.min(p, 1 - p)));
+        x = (((((((c[0] * r + c[1]) * r + c[2]) * r + c[3]) * r + c[4]) * r + c[5]) * r + c[6]) * r + c[7]) /
+            (((((((d[0] * r + d[1]) * r + d[2]) * r + d[3]) * r + d[4]) * r + d[5]) * r + d[6]) * r + d[7]);
+        if (p < 0.5) x = -x;
+      }
+      return x;
+    }
+
+    // Required n for 80% power (approx using normal)
+    function requiredSampleSize(effect, alpha, tailType) {
+      let target = 0.8;
+      let nGuess = 20;
+      for (let i = 0; i < 50; i++) {
+        const res = computePower(effect, nGuess, alpha, tailType);
+        if (res.power < target) nGuess = nGuess * 1.5;
+        else nGuess = nGuess * 0.9;
+        if (nGuess < 4) nGuess = 4;
+        if (nGuess > 50000) break;
+      }
+      // refine
+      for (let i = 0; i < 30; i++) {
+        const res = computePower(effect, Math.round(nGuess), alpha, tailType);
+        if (res.power < target) nGuess += 1;
+        else nGuess -= 0.5;
+        if (nGuess < 4) nGuess = 4;
+      }
+      return Math.max(4, Math.round(nGuess));
+    }
+
+    // Drawing
+    function drawChart(effect, n, alpha, tailType) {
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const result = computePower(effect, n, alpha, tailType);
+      const { power, beta, crit, delta } = result;
+
+      // Update stats
+      powerValue.textContent = power.toFixed(4);
+      betaValue.textContent = beta.toFixed(4);
+      alphaStat.textContent = alpha.toFixed(3);
+      const reqN = requiredSampleSize(effect, alpha, tailType);
+      requiredN.textContent = reqN;
+
+      // Plot parameters
+      const xMin = -5, xMax = 10;
+      const xRange = xMax - xMin;
+      const yMax = 0.5;
+      const scaleX = W / xRange;
+      const scaleY = H / yMax * 0.85;
+      const baseY = H - 20;
+
+      function toX(x) { return (x - xMin) * scaleX; }
+      function toY(y) { return baseY - y * scaleY; }
+
+      // Draw axes
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, baseY);
+      ctx.lineTo(W, baseY);
+      ctx.stroke();
+
+      // Helper: draw filled distribution
+      function drawDist(mean, color, fillAlpha, fillBeta, critVal, tailType) {
+        const step = 0.05;
+        // null: mean=0, alt: mean=delta
+        const sd = 1;
+        // Draw curve
+        ctx.beginPath();
+        let first = true;
+        for (let x = xMin; x <= xMax; x += step) {
+          const y = normalPDF(x, mean, sd);
+          const px = toX(x), py = toY(y);
+          if (first) { ctx.moveTo(px, py); first = false; }
+          else ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Fill alpha (Type I) under null (mean=0) beyond crit
+        if (mean === 0) {
+          ctx.fillStyle = 'rgba(239,68,68,0.35)';
+          ctx.beginPath();
+          let started = false;
+          for (let x = critVal; x <= xMax; x += step) {
+            const y = normalPDF(x, 0, sd);
+            const px = toX(x), py = toY(y);
+            if (!started) {
+              ctx.moveTo(px, baseY);
+              ctx.lineTo(px, py);
+              started = true;
+            } else ctx.lineTo(px, py);
+          }
+          ctx.lineTo(toX(xMax), baseY);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Fill beta under alternative (mean=delta) below crit (for one-tail) or between crits for two-tail?
+        if (mean === delta && delta > 0) {
+          ctx.fillStyle = 'rgba(249,115,22,0.35)';
+          ctx.beginPath();
+          let started = false;
+          const limit = tailType === 'one' ? critVal : critVal; // we use upper crit for two-tail, also fill left tail?
+          // For two-tail we fill both tails for beta? Actually beta is area under alt not rejected: between lower and upper crit.
+          // For simplicity we show beta as area under alt below upper crit (and above lower if two-tail). We'll approximate.
+          if (tailType === 'one') {
+            for (let x = xMin; x <= critVal; x += step) {
+              const y = normalPDF(x, delta, sd);
+              const px = toX(x), py = toY(y);
+              if (!started) { ctx.moveTo(px, baseY); ctx.lineTo(px, py); started = true; }
+              else ctx.lineTo(px, py);
+            }
+            ctx.lineTo(toX(critVal), baseY);
+            ctx.closePath();
+            ctx.fill();
+          } else {
+            // two-tail: beta = area between lower and upper crit
+            const zLow = quantileNormal(alpha/2);
+            const zHigh = quantileNormal(1 - alpha/2);
+            // fill between zLow and zHigh under alt
+            ctx.beginPath();
+            let started = false;
+            for (let x = zLow; x <= zHigh; x += step) {
+              const y = normalPDF(x, delta, sd);
+              const px = toX(x), py = toY(y);
+              if (!started) { ctx.moveTo(px, baseY); ctx.lineTo(px, py); started = true; }
+              else ctx.lineTo(px, py);
+            }
+            ctx.lineTo(toX(zHigh), baseY);
+            ctx.closePath();
+            ctx.fill();
+            // also fill small left tail? but beta includes central region.
+          }
+        }
+
+        // Power fill under alternative beyond crit
+        if (mean === delta && delta > 0) {
+          ctx.fillStyle = 'rgba(168,85,247,0.35)';
+          ctx.beginPath();
+          let started = false;
+          const startX = tailType === 'one' ? critVal : critVal; // upper
+          for (let x = startX; x <= xMax; x += step) {
+            const y = normalPDF(x, delta, sd);
+            const px = toX(x), py = toY(y);
+            if (!started) { ctx.moveTo(px, baseY); ctx.lineTo(px, py); started = true; }
+            else ctx.lineTo(px, py);
+          }
+          ctx.lineTo(toX(xMax), baseY);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+
+      // Draw null (mean=0)
+      drawDist(0, '#3b82f6', false, false, crit, tailType);
+      // Draw alternative (mean=delta)
+      drawDist(delta, '#22c55e', false, true, crit, tailType);
+
+      // Critical line
+      ctx.beginPath();
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([6, 6]);
+      const critX = toX(crit);
+      ctx.moveTo(critX, 10);
+      ctx.lineTo(critX, baseY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#facc15';
+      ctx.font = 'bold 11px system-ui';
+      ctx.fillText('critical', critX - 30, 20);
+
+      // Labels
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px system-ui';
+      ctx.fillText('Null', 20, 30);
+      ctx.fillStyle = '#22c55e';
+      ctx.fillText('Alternative', 60, 30);
+    }
+
+    // Update all
+    function updateAll() {
+      const effect = parseFloat(effectSlider.value);
+      const n = parseInt(sampleSlider.value, 10);
+      const alpha = parseFloat(alphaSlider.value);
+      effectDisplay.textContent = effect.toFixed(2);
+      sampleDisplay.textContent = n;
+      alphaDisplay.textContent = alpha.toFixed(3);
+      drawChart(effect, n, alpha, tail);
+    }
+
+    // Events
+    effectSlider.addEventListener('input', updateAll);
+    sampleSlider.addEventListener('input', updateAll);
+    alphaSlider.addEventListener('input', updateAll);
+
+    // initial draw
+    updateAll();
+
+    // handle resize
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      // keep aspect ratio
+    }
+    window.addEventListener('resize', resizeCanvas);
+  })();
+</script>
+</body>
+</html>

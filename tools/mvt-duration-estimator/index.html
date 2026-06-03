@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Multivariate Test Duration Estimator — How Long to Run</title>
+  <meta name="description" content="Calculate how long your multivariate test (MVT) needs to run. Enter variations, baseline rate, effect, traffic, significance & power. Get sample size &...">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/mvt-duration-estimator">
+  <!-- JSON-LD FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why do MVTs need more traffic than A/B tests?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Multivariate tests compare multiple variations simultaneously, increasing the number of comparisons and requiring larger sample sizes to maintain statistical power and control for false discovery. Each additional variation reduces the effective sample per variant, so you need more total traffic."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is the required sample size calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We use a normal approximation formula based on baseline conversion rate, minimum detectable effect, significance level (Zα/2), and power (Zβ). The formula accounts for multiple variations using a Bonferroni correction for the significance level."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the minimum detectable effect (MDE)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MDE is the smallest relative improvement (or change) you want to detect. Smaller MDEs require larger sample sizes. Typical values are 5–20% relative to baseline."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    h1 small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #94a3b8;
+      margin-left: 0.5rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin: 1.5rem 0 0.75rem;
+      color: #e2e8f0;
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin: 1rem 0 0.5rem;
+      color: #cbd5e1;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 1px solid #334155;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.01em;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.6rem;
+      color: #e2e8f0;
+      font-size: 1rem;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    .input-hint {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 0.2rem;
+    }
+    .btn {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      font-weight: 600;
+      padding: 0.8rem 1.8rem;
+      border-radius: 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .btn:hover {
+      background: #7dd3fc;
+      transform: scale(1.02);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      margin-left: 0.75rem;
+    }
+    .btn-outline:hover {
+      background: #1e293b;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .stat-box {
+      background: #0f172a;
+      padding: 1rem;
+      border-radius: 0.8rem;
+      text-align: center;
+      border: 1px solid #2d3a4e;
+    }
+    .stat-box .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #38bdf8;
+      line-height: 1.2;
+    }
+    .stat-box .label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.5rem;
+      color: #94a3b8;
+      font-weight: 500;
+      border-bottom: 1px solid #334155;
+    }
+    td {
+      padding: 0.6rem 0.5rem;
+      border-bottom: 1px solid #1e293b;
+    }
+    .timeline-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    .timeline-track {
+      flex: 1;
+      height: 12px;
+      background: #1e293b;
+      border-radius: 20px;
+      position: relative;
+      min-width: 120px;
+    }
+    .timeline-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #2dd4bf);
+      border-radius: 20px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .timeline-label {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      white-space: nowrap;
+    }
+    .faq-item {
+      margin: 1rem 0;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #1e293b;
+    }
+    .faq-question {
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .faq-answer {
+      color: #94a3b8;
+      margin-top: 0.3rem;
+      font-size: 0.95rem;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: #475569;
+      font-size: 0.9rem;
+      border-top: 1px solid #1e293b;
+      padding-top: 1.5rem;
+    }
+    .inline-flex {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    @media (max-width: 700px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .stat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+
+    <meta property="og:title" content="Multivariate Test Duration Estimator — How Long to Run">
+    <meta property="og:description" content="Calculate how long your multivariate test (MVT) needs to run. Enter variations, baseline rate, effect, traffic, significance & power. Get sample size &...">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abwex.com/tools/mvt-duration-estimator">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📊 Multivariate Test Duration Estimator <small>how long to run your MVT</small></h1>
+    <p style="color:#94a3b8; margin-top:0.25rem;">Calculate required sample size & timeline for multivariate tests (MVT) with up to 10 variations.</p>
+  </header>
+
+  <!-- Calculator card -->
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <div class="form-group">
+          <label for="variations">Number of variations (2–10)</label>
+          <input type="number" id="variations" min="2" max="10" value="4" step="1">
+          <div class="input-hint">Including control</div>
+        </div>
+        <div class="form-group">
+          <label for="baseline">Baseline conversion rate (%)</label>
+          <input type="number" id="baseline" min="0.1" max="99.9" step="0.1" value="5.0">
+        </div>
+        <div class="form-group">
+          <label for="mde">Minimum detectable effect (relative %)</label>
+          <input type="number" id="mde" min="0.5" max="50" step="0.5" value="10">
+          <div class="input-hint">Relative lift over baseline</div>
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label for="traffic">Daily traffic (visitors)</label>
+          <input type="number" id="traffic" min="10" max="10000000" step="100" value="5000">
+        </div>
+        <div class="form-group">
+          <label for="significance">Significance level (α)</label>
+          <select id="significance">
+            <option value="0.10">90% (α=0.10)</option>
+            <option value="0.05" selected>95% (α=0.05)</option>
+            <option value="0.01">99% (α=0.01)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="power">Statistical power (1−β)</label>
+          <select id="power">
+            <option value="0.80">80%</option>
+            <option value="0.90" selected>90%</option>
+            <option value="0.95">95%</option>
+          </select>
+        </div>
+        <div style="margin-top: 1.8rem;">
+          <button class="btn" id="calculateBtn">⟳ Calculate duration</button>
+          <button class="btn btn-outline" id="resetBtn">Reset defaults</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results: summary stats -->
+  <div class="card" id="resultsCard">
+    <h2>📈 Estimated requirements</h2>
+    <div class="stat-grid" id="statsGrid">
+      <div class="stat-box"><div class="value" id="samplePerVar">—</div><div class="label">per variation</div></div>
+      <div class="stat-box"><div class="value" id="totalSample">—</div><div class="label">total sample</div></div>
+      <div class="stat-box"><div class="value" id="estDays">—</div><div class="label">estimated days</div></div>
+      <div class="stat-box"><div class="value" id="completionDate">—</div><div class="label">completion date</div></div>
+    </div>
+
+    <!-- Timeline visualization -->
+    <h3>⏳ Timeline</h3>
+    <div class="timeline-bar">
+      <span class="timeline-label">Start</span>
+      <div class="timeline-track">
+        <div class="timeline-fill" id="timelineFill" style="width: 0%;"></div>
+      </div>
+      <span class="timeline-label" id="timelineEndLabel">—</span>
+    </div>
+    <p style="color:#94a3b8; font-size:0.9rem;" id="timelineNote">Adjust inputs and click calculate.</p>
+
+    <!-- Comparison table: duration at different MDE levels -->
+    <h3>📊 Duration comparison at different MDE levels</h3>
+    <div style="overflow-x: auto;">
+      <table id="mdeComparisonTable">
+        <thead>
+          <tr><th>MDE (relative)</th><th>Sample per variation</th><th>Total sample</th><th>Est. days</th><th>Completion</th></tr>
+        </thead>
+        <tbody id="mdeTableBody">
+          <tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Explanation & FAQ -->
+  <div class="card">
+    <h2>❓ Why MVTs need more traffic than A/B tests</h2>
+    <p style="color:#cbd5e1; margin-bottom:1rem;">Multivariate tests compare <strong>multiple variations simultaneously</strong>, increasing the number of comparisons. To maintain statistical power and control the false discovery rate, each variation requires a similar sample size as a single A/B test, but multiplied by the number of variations. Additionally, corrections (e.g., Bonferroni) adjust significance thresholds, further increasing required sample sizes. Less traffic per variation means longer duration.</p>
+    
+    <h3>📖 Frequently asked questions</h3>
+    <div class="faq-item">
+      <div class="faq-question">How is sample size calculated?</div>
+      <div class="faq-answer">We use a normal approximation: <code>n = ( (Z_α/2 + Z_β)² * (p0*(1-p0) + p1*(1-p1)) ) / (p1-p0)²</code>, with Bonferroni correction for multiple variations (α' = α / (variations-1)). p1 = baseline * (1 + MDE/100).</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">What if my daily traffic is low?</div>
+      <div class="faq-answer">Low traffic increases duration proportionally. Consider reducing variations, increasing MDE, or lowering significance/power to get faster results.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Why does the timeline show a completion date?</div>
+      <div class="faq-answer">Based on estimated days from today. It assumes steady traffic and no early stopping. Always plan for a fixed horizon.</div>
+    </div>
+  </div>
+
+  <footer>© 2025 abwex.com</footer>
+</div>
+
+<script>
+  (function() {
+    // DOM refs
+    const variationsInput = document.getElementById('variations');
+    const baselineInput = document.getElementById('baseline');
+    const mdeInput = document.getElementById('mde');
+    const trafficInput = document.getElementById('traffic');
+    const significanceSelect = document.getElementById('significance');
+    const powerSelect = document.getElementById('power');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const samplePerVarEl = document.getElementById('samplePerVar');
+    const totalSampleEl = document.getElementById('totalSample');
+    const estDaysEl = document.getElementById('estDays');
+    const completionDateEl = document.getElementById('completionDate');
+    const timelineFill = document.getElementById('timelineFill');
+    const timelineEndLabel = document.getElementById('timelineEndLabel');
+    const timelineNote = document.getElementById('timelineNote');
+    const mdeTableBody = document.getElementById('mdeTableBody');
+
+    // Helper: Z-score for given alpha (two-tailed)
+    function zScore(alpha) {
+      // approximate using common values
+      if (alpha <= 0.0005) return 3.29;
+      if (alpha <= 0.001) return 3.09;
+      if (alpha <= 0.0025) return 2.81;
+      if (alpha <= 0.005) return 2.58;
+      if (alpha <= 0.01) return 2.326;
+      if (alpha <= 0.025) return 1.96;
+      if (alpha <= 0.05) return 1.645;
+      if (alpha <= 0.10) return 1.282;
+      if (alpha <= 0.20) return 0.842;
+      return 0.674;
+    }
+
+    // Sample size per variation (using normal approx, two-sided)
+    function sampleSizePerVariation(baselineRate, mdeRelative, alpha, power) {
+      const p0 = baselineRate / 100;
+      const effect = mdeRelative / 100;
+      const p1 = p0 * (1 + effect);
+      if (p1 >= 1 || p1 <= 0) return Infinity;
+      const delta = p1 - p0;
+      if (Math.abs(delta) < 1e-9) return Infinity;
+
+      const z_alpha2 = zScore(alpha / 2);
+      const z_beta = zScore(1 - power);
+
+      const term = z_alpha2 * Math.sqrt(2 * p0 * (1 - p0)) + z_beta * Math.sqrt(p0 * (1 - p0) + p1 * (1 - p1));
+      const n = (term * term) / (delta * delta);
+      return Math.ceil(n);
+    }
+
+    // Main calculation
+    function calculate() {
+      // read inputs
+      let variations = parseInt(variationsInput.value, 10);
+      if (isNaN(variations) || variations < 2) variations = 2;
+      if (variations > 10) variations = 10;
+      variationsInput.value = variations;
+
+      let baseline = parseFloat(baselineInput.value);
+      if (isNaN(baseline) || baseline <= 0) baseline = 0.1;
+      if (baseline > 99.9) baseline = 99.9;
+      baselineInput.value = baseline;
+
+      let mde = parseFloat(mdeInput.value);
+      if (isNaN(mde) || mde < 0.5) mde = 0.5;
+      if (mde > 50) mde = 50;
+      mdeInput.value = mde;
+
+      let traffic = parseInt(trafficInput.value, 10);
+      if (isNaN(traffic) || traffic < 10) traffic = 10;
+      trafficInput.value = traffic;
+
+      const alphaRaw = parseFloat(significanceSelect.value);
+      const powerRaw = parseFloat(powerSelect.value);
+
+      // Bonferroni correction: alpha / (variations - 1) for multiple comparisons
+      const correctedAlpha = alphaRaw / (variations - 1);
+
+      // Compute sample per variation
+      const nPerVar = sampleSizePerVariation(baseline, mde, correctedAlpha, powerRaw);
+      const totalSample = nPerVar * variations;
+
+      // Days: total sample / daily traffic (assuming equal split)
+      let days = Infinity;
+      if (traffic > 0 && isFinite(totalSample)) {
+        days = Math.ceil(totalSample / traffic);
+      }
+      if (days < 1 && isFinite(totalSample)) days = 1;
+
+      // Completion date
+      const today = new Date();
+      let completionDate = '—';
+      let dateStr = '—';
+      if (isFinite(days) && days > 0 && days < 36500) {
+        const end = new Date(today);
+        end.setDate(end.getDate() + days);
+        dateStr = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        completionDate = dateStr;
+      } else if (isFinite(days) && days >= 36500) {
+        completionDate = '> 100 years';
+      }
+
+      // Update DOM
+      samplePerVarEl.textContent = isFinite(nPerVar) ? nPerVar.toLocaleString() : '∞';
+      totalSampleEl.textContent = isFinite(totalSample) ? totalSample.toLocaleString() : '∞';
+      estDaysEl.textContent = isFinite(days) ? days.toLocaleString() : '∞';
+      completionDateEl.textContent = completionDate;
+
+      // Timeline fill (max display 365 days, but cap at 100%)
+      let fillPercent = 0;
+      if (isFinite(days) && days > 0) {
+        fillPercent = Math.min(100, (days / 365) * 100);
+        if (days > 365) fillPercent = 100;
+      }
+      timelineFill.style.width = fillPercent + '%';
+      timelineEndLabel.textContent = completionDate !== '—' ? completionDate : '—';
+      timelineNote.textContent = isFinite(days) ? `Estimated duration: ${days} day(s) from today.` : 'Insufficient data.';
+
+      // Build comparison table for MDE levels: 5%, 7.5%, 10%, 15%, 20% (relative)
+      const mdeLevels = [5, 7.5, 10, 15, 20];
+      let rowsHtml = '';
+      for (let mdeVal of mdeLevels) {
+        const n = sampleSizePerVariation(baseline, mdeVal, correctedAlpha, powerRaw);
+        const total = n * variations;
+        let d = Infinity;
+        if (traffic > 0 && isFinite(total)) d = Math.ceil(total / traffic);
+        if (d < 1 && isFinite(total)) d = 1;
+        let comp = '—';
+        if (isFinite(d) && d > 0 && d < 36500) {
+          const end = new Date(today);
+          end.setDate(end.getDate() + d);
+          comp = end.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        } else if (isFinite(d) && d >= 36500) comp = '>100y';
+        rowsHtml += `<tr><td>${mdeVal}%</td><td>${isFinite(n) ? n.toLocaleString() : '∞'}</td><td>${isFinite(total) ? total.toLocaleString() : '∞'}</td><td>${isFinite(d) ? d.toLocaleString() : '∞'}</td><td>${comp}</td></tr>`;
+      }
+      mdeTableBody.innerHTML = rowsHtml;
+    }
+
+    // Reset to defaults
+    function resetDefaults() {
+      variationsInput.value = 4;
+      baselineInput.value = 5.0;
+      mdeInput.value = 10;
+      trafficInput.value = 5000;
+      significanceSelect.value = '0.05';
+      powerSelect.value = '0.90';
+      calculate();
+    }
+
+    // Event listeners
+    calculateBtn.addEventListener('click', calculate);
+    resetBtn.addEventListener('click', resetDefaults);
+
+    // initial calculation on page load
+    window.addEventListener('DOMContentLoaded', calculate);
+  })();
+</script>
+</body>
+</html>
