@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Bayesian A/B Test Calculator | abwex.com</title>
+  <meta name="description" content="Interactive Bayesian A/B test calculator with Beta conjugate priors, Monte Carlo P(B>A), expected uplift, credible intervals, and posterior density...">
+  <link rel="canonical" href="https://abwex.com/tools/bayesian-ab-test-calculator">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Bayesian A/B Test Calculator",
+      "url": "https://abwex.com/tools/bayesian-ab-test-calculator",
+      "applicationCategory": "Statistical Tool",
+      "operatingSystem": "All",
+      "browserRequirements": "JavaScript enabled",
+      "description": "Compute posterior Beta distributions, P(B>A) via Monte Carlo, expected uplift, 95% credible intervals, and posterior conversion rates. Includes prior sensitivity analysis."
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "What does P(B > A) mean?", "acceptedAnswer": {"@type": "Answer", "text": "The probability that the treatment conversion rate is higher than the control, given the data and prior."}},
+        {"@type": "Question", "name": "How are credible intervals computed?", "acceptedAnswer": {"@type": "Answer", "text": "Using the Beta quantile function via Newton's method on the incomplete beta integral (regularized incomplete beta)."}},
+        {"@type": "Question", "name": "How does prior choice affect results?", "acceptedAnswer": {"@type": "Answer", "text": "Skeptical priors (e.g., Beta(10,10)) pull estimates toward 0.5, reducing P(B>A). Optimistic or flat priors let data dominate. Use prior sensitivity to compare."}}
+      ]
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com"},
+        {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools"},
+        {"@type": "ListItem", "position": 3, "name": "Bayesian A/B Test Calculator", "item": "https://abwex.com/tools/bayesian-ab-test-calculator"}
+      ]
+    }
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #0f0f1a;
+      color: #e0e0f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      background: #1a1a2e;
+      border-radius: 2rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border: 1px solid #2d2d4a;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #a78bfa, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+    .subhead {
+      color: #9ca3cf;
+      margin-bottom: 2rem;
+      border-left: 4px solid #6366f1;
+      padding-left: 1rem;
+      font-weight: 300;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .input-card {
+      background: #12121f;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #2a2a45;
+    }
+    .input-card h3 {
+      font-weight: 500;
+      color: #b3b3e6;
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    .input-group label {
+      font-size: 0.85rem;
+      color: #a5b0d9;
+      letter-spacing: 0.3px;
+    }
+    .input-group input {
+      background: #0b0b18;
+      border: 1px solid #2f2f55;
+      border-radius: 1rem;
+      padding: 0.75rem 1rem;
+      color: #f0f0ff;
+      font-size: 1rem;
+      transition: 0.2s;
+      width: 100%;
+    }
+    .input-group input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+    }
+    .prior-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .prior-row .input-group {
+      flex: 1;
+      min-width: 80px;
+    }
+    .btn-primary {
+      background: #6366f1;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.9rem 1.8rem;
+      border-radius: 3rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 0.5rem;
+      width: 100%;
+      letter-spacing: 0.3px;
+    }
+    .btn-primary:hover {
+      background: #4f52e0;
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+    }
+    .results-panel {
+      background: #12121f;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #2a2a45;
+      margin-top: 1.5rem;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .stat-card {
+      background: #1a1a30;
+      border-radius: 1.2rem;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      border: 1px solid #2d2d50;
+    }
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #c7c7ff;
+    }
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: #8b8fb0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-card.indigo .value { color: #818cf8; }
+    .stat-card.green .value { color: #6ee7b7; }
+    .stat-card.rose .value { color: #fda4af; }
+    .stat-card.amber .value { color: #fcd34d; }
+    .chart-wrap {
+      background: #0b0b18;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border: 1px solid #2a2a45;
+    }
+    canvas {
+      width: 100%;
+      height: auto;
+      max-height: 340px;
+      display: block;
+      background: transparent;
+      border-radius: 1rem;
+    }
+    .sensitivity {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+      justify-content: center;
+    }
+    .sens-btn {
+      background: #1e1e38;
+      border: 1px solid #3b3b6b;
+      color: #bcc0f0;
+      padding: 0.5rem 1.2rem;
+      border-radius: 3rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .sens-btn.active {
+      background: #6366f1;
+      border-color: #6366f1;
+      color: white;
+      font-weight: 500;
+    }
+    .sens-btn:hover {
+      background: #2f2f5a;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+    }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.4rem;
+      color: #a5b0d9;
+      font-weight: 400;
+      border-bottom: 1px solid #2f2f55;
+    }
+    td {
+      padding: 0.6rem 0.4rem;
+      border-bottom: 1px solid #1f1f3a;
+    }
+    .footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      color: #6b6f95;
+      font-size: 0.9rem;
+      border-top: 1px solid #242442;
+      padding-top: 1.8rem;
+    }
+    .badge {
+      background: #6366f1;
+      color: white;
+      border-radius: 40px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+    @media (max-width: 700px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 1rem; }
+      .container { padding: 1.5rem 1rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+
+<meta property="og:title" content="Bayesian A/B Test Calculator | abwex.com">
+<meta property="og:description" content="Interactive Bayesian A/B test calculator with Beta conjugate priors, Monte Carlo P(B>A), expected uplift, credible intervals, and posterior density...">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://abwex.com/tools/bayesian-ab-test-calculator">
+</head>
+<body>
+<div class="container">
+  <h1>Bayesian A/B Test</h1>
+  <div class="subhead">Beta-Binomial conjugate · Monte Carlo · Credible intervals</div>
+
+  <div class="grid-2">
+    <!-- Control -->
+    <div class="input-card">
+      <h3>🅰 Control</h3>
+      <div class="input-group">
+        <label>Visitors</label>
+        <input type="number" id="ctrlVisitors" value="1000" min="1" step="1">
+      </div>
+      <div class="input-group">
+        <label>Conversions</label>
+        <input type="number" id="ctrlConversions" value="80" min="0" step="1">
+      </div>
+    </div>
+    <!-- Treatment -->
+    <div class="input-card">
+      <h3>🅱 Treatment</h3>
+      <div class="input-group">
+        <label>Visitors</label>
+        <input type="number" id="trtVisitors" value="1000" min="1" step="1">
+      </div>
+      <div class="input-group">
+        <label>Conversions</label>
+        <input type="number" id="trtConversions" value="110" min="0" step="1">
+      </div>
+    </div>
+  </div>
+
+  <!-- Prior row -->
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; background: #12121f; border-radius: 1.5rem; padding: 1rem 1.5rem; border:1px solid #2a2a45; margin-bottom: 1rem;">
+    <span style="color:#b3b3e6;">Prior (α, β):</span>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <div class="input-group" style="min-width: 70px; margin-bottom:0;">
+        <label>Alpha</label>
+        <input type="number" id="priorAlpha" value="1" min="0.01" step="0.1" style="width: 80px;">
+      </div>
+      <div class="input-group" style="min-width: 70px; margin-bottom:0;">
+        <label>Beta</label>
+        <input type="number" id="priorBeta" value="1" min="0.01" step="0.1" style="width: 80px;">
+      </div>
+    </div>
+    <button class="btn-primary" id="computeBtn" style="width: auto; padding: 0.6rem 2rem; margin-top:0;">⟳ Compute</button>
+  </div>
+
+  <!-- Sensitivity -->
+  <div class="sensitivity">
+    <span style="color:#b3b3e6; align-self:center;">Prior sensitivity:</span>
+    <button class="sens-btn active" data-alpha="1" data-beta="1">Flat (1,1)</button>
+    <button class="sens-btn" data-alpha="10" data-beta="10">Skeptical (10,10)</button>
+    <button class="sens-btn" data-alpha="5" data-beta="15">Pessimistic (5,15)</button>
+    <button class="sens-btn" data-alpha="30" data-beta="10">Optimistic (30,10)</button>
+  </div>
+
+  <!-- Results -->
+  <div class="results-panel" id="resultsPanel">
+    <div class="stat-grid" id="statGrid">
+      <div class="stat-card indigo"><div class="value" id="pBA">0.00</div><div class="label">P(B > A)</div></div>
+      <div class="stat-card green"><div class="value" id="uplift">0.00%</div><div class="label">Expected uplift</div></div>
+      <div class="stat-card amber"><div class="value" id="meanA">0.00</div><div class="label">Posterior mean A</div></div>
+      <div class="stat-card rose"><div class="value" id="meanB">0.00</div><div class="label">Posterior mean B</div></div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="densityCanvas" width="800" height="300"></canvas>
+      <div style="display:flex; justify-content:center; gap:2rem; font-size:0.8rem; color:#9ca3cf; margin-top:0.3rem;">
+        <span><span style="background:#6366f1; display:inline-block; width:12px; height:12px; border-radius:4px;"></span> Control (A)</span>
+        <span><span style="background:#f472b6; display:inline-block; width:12px; height:12px; border-radius:4px;"></span> Treatment (B)</span>
+        <span style="background:#2d2d5a; padding:0.1rem 0.6rem; border-radius:20px;">Shaded: B > A region</span>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Variant</th><th>Posterior α</th><th>Posterior β</th><th>Conv. rate (mean)</th><th>95% CI (low)</th><th>95% CI (high)</th></tr>
+      <tr><td>Control (A)</td><td id="postAlphaA">-</td><td id="postBetaA">-</td><td id="postMeanA">-</td><td id="ciLowA">-</td><td id="ciHighA">-</td></tr>
+      <tr><td>Treatment (B)</td><td id="postAlphaB">-</td><td id="postBetaB">-</td><td id="postMeanB">-</td><td id="ciLowB">-</td><td id="ciHighB">-</td></tr>
+    </table>
+    <div style="font-size:0.9rem; color:#a5b0d9; padding:0.5rem 0;" id="interpretation">Interpretation will appear here.</div>
+  </div>
+
+  <div class="footer">© 2025 abwex.com</div>
+</div>
+
+<script>
+  (function() {
+    // --- helpers ---
+    function logBeta(a, b) {
+      // log Beta function
+      return (a > 140 || b > 140) ? 
+        (a * Math.log(a) + b * Math.log(b) - (a+b)*Math.log(a+b) + 0.5*Math.log(2*Math.PI*a*b/(a+b))) // Stirling
+        : Math.log( gamma(a) * gamma(b) / gamma(a+b) );
+    }
+    function gamma(z) {
+      if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+      z -= 1;
+      const g = 7;
+      const c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+        771.32342877765313, -176.61502916214059, 12.507343278686905,
+        -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+      let x = c[0];
+      for (let i = 1; i < g + 2; i++) x += c[i] / (z + i);
+      const t = z + g + 0.5;
+      return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+    }
+
+    // regularized incomplete beta via continued fraction (modified Lentz)
+    function incBeta(a, b, x) {
+      if (x < 0 || x > 1) return 0;
+      if (x === 0 || x === 1) return x;
+      const lbeta = logBeta(a, b);
+      const front = Math.exp(Math.log(x)*a + Math.log(1-x)*b - lbeta);
+      if (x < (a+1)/(a+b+2)) return front * contFrac(a, b, x) / a;
+      else return 1 - front * contFrac(b, a, 1-x) / b;
+    }
+    function contFrac(a, b, x) {
+      const eps = 1e-12;
+      let qab = a + b;
+      let qap = a + 1;
+      let qam = a - 1;
+      let c = 1.0;
+      let d = 1.0 - qab * x / qap;
+      if (Math.abs(d) < eps) d = eps;
+      d = 1.0 / d;
+      let h = d;
+      for (let m = 1; m <= 200; m++) {
+        let m2 = 2 * m;
+        let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+        d = 1.0 + aa * d;
+        if (Math.abs(d) < eps) d = eps;
+        c = 1.0 + aa / c;
+        if (Math.abs(c) < eps) c = eps;
+        d = 1.0 / d;
+        h *= d * c;
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+        d = 1.0 + aa * d;
+        if (Math.abs(d) < eps) d = eps;
+        c = 1.0 + aa / c;
+        if (Math.abs(c) < eps) c = eps;
+        d = 1.0 / d;
+        let del = d * c;
+        h *= del;
+        if (Math.abs(del - 1.0) < 1e-10) break;
+      }
+      return h;
+    }
+
+    // Beta quantile via Newton (inverse incBeta)
+    function betaQuantile(a, b, p) {
+      if (p <= 0) return 0;
+      if (p >= 1) return 1;
+      let x = a / (a + b);
+      for (let i = 0; i < 30; i++) {
+        let f = incBeta(a, b, x) - p;
+        let df = Math.exp((a-1)*Math.log(x) + (b-1)*Math.log(1-x) - logBeta(a,b));
+        if (Math.abs(f) < 1e-12) break;
+        let dx = -f / df;
+        if (dx > 0.5) dx = 0.5;
+        if (dx < -0.5) dx = -0.5;
+        x = Math.min(1, Math.max(0, x + dx));
+        if (x === 0 || x === 1) break;
+      }
+      return x;
+    }
+
+    // Monte Carlo P(B > A)
+    function probBgtA(alphaA, betaA, alphaB, betaB, samples=10000) {
+      let count = 0;
+      for (let i = 0; i < samples; i++) {
+        // Box-Muller approximation for Beta? Use direct sample via Gamma (reliable)
+        const xa = sampleBeta(alphaA, betaA);
+        const xb = sampleBeta(alphaB, betaB);
+        if (xb > xa) count++;
+      }
+      return count / samples;
+    }
+
+    function sampleBeta(alpha, beta) {
+      // using gamma variates (Marsaglia & Tsang)
+      const ga = sampleGamma(alpha);
+      const gb = sampleGamma(beta);
+      return ga / (ga + gb);
+    }
+
+    function sampleGamma(shape) {
+      if (shape < 1) {
+        // use small shape transformation
+        const u = Math.random();
+        return sampleGamma(1 + shape) * Math.pow(u, 1/shape);
+      }
+      // Marsaglia & Tsang 2000
+      const d = shape - 1/3;
+      const c = 1 / Math.sqrt(9*d);
+      while (true) {
+        let x, v;
+        do {
+          x = normalSample();
+          v = 1 + c*x;
+        } while (v <= 0);
+        v = v*v*v;
+        const u = Math.random();
+        if (u < 1 - 0.0331*(x*x)*(x*x)) return d*v;
+        if (Math.log(u) < 0.5*x*x + d*(1 - v + Math.log(v))) return d*v;
+      }
+    }
+
+    function normalSample() {
+      // Box-Muller
+      let u = 0, v = 0;
+      while (u === 0) u = Math.random();
+      while (v === 0) v = Math.random();
+      return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+    }
+
+    // --- main compute ---
+    function compute() {
+      const ctrlVis = parseInt(document.getElementById('ctrlVisitors').value) || 1000;
+      const ctrlConv = parseInt(document.getElementById('ctrlConversions').value) || 0;
+      const trtVis = parseInt(document.getElementById('trtVisitors').value) || 1000;
+      const trtConv = parseInt(document.getElementById('trtConversions').value) || 0;
+      let priorA = parseFloat(document.getElementById('priorAlpha').value) || 1;
+      let priorB = parseFloat(document.getElementById('priorBeta').value) || 1;
+      if (priorA <= 0) priorA = 0.1;
+      if (priorB <= 0) priorB = 0.1;
+
+      const postAlphaA = priorA + ctrlConv;
+      const postBetaA = priorB + ctrlVis - ctrlConv;
+      const postAlphaB = priorA + trtConv;
+      const postBetaB = priorB + trtVis - trtConv;
+
+      const meanA = postAlphaA / (postAlphaA + postBetaA);
+      const meanB = postAlphaB / (postAlphaB + postBetaB);
+      const uplift = meanA > 0 ? (meanB - meanA) / meanA * 100 : 0;
+
+      // Monte Carlo P(B>A)
+      const pBA = probBgtA(postAlphaA, postBetaA, postAlphaB, postBetaB, 10000);
+
+      // credible intervals 95%
+      const ciLowA = betaQuantile(postAlphaA, postBetaA, 0.025);
+      const ciHighA = betaQuantile(postAlphaA, postBetaA, 0.975);
+      const ciLowB = betaQuantile(postAlphaB, postBetaB, 0.025);
+      const ciHighB = betaQuantile(postAlphaB, postBetaB, 0.975);
+
+      // update DOM
+      document.getElementById('pBA').textContent = pBA.toFixed(4);
+      document.getElementById('uplift').textContent = uplift.toFixed(2) + '%';
+      document.getElementById('meanA').textContent = meanA.toFixed(4);
+      document.getElementById('meanB').textContent = meanB.toFixed(4);
+
+      document.getElementById('postAlphaA').textContent = postAlphaA.toFixed(1);
+      document.getElementById('postBetaA').textContent = postBetaA.toFixed(1);
+      document.getElementById('postMeanA').textContent = meanA.toFixed(4);
+      document.getElementById('ciLowA').textContent = ciLowA.toFixed(4);
+      document.getElementById('ciHighA').textContent = ciHighA.toFixed(4);
+
+      document.getElementById('postAlphaB').textContent = postAlphaB.toFixed(1);
+      document.getElementById('postBetaB').textContent = postBetaB.toFixed(1);
+      document.getElementById('postMeanB').textContent = meanB.toFixed(4);
+      document.getElementById('ciLowB').textContent = ciLowB.toFixed(4);
+      document.getElementById('ciHighB').textContent = ciHighB.toFixed(4);
+
+      // interpretation
+      let interp = '';
+      if (pBA > 0.95) interp = 'Strong evidence that Treatment (B) outperforms Control (A).';
+      else if (pBA > 0.8) interp = 'Moderate evidence that B > A.';
+      else if (pBA > 0.5) interp = 'Weak evidence favoring B over A.';
+      else if (pBA < 0.05) interp = 'Strong evidence that Control (A) outperforms Treatment.';
+      else interp = 'No conclusive difference — more data may be needed.';
+      document.getElementById('interpretation').textContent = '📊 ' + interp;
+
+      // draw chart
+      drawDensity(postAlphaA, postBetaA, postAlphaB, postBetaB, meanA, meanB);
+    }
+
+    function drawDensity(aA, bA, aB, bB, mA, mB) {
+      const canvas = document.getElementById('densityCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const pts = 200;
+      const xMin = 0, xMax = 0.3; // reasonable range for conversion rates
+      const step = (xMax - xMin) / pts;
+      const xs = Array.from({length: pts}, (_, i) => xMin + i * step);
+
+      // compute densities (log beta)
+      function betaPDF(x, a, b) {
+        if (x <= 0 || x >= 1) return 0;
+        const logf = (a-1)*Math.log(x) + (b-1)*Math.log(1-x) - logBeta(a,b);
+        return Math.exp(logf);
+      }
+
+      const densityA = xs.map(x => betaPDF(x, aA, bA));
+      const densityB = xs.map(x => betaPDF(x, aB, bB));
+      const maxD = Math.max(...densityA, ...densityB) * 1.15;
+
+      // scaling
+      const scaleX = W / (xMax - xMin);
+      const scaleY = H / maxD;
+
+      // helper draw curve
+      function drawCurve(density, color, fillColor, shade=false) {
+        ctx.beginPath();
+        ctx.moveTo(0, H);
+        for (let i = 0; i < pts; i++) {
+          const x = xs[i] * scaleX;
+          const y = H - density[i] * scaleY;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W, H);
+        ctx.closePath();
+        if (shade) {
+          ctx.fillStyle = fillColor;
+          ctx.fill();
+        }
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+
+      // shade region where B > A (approximate)
+      // find crossing index
+      let crossIdx = pts;
+      for (let i = 0; i < pts; i++) {
+        if (densityB[i] > densityA[i]) {
+          crossIdx = i;
+          break;
+        }
+      }
+      // shade from crossIdx to end
+      if (crossIdx < pts) {
+        ctx.beginPath();
+        const startX = xs[crossIdx] * scaleX;
+        ctx.moveTo(startX, H);
+        for (let i = crossIdx; i < pts; i++) {
+          const x = xs[i] * scaleX;
+          const y = H - densityB[i] * scaleY;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W, H);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(244, 114, 182, 0.15)';
+        ctx.fill();
+      }
+
+      drawCurve(densityA, '#6366f1', 'rgba(99,102,241,0.1)');
+      drawCurve(densityB, '#f472b6', 'rgba(244,114,182,0.05)');
+
+      // vertical lines for means
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(mA * scaleX, 0);
+      ctx.lineTo(mA * scaleX, H);
+      ctx.stroke();
+      ctx.strokeStyle = '#f472b6';
+      ctx.beginPath();
+      ctx.moveTo(mB * scaleX, 0);
+      ctx.lineTo(mB * scaleX, H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // sensitivity buttons
+    document.querySelectorAll('.sens-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.sens-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('priorAlpha').value = this.dataset.alpha;
+        document.getElementById('priorBeta').value = this.dataset.beta;
+        compute();
+      });
+    });
+
+    document.getElementById('computeBtn').addEventListener('click', compute);
+    // initial compute
+    compute();
+  })();
+</script>
+</body>
+</html>

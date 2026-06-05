@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Chi-Square Test Calculator | abwex.com</title>
+  <meta name="description" content="Interactive Chi-Square Test Calculator: Goodness-of-Fit & Test of Independence. Computes chi², p-value (incomplete gamma), Cramér's V, critical values, step-by-step table.">
+  <link rel="canonical" href="https://abwex.com/tools/chi-square-test-calculator">
+  <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Chi-Square Test Calculator",
+    "url": "https://abwex.com/tools/chi-square-test-calculator",
+    "applicationCategory": "Statistical Tool",
+    "operatingSystem": "All",
+    "browserRequirements": "JavaScript enabled",
+    "description": "Interactive Chi-Square test calculator with Goodness-of-Fit and Independence test modes. Provides p-value, effect size, critical values, and step-by-step calculations."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is the Chi-Square test?","acceptedAnswer":{"@type":"Answer","text":"A statistical test used to compare observed frequencies with expected frequencies. Goodness-of-Fit tests if data follow a distribution; Independence tests if two categorical variables are related."}},
+      {"@type":"Question","name":"How is the p-value computed?","acceptedAnswer":{"@type":"Answer","text":"We use the regularized incomplete gamma function (series expansion) to compute P(χ² ≥ observed) with given degrees of freedom. Accurate for df 1–20."}},
+      {"@type":"Question","name":"What is Cramér's V?","acceptedAnswer":{"@type":"Answer","text":"An effect size measure for contingency tables: V = sqrt(χ²/(n*min(r-1,c-1))). Values near 0 indicate weak association, near 1 strong."}}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com"},
+      {"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools"},
+      {"@type":"ListItem","position":3,"name":"Chi-Square Test Calculator","item":"https://abwex.com/tools/chi-square-test-calculator"}
+    ]
+  }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f0f1a;
+      color: #e0e0f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      background: #1a1a2e;
+      border-radius: 2rem;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    h1, h2, h3 { color: #f0f0ff; font-weight: 500; letter-spacing: 0.3px; }
+    h1 { font-size: 2.2rem; border-left: 6px solid #6366f1; padding-left: 1rem; margin-bottom: 0.5rem; }
+    .sub { color: #a0a0c0; margin-bottom: 2rem; font-size: 0.95rem; }
+    .mode-tabs {
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;
+    }
+    .mode-btn {
+      background: #2a2a44; border: none; color: #b0b0d0; padding: 0.7rem 1.8rem;
+      border-radius: 40px; font-size: 1rem; cursor: pointer; transition: 0.2s;
+      font-weight: 500; border: 1px solid transparent;
+    }
+    .mode-btn.active {
+      background: #6366f1; color: white; box-shadow: 0 4px 12px #6366f166;
+    }
+    .mode-btn:hover { background: #3d3f6e; color: white; }
+    .tool-section { display: none; }
+    .tool-section.active { display: block; }
+    .grid-inputs { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1.5rem 0; }
+    .input-group { background: #12121f; padding: 1.2rem 1.5rem; border-radius: 24px; flex: 1 1 300px; }
+    .input-group label { display: block; margin-bottom: 0.5rem; color: #a0a0d0; font-size: 0.9rem; }
+    .input-group input, .input-group select {
+      background: #1e1e38; border: 1px solid #2f2f5a; color: white; padding: 0.6rem 1rem;
+      border-radius: 30px; width: 100%; font-size: 1rem; outline: none; transition: 0.2s;
+    }
+    .input-group input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px #6366f144; }
+    .btn-primary {
+      background: #6366f1; border: none; color: white; padding: 0.7rem 2rem;
+      border-radius: 40px; font-weight: 600; font-size: 1rem; cursor: pointer;
+      transition: 0.2s; margin: 0.5rem 0 1rem; display: inline-block;
+    }
+    .btn-primary:hover { background: #7c7ff7; transform: scale(1.02); }
+    .btn-secondary {
+      background: #2a2a4a; border: 1px solid #3f3f6a; color: #c0c0e0; padding: 0.4rem 1.2rem;
+      border-radius: 30px; cursor: pointer; font-size: 0.9rem; margin-left: 0.5rem;
+    }
+    .btn-secondary:hover { background: #3d3d66; }
+    .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+    table { border-collapse: collapse; width: 100%; background: #12121f; border-radius: 16px; overflow: hidden; }
+    th, td { padding: 0.7rem 0.8rem; text-align: center; border-bottom: 1px solid #2a2a4a; }
+    th { background: #1f1f3a; color: #b0b0e0; font-weight: 500; }
+    td { color: #d0d0f0; }
+    .indigo { color: #818cf8; }
+    .stat-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+    .stat-card { background: #12121f; padding: 1rem 1.5rem; border-radius: 20px; flex: 1 1 160px; }
+    .stat-card .value { font-size: 1.6rem; font-weight: 600; color: #a5b4fc; }
+    .stat-card .label { font-size: 0.8rem; color: #8888aa; }
+    .critical-table { display: inline-block; background: #12121f; padding: 0.8rem 1.2rem; border-radius: 20px; margin: 0.5rem 0; }
+    .critical-table span { margin: 0 0.8rem; }
+    .conclusion { padding: 1rem 1.5rem; border-radius: 30px; background: #1a1a30; border-left: 6px solid #6366f1; margin: 1rem 0; }
+    .footer { margin-top: 3rem; text-align: center; color: #6a6a8a; font-size: 0.9rem; border-top: 1px solid #2a2a4a; padding-top: 1.5rem; }
+    .inline-code { background: #1e1e38; padding: 0.2rem 0.6rem; border-radius: 12px; font-family: monospace; }
+    .faq-item { background: #16162a; border-radius: 20px; padding: 1rem 1.5rem; margin: 0.8rem 0; }
+    .faq-item strong { color: #a5b4fc; }
+    @media (max-width: 600px) {
+      .container { padding: 1.2rem; }
+      h1 { font-size: 1.6rem; }
+      .stat-card .value { font-size: 1.3rem; }
+    }
+  </style>
+
+<meta property="og:title" content="Chi-Square Test Calculator | abwex.com">
+<meta property="og:description" content="Interactive Chi-Square Test Calculator: Goodness-of-Fit & Test of Independence. Computes chi², p-value (incomplete gamma), Cramér">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://abwex.com/tools/chi-square-test-calculator">
+</head>
+<body>
+<div class="container">
+  <h1>χ² Test Calculator</h1>
+  <div class="sub">Goodness-of-Fit &amp; Test of Independence · abwex.com</div>
+
+  <!-- Mode Tabs -->
+  <div class="mode-tabs">
+    <button class="mode-btn active" data-mode="gof">Goodness-of-Fit</button>
+    <button class="mode-btn" data-mode="indep">Independence (contingency)</button>
+  </div>
+
+  <!-- Goodness-of-Fit Section -->
+  <div id="gofSection" class="tool-section active">
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+      <div class="input-group" style="flex: 0 1 140px;">
+        <label>Categories (k)</label>
+        <select id="gofK"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>
+      </div>
+      <div class="input-group" style="flex: 0 1 200px;">
+        <label>Expected type</label>
+        <select id="gofExpType"><option value="prob">Probabilities (sum=1)</option><option value="freq">Frequencies</option></select>
+      </div>
+    </div>
+    <div id="gofInputs" class="grid-inputs"></div>
+    <button class="btn-primary" id="gofCalcBtn">Calculate χ²</button>
+    <div id="gofResults"></div>
+  </div>
+
+  <!-- Independence Section -->
+  <div id="indepSection" class="tool-section">
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+      <div class="input-group" style="flex: 0 1 120px;"><label>Rows</label><select id="indepRows"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+      <div class="input-group" style="flex: 0 1 120px;"><label>Cols</label><select id="indepCols"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+      <button class="btn-secondary" id="resetIndepBtn">Reset table</button>
+    </div>
+    <div id="indepTableWrap" class="table-wrap"></div>
+    <button class="btn-primary" id="indepCalcBtn">Calculate χ²</button>
+    <div id="indepResults"></div>
+  </div>
+
+  <!-- FAQ (schema) -->
+  <div style="margin-top: 2.5rem;">
+    <h3 style="margin-bottom: 1rem;">❓ FAQ</h3>
+    <div class="faq-item"><strong>What is the Chi-Square test?</strong> <br>It compares observed vs expected frequencies. Goodness-of-Fit checks distribution; Independence checks association between two variables.</div>
+    <div class="faq-item"><strong>How is p-value computed?</strong> <br>Using regularized incomplete gamma function P(a,x) via series expansion (accurate for df 1–20).</div>
+    <div class="faq-item"><strong>What is Cramér's V?</strong> <br>Effect size for contingency tables: V = √(χ²/(n·min(r-1,c-1))). 0 = no association, 1 = perfect.</div>
+  </div>
+
+  <div class="footer">© 2025 abwex.com</div>
+</div>
+
+<script>
+  (function() {
+    // ---------- Incomplete gamma P(a,x) series expansion ----------
+    function regularizedGammaP(a, x) {
+      if (x < 0 || a <= 0) return 0;
+      if (x === 0) return 0;
+      // series expansion: P(a,x) = (γ(a,x)/Γ(a)) = e^{-x} x^a / Γ(a) * sum_{n=0}∞ (x^n / (a(a+1)...(a+n)))
+      const lnGamma = (z) => { // Stirling approx for log gamma
+        if (z < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * z)) - lnGamma(1 - z);
+        z -= 1;
+        const g = 7.5;
+        const c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+        let s = c[0];
+        for (let i = 1; i < 9; i++) s += c[i] / (z + i);
+        const t = z + g + 0.5;
+        return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(s);
+      };
+      const logGammaA = lnGamma(a);
+      // series
+      let sum = 1.0;
+      let term = 1.0;
+      for (let n = 1; n <= 200; n++) {
+        term *= x / (a + n - 1);
+        sum += term;
+        if (Math.abs(term) < 1e-14) break;
+      }
+      const logVal = -x + a * Math.log(x) - logGammaA + Math.log(sum);
+      return Math.exp(logVal);
+    }
+
+    function chi2Pvalue(chi2, df) {
+      if (chi2 < 0 || df <= 0) return 1;
+      return 1 - regularizedGammaP(df / 2, chi2 / 2);
+    }
+
+    // critical values df 1..20 (alpha 0.05, 0.01)
+    const crit05 = [3.841, 5.991, 7.815, 9.488, 11.070, 12.592, 14.067, 15.507, 16.919, 18.307, 19.675, 21.026, 22.362, 23.685, 24.996, 26.296, 27.587, 28.869, 30.144, 31.410];
+    const crit01 = [6.635, 9.210, 11.345, 13.277, 15.086, 16.812, 18.475, 20.090, 21.666, 23.209, 24.725, 26.217, 27.688, 29.141, 30.578, 32.000, 33.409, 34.805, 36.191, 37.566];
+
+    // ---------- DOM refs ----------
+    const gofSection = document.getElementById('gofSection');
+    const indepSection = document.getElementById('indepSection');
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const gofK = document.getElementById('gofK');
+    const gofExpType = document.getElementById('gofExpType');
+    const gofInputs = document.getElementById('gofInputs');
+    const gofCalcBtn = document.getElementById('gofCalcBtn');
+    const gofResults = document.getElementById('gofResults');
+    const indepRows = document.getElementById('indepRows');
+    const indepCols = document.getElementById('indepCols');
+    const indepTableWrap = document.getElementById('indepTableWrap');
+    const indepCalcBtn = document.getElementById('indepCalcBtn');
+    const indepResults = document.getElementById('indepResults');
+    const resetIndepBtn = document.getElementById('resetIndepBtn');
+
+    // ---------- Mode switching ----------
+    function setMode(mode) {
+      modeBtns.forEach(b => b.classList.remove('active'));
+      document.querySelector(`.mode-btn[data-mode="${mode}"]`).classList.add('active');
+      gofSection.classList.toggle('active', mode === 'gof');
+      indepSection.classList.toggle('active', mode === 'indep');
+    }
+    modeBtns.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+
+    // ---------- Goodness-of-Fit ----------
+    function renderGOF() {
+      const k = parseInt(gofK.value);
+      const isProb = gofExpType.value === 'prob';
+      let html = '';
+      for (let i = 0; i < k; i++) {
+        html += `<div class="input-group" style="flex:1 1 120px;"><label>Observed ${i+1}</label><input class="gofObs" type="number" step="any" min="0" value="${i===0?20:i===1?25:i===2?15:10}" required></div>`;
+      }
+      for (let i = 0; i < k; i++) {
+        const placeholder = isProb ? (1/k).toFixed(2) : '30';
+        const val = isProb ? (i===0?0.25:i===1?0.25:i===2?0.25:0.25) : (i===0?25:i===1?25:i===2?25:25);
+        html += `<div class="input-group" style="flex:1 1 120px;"><label>Expected ${isProb?'prob':'freq'} ${i+1}</label><input class="gofExp" type="number" step="any" min="0" value="${val}" required></div>`;
+      }
+      gofInputs.innerHTML = html;
+    }
+    gofK.addEventListener('change', renderGOF);
+    gofExpType.addEventListener('change', renderGOF);
+    renderGOF();
+
+    gofCalcBtn.addEventListener('click', function() {
+      const obs = document.querySelectorAll('.gofObs');
+      const exp = document.querySelectorAll('.gofExp');
+      const k = parseInt(gofK.value);
+      if (obs.length !== k || exp.length !== k) return;
+      const O = [], E = [];
+      let ok = true;
+      for (let i = 0; i < k; i++) {
+        const o = parseFloat(obs[i].value);
+        const e = parseFloat(exp[i].value);
+        if (isNaN(o) || isNaN(e) || o < 0 || e < 0) { ok = false; break; }
+        O.push(o); E.push(e);
+      }
+      if (!ok) { gofResults.innerHTML = '<div class="conclusion">⚠️ Please enter valid non-negative numbers.</div>'; return; }
+      const isProb = gofExpType.value === 'prob';
+      let totalObs = O.reduce((a,b)=>a+b,0);
+      let Eadj = E.slice();
+      if (isProb) {
+        const sumProb = E.reduce((a,b)=>a+b,0);
+        if (Math.abs(sumProb - 1) > 0.001) { gofResults.innerHTML = '<div class="conclusion">⚠️ Probabilities must sum to 1.</div>'; return; }
+        Eadj = E.map(p => p * totalObs);
+      } else {
+        // expected frequencies: if sum differs from observed sum? we allow any, but chi2 uses given expected
+        // no adjustment
+      }
+      let chi2 = 0, steps = [];
+      for (let i = 0; i < k; i++) {
+        const diff = O[i] - Eadj[i];
+        const term = (diff * diff) / (Eadj[i] === 0 ? 1e-12 : Eadj[i]);
+        chi2 += term;
+        steps.push({O: O[i], E: Eadj[i].toFixed(4), term: term.toFixed(4)});
+      }
+      const df = k - 1;
+      const p = chi2Pvalue(chi2, df);
+      const crit05v = df <= 20 ? crit05[df-1] : '—';
+      const crit01v = df <= 20 ? crit01[df-1] : '—';
+      const reject05 = chi2 > crit05v;
+      const reject01 = chi2 > crit01v;
+      let conclusion = `χ² = ${chi2.toFixed(4)}, df = ${df}, p-value = ${p.toFixed(4)}. `;
+      if (p < 0.01) conclusion += 'Reject H₀ at 0.01 level (strong).';
+      else if (p < 0.05) conclusion += 'Reject H₀ at 0.05 level.';
+      else conclusion += 'Fail to reject H₀ at 0.05 level.';
+      let stepTable = `<div class="table-wrap"><table><tr><th>Category</th><th>O</th><th>E</th><th>(O-E)²/E</th></tr>`;
+      steps.forEach((s,i) => { stepTable += `<tr><td>${i+1}</td><td>${s.O}</td><td>${s.E}</td><td>${s.term}</td></tr>`; });
+      stepTable += `</table></div>`;
+      const critHtml = `<div class="critical-table">α=0.05: <span class="indigo">${crit05v}</span> &nbsp; α=0.01: <span class="indigo">${crit01v}</span></div>`;
+      gofResults.innerHTML = `
+        <div class="stat-grid"><div class="stat-card"><div class="value">${chi2.toFixed(4)}</div><div class="label">χ²</div></div>
+        <div class="stat-card"><div class="value">${df}</div><div class="label">df</div></div>
+        <div class="stat-card"><div class="value">${p.toFixed(4)}</div><div class="label">p-value</div></div></div>
+        ${critHtml}
+        <div class="conclusion">${conclusion}</div>
+        ${stepTable}
+      `;
+    });
+
+    // ---------- Independence ----------
+    function renderIndepTable() {
+      const r = parseInt(indepRows.value);
+      const c = parseInt(indepCols.value);
+      let html = '<table><thead><tr><th>\\</th>';
+      for (let j = 0; j < c; j++) html += `<th>Col${j+1}</th>`;
+      html += '<th>Row total</th></tr></thead><tbody>';
+      for (let i = 0; i < r; i++) {
+        html += `<tr><th>Row${i+1}</th>`;
+        for (let j = 0; j < c; j++) {
+          const val = (i===0 && j===0)?12:(i===0&&j===1)?15:(i===0&&j===2)?10:(i===0&&j===3)?8:(i===1&&j===0)?18:(i===1&&j===1)?20:(i===1&&j===2)?15:(i===1&&j===3)?12:(i===2&&j===0)?8:(i===2&&j===1)?10:(i===2&&j===2)?12:(i===2&&j===3)?10:(i===3&&j===0)?6:(i===3&&j===1)?8:(i===3&&j===2)?10:(i===3&&j===3)?7:5;
+          html += `<td><input class="indepCell" data-r="${i}" data-c="${j}" type="number" step="any" min="0" value="${val}" style="width:70px;background:#1e1e38;border:1px solid #2f2f5a;color:white;padding:0.4rem;border-radius:20px;text-align:center;"></td>`;
+        }
+        html += `<td class="rowTotal" id="rowTotal${i}">—</td></tr>`;
+      }
+      html += '</tbody><tfoot><tr><th>Col total</th>';
+      for (let j = 0; j < c; j++) html += `<td class="colTotal" id="colTotal${j}">—</td>`;
+      html += `<td id="grandTotal">—</td></tr></tfoot></table>`;
+      indepTableWrap.innerHTML = html;
+    }
+    function computeIndep() {
+      const r = parseInt(indepRows.value);
+      const c = parseInt(indepCols.value);
+      const cells = document.querySelectorAll('.indepCell');
+      const matrix = [];
+      let idx = 0;
+      for (let i = 0; i < r; i++) {
+        const row = [];
+        for (let j = 0; j < c; j++) {
+          const val = parseFloat(cells[idx].value);
+          row.push(isNaN(val) || val<0 ? 0 : val);
+          idx++;
+        }
+        matrix.push(row);
+      }
+      const rowTotals = matrix.map(row => row.reduce((a,b)=>a+b,0));
+      const colTotals = Array(c).fill(0);
+      for (let i = 0; i < r; i++) for (let j = 0; j < c; j++) colTotals[j] += matrix[i][j];
+      const grand = rowTotals.reduce((a,b)=>a+b,0);
+      // update totals display
+      for (let i = 0; i < r; i++) document.getElementById(`rowTotal${i}`).textContent = rowTotals[i].toFixed(2);
+      for (let j = 0; j < c; j++) document.getElementById(`colTotal${j}`).textContent = colTotals[j].toFixed(2);
+      document.getElementById('grandTotal').textContent = grand.toFixed(2);
+      if (grand === 0) { indepResults.innerHTML = '<div class="conclusion">⚠️ Grand total is zero.</div>'; return; }
+      let chi2 = 0;
+      const steps = [];
+      for (let i = 0; i < r; i++) {
+        for (let j = 0; j < c; j++) {
+          const E = (rowTotals[i] * colTotals[j]) / grand;
+          const O = matrix[i][j];
+          const term = (O - E) ** 2 / (E === 0 ? 1e-12 : E);
+          chi2 += term;
+          steps.push({row:i, col:j, O, E: E.toFixed(4), term: term.toFixed(4)});
+        }
+      }
+      const df = (r-1)*(c-1);
+      const p = chi2Pvalue(chi2, df);
+      const crit05v = df <= 20 ? crit05[df-1] : '—';
+      const crit01v = df <= 20 ? crit01[df-1] : '—';
+      const reject05 = chi2 > crit05v;
+      const n = grand;
+      const minDim = Math.min(r-1, c-1);
+      const cramerV = minDim > 0 ? Math.sqrt(chi2 / (n * minDim)) : 0;
+      let conclusion = `χ² = ${chi2.toFixed(4)}, df = ${df}, p = ${p.toFixed(4)}. `;
+      if (p < 0.01) conclusion += 'Reject H₀ at 0.01.';
+      else if (p < 0.05) conclusion += 'Reject H₀ at 0.05.';
+      else conclusion += 'Fail to reject H₀ at 0.05.';
+      let stepTable = `<div class="table-wrap"><table><tr><th>Row</th><th>Col</th><th>O</th><th>E</th><th>(O-E)²/E</th></tr>`;
+      steps.forEach(s => { stepTable += `<tr><td>${s.row+1}</td><td>${s.col+1}</td><td>${s.O}</td><td>${s.E}</td><td>${s.term}</td></tr>`; });
+      stepTable += `</table></div>`;
+      const critHtml = `<div class="critical-table">α=0.05: <span class="indigo">${crit05v}</span> &nbsp; α=0.01: <span class="indigo">${crit01v}</span></div>`;
+      indepResults.innerHTML = `
+        <div class="stat-grid"><div class="stat-card"><div class="value">${chi2.toFixed(4)}</div><div class="label">χ²</div></div>
+        <div class="stat-card"><div class="value">${df}</div><div class="label">df</div></div>
+        <div class="stat-card"><div class="value">${p.toFixed(4)}</div><div class="label">p-value</div></div>
+        <div class="stat-card"><div class="value">${cramerV.toFixed(4)}</div><div class="label">Cramér's V</div></div></div>
+        ${critHtml}
+        <div class="conclusion">${conclusion}</div>
+        ${stepTable}
+      `;
+    }
+    indepRows.addEventListener('change', renderIndepTable);
+    indepCols.addEventListener('change', renderIndepTable);
+    resetIndepBtn.addEventListener('click', renderIndepTable);
+    indepCalcBtn.addEventListener('click', computeIndep);
+    renderIndepTable();
+
+    // initial compute for independence?
+    setTimeout(computeIndep, 100);
+  })();
+</script>
+</body>
+</html>

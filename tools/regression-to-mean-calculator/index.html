@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Regression to the Mean Calculator · abwex</title>
+  <meta name="description" content="Interactive statistics tool that quantifies the regression‑to‑the‑mean effect. Compute predicted true score, regression amount, and trajectory over time.">
+  <meta name="keywords" content="regression to mean, Kelley's formula, reliability, z-score, true score, statistics, sports, twin study, heritability">
+  <link rel="canonical" href="https://abwex.com/tools/regression-to-mean-calculator">
+  <meta property="og:title" content="Regression to the Mean Calculator">
+  <meta property="og:description" content="Quantify regression effects: predicted true score, regression amount, trajectory chart. Sports, exams, medicine.">
+  <meta property="og:url" content="https://abwex.com/tools/regression-to-mean-calculator">
+  <meta name="theme-color" content="#0f0f1a">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f0f1a;
+      color: #e0e0f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1000px;
+      width: 100%;
+    }
+    header, footer {
+      text-align: center;
+      width: 100%;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+    header p {
+      color: #9ca3cf;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: #1a1a2e;
+      border-radius: 24px;
+      padding: 1.8rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      border: 1px solid #2a2a4a;
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem 1rem;
+      margin-bottom: 1.8rem;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #b0b8d9;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+    .input-group input {
+      background: #12121f;
+      border: 1px solid #2f2f5a;
+      border-radius: 14px;
+      padding: 0.7rem 0.9rem;
+      font-size: 1rem;
+      color: #f0f0ff;
+      transition: 0.2s;
+      outline: none;
+      width: 100%;
+    }
+    .input-group input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+    }
+    .input-group input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .input-group input[type="number"]::-webkit-outer-spin-button,
+    .input-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .btn {
+      background: #6366f1;
+      border: none;
+      border-radius: 40px;
+      padding: 0.7rem 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+      letter-spacing: 0.3px;
+    }
+    .btn:hover {
+      background: #4f52e0;
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.5);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .results-panel {
+      background: #12121f;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin: 1.5rem 0 1rem;
+      border-left: 4px solid #6366f1;
+    }
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem 2.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .stat-item {
+      font-size: 0.95rem;
+    }
+    .stat-item strong {
+      color: #c7d0ff;
+      font-weight: 600;
+    }
+    .stat-item .value {
+      color: #a5b4fc;
+      font-weight: 500;
+      background: #1e1e3a;
+      padding: 0.1rem 0.7rem;
+      border-radius: 30px;
+      margin-left: 0.3rem;
+    }
+    .interpretation-box {
+      background: #1a1a30;
+      border-radius: 18px;
+      padding: 1.2rem 1.5rem;
+      margin: 1rem 0;
+      border: 1px solid #2f2f60;
+    }
+    .interpretation-box p {
+      margin: 0.3rem 0;
+    }
+    .badge {
+      display: inline-block;
+      background: #2a2a5a;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #b9c2ff;
+      margin-right: 0.5rem;
+    }
+    .chart-container {
+      margin: 1.5rem 0 0.8rem;
+      background: #0e0e1a;
+      border-radius: 20px;
+      padding: 0.8rem;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #0b0b16;
+      border-radius: 16px;
+      max-height: 220px;
+    }
+    .number-line-wrap {
+      background: #0e0e1c;
+      border-radius: 40px;
+      padding: 1rem 0.5rem;
+      margin: 1rem 0;
+    }
+    #numberLineCanvas {
+      max-height: 80px;
+      width: 100%;
+    }
+    .footnote {
+      font-size: 0.85rem;
+      color: #7f85b0;
+      margin-top: 1rem;
+      border-top: 1px solid #26264a;
+      padding-top: 1rem;
+    }
+    .example-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .example-card {
+      background: #16162b;
+      border-radius: 18px;
+      padding: 0.8rem 1.2rem;
+      flex: 1 1 180px;
+      border: 1px solid #2f2f60;
+    }
+    .example-card h4 {
+      color: #a5b4fc;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+    .example-card p {
+      font-size: 0.85rem;
+      color: #b5bddb;
+    }
+    .faq-item {
+      margin: 0.8rem 0;
+    }
+    .faq-item h4 {
+      color: #a5b4fc;
+      font-weight: 500;
+    }
+    .faq-item p {
+      color: #c5cce8;
+      font-size: 0.9rem;
+    }
+    footer {
+      margin-top: 2rem;
+      color: #6b72a0;
+      font-size: 0.9rem;
+      border-top: 1px solid #22224a;
+      padding-top: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      body { padding: 1rem 0.8rem; }
+      .card { padding: 1.2rem 1rem; }
+      header h1 { font-size: 1.8rem; }
+      .input-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>↩️ Regression to the Mean</h1>
+    <p>Kelley’s formula · predicted true score · trajectory over time</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="input-grid">
+        <div class="input-group"><label>Observed score (X)</label><input id="obsScore" type="number" step="any" value="130"></div>
+        <div class="input-group"><label>Population mean (μ)</label><input id="popMean" type="number" step="any" value="100"></div>
+        <div class="input-group"><label>Population SD (σ)</label><input id="popSd" type="number" step="any" value="15"></div>
+        <div class="input-group"><label>Reliability (r) 0–1</label><input id="reliability" type="number" step="0.01" min="0" max="1" value="0.70"></div>
+        <div class="input-group"><label>Time periods (t)</label><input id="timePeriods" type="number" step="1" min="0" max="20" value="5"></div>
+      </div>
+      <div class="action-row">
+        <button class="btn" id="computeBtn">⟳ Compute regression</button>
+        <span style="color:#9ca3cf; font-size:0.9rem;">r=0 (pure luck) · r=1 (no regression)</span>
+      </div>
+
+      <!-- results -->
+      <div class="results-panel" id="resultsPanel">
+        <div class="stat-row">
+          <span class="stat-item"><strong>z-score</strong> <span class="value" id="zScoreVal">2.00</span></span>
+          <span class="stat-item"><strong>Predicted true</strong> <span class="value" id="trueScoreVal">121.0</span></span>
+          <span class="stat-item"><strong>Regression amount</strong> <span class="value" id="regAmountVal">-9.0</span></span>
+          <span class="stat-item"><strong>% regression</strong> <span class="value" id="regPctVal">30%</span></span>
+        </div>
+        <div class="interpretation-box" id="interpretationBox">
+          <p><span class="badge">🧠 interpretation</span> <span id="interpText">30% of the extreme score is due to luck; 70% is real.</span></p>
+          <p id="warningMsg" style="color:#facc15;"></p>
+        </div>
+      </div>
+
+      <!-- number line -->
+      <div class="number-line-wrap">
+        <canvas id="numberLineCanvas" height="70"></canvas>
+      </div>
+
+      <!-- trajectory chart -->
+      <div class="chart-container">
+        <canvas id="trajectoryCanvas" height="200"></canvas>
+      </div>
+
+      <!-- examples -->
+      <div class="example-grid">
+        <div class="example-card"><h4>⚾ Batting average</h4><p>First half .340, league μ=.260, r≈.50 → predicted true .300</p></div>
+        <div class="example-card"><h4>🏃 Marathon time</h4><p>Elite 210 min, μ=270, σ=30, r=.65 → predicted 249 min</p></div>
+        <div class="example-card"><h4>🧬 Twin study (heritability)</h4><p>Height: r≈.80, extreme 2σ → 80% real, 20% luck</p></div>
+        <div class="example-card"><h4>📘 Exam retake</h4><p>Score 145, μ=100, σ=15, r=.75 → predicted 133.8</p></div>
+      </div>
+    </div>
+
+    <!-- FAQ + schema -->
+    <div class="card" style="padding:1.5rem;">
+      <h3 style="color:#a5b4fc; margin-bottom:1rem;">❓ Frequently asked</h3>
+      <div class="faq-item"><h4>What does reliability (r) mean?</h4><p>Correlation between pre‑ and post‑measurement (or true‑score proportion). r=0 means pure luck, r=1 means no regression.</p></div>
+      <div class="faq-item"><h4>How is predicted true score calculated?</h4><p>Kelley’s formula: <strong>r·X + (1‑r)·μ</strong>. It shrinks the observed score toward the mean.</p></div>
+      <div class="faq-item"><h4>Why does regression happen?</h4><p>Extreme scores contain more measurement error; upon retest, scores tend to move toward the population mean.</p></div>
+    </div>
+  </main>
+
+  <footer>© 2025 abwex.com</footer>
+</div>
+
+<script>
+  (function() {
+    const obsInput = document.getElementById('obsScore');
+    const meanInput = document.getElementById('popMean');
+    const sdInput = document.getElementById('popSd');
+    const relInput = document.getElementById('reliability');
+    const timeInput = document.getElementById('timePeriods');
+    const computeBtn = document.getElementById('computeBtn');
+
+    const zScoreVal = document.getElementById('zScoreVal');
+    const trueScoreVal = document.getElementById('trueScoreVal');
+    const regAmountVal = document.getElementById('regAmountVal');
+    const regPctVal = document.getElementById('regPctVal');
+    const interpText = document.getElementById('interpText');
+    const warningMsg = document.getElementById('warningMsg');
+
+    const numCanvas = document.getElementById('numberLineCanvas');
+    const trajCanvas = document.getElementById('trajectoryCanvas');
+
+    function computeAll() {
+      const X = parseFloat(obsInput.value);
+      const mu = parseFloat(meanInput.value);
+      const sigma = parseFloat(sdInput.value);
+      let r = parseFloat(relInput.value);
+      const t = parseInt(timeInput.value, 10);
+
+      if (isNaN(X) || isNaN(mu) || isNaN(sigma) || isNaN(r) || isNaN(t)) return;
+      if (sigma <= 0) return;
+      r = Math.min(1, Math.max(0, r)); // clamp 0-1
+
+      const z = (X - mu) / sigma;
+      const predictedTrue = r * X + (1 - r) * mu;
+      const regAmount = (1 - r) * (X - mu);
+      const regPct = (1 - r) * 100;
+
+      // display
+      zScoreVal.textContent = z.toFixed(3);
+      trueScoreVal.textContent = predictedTrue.toFixed(2);
+      regAmountVal.textContent = (regAmount).toFixed(2);
+      regPctVal.textContent = regPct.toFixed(1) + '%';
+
+      // interpretation
+      let realPct = r * 100;
+      let luckPct = (1 - r) * 100;
+      interpText.textContent = `${luckPct.toFixed(1)}% of the extreme score is due to luck; ${realPct.toFixed(1)}% is real.`;
+
+      if (r === 0) {
+        warningMsg.textContent = '⚠️ r = 0 : observed score is pure luck, complete regression to mean.';
+      } else if (r === 1) {
+        warningMsg.textContent = '✅ r = 1 : no regression; observed score is perfectly reliable.';
+      } else if (r < 0.3) {
+        warningMsg.textContent = '⚠️ Low reliability: most of the extreme score is luck.';
+      } else if (r > 0.85) {
+        warningMsg.textContent = '✔️ High reliability: little regression expected.';
+      } else {
+        warningMsg.textContent = '';
+      }
+
+      // number line
+      drawNumberLine(mu, X, predictedTrue, sigma);
+      // trajectory chart
+      drawTrajectory(mu, X, r, t);
+    }
+
+    function drawNumberLine(mu, X, predicted, sigma) {
+      const ctx = numCanvas.getContext('2d');
+      const w = numCanvas.clientWidth || 600;
+      const h = 70;
+      numCanvas.width = w * 2; // retina
+      numCanvas.height = h * 2;
+      ctx.scale(2,2);
+      ctx.clearRect(0,0,w,h);
+
+      const pad = 30;
+      const minVal = Math.min(mu, X, predicted) - sigma * 1.2;
+      const maxVal = Math.max(mu, X, predicted) + sigma * 1.2;
+      const range = maxVal - minVal || 1;
+      const scaleX = (val) => pad + (val - minVal) / range * (w - 2*pad);
+
+      // line
+      ctx.beginPath();
+      ctx.strokeStyle = '#3f3f6a';
+      ctx.lineWidth = 2;
+      ctx.moveTo(pad, h/2);
+      ctx.lineTo(w-pad, h/2);
+      ctx.stroke();
+
+      // ticks
+      const points = [
+        { val: mu, label: 'μ', color: '#94a3b8' },
+        { val: X, label: 'X observed', color: '#facc15' },
+        { val: predicted, label: 'predicted', color: '#6366f1' }
+      ];
+      points.forEach(p => {
+        const x = scaleX(p.val);
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.arc(x, h/2, 6, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#d0d8ff';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(p.label, x, h/2 - 14);
+        ctx.fillStyle = '#b0b8e0';
+        ctx.font = '10px system-ui';
+        ctx.fillText(p.val.toFixed(1), x, h/2 + 20);
+      });
+    }
+
+    function drawTrajectory(mu, X, r, tMax) {
+      const ctx = trajCanvas.getContext('2d');
+      const rect = trajCanvas.parentElement.getBoundingClientRect();
+      const w = Math.min(rect.width - 20, 800);
+      const h = 200;
+      trajCanvas.width = w * 2;
+      trajCanvas.height = h * 2;
+      ctx.scale(2,2);
+      ctx.clearRect(0,0,w,h);
+
+      const pad = { top: 20, bottom: 30, left: 45, right: 20 };
+      const plotW = w - pad.left - pad.right;
+      const plotH = h - pad.top - pad.bottom;
+
+      // compute values t=0..10 (show up to 10)
+      const maxT = Math.min(10, Math.max(tMax, 1));
+      const steps = maxT + 1;
+      const scores = [];
+      for (let t = 0; t <= maxT; t++) {
+        const val = mu + Math.pow(r, t) * (X - mu);
+        scores.push(val);
+      }
+      const minVal = Math.min(mu, X, ...scores) - 5;
+      const maxVal = Math.max(mu, X, ...scores) + 5;
+      const range = maxVal - minVal || 1;
+
+      const xScale = (t) => pad.left + (t / maxT) * plotW;
+      const yScale = (v) => pad.top + plotH - (v - minVal) / range * plotH;
+
+      // grid
+      ctx.strokeStyle = '#2a2a4a';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (i/4)*plotH;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w-pad.right, y); ctx.stroke();
+      }
+
+      // axis labels
+      ctx.fillStyle = '#8a90b8';
+      ctx.font = '10px system-ui';
+      ctx.textAlign = 'center';
+      for (let t = 0; t <= maxT; t+= (maxT>5?2:1)) {
+        const x = xScale(t);
+        ctx.fillText(t, x, h - 8);
+      }
+      ctx.fillText('time (t)', w/2, h-2);
+      ctx.textAlign = 'right';
+      ctx.fillText('score', pad.left-6, pad.top-2);
+
+      // mean line
+      ctx.strokeStyle = '#6b7280';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([4,4]);
+      const meanY = yScale(mu);
+      ctx.beginPath(); ctx.moveTo(pad.left, meanY); ctx.lineTo(w-pad.right, meanY); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#9ca3af';
+      ctx.textAlign = 'left';
+      ctx.font = '10px system-ui';
+      ctx.fillText('μ', w-pad.right-10, meanY-4);
+
+      // trajectory line
+      ctx.beginPath();
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 2.5;
+      for (let t = 0; t <= maxT; t++) {
+        const x = xScale(t);
+        const y = yScale(scores[t]);
+        if (t===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+
+      // points
+      for (let t = 0; t <= maxT; t++) {
+        const x = xScale(t);
+        const y = yScale(scores[t]);
+        ctx.beginPath();
+        ctx.fillStyle = (t===0) ? '#facc15' : '#818cf8';
+        ctx.arc(x, y, 4, 0, 2*Math.PI);
+        ctx.fill();
+      }
+      // label first and last
+      ctx.fillStyle = '#f0f0ff';
+      ctx.font = '10px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('X₀='+X.toFixed(1), xScale(0)-10, yScale(scores[0])-12);
+      ctx.fillText('t='+maxT+': '+scores[maxT].toFixed(1), xScale(maxT), yScale(scores[maxT])-12);
+    }
+
+    // initial draw
+    computeAll();
+
+    computeBtn.addEventListener('click', computeAll);
+    // also recompute on enter
+    document.querySelectorAll('input').forEach(inp => inp.addEventListener('change', computeAll));
+    window.addEventListener('resize', () => { computeAll(); });
+  })();
+</script>
+
+<!-- JSON-LD schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Regression to the Mean Calculator",
+      "url": "https://abwex.com/tools/regression-to-mean-calculator",
+      "description": "Interactive statistics tool that quantifies the regression‑to‑the‑mean effect using Kelley's formula, z-score, and trajectory projection.",
+      "applicationCategory": "Educational Application",
+      "operatingSystem": "All",
+      "browserRequirements": "JavaScript enabled"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does reliability (r) mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Correlation between pre‑ and post‑measurement (or true‑score proportion). r=0 means pure luck, r=1 means no regression."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is predicted true score calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Kelley’s formula: r·X + (1‑r)·μ. It shrinks the observed score toward the population mean."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does regression happen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Extreme scores contain more measurement error; upon retest, scores tend to move toward the population mean."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "abwex.com", "item": "https://abwex.com" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools" },
+        { "@type": "ListItem", "position": 3, "name": "Regression to the Mean Calculator", "item": "https://abwex.com/tools/regression-to-mean-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Sample Size Calculator — Proportions | abwex.com</title>
+  <meta name="description" content="Compute required sample size for proportion-based A/B tests. Adjust baseline conversion, minimum detectable effect, significance, power, and traffic...">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://abwex.com/tools/sample-size-calculator-proportions">
+  <meta property="og:title" content="Sample Size Calculator — Proportions | abwex.com">
+  <meta property="og:description" content="Compute required sample size for proportion-based A/B tests. Adjust baseline conversion, minimum detectable effect, significance, power, and traffic split.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://abwex.com/tools/sample-size-calculator-proportions">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Sample Size Calculator — Proportions",
+        "url": "https://abwex.com/tools/sample-size-calculator-proportions",
+        "applicationCategory": "Statistical Tool",
+        "operatingSystem": "All",
+        "browserRequirements": "JavaScript enabled",
+        "description": "Compute required sample size for proportion-based A/B tests with sensitivity analysis and power curve."
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the minimum detectable effect (MDE)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The MDE is the smallest relative or absolute change in conversion rate you want to detect. It directly impacts sample size: smaller effects require larger samples."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does traffic split matter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Unequal splits (e.g., 80/20) increase total sample size because the smaller group needs more observations to achieve the same statistical power."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is sample size calculated for proportions?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We use a two-proportion z-test formula: n = (z_α/2 + z_β)² * (p1(1-p1) + p2(1-p2)) / (p2-p1)², adjusted for unequal splits."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com" },
+          { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools" },
+          { "@type": "ListItem", "position": 3, "name": "Sample Size Calculator — Proportions", "item": "https://abwex.com/tools/sample-size-calculator-proportions" }
+        ]
+      }
+    ]
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f0f1a;
+      color: #e0e0f0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+    .subhead {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+    .card {
+      background: #1a1a2e;
+      border-radius: 24px;
+      padding: 1.8rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      border: 1px solid #2d2d4a;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #b0b8d0;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.01em;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: #12121f;
+      border: 1px solid #3a3a5c;
+      border-radius: 14px;
+      color: #f0f0ff;
+      font-size: 1rem;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+    }
+    .input-hint {
+      font-size: 0.75rem;
+      color: #7f8bb3;
+      margin-top: 0.2rem;
+    }
+    .btn {
+      background: #6366f1;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.8rem 1.8rem;
+      border-radius: 40px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+    .btn:hover {
+      background: #4f52e0;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .result-block {
+      background: #14142a;
+      border-radius: 20px;
+      padding: 1.2rem 1.5rem;
+      margin-top: 1.5rem;
+      border-left: 4px solid #6366f1;
+    }
+    .result-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #a5b4fc;
+      letter-spacing: -0.02em;
+    }
+    .result-label {
+      font-size: 0.8rem;
+      color: #8892b0;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+    .stat-box {
+      background: #1e1e38;
+      border-radius: 16px;
+      padding: 0.8rem 1.2rem;
+      flex: 1 0 140px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.4rem;
+      color: #a5b4fc;
+      font-weight: 500;
+      border-bottom: 1px solid #2d2d4a;
+    }
+    td {
+      padding: 0.5rem 0.4rem;
+      border-bottom: 1px solid #252545;
+    }
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      margin-top: 1rem;
+    }
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+      background: #12121f;
+      border-radius: 18px;
+      display: block;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #5a6488;
+      font-size: 0.9rem;
+      border-top: 1px solid #252545;
+      padding-top: 2rem;
+    }
+    @media (max-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 1rem; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: 1.8rem; }
+      .card { padding: 1.2rem; }
+    }
+    @media (max-width: 480px) {
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+    .badge {
+      background: #2d2d5a;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      color: #b9c2e8;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📊 Sample Size · Proportions</h1>
+    <div class="subhead">Two‑proportion z‑test · unequal splits · sensitivity & power</div>
+  </header>
+
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <div class="form-group">
+          <label>Baseline conversion p₁ (%)</label>
+          <input type="number" id="p1" step="0.1" min="0.1" max="99.9" value="5.0">
+        </div>
+        <div class="form-group">
+          <label>MDE mode</label>
+          <select id="mdeMode">
+            <option value="relative">Relative lift (%)</option>
+            <option value="absolute">Absolute Δ (pp)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>MDE value</label>
+          <input type="number" id="mdeVal" step="0.5" min="0.5" value="10">
+          <div class="input-hint">Relative % or absolute percentage points</div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label>α (significance)</label>
+            <select id="alpha">
+              <option value="0.01">0.01</option>
+              <option value="0.05" selected>0.05</option>
+              <option value="0.10">0.10</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Power (1−β)</label>
+            <select id="power">
+              <option value="0.80">0.80</option>
+              <option value="0.90" selected>0.90</option>
+              <option value="0.95">0.95</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Test type</label>
+            <select id="tails">
+              <option value="two">Two-tailed</option>
+              <option value="one">One-tailed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label>Traffic split (control : treatment)</label>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="number" id="splitC" step="1" min="1" max="99" value="50" style="width:45%;">
+            <span style="color:#94a3b8;">:</span>
+            <input type="number" id="splitT" step="1" min="1" max="99" value="50" style="width:45%;">
+          </div>
+          <div class="input-hint">e.g., 50:50 or 80:20</div>
+        </div>
+        <div class="form-group">
+          <label>Daily traffic (total visitors)</label>
+          <input type="number" id="dailyTraffic" step="100" min="100" value="5000">
+        </div>
+        <div style="margin-top: 1.8rem;">
+          <button class="btn" id="computeBtn">⟳ Compute sample size</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="result-block" id="resultArea">
+      <div class="flex-row">
+        <div class="stat-box">
+          <div class="result-label">n per variant</div>
+          <div class="result-number" id="nPerVariant">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="result-label">Total sample</div>
+          <div class="result-number" id="nTotal">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="result-label">Days needed</div>
+          <div class="result-number" id="daysNeeded">—</div>
+        </div>
+      </div>
+      <div style="margin-top:0.8rem; display:flex; gap:1rem; flex-wrap:wrap;">
+        <span><span class="badge">p₂</span> <strong id="p2display">—</strong></span>
+        <span><span class="badge">Δ absolute</span> <strong id="deltaAbs">—</strong></span>
+        <span><span class="badge">Relative lift</span> <strong id="relLift">—</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sensitivity + chart row -->
+  <div class="grid-2" style="margin-bottom: 2rem;">
+    <div class="card">
+      <h3 style="font-weight:500; margin-bottom:0.8rem; color:#c7d2fe;">📈 Sensitivity (MDE lift)</h3>
+      <div style="overflow-x:auto;">
+        <table id="sensitivityTable">
+          <thead><tr><th>Relative lift</th><th>n per variant</th><th>Total</th></tr></thead>
+          <tbody id="sensBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-weight:500; margin-bottom:0.8rem; color:#c7d2fe;">⚡ Power curve</h3>
+      <div class="chart-container">
+        <canvas id="powerCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    © 2025 abwex.com
+  </footer>
+</div>
+
+<script>
+  (function() {
+    // ----- z-table (hardcoded) -----
+    const z = {
+      '0.025': 1.96,
+      '0.05': 1.645,
+      '0.10': 1.28,
+      '0.20': 0.842
+    };
+    // one-tailed: alpha/2 -> alpha
+    function getZ(alpha, tails) {
+      if (tails === 'one') {
+        if (alpha === 0.01) return 2.326;  // z_0.01
+        if (alpha === 0.05) return 1.645;  // z_0.05
+        if (alpha === 0.10) return 1.28;   // z_0.10
+        return 1.645;
+      } else {
+        // two-tailed
+        const key = (alpha / 2).toFixed(3);
+        if (key === '0.005') return 2.576;
+        if (key === '0.025') return 1.96;
+        if (key === '0.050') return 1.645;
+        return 1.96;
+      }
+    }
+    function getZbeta(power) {
+      if (power === 0.80) return 0.842;
+      if (power === 0.90) return 1.28;
+      if (power === 0.95) return 1.645;
+      return 1.28;
+    }
+
+    // ----- DOM refs -----
+    const p1Input = document.getElementById('p1');
+    const mdeMode = document.getElementById('mdeMode');
+    const mdeVal = document.getElementById('mdeVal');
+    const alphaSelect = document.getElementById('alpha');
+    const powerSelect = document.getElementById('power');
+    const tailsSelect = document.getElementById('tails');
+    const splitC = document.getElementById('splitC');
+    const splitT = document.getElementById('splitT');
+    const dailyTraffic = document.getElementById('dailyTraffic');
+    const computeBtn = document.getElementById('computeBtn');
+
+    const nPerVariant = document.getElementById('nPerVariant');
+    const nTotal = document.getElementById('nTotal');
+    const daysNeeded = document.getElementById('daysNeeded');
+    const p2display = document.getElementById('p2display');
+    const deltaAbs = document.getElementById('deltaAbs');
+    const relLift = document.getElementById('relLift');
+    const sensBody = document.getElementById('sensBody');
+    const canvas = document.getElementById('powerCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // ----- compute core -----
+    function computeSample(p1, mdeModeVal, mdeValRaw, alpha, power, tails, cSplit, tSplit) {
+      const p1Dec = p1 / 100;
+      let p2Dec;
+      let relLiftVal = 0;
+      let absDelta = 0;
+      if (mdeModeVal === 'relative') {
+        const lift = mdeValRaw / 100;
+        p2Dec = p1Dec * (1 + lift);
+        relLiftVal = lift * 100;
+        absDelta = (p2Dec - p1Dec) * 100;
+      } else {
+        const abs = mdeValRaw / 100;
+        p2Dec = p1Dec + abs;
+        absDelta = abs * 100;
+        relLiftVal = ((p2Dec - p1Dec) / p1Dec) * 100;
+      }
+      if (p2Dec <= 0 || p2Dec >= 1) return null;
+      const pooled = (p1Dec + p2Dec) / 2;
+      const diff = p2Dec - p1Dec;
+      if (Math.abs(diff) < 1e-9) return null;
+
+      const zAlpha = getZ(parseFloat(alpha), tails);
+      const zBeta = getZbeta(parseFloat(power));
+      const term = zAlpha + zBeta;
+      const variance = p1Dec * (1 - p1Dec) + p2Dec * (1 - p2Dec);
+      let n = (term * term) * variance / (diff * diff);
+      n = Math.ceil(n);
+
+      // split adjustment
+      const k = tSplit / cSplit;  // treatment / control
+      const nControl = Math.ceil(n * (1/k + 1) / 2);
+      const nTreatment = Math.ceil(n * k / (k + 1));
+      const total = nControl + nTreatment;
+      return { nPerVariantRaw: n, nControl, nTreatment, total, p2Dec, relLiftVal, absDelta, diff };
+    }
+
+    function run() {
+      const p1 = parseFloat(p1Input.value);
+      const mode = mdeMode.value;
+      const mde = parseFloat(mdeVal.value);
+      const alpha = alphaSelect.value;
+      const power = powerSelect.value;
+      const tails = tailsSelect.value;
+      const cS = parseFloat(splitC.value) || 50;
+      const tS = parseFloat(splitT.value) || 50;
+      const daily = parseFloat(dailyTraffic.value) || 5000;
+
+      if (isNaN(p1) || isNaN(mde) || p1 <= 0 || p1 >= 100 || mde <= 0) {
+        nPerVariant.textContent = '—';
+        nTotal.textContent = '—';
+        daysNeeded.textContent = '—';
+        p2display.textContent = '—';
+        deltaAbs.textContent = '—';
+        relLift.textContent = '—';
+        return;
+      }
+
+      const result = computeSample(p1, mode, mde, alpha, power, tails, cS, tS);
+      if (!result) {
+        nPerVariant.textContent = '—';
+        nTotal.textContent = '—';
+        daysNeeded.textContent = '—';
+        p2display.textContent = '—';
+        deltaAbs.textContent = '—';
+        relLift.textContent = '—';
+        return;
+      }
+
+      const { nControl, nTreatment, total, p2Dec, relLiftVal, absDelta } = result;
+      nPerVariant.textContent = `${nControl} / ${nTreatment}`;
+      nTotal.textContent = total;
+      const days = Math.ceil(total / daily);
+      daysNeeded.textContent = days;
+      p2display.textContent = (p2Dec * 100).toFixed(2) + '%';
+      deltaAbs.textContent = absDelta.toFixed(2) + ' pp';
+      relLift.textContent = relLiftVal.toFixed(2) + '%';
+
+      // sensitivity table
+      const lifts = [5, 10, 15, 20, 30];
+      let html = '';
+      for (let lift of lifts) {
+        let res;
+        if (mode === 'relative') {
+          res = computeSample(p1, 'relative', lift, alpha, power, tails, cS, tS);
+        } else {
+          // absolute: treat mde as absolute pp, but for sensitivity we use relative lift? we interpret as absolute pp for consistency
+          // but better: for absolute mode, we treat mdeVal as absolute; for sensitivity we vary absolute delta around baseline
+          // we'll use absolute: lift as absolute pp
+          const absMde = lift * (p1/100) / 10; // scale roughly
+          res = computeSample(p1, 'absolute', Math.max(0.5, absMde*100), alpha, power, tails, cS, tS);
+        }
+        if (res) {
+          html += `<tr><td>${lift}%</td><td>${res.nControl} / ${res.nTreatment}</td><td>${res.total}</td></tr>`;
+        } else {
+          html += `<tr><td>${lift}%</td><td>—</td><td>—</td></tr>`;
+        }
+      }
+      sensBody.innerHTML = html;
+
+      // power curve: vary sample size from 100 to 5000, compute power
+      drawPowerCurve(p1, mode, mde, alpha, tails, cS, tS);
+    }
+
+    function drawPowerCurve(p1, mode, mde, alpha, tails, cS, tS) {
+      const width = canvas.parentElement.clientWidth;
+      const height = 280;
+      canvas.width = width * 2;
+      canvas.height = height * 2;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.scale(2,2);
+      ctx.clearRect(0,0,width,height);
+
+      const baseResult = computeSample(p1, mode, mde, alpha, 0.80, tails, cS, tS);
+      if (!baseResult) return;
+      const nMax = Math.max(5000, baseResult.total * 2.5);
+      const steps = 30;
+      const sampleSizes = [];
+      const powers = [];
+      for (let i = 0; i < steps; i++) {
+        const n = Math.round(100 + (nMax - 100) * i / (steps - 1));
+        sampleSizes.push(n);
+        // approximate power: using normal distribution
+        const p1Dec = p1 / 100;
+        let p2Dec;
+        if (mode === 'relative') {
+          p2Dec = p1Dec * (1 + mde/100);
+        } else {
+          p2Dec = p1Dec + mde/100;
+        }
+        if (p2Dec <= 0 || p2Dec >= 1) { powers.push(0); continue; }
+        const diff = p2Dec - p1Dec;
+        const variance = p1Dec*(1-p1Dec) + p2Dec*(1-p2Dec);
+        const se = Math.sqrt(variance / n);
+        const zAlpha = getZ(parseFloat(alpha), tails);
+        const zPower = Math.abs(diff) / se - zAlpha;
+        let powerEst = 0.5;
+        if (zPower > 0) {
+          // approximate using standard normal CDF (Abramowitz)
+          const t = 1 / (1 + 0.2316419 * Math.abs(zPower));
+          const d = 0.39894228 * Math.exp(-zPower*zPower/2);
+          const p = 1 - d * (0.3193815*t - 0.3565638*t*t + 1.7814779*t*t*t - 1.821256*t*t*t*t + 1.3302744*t*t*t*t*t);
+          powerEst = zPower > 0 ? p : 1-p;
+        }
+        powers.push(Math.min(0.999, Math.max(0.01, powerEst)));
+      }
+
+      // draw
+      const margin = { top: 20, bottom: 30, left: 40, right: 20 };
+      const plotW = width - margin.left - margin.right;
+      const plotH = height - margin.top - margin.bottom;
+      ctx.clearRect(0,0,width,height);
+
+      // axes
+      ctx.strokeStyle = '#3a3a5c';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(margin.left, margin.top);
+      ctx.lineTo(margin.left, height - margin.bottom);
+      ctx.lineTo(width - margin.right, height - margin.bottom);
+      ctx.stroke();
+
+      // grid
+      ctx.strokeStyle = '#252545';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 4; i++) {
+        const y = margin.top + plotH * (1 - i/4);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, y);
+        ctx.lineTo(width - margin.right, y);
+        ctx.stroke();
+        ctx.fillStyle = '#7f8bb3';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText((i/4).toFixed(2), margin.left - 6, y+3);
+      }
+
+      // power curve
+      ctx.beginPath();
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 2.5;
+      for (let i = 0; i < sampleSizes.length; i++) {
+        const x = margin.left + (sampleSizes[i] - 100) / (nMax - 100) * plotW;
+        const y = margin.top + plotH * (1 - powers[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // labels
+      ctx.fillStyle = '#8892b0';
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Sample size (total)', width/2, height - 4);
+      ctx.save();
+      ctx.translate(12, height/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText('Power', 0, 0);
+      ctx.restore();
+    }
+
+    // initial run
+    window.addEventListener('load', function() {
+      run();
+    });
+    computeBtn.addEventListener('click', run);
+    // also run on change of key inputs
+    const inputs = [p1Input, mdeMode, mdeVal, alphaSelect, powerSelect, tailsSelect, splitC, splitT, dailyTraffic];
+    inputs.forEach(inp => inp.addEventListener('change', run));
+    inputs.forEach(inp => inp.addEventListener('input', function(e) {
+      if (e.target === p1Input || e.target === mdeVal || e.target === splitC || e.target === splitT || e.target === dailyTraffic) {
+        run();
+      }
+    }));
+    // resize canvas
+    window.addEventListener('resize', function() {
+      run();
+    });
+  })();
+</script>
+</body>
+</html>
