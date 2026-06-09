@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandit Simulator — Thompson Sampling</title>
+    <meta name="description" content="Interactive multi-armed bandit simulator using Thompson Sampling. Run simulations with 2-5 arms, visualize allocation over time and regret.">
+    <meta name="theme-color" content="#10b981">
+    <meta property="og:title" content="Multi-Armed Bandit Simulator">
+    <meta property="og:description" content="Thompson Sampling bandit simulator for exploring vs exploiting in A/B testing.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abwex.com/tools/multi-armed-bandit-simulator">
+    <link rel="canonical" href="https://abwex.com/tools/multi-armed-bandit-simulator">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Multi-Armed Bandit Simulator",
+        "description": "Interactive Thompson Sampling simulator for bandit optimization",
+        "url": "https://abwex.com/tools/multi-armed-bandit-simulator",
+        "applicationCategory": "UtilityApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ecf0f1;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0aec0;
+            font-size: 1.1em;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"],
+        select {
+            flex: 1;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: #ecf0f1;
+            font-size: 1em;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .input-unit {
+            min-width: 40px;
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        .arm-config {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .arm-label {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .control-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .control-buttons button {
+            margin-top: 0;
+        }
+
+        .results {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 1.8em;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .result-subtext {
+            color: #7a8fa3;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #10b981;
+        }
+
+        .metric-label {
+            color: #a0aec0;
+            font-size: 0.85em;
+        }
+
+        .metric-value {
+            font-size: 1.5em;
+            color: #10b981;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        #allocationChart,
+        #regretChart,
+        #posteriorChart {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .chart-container {
+            margin-bottom: 40px;
+        }
+
+        footer {
+            text-align: center;
+            color: #7a8fa3;
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .step-info {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+    </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bandit Simulator</h1>
+            <p class="subtitle">Thompson Sampling for Multi-Armed Bandits</p>
+        </header>
+
+        <div class="content">
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Configuration</h2>
+
+                <div class="form-group">
+                    <label for="numArms">Number of Arms</label>
+                    <select id="numArms" onchange="updateArmConfig()">
+                        <option value="2">2 arms</option>
+                        <option value="3" selected>3 arms</option>
+                        <option value="4">4 arms</option>
+                        <option value="5">5 arms</option>
+                    </select>
+                </div>
+
+                <div id="armContainer"></div>
+
+                <div class="form-group">
+                    <label for="simSteps">Simulation Steps</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="simSteps" min="100" max="100000" value="10000" step="100">
+                        <span class="input-unit">observations</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="speed">Animation Speed</label>
+                    <select id="speed">
+                        <option value="fast">Fast (100ms)</option>
+                        <option value="normal" selected>Normal (200ms)</option>
+                        <option value="slow">Slow (500ms)</option>
+                    </select>
+                </div>
+
+                <div class="control-buttons">
+                    <button onclick="runSimulation()">Run Simulation</button>
+                    <button onclick="stepSimulation()">Step</button>
+                </div>
+
+                <button onclick="resetSimulation()">Reset</button>
+
+                <div class="step-info">
+                    <strong>Thompson Sampling:</strong> Maintains posterior distribution for each arm's success rate. Samples from each posterior and picks the arm with highest sample. Balances exploration and exploitation automatically.
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Results</h2>
+                <div class="results">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Current Step</div>
+                            <div class="metric-value" id="stepCount">0</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Total Reward</div>
+                            <div class="metric-value" id="totalReward">0</div>
+                        </div>
+                    </div>
+
+                    <div id="armStats"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel chart-container">
+            <h2 style="margin-bottom: 25px; color: #10b981;">Arm Allocation Over Time</h2>
+            <canvas id="allocationChart"></canvas>
+        </div>
+
+        <div class="panel chart-container">
+            <h2 style="margin-bottom: 25px; color: #10b981;">Cumulative Regret</h2>
+            <canvas id="regretChart"></canvas>
+        </div>
+
+        <div class="panel chart-container">
+            <h2 style="margin-bottom: 25px; color: #10b981;">Posterior Distributions</h2>
+            <canvas id="posteriorChart"></canvas>
+        </div>
+
+        <footer>
+            © 2026 abwex.com — A/B Testing & Statistics Tools
+        </footer>
+<div style="margin:20px auto;max-width:728px;text-align:center">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+    </div>
+
+    <script>
+        const COLORS = ['#10b981', '#06d6a0', '#34d399', '#6ee7b7', '#a7f3d0'];
+        let simulation = {
+            arms: [],
+            observations: [],
+            rewards: [],
+            allocations: [],
+            step: 0,
+            running: false,
+            totalReward: 0
+        };
+
+        function updateArmConfig() {
+            const numArms = parseInt(document.getElementById('numArms').value);
+            const container = document.getElementById('armContainer');
+            container.innerHTML = '';
+
+            for (let i = 0; i < numArms; i++) {
+                const armDiv = document.createElement('div');
+                armDiv.className = 'arm-config';
+                armDiv.innerHTML = `
+                    <div class="arm-label">Arm ${i + 1}: True Conversion Rate</div>
+                    <div class="input-wrapper">
+                        <input type="number" class="armRate" data-arm="${i}" min="0.01" max="100" value="${(Math.random() * 30 + 1).toFixed(1)}" step="0.1">
+                        <span class="input-unit">%</span>
+                    </div>
+                `;
+                container.appendChild(armDiv);
+            }
+        }
+
+        function initSimulation() {
+            const numArms = parseInt(document.getElementById('numArms').value);
+            const simSteps = parseInt(document.getElementById('simSteps').value);
+
+            simulation = {
+                arms: [],
+                observations: Array(numArms).fill(0),
+                successes: Array(numArms).fill(0),
+                rewards: [],
+                allocations: [],
+                step: 0,
+                running: false,
+                totalReward: 0
+            };
+
+            // Get arm true rates from inputs
+            document.querySelectorAll('.armRate').forEach((input, i) => {
+                simulation.arms.push({
+                    trueRate: parseFloat(input.value) / 100,
+                    index: i,
+                    alphaPost: 1,
+                    betaPost: 1
+                });
+            });
+
+            return simSteps;
+        }
+
+        function stepSimulation() {
+            const simSteps = parseInt(document.getElementById('simSteps').value);
+
+            if (simulation.step === 0) {
+                initSimulation();
+            }
+
+            if (simulation.step < simSteps) {
+                // Thompson Sampling: sample from each arm's posterior
+                let bestArm = 0;
+                let bestSample = 0;
+
+                for (let i = 0; i < simulation.arms.length; i++) {
+                    const sample = sampleBeta(simulation.arms[i].alphaPost, simulation.arms[i].betaPost);
+                    if (sample > bestSample) {
+                        bestSample = sample;
+                        bestArm = i;
+                    }
+                }
+
+                // Pull arm
+                const reward = Math.random() < simulation.arms[bestArm].trueRate ? 1 : 0;
+                simulation.observations[bestArm]++;
+                simulation.successes[bestArm] += reward;
+                simulation.totalReward += reward;
+
+                // Update posterior
+                simulation.arms[bestArm].alphaPost += reward;
+                simulation.arms[bestArm].betaPost += (1 - reward);
+
+                // Track metrics
+                const allocation = simulation.observations.map(o => o / (simulation.step + 1) * 100);
+                simulation.allocations.push([...allocation]);
+                simulation.rewards.push(simulation.totalReward);
+
+                simulation.step++;
+
+                updateDisplay();
+                drawCharts();
+            }
+        }
+
+        function sampleBeta(alpha, beta) {
+            // Sample from Beta(alpha, beta) using inverse transform sampling
+            let sum = 0;
+            for (let i = 0; i < alpha - 1; i++) {
+                sum += Math.log(Math.random());
+            }
+            let y = -sum;
+            for (let j = 0; j < beta - 1; j++) {
+                y -= Math.log(Math.random());
+            }
+            return 1 / (1 + Math.exp(y));
+        }
+
+        function runSimulation() {
+            const simSteps = parseInt(document.getElementById('simSteps').value);
+            const speedMap = { fast: 10, normal: 50, slow: 200 };
+            const speed = speedMap[document.getElementById('speed').value];
+
+            if (simulation.step === 0) {
+                initSimulation();
+            }
+
+            simulation.running = true;
+            let count = 0;
+
+            const interval = setInterval(() => {
+                if (simulation.step >= simSteps || !simulation.running) {
+                    clearInterval(interval);
+                    simulation.running = false;
+                    return;
+                }
+
+                for (let i = 0; i < speed; i++) {
+                    if (simulation.step < simSteps) {
+                        stepSimulation();
+                    }
+                }
+            }, 100);
+        }
+
+        function updateDisplay() {
+            document.getElementById('stepCount').textContent = simulation.step.toLocaleString();
+            document.getElementById('totalReward').textContent = simulation.totalReward.toLocaleString();
+
+            const statsDiv = document.getElementById('armStats');
+            statsDiv.innerHTML = simulation.arms.map((arm, i) => {
+                const pulls = simulation.observations[i];
+                const wins = simulation.successes[i];
+                const empiricalRate = pulls > 0 ? (wins / pulls * 100).toFixed(1) : '0.0';
+                return `
+                    <div class="metric-card" style="border-left-color: ${COLORS[i]};">
+                        <div class="metric-label">Arm ${i + 1}</div>
+                        <div class="metric-value" style="color: ${COLORS[i]};">${empiricalRate}%</div>
+                        <div class="result-subtext">${pulls} pulls, ${wins} wins</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function drawCharts() {
+            drawAllocationChart();
+            drawRegretChart();
+            drawPosteriorChart();
+        }
+
+        function drawAllocationChart() {
+            const canvas = document.getElementById('allocationChart');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'rgba(26, 26, 46, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (simulation.allocations.length === 0) return;
+
+            const padding = 50;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            // Draw lines for each arm
+            for (let armIdx = 0; armIdx < simulation.arms.length; armIdx++) {
+                ctx.strokeStyle = COLORS[armIdx];
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                for (let i = 0; i < simulation.allocations.length; i++) {
+                    const x = padding + (i / simulation.allocations.length) * width;
+                    const y = canvas.height - padding - (simulation.allocations[i][armIdx] / 100) * height;
+
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+
+            // Labels
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Observation #', canvas.width / 2, canvas.height - 10);
+        }
+
+        function drawRegretChart() {
+            const canvas = document.getElementById('regretChart');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'rgba(26, 26, 46, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (simulation.allocations.length === 0) return;
+
+            const padding = 50;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            // Calculate best arm
+            const bestArmRate = Math.max(...simulation.arms.map(a => a.trueRate));
+
+            // Calculate cumulative regret
+            const regrets = [];
+            let cumRegret = 0;
+            for (let i = 0; i < simulation.allocations.length; i++) {
+                let expectedReward = 0;
+                for (let j = 0; j < simulation.arms.length; j++) {
+                    expectedReward += (simulation.allocations[i][j] / 100) * simulation.arms[j].trueRate;
+                }
+                const regret = bestArmRate - expectedReward;
+                cumRegret += regret;
+                regrets.push(cumRegret);
+            }
+
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            const maxRegret = Math.max(...regrets);
+
+            for (let i = 0; i < regrets.length; i++) {
+                const x = padding + (i / regrets.length) * width;
+                const y = canvas.height - padding - (regrets[i] / maxRegret) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Observation #', canvas.width / 2, canvas.height - 10);
+        }
+
+        function drawPosteriorChart() {
+            const canvas = document.getElementById('posteriorChart');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'rgba(26, 26, 46, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            // Draw posteriors for each arm
+            const xRange = [0, 1];
+            const step = 0.01;
+
+            for (let armIdx = 0; armIdx < simulation.arms.length; armIdx++) {
+                const arm = simulation.arms[armIdx];
+
+                ctx.strokeStyle = COLORS[armIdx];
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                for (let x = xRange[0]; x <= xRange[1]; x += step) {
+                    // Beta PDF
+                    const numerator = Math.pow(x, arm.alphaPost - 1) * Math.pow(1 - x, arm.betaPost - 1);
+                    const pdf = numerator; // Simplified
+
+                    const canvasX = padding + ((x - xRange[0]) / (xRange[1] - xRange[0])) * width;
+                    const canvasY = canvas.height - padding - (pdf / 20) * height; // Scaled for visibility
+
+                    if (x === xRange[0]) ctx.moveTo(canvasX, canvasY);
+                    else ctx.lineTo(canvasX, canvasY);
+                }
+                ctx.stroke();
+            }
+        }
+
+        function resetSimulation() {
+            simulation.running = false;
+            simulation = {
+                arms: [],
+                observations: [],
+                rewards: [],
+                allocations: [],
+                step: 0,
+                running: false,
+                totalReward: 0
+            };
+            document.getElementById('stepCount').textContent = '0';
+            document.getElementById('totalReward').textContent = '0';
+            document.getElementById('armStats').innerHTML = '';
+        }
+
+        // Initialize
+        updateArmConfig();
+    </script>
+</body>
+</html>

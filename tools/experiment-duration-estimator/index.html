@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment Duration Estimator — A/B Test</title>
+    <meta name="description" content="Estimate how long to run an A/B test. Calculate required sample size, days, and risk of peeking based on traffic and effect size.">
+    <meta name="theme-color" content="#10b981">
+    <meta property="og:title" content="Experiment Duration Estimator">
+    <meta property="og:description" content="Calculate A/B test duration, sample size, and peeking risk for optimal experiment design.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abwex.com/tools/experiment-duration-estimator">
+    <link rel="canonical" href="https://abwex.com/tools/experiment-duration-estimator">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Experiment Duration Estimator",
+        "description": "Estimate A/B test duration and sample size requirements",
+        "url": "https://abwex.com/tools/experiment-duration-estimator",
+        "applicationCategory": "UtilityApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ecf0f1;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0aec0;
+            font-size: 1.1em;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: #ecf0f1;
+            font-size: 1em;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .input-unit {
+            min-width: 60px;
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 2em;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .result-subtext {
+            color: #7a8fa3;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #10b981;
+        }
+
+        .metric-label {
+            color: #a0aec0;
+            font-size: 0.85em;
+        }
+
+        .metric-value {
+            font-size: 1.4em;
+            color: #10b981;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .recommendation-box {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .recommendation-title {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-text {
+            color: #ecf0f1;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .risk-warning {
+            color: #ffb700;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        #durationChart {
+            width: 100%;
+            height: 350px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            color: #7a8fa3;
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+    </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Experiment Duration Estimator</h1>
+            <p class="subtitle">Calculate How Long to Run Your A/B Test</p>
+        </header>
+
+        <div class="content">
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Parameters</h2>
+
+                <div class="form-group">
+                    <label for="dailyVisitors">Daily Visitors</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="dailyVisitors" min="10" max="10000000" value="10000" step="100">
+                        <span class="input-unit">users/day</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="baselineConversion">Baseline Conversion Rate</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="baselineConversion" min="0.01" max="100" value="5" step="0.1">
+                        <span class="input-unit">%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="expectedLift">Expected Lift</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="expectedLift" min="1" max="200" value="15" step="1">
+                        <span class="input-unit">%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="numVariants">Number of Variants</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="numVariants" min="2" max="10" value="2" step="1">
+                        <span class="input-unit">control + test(s)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="alpha">Significance Level</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="alpha" min="0.001" max="0.5" value="0.05" step="0.001">
+                        <span class="input-unit">α (two-tail)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="power">Statistical Power</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="power" min="0.5" max="0.99" value="0.8" step="0.01">
+                        <span class="input-unit">1 - β</span>
+                    </div>
+                </div>
+
+                <button onclick="calculateDuration()">Calculate Duration</button>
+
+                <div class="info-box">
+                    <strong>Tip:</strong> For multi-variant tests, the calculator accounts for the Bonferroni correction (more stringent significance level). Use 2 variants for standard A/B tests.
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Results</h2>
+                <div class="results">
+                    <div class="result-item">
+                        <div class="result-label">Recommended Duration</div>
+                        <div class="result-value" id="duration">—</div>
+                        <div class="result-subtext">days to run experiment</div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Total Sample Size</div>
+                            <div class="metric-value" id="totalSampleSize">—</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Per Variant</div>
+                            <div class="metric-value" id="perVariant">—</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Visitors Needed Per Day</div>
+                        <div class="result-value" id="visitorsPerDay">—</div>
+                        <div class="result-subtext">Percentage of daily traffic</div>
+                    </div>
+                </div>
+
+                <div class="recommendation-box" id="recommendationBox" style="display:none;">
+                    <div class="recommendation-title">Recommendation</div>
+                    <div class="recommendation-text" id="recommendationText"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-bottom: 25px; color: #10b981;">Duration vs Sample Size</h2>
+            <canvas id="durationChart"></canvas>
+            <div class="info-box" style="margin-top: 20px;">
+                The chart shows how sample size requirements decrease as you increase experiment duration. Longer tests allow sequential monitoring with lower Type I error risk.
+            </div>
+        </div>
+
+        <footer>
+            © 2026 abwex.com — A/B Testing & Statistics Tools
+        </footer>
+<div style="margin:20px auto;max-width:728px;text-align:center">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+    </div>
+
+    <script>
+        function inverseNormal(p) {
+            if (p < 0.5) return -inverseNormal(1 - p);
+            if (p > 0.9999) return 3.7199;
+
+            const t = Math.sqrt(-2 * Math.log(1 - p));
+            const c = [2.515517, 0.802853, 0.010328];
+            const d = [1.432788, 0.189269, 0.001308];
+
+            const numerator = c[0] + c[1] * t + c[2] * t * t;
+            const denominator = 1 + d[0] * t + d[1] * t * t + d[2] * t * t * t;
+
+            return t - numerator / denominator;
+        }
+
+        function calculateDuration() {
+            const dailyVisitors = parseInt(document.getElementById('dailyVisitors').value);
+            const baselineConv = parseFloat(document.getElementById('baselineConversion').value) / 100;
+            const lift = parseFloat(document.getElementById('expectedLift').value) / 100;
+            const numVariants = parseInt(document.getElementById('numVariants').value);
+            const alpha = parseFloat(document.getElementById('alpha').value);
+            const power = parseFloat(document.getElementById('power').value);
+
+            // Bonferroni correction for multiple variants
+            const alphaCorrected = alpha / numVariants;
+
+            // Z-scores
+            const z_alpha = Math.abs(inverseNormal(1 - alphaCorrected / 2));
+            const z_beta = Math.abs(inverseNormal(power));
+
+            // Effect size
+            const p0 = baselineConv;
+            const p1 = baselineConv * (1 + lift);
+            const p_bar = (p0 + p1) / 2;
+
+            // Sample size per variant
+            const samplePerVariant = 2 * Math.pow((z_alpha + z_beta), 2) * p_bar * (1 - p_bar) / Math.pow(p1 - p0, 2);
+
+            const totalSampleSize = samplePerVariant * numVariants;
+
+            // Duration
+            const dailyConversions = dailyVisitors * baselineConv;
+            const durationDays = Math.ceil((totalSampleSize / dailyVisitors) / numVariants);
+
+            // Visitors as % of daily traffic
+            const visitorsPercentage = (totalSampleSize / (dailyVisitors * durationDays) * 100).toFixed(1);
+
+            // Risk of peeking (sequential analysis penalty)
+            const peekingRisk = (alpha * 1.5).toFixed(4); // Approximate inflation
+
+            // Update UI
+            document.getElementById('duration').textContent = durationDays;
+            document.getElementById('totalSampleSize').textContent = Math.round(totalSampleSize).toLocaleString();
+            document.getElementById('perVariant').textContent = Math.round(samplePerVariant).toLocaleString();
+            document.getElementById('visitorsPerDay').textContent = visitorsPercentage + '%';
+
+            // Recommendation
+            const recBox = document.getElementById('recommendationBox');
+            const recText = document.getElementById('recommendationText');
+
+            let recommendation = `Run for <strong>${durationDays} days</strong> to achieve statistical power of ${(power * 100).toFixed(0)}%. `;
+            recommendation += `This requires <strong>${Math.round(samplePerVariant).toLocaleString()} users per variant</strong>, `;
+            recommendation += `or approximately <strong>${visitorsPercentage}% of your daily traffic</strong>.`;
+
+            if (durationDays > 30) {
+                recommendation += `<div class="risk-warning">⚠️ Test duration exceeds 30 days. Consider: (1) Reducing effect size estimate if ${(lift * 100).toFixed(0)}% lift is conservative; (2) Increasing traffic allocation; (3) Using sequential testing to stop early.</div>`;
+            }
+
+            if (visitorsPercentage > 50) {
+                recommendation += `<div class="risk-warning">⚠️ This test requires ${visitorsPercentage}% of traffic. Consider multi-variant testing across multiple segments to reduce allocation.</div>`;
+            }
+
+            if (durationDays < 2) {
+                recommendation += `<div style="color: #ffb700; margin-top: 10px;">💡 Very fast test! High traffic or large effect size. Consider extending to capture weekly variations (≥7 days).</div>`;
+            }
+
+            recText.innerHTML = recommendation;
+            recBox.style.display = 'block';
+
+            drawDurationChart(dailyVisitors, baselineConv, lift, numVariants, alpha, power);
+        }
+
+        function drawDurationChart(dailyVisitors, baselineConv, lift, numVariants, alpha, power) {
+            const canvas = document.getElementById('durationChart');
+            const ctx = canvas.getContext('2d');
+
+            // Clear
+            ctx.fillStyle = 'rgba(26, 26, 46, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            // Generate data for different durations
+            const durations = [];
+            const sampleSizes = [];
+
+            for (let days = 1; days <= 60; days += 1) {
+                const alphaCorrected = alpha / numVariants;
+                const z_alpha = Math.abs(inverseNormal(1 - alphaCorrected / 2));
+                const z_beta = Math.abs(inverseNormal(power));
+
+                const p0 = baselineConv;
+                const p1 = baselineConv * (1 + lift);
+                const p_bar = (p0 + p1) / 2;
+
+                const samplePerVariant = 2 * Math.pow((z_alpha + z_beta), 2) * p_bar * (1 - p_bar) / Math.pow(p1 - p0, 2);
+                const totalSample = samplePerVariant * numVariants;
+
+                const availableSample = dailyVisitors * days * numVariants;
+
+                durations.push(days);
+                sampleSizes.push(Math.min(totalSample, availableSample));
+            }
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(160, 174, 192, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+
+            // Draw grid
+            for (let i = 0; i <= 10; i++) {
+                const x = padding + (width / 10) * i;
+                const y = canvas.height - padding - (height / 10) * i;
+
+                ctx.strokeStyle = 'rgba(160, 174, 192, 0.1)';
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height - padding);
+                ctx.lineTo(x, canvas.height - padding - 5);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + 5, y);
+                ctx.stroke();
+            }
+
+            // Draw line
+            const maxDuration = Math.max(...durations);
+            const maxSampleSize = Math.max(...sampleSizes);
+
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            for (let i = 0; i < durations.length; i++) {
+                const x = padding + (durations[i] / maxDuration) * width;
+                const y = canvas.height - padding - (sampleSizes[i] / maxSampleSize) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Days', canvas.width / 2, canvas.height - 10);
+
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Total Sample Size', 0, 0);
+            ctx.restore();
+        }
+
+        // Initial calculation
+        calculateDuration();
+    </script>
+</body>
+</html>

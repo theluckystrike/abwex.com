@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequential Testing Calculator — SPRT</title>
+    <meta name="description" content="Sequential Probability Ratio Test (SPRT) calculator. Calculate likelihood ratio boundaries and expected sample size savings vs fixed-horizon testing.">
+    <meta name="theme-color" content="#10b981">
+    <meta property="og:title" content="Sequential Testing Calculator — SPRT">
+    <meta property="og:description" content="SPRT calculator for sequential A/B testing with reduced sample size requirements.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abwex.com/tools/sequential-test-calculator">
+    <link rel="canonical" href="https://abwex.com/tools/sequential-test-calculator">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Sequential Testing Calculator",
+        "description": "Calculate SPRT boundaries and expected sample size reduction",
+        "url": "https://abwex.com/tools/sequential-test-calculator",
+        "applicationCategory": "UtilityApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ecf0f1;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0aec0;
+            font-size: 1.1em;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: #ecf0f1;
+            font-size: 1em;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .input-unit {
+            min-width: 40px;
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 2em;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .result-subtext {
+            color: #7a8fa3;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .decision-chart {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 8px;
+        }
+
+        .boundaries {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .boundary-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #10b981;
+        }
+
+        .boundary-label {
+            color: #a0aec0;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .boundary-value {
+            font-size: 1.4em;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        #sprtChart {
+            width: 100%;
+            height: 350px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            color: #7a8fa3;
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+    </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sequential Testing Calculator</h1>
+            <p class="subtitle">SPRT: Sequential Probability Ratio Test</p>
+        </header>
+
+        <div class="content">
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Parameters</h2>
+
+                <div class="form-group">
+                    <label for="controlRate">Control Conversion Rate</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="controlRate" min="0.01" max="100" value="5" step="0.1">
+                        <span class="input-unit">%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="expectedLift">Expected Lift</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="expectedLift" min="1" max="200" value="20" step="1">
+                        <span class="input-unit">%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="alpha">Significance Level (α)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="alpha" min="0.001" max="0.5" value="0.05" step="0.001">
+                        <span class="input-unit">one-tail</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="beta">Type II Error (β)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="beta" min="0.01" max="0.5" value="0.2" step="0.01">
+                        <span class="input-unit">20% = 80% power</span>
+                    </div>
+                </div>
+
+                <button onclick="calculateSPRT()">Calculate SPRT Boundaries</button>
+
+                <div class="info-box">
+                    <strong>How it works:</strong> SPRT tests hypotheses sequentially, allowing you to stop early when evidence is sufficient. Continue collecting data until you hit an upper boundary (reject null) or lower boundary (accept null).
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Results</h2>
+                <div class="results">
+                    <div class="result-item">
+                        <div class="result-label">Upper Boundary (LR)</div>
+                        <div class="result-value" id="upperBoundary">—</div>
+                        <div class="result-subtext">Stop & reject null (significant)</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Lower Boundary (LR)</div>
+                        <div class="result-value" id="lowerBoundary">—</div>
+                        <div class="result-subtext">Stop & accept null (not significant)</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Expected Sample Size</div>
+                        <div class="result-value" id="expectedSampleSize">—</div>
+                        <div class="result-subtext">Expected observations per variant</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Savings vs Fixed-Horizon</div>
+                        <div class="result-value" id="samplingSavings">—</div>
+                        <div class="result-subtext">Reduction in required sample size</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-bottom: 25px; color: #10b981;">Likelihood Ratio Progression</h2>
+            <canvas id="sprtChart"></canvas>
+            <div class="info-box" style="margin-top: 20px;">
+                The chart shows a typical SPRT path. The likelihood ratio starts at 1 and evolves with each observation. When it crosses the upper boundary, stop and declare a winner. When it crosses the lower boundary, stop and conclude no significant effect.
+            </div>
+        </div>
+
+        <footer>
+            © 2026 abwex.com — A/B Testing & Statistics Tools
+        </footer>
+<div style="margin:20px auto;max-width:728px;text-align:center">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+    </div>
+
+    <script>
+        function inverseNormal(p) {
+            if (p < 0.5) return -inverseNormal(1 - p);
+            if (p > 0.9999) return 3.7199;
+
+            const t = Math.sqrt(-2 * Math.log(1 - p));
+            const c = [2.515517, 0.802853, 0.010328];
+            const d = [1.432788, 0.189269, 0.001308];
+
+            const numerator = c[0] + c[1] * t + c[2] * t * t;
+            const denominator = 1 + d[0] * t + d[1] * t * t + d[2] * t * t * t;
+
+            return t - numerator / denominator;
+        }
+
+        function calculateSPRT() {
+            const p0 = parseFloat(document.getElementById('controlRate').value) / 100;
+            const lift = parseFloat(document.getElementById('expectedLift').value) / 100;
+            const alpha = parseFloat(document.getElementById('alpha').value);
+            const beta = parseFloat(document.getElementById('beta').value);
+
+            const p1 = p0 * (1 + lift);
+
+            // SPRT boundaries
+            const upperBound = (1 - beta) / alpha;
+            const lowerBound = beta / (1 - alpha);
+
+            // Log-likelihood ratios per observation
+            const logUpperBound = Math.log(upperBound);
+            const logLowerBound = Math.log(lowerBound);
+
+            // Expected log-likelihood per observation under H0 and H1
+            const logLikelihoodH0 = p0 * Math.log(p1 / p0) + (1 - p0) * Math.log((1 - p1) / (1 - p0));
+            const logLikelihoodH1 = p1 * Math.log(p1 / p0) + (1 - p1) * Math.log((1 - p1) / (1 - p0));
+
+            // Expected sample size (Wald approximation)
+            const expectedSampleSize = (logUpperBound * (1 - beta) + logLowerBound * alpha) / logLikelihoodH1;
+
+            // Fixed-horizon sample size (for reference, using z-test)
+            const z_alpha = Math.abs(inverseNormal(1 - alpha));
+            const z_beta = Math.abs(inverseNormal(1 - beta));
+            const p_bar = (p0 + p1) / 2;
+            const fixedN = 2 * Math.pow((z_alpha + z_beta), 2) * p_bar * (1 - p_bar) / Math.pow(p1 - p0, 2);
+
+            const savings = ((fixedN - expectedSampleSize) / fixedN) * 100;
+
+            document.getElementById('upperBoundary').textContent = upperBound.toFixed(4);
+            document.getElementById('lowerBoundary').textContent = lowerBound.toFixed(4);
+            document.getElementById('expectedSampleSize').textContent = Math.round(expectedSampleSize).toLocaleString();
+            document.getElementById('samplingSavings').textContent = Math.max(0, savings.toFixed(1)) + '%';
+
+            drawSPRTChart(logUpperBound, logLowerBound, logLikelihoodH1);
+        }
+
+        function drawSPRTChart(logUpper, logLower, logLR) {
+            const canvas = document.getElementById('sprtChart');
+            const ctx = canvas.getContext('2d');
+
+            // Clear
+            ctx.fillStyle = 'rgba(26, 26, 46, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(160, 174, 192, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+
+            // Draw boundary lines
+            const upperY = canvas.height - padding - ((logUpper - logLower) / (logUpper - logLower)) * height;
+            const lowerY = canvas.height - padding;
+
+            ctx.strokeStyle = 'rgba(200, 50, 50, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(padding, upperY);
+            ctx.lineTo(canvas.width - padding, upperY);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'rgba(100, 150, 50, 0.6)';
+            ctx.beginPath();
+            ctx.moveTo(padding, lowerY);
+            ctx.lineTo(canvas.width - padding, lowerY);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            // Draw sample path (simulated random walk)
+            const observations = 100;
+            let logLR = 0;
+            const path = [logLR];
+
+            for (let i = 1; i < observations; i++) {
+                const randomWalk = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 0.1);
+                logLR += randomWalk;
+                path.push(Math.min(logUpper * 0.95, Math.max(logLower * 1.05, logLR)));
+            }
+
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            const minLR = logLower;
+            const maxLR = logUpper;
+
+            for (let i = 0; i < path.length; i++) {
+                const x = padding + (i / observations) * width;
+                const y = canvas.height - padding - ((path[i] - minLR) / (maxLR - minLR)) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Number of Observations', canvas.width / 2, canvas.height - 10);
+
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Log Likelihood Ratio', 0, 0);
+            ctx.restore();
+
+            // Legend
+            ctx.fillStyle = 'rgba(200, 50, 50, 0.8)';
+            ctx.fillRect(padding + 10, padding + 10, 15, 15);
+            ctx.fillStyle = '#ecf0f1';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Reject H0 (Significant)', padding + 30, padding + 22);
+
+            ctx.fillStyle = 'rgba(100, 150, 50, 0.8)';
+            ctx.fillRect(padding + 10, padding + 35, 15, 15);
+            ctx.fillText('Accept H0 (Not Sig)', padding + 30, padding + 47);
+        }
+
+        calculateSPRT();
+    </script>
+</body>
+</html>

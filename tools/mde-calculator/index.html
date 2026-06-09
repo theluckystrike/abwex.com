@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDE Calculator — Minimum Detectable Effect</title>
+    <meta name="description" content="Calculate minimum detectable effect for A/B tests. Determine what relative lifts are detectable given sample size, power, and significance level.">
+    <meta name="theme-color" content="#10b981">
+    <meta property="og:title" content="MDE Calculator — Minimum Detectable Effect">
+    <meta property="og:description" content="Calculate minimum detectable effect for A/B tests with sample size and power analysis.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abwex.com/tools/mde-calculator">
+    <link rel="canonical" href="https://abwex.com/tools/mde-calculator">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "MDE Calculator",
+        "description": "Calculate minimum detectable effect for A/B testing",
+        "url": "https://abwex.com/tools/mde-calculator",
+        "applicationCategory": "UtilityApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ecf0f1;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0aec0;
+            font-size: 1.1em;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"],
+        input[type="range"] {
+            flex: 1;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: #ecf0f1;
+            font-size: 1em;
+        }
+
+        input[type="range"] {
+            height: 6px;
+            padding: 0;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .input-unit {
+            min-width: 40px;
+            color: #a0aec0;
+            font-size: 0.9em;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #06d6a0 100%);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            color: #a0aec0;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 2em;
+            color: #10b981;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .result-subtext {
+            color: #7a8fa3;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        #mdeChart {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            color: #7a8fa3;
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+    </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MDE Calculator</h1>
+            <p class="subtitle">Minimum Detectable Effect for A/B Testing</p>
+        </header>
+
+        <div class="content">
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Parameters</h2>
+
+                <div class="form-group">
+                    <label for="baselineRate">Baseline Conversion Rate</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="baselineRate" min="0.01" max="100" value="10" step="0.1">
+                        <span class="input-unit">%</span>
+                    </div>
+                    <div class="input-wrapper" style="margin-top: 8px;">
+                        <input type="range" id="baselineRateSlider" min="0.01" max="100" value="10" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sampleSize">Sample Size Per Variant</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="sampleSize" min="10" max="1000000" value="10000" step="100">
+                        <span class="input-unit">users</span>
+                    </div>
+                    <div class="input-wrapper" style="margin-top: 8px;">
+                        <input type="range" id="sampleSizeSlider" min="10" max="1000000" value="10000" step="1000">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="alpha">Significance Level (α)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="alpha" min="0.001" max="0.5" value="0.05" step="0.001">
+                        <span class="input-unit">two-tail</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="power">Statistical Power (1 - β)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="power" min="0.5" max="0.99" value="0.8" step="0.01">
+                        <span class="input-unit">%</span>
+                    </div>
+                </div>
+
+                <button onclick="calculateMDE()">Calculate MDE</button>
+            </div>
+
+            <div class="panel">
+                <h2 style="margin-bottom: 25px; color: #10b981;">Results</h2>
+                <div class="results">
+                    <div class="result-item">
+                        <div class="result-label">Minimum Detectable Effect</div>
+                        <div class="result-value" id="mdeValue">—</div>
+                        <div class="result-subtext">Absolute change in conversion rate</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Relative Lift</div>
+                        <div class="result-value" id="relativeLiftValue">—</div>
+                        <div class="result-subtext">% improvement needed to detect</div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Variant Conversion Rate (to detect)</div>
+                        <div class="result-value" id="variantRateValue">—</div>
+                        <div class="result-subtext">Required for statistical significance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-bottom: 25px; color: #10b981;">MDE vs Sample Size</h2>
+            <canvas id="mdeChart"></canvas>
+        </div>
+
+        <footer>
+            © 2026 abwex.com — A/B Testing & Statistics Tools
+        </footer>
+<div style="margin:20px auto;max-width:728px;text-align:center">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+    </div>
+
+    <script>
+        // Sync sliders with inputs
+        document.getElementById('baselineRate').addEventListener('input', (e) => {
+            document.getElementById('baselineRateSlider').value = e.target.value;
+        });
+        document.getElementById('baselineRateSlider').addEventListener('input', (e) => {
+            document.getElementById('baselineRate').value = e.target.value;
+        });
+
+        document.getElementById('sampleSize').addEventListener('input', (e) => {
+            document.getElementById('sampleSizeSlider').value = e.target.value;
+        });
+        document.getElementById('sampleSizeSlider').addEventListener('input', (e) => {
+            document.getElementById('sampleSize').value = e.target.value;
+        });
+
+        // Inverse normal CDF approximation (Box-Muller)
+        function inverseNormal(p) {
+            if (p < 0.5) return -inverseNormal(1 - p);
+            if (p > 0.9999) return 3.7199;
+
+            const t = Math.sqrt(-2 * Math.log(1 - p));
+            const c = [2.515517, 0.802853, 0.010328];
+            const d = [1.432788, 0.189269, 0.001308];
+
+            const numerator = c[0] + c[1] * t + c[2] * t * t;
+            const denominator = 1 + d[0] * t + d[1] * t * t + d[2] * t * t * t;
+
+            return t - numerator / denominator;
+        }
+
+        function calculateMDE() {
+            const p0 = parseFloat(document.getElementById('baselineRate').value) / 100;
+            const n = parseInt(document.getElementById('sampleSize').value);
+            const alpha = parseFloat(document.getElementById('alpha').value);
+            const power = parseFloat(document.getElementById('power').value);
+
+            // Z-scores
+            const z_alpha = Math.abs(inverseNormal(1 - alpha / 2));
+            const z_beta = Math.abs(inverseNormal(power));
+
+            // MDE formula: sqrt(2 * p0 * (1 - p0) * (z_alpha + z_beta)^2 / n)
+            const numerator = 2 * p0 * (1 - p0) * Math.pow(z_alpha + z_beta, 2);
+            const mde = Math.sqrt(numerator / n);
+
+            const relativeLift = (mde / p0) * 100;
+            const variantRate = p0 + mde;
+
+            document.getElementById('mdeValue').textContent = (mde * 100).toFixed(3) + '%';
+            document.getElementById('relativeLiftValue').textContent = relativeLift.toFixed(2) + '%';
+            document.getElementById('variantRateValue').textContent = (variantRate * 100).toFixed(2) + '%';
+
+            drawMDEChart(p0, alpha, power);
+        }
+
+        function drawMDEChart(p0, alpha, power) {
+            const canvas = document.getElementById('mdeChart');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.fillStyle = 'rgba(26, 26, 46, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            const z_alpha = Math.abs(inverseNormal(1 - alpha / 2));
+            const z_beta = Math.abs(inverseNormal(power));
+
+            // Generate sample sizes from 100 to 100,000
+            const samples = [];
+            for (let i = 100; i <= 100000; i += 1000) {
+                samples.push(i);
+            }
+
+            const mdeValues = samples.map(n => {
+                const numerator = 2 * p0 * (1 - p0) * Math.pow(z_alpha + z_beta, 2);
+                return Math.sqrt(numerator / n) * 100;
+            });
+
+            const maxMDE = Math.max(...mdeValues);
+            const maxSample = Math.max(...samples);
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(160, 174, 192, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+
+            // Draw grid
+            ctx.strokeStyle = 'rgba(160, 174, 192, 0.1)';
+            for (let i = 0; i <= 10; i++) {
+                const x = padding + (width / 10) * i;
+                const y = canvas.height - padding - (height / 10) * i;
+
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height - padding);
+                ctx.lineTo(x, canvas.height - padding - 5);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + 5, y);
+                ctx.stroke();
+            }
+
+            // Draw curve
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            for (let i = 0; i < samples.length; i++) {
+                const x = padding + (samples[i] / maxSample) * width;
+                const y = canvas.height - padding - (mdeValues[i] / maxMDE) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw labels
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Sample Size per Variant', canvas.width / 2, canvas.height - 10);
+
+            ctx.save();
+            ctx.translate(15, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('MDE (%)', 0, 0);
+            ctx.restore();
+        }
+
+        // Initial calculation
+        calculateMDE();
+    </script>
+</body>
+</html>
