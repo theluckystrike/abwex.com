@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revenue Per Visitor (RPV) Calculator for A/B Tests</title>
+<meta name="description" content="Compare revenue per visitor between control and variant. Calculate RPV uplift and see which A/B test variant earns more per user.">
+<link rel="canonical" href="https://abwex.com/tools/revenue-per-visitor-calculator">
+<meta property="og:title" content="Revenue Per Visitor (RPV) Calculator for A/B Tests">
+<meta property="og:description" content="Compare revenue per visitor between control and variant. Calculate RPV uplift and see which A/B test variant earns more per user.">
+<meta property="og:url" content="https://abwex.com/tools/revenue-per-visitor-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Revenue Per Visitor (RPV) Calculator for A/B Tests",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Revenue Per Visitor (RPV) Calculator for A/B Tests", "item": "https://abwex.com/tools/revenue-per-visitor-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel2: #1c2330;
+    --border: #2d3645;
+    --text: #e6edf3;
+    --muted: #9aa7b4;
+    --accent: #4cc2ff;
+    --good: #3fb950;
+    --bad: #f85149;
+    --warn: #d29922;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  nav {
+    display: flex;
+    gap: 18px;
+    padding: 14px 20px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  nav a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 14px; }
+  nav a:hover { text-decoration: underline; }
+  main { max-width: 880px; margin: 0 auto; padding: 24px 20px 60px; }
+  h1 { font-size: 1.8rem; line-height: 1.25; margin: 18px 0 8px; }
+  h2 { font-size: 1.3rem; margin: 36px 0 12px; }
+  .intro { color: var(--muted); font-size: 1.05rem; max-width: 70ch; }
+  section#tool {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin: 24px 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+  .col {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .col h3 { margin: 0 0 12px; font-size: 1.05rem; }
+  .col.control h3 { color: var(--accent); }
+  .col.variant h3 { color: var(--warn); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 12px 0 4px; }
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+  }
+  input:focus { outline: none; border-color: var(--accent); }
+  .out {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 620px) { .out { grid-template-columns: 1fr; } }
+  .stat {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat .k { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .stat .v { font-size: 1.5rem; font-weight: 700; margin-top: 6px; }
+  .verdict {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    font-size: 1.05rem;
+  }
+  .pos { color: var(--good); }
+  .neg { color: var(--bad); }
+  .neu { color: var(--warn); }
+  code { background: var(--panel2); padding: 2px 6px; border-radius: 5px; font-size: 0.92em; }
+  .formula {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    font-family: ui-monospace, monospace;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  .prose { color: #cdd6e0; }
+  .prose a { color: var(--accent); }
+  .related a {
+    display: inline-block;
+    margin: 6px 10px 6px 0;
+    padding: 9px 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .related a:hover { border-color: var(--accent); }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 22px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; margin: 0 8px; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">abwex.com</a>
+  <a href="/tools/">All Tools</a>
+</nav>
+<main>
+  <h1>Compare Revenue Per Visitor Across A/B Test Variants</h1>
+  <p class="intro">Enter the visitors and total revenue for your control and variant, and this tool instantly computes revenue per visitor (RPV), the uplift, and projected gain at scale &mdash; the metric that matters when conversion rate and order value move in opposite directions.</p>
+
+  <section id="tool">
+    <div class="grid">
+      <div class="col control">
+        <h3>Control (A)</h3>
+        <label for="cVis">Visitors</label>
+        <input id="cVis" type="number" min="0" step="1" value="8200">
+        <label for="cRev">Total revenue ($)</label>
+        <input id="cRev" type="number" min="0" step="0.01" value="41000">
+        <label for="cOrd">Orders (optional)</label>
+        <input id="cOrd" type="number" min="0" step="1" value="640">
+      </div>
+      <div class="col variant">
+        <h3>Variant (B)</h3>
+        <label for="vVis">Visitors</label>
+        <input id="vVis" type="number" min="0" step="1" value="8150">
+        <label for="vRev">Total revenue ($)</label>
+        <input id="vRev" type="number" min="0" step="0.01" value="45200">
+        <label for="vOrd">Orders (optional)</label>
+        <input id="vOrd" type="number" min="0" step="1" value="655">
+      </div>
+    </div>
+
+    <div class="out">
+      <div class="stat"><div class="k">Control RPV</div><div class="v" id="oCrpv">$0.00</div></div>
+      <div class="stat"><div class="k">Variant RPV</div><div class="v" id="oVrpv">$0.00</div></div>
+      <div class="stat"><div class="k">RPV Uplift</div><div class="v" id="oUplift">0%</div></div>
+    </div>
+    <div class="out">
+      <div class="stat"><div class="k">Control AOV</div><div class="v" id="oCaov">$0.00</div></div>
+      <div class="stat"><div class="k">Variant AOV</div><div class="v" id="oVaov">$0.00</div></div>
+      <div class="stat"><div class="k">Extra $/10k visitors</div><div class="v" id="oProj">$0</div></div>
+    </div>
+
+    <div class="verdict" id="verdict">Enter your numbers to see the winner.</div>
+  </section>
+
+  <h2>How this RPV calculator works</h2>
+  <div class="prose">
+    <p>Revenue per visitor collapses two levers &mdash; how often people buy and how much they spend &mdash; into a single number you can compare directly. The core formula is simple:</p>
+    <div class="formula">RPV = Total Revenue &divide; Total Visitors</div>
+    <p>The tool computes RPV separately for your control and variant, then expresses the difference as a relative uplift:</p>
+    <div class="formula">Uplift % = (RPV<sub>variant</sub> &minus; RPV<sub>control</sub>) &divide; RPV<sub>control</sub> &times; 100</div>
+    <p>Why use RPV instead of conversion rate? Because a variant can <em>lower</em> conversion rate yet still win on money. Suppose a variant pushes a premium upsell: fewer people convert, but average order value (AOV = revenue &divide; orders) climbs enough that each visitor is worth more. Conversion-rate tests miss that entirely; RPV captures it. The reverse trap is just as common &mdash; a "winning" conversion lift that quietly shrinks basket size and loses revenue.</p>
+    <p>The calculator also decomposes the result. It shows AOV for each arm so you can see <em>why</em> RPV moved &mdash; whether the gain came from more orders or bigger orders &mdash; using the identity <code>RPV = Conversion Rate &times; AOV</code>. Finally it projects the per-visitor difference onto a fixed traffic block (extra dollars per 10,000 visitors) so the abstract percentage becomes a concrete revenue figure you can take to a planning meeting.</p>
+    <p>One caution: RPV is a high-variance metric because a handful of large orders can swing the mean. Treat the uplift here as a point estimate of business impact, not proof of significance. Confirm the result holds with a proper significance test on adequate sample size before you ship the variant to all traffic.</p>
+  </div>
+
+  <h2>Related Tools</h2>
+  <section class="related">
+    <a href="/tools/conversion-rate-calculator">Conversion Rate Calculator</a>
+    <a href="/tools/funnel-conversion-calculator">Funnel Conversion Calculator</a>
+    <a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>
+  </section>
+</main>
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="/tools/">All Tools</a>
+  </div>
+  <p>&copy; 2026 abwex.com &mdash; built for A/B testers.</p>
+</footer>
+<script>
+(function () {
+  var ids = ['cVis', 'cRev', 'cOrd', 'vVis', 'vRev', 'vOrd'];
+  var el = {};
+  ids.forEach(function (id) { el[id] = document.getElementById(id); });
+
+  function num(id) {
+    var v = parseFloat(el[id].value);
+    return (isFinite(v) && v >= 0) ? v : 0;
+  }
+
+  function money(x) {
+    return '$' + x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function money0(x) {
+    return '$' + Math.round(x).toLocaleString('en-US');
+  }
+
+  function set(id, txt) { document.getElementById(id).textContent = txt; }
+
+  function compute() {
+    var cVis = num('cVis'), cRev = num('cRev'), cOrd = num('cOrd');
+    var vVis = num('vVis'), vRev = num('vRev'), vOrd = num('vOrd');
+
+    var cRPV = cVis > 0 ? cRev / cVis : 0;
+    var vRPV = vVis > 0 ? vRev / vVis : 0;
+    var cAOV = cOrd > 0 ? cRev / cOrd : 0;
+    var vAOV = vOrd > 0 ? vRev / vOrd : 0;
+
+    set('oCrpv', money(cRPV));
+    set('oVrpv', money(vRPV));
+    set('oCaov', cOrd > 0 ? money(cAOV) : 'n/a');
+    set('oVaov', vOrd > 0 ? money(vAOV) : 'n/a');
+
+    var upliftEl = document.getElementById('oUplift');
+    var verdict = document.getElementById('verdict');
+
+    if (cRPV <= 0) {
+      upliftEl.textContent = '—';
+      upliftEl.className = 'v';
+      verdict.innerHTML = 'Enter control visitors and revenue to compute uplift.';
+      set('oProj', '$0');
+      return;
+    }
+
+    var uplift = (vRPV - cRPV) / cRPV * 100;
+    upliftEl.textContent = (uplift >= 0 ? '+' : '') + uplift.toFixed(2) + '%';
+    upliftEl.className = 'v ' + (uplift > 0 ? 'pos' : (uplift < 0 ? 'neg' : 'neu'));
+
+    var diffPerVisitor = vRPV - cRPV;
+    var proj = diffPerVisitor * 10000;
+    set('oProj', (proj >= 0 ? '+' : '-') + money0(Math.abs(proj)));
+
+    var msg;
+    if (Math.abs(uplift) < 0.01) {
+      msg = '<span class="neu">Dead heat.</span> Both arms earn ' + money(cRPV) + ' per visitor. No revenue difference detected.';
+    } else if (uplift > 0) {
+      msg = '<span class="pos">Variant B wins.</span> It earns ' + money(vRPV) + ' vs ' + money(cRPV) + ' per visitor (' + uplift.toFixed(2) + '% more), worth about ' + money0(proj) + ' extra per 10,000 visitors.';
+    } else {
+      msg = '<span class="neg">Control A wins.</span> Variant B drops RPV to ' + money(vRPV) + ' from ' + money(cRPV) + ' (' + uplift.toFixed(2) + '%), costing about ' + money0(Math.abs(proj)) + ' per 10,000 visitors.';
+    }
+
+    if (cOrd > 0 && vOrd > 0) {
+      var cCR = cVis > 0 ? cOrd / cVis * 100 : 0;
+      var vCR = vVis > 0 ? vOrd / vVis * 100 : 0;
+      var crDelta = vCR - cCR;
+      var aovDelta = vAOV - cAOV;
+      var driver;
+      if (Math.abs(crDelta) > 0.001 || Math.abs(aovDelta) > 0.001) {
+        var crWord = crDelta >= 0 ? 'higher' : 'lower';
+        var aovWord = aovDelta >= 0 ? 'higher' : 'lower';
+        driver = ' Driver: conversion rate ' + cCR.toFixed(2) + '% → ' + vCR.toFixed(2) + '% (' + crWord + '), AOV ' + money(cAOV) + ' → ' + money(vAOV) + ' (' + aovWord + ').';
+        msg += '<br><span style="color:var(--muted);font-size:0.92rem">' + driver + '</span>';
+      }
+    }
+
+    verdict.innerHTML = msg;
+  }
+
+  ids.forEach(function (id) { el[id].addEventListener('input', compute); });
+  compute();
+})();
+</script>
+</body>
+</html>

@@ -93,4 +93,9 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+<url><loc>https://abwex.com/tools/ab-test-roi-calculator</loc><lastmod>2026-06-30</lastmod></url>
+<url><loc>https://abwex.com/tools/bonferroni-correction-calculator</loc><lastmod>2026-06-30</lastmod></url>
+<url><loc>https://abwex.com/tools/margin-of-error-calculator</loc><lastmod>2026-06-30</lastmod></url>
+<url><loc>https://abwex.com/tools/revenue-per-visitor-calculator</loc><lastmod>2026-06-30</lastmod></url>
+<url><loc>https://abwex.com/tools/sample-ratio-mismatch-checker</loc><lastmod>2026-06-30</lastmod></url>
 </urlset>

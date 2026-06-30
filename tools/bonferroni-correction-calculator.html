@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bonferroni Correction Calculator</title>
+<meta name="description" content="Adjust your significance threshold for multiple A/B test variants. Enter the number of comparisons and alpha to get the corrected p-value.">
+<link rel="canonical" href="https://abwex.com/tools/bonferroni-correction-calculator">
+<meta property="og:title" content="Bonferroni Correction Calculator">
+<meta property="og:description" content="Adjust your significance threshold for multiple A/B test variants. Enter the number of comparisons and alpha to get the corrected p-value.">
+<meta property="og:url" content="https://abwex.com/tools/bonferroni-correction-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Bonferroni Correction Calculator",
+      "url": "https://abwex.com/tools/bonferroni-correction-calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Bonferroni Correction Calculator", "item": "https://abwex.com/tools/bonferroni-correction-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#0e1116;--panel:#171c24;--panel2:#1f2630;--accent:#5b9dff;--accent2:#3ad29f;
+  --text:#e6ebf2;--muted:#9aa6b5;--border:#2a323d;--warn:#ffb454;--bad:#ff6b6b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  line-height:1.6;
+}
+nav{display:flex;gap:18px;padding:16px 22px;background:var(--panel);border-bottom:1px solid var(--border);font-size:.95rem}
+nav a{color:var(--accent);text-decoration:none;font-weight:600}
+nav a:hover{text-decoration:underline}
+main{max-width:880px;margin:0 auto;padding:28px 22px 60px}
+h1{font-size:1.85rem;line-height:1.2;margin:.2em 0 .35em}
+h2{font-size:1.3rem;margin:1.8em 0 .5em;color:#fff}
+.intro{color:var(--muted);font-size:1.05rem;margin-bottom:1.6em}
+#tool{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+label{display:block;font-weight:600;margin-bottom:6px;font-size:.92rem}
+label small{display:block;font-weight:400;color:var(--muted);font-size:.78rem;margin-top:2px}
+input,select{
+  width:100%;padding:11px 12px;background:var(--panel2);color:var(--text);
+  border:1px solid var(--border);border-radius:9px;font-size:1rem;font-family:inherit;
+}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
+.out{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.out{grid-template-columns:1fr}}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:11px;padding:16px}
+.card .k{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card .v{font-size:1.7rem;font-weight:700;margin-top:4px;color:var(--accent2);word-break:break-all}
+.card.full{grid-column:1/-1}
+.verdict{font-size:1.05rem;font-weight:600}
+.tbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:.9rem}
+.tbl th,.tbl td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+.tbl th{color:var(--muted);font-weight:600}
+.tbl td.sig{color:var(--accent2);font-weight:600}
+.tbl td.nsig{color:var(--muted)}
+code{background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:.9em}
+.formula{background:var(--panel2);border-left:3px solid var(--accent);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:.95rem;overflow-x:auto}
+.related a{display:inline-block;margin:6px 10px 6px 0;padding:8px 14px;background:var(--panel2);border:1px solid var(--border);border-radius:9px;color:var(--accent);text-decoration:none;font-weight:600;font-size:.92rem}
+.related a:hover{border-color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:24px 22px;text-align:center;color:var(--muted);font-size:.9rem}
+footer a{color:var(--accent);text-decoration:none;margin:0 8px}
+p{margin:.7em 0}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">abwex.com</a>
+  <a href="/tools/">All Tools</a>
+</nav>
+<main>
+<h1>Adjust Alpha for Multiple A/B Test Comparisons</h1>
+<p class="intro">Running several variants against one control inflates your false-positive rate. This calculator applies the Bonferroni correction so each comparison stays honest about statistical significance.</p>
+
+<section id="tool">
+  <div class="grid">
+    <div>
+      <label for="alpha">Family-wise alpha (&alpha;)
+        <small>Overall false-positive rate you accept</small></label>
+      <input id="alpha" type="number" min="0.0001" max="0.5" step="0.001" value="0.05">
+    </div>
+    <div>
+      <label for="comps">Number of comparisons (m)
+        <small>How many variants / tests you check</small></label>
+      <input id="comps" type="number" min="1" max="1000" step="1" value="4">
+    </div>
+    <div>
+      <label for="pval">Observed p-value (optional)
+        <small>A single test's p-value to judge</small></label>
+      <input id="pval" type="number" min="0" max="1" step="0.0001" value="0.012">
+    </div>
+    <div>
+      <label for="conf">Reported as
+        <small>Output format for the threshold</small></label>
+      <select id="conf">
+        <option value="p" selected>Corrected p threshold</option>
+        <option value="c">Per-test confidence %</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="out">
+    <div class="card">
+      <div class="k">Corrected alpha (&alpha;/m)</div>
+      <div class="v" id="oAlpha">0.0125</div>
+    </div>
+    <div class="card">
+      <div class="k">Per-test confidence</div>
+      <div class="v" id="oConf">98.75%</div>
+    </div>
+    <div class="card full">
+      <div class="k">Verdict for observed p</div>
+      <div class="v verdict" id="oVerdict">&mdash;</div>
+    </div>
+  </div>
+
+  <table class="tbl" id="tbl">
+    <thead><tr><th>m comparisons</th><th>Corrected threshold</th><th>Your p significant?</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section>
+<h2>How the Bonferroni correction works</h2>
+<p>When you test multiple variants at once, the chance that <em>at least one</em> shows a false positive grows with each comparison. With <code>m</code> independent tests each at alpha &alpha;, the family-wise error rate is approximately <code>1 - (1 - &alpha;)^m</code> &mdash; for four variants at 0.05 that is already about 18.5%, not 5%.</p>
+
+<div class="formula">
+  &alpha;<sub>corrected</sub> = &alpha; / m &nbsp;&nbsp;&rArr;&nbsp;&nbsp; reject H&#8320; only when p &le; &alpha;/m
+</div>
+
+<p>The Bonferroni method fixes this by dividing your target family-wise alpha by the number of comparisons. Each individual test must now clear a stricter bar. The tool computes that corrected threshold, converts it to a per-test confidence level (<code>1 - &alpha;/m</code>, shown as a percentage), and compares any p-value you enter against it. It also prints the exact family-wise error rate <code>1 - (1 - &alpha;/m)^m</code> after correction so you can confirm the control held near your original &alpha;.</p>
+
+<p>Bonferroni is the most conservative of the multiple-comparison adjustments, which is why it trades statistical power for tight control of false positives. If you are screening dozens of metrics and can tolerate some false discoveries, a false-discovery-rate approach (Benjamini&ndash;Hochberg) recovers more power. But for a handful of A/B variants where a wrong "winner" ships real product changes, Bonferroni's simplicity and guaranteed bound make it the safe default. The sweep table below shows how the threshold tightens as you add variants, so you can see exactly how much harder each new comparison makes it to declare a winner &mdash; a planning detail most calculators omit. Use it to right-size your test count before you launch, not after.</p>
+</section>
+
+<section class="related">
+<h2>Related Tools</h2>
+<a href="/tools/p-value-calculator">P-Value Calculator</a>
+<a href="/tools/false-discovery-rate-calculator">False Discovery Rate Calculator</a>
+<a href="/tools/chi-square-test">Chi-Square Test</a>
+</section>
+</main>
+
+<footer>
+  <div><a href="/">Home</a> &middot; <a href="/tools/">All Tools</a></div>
+  <p>&copy; 2026 abwex.com</p>
+</footer>
+
+<script>
+(function(){
+  var alphaEl=document.getElementById('alpha'),
+      compsEl=document.getElementById('comps'),
+      pvalEl=document.getElementById('pval'),
+      confSel=document.getElementById('conf'),
+      oAlpha=document.getElementById('oAlpha'),
+      oConf=document.getElementById('oConf'),
+      oVerdict=document.getElementById('oVerdict'),
+      tbody=document.querySelector('#tbl tbody');
+
+  function fmt(x){
+    if(x>=0.001) return x.toFixed(4).replace(/0+$/,'').replace(/\.$/,'');
+    return x.toExponential(2);
+  }
+
+  function compute(){
+    var a=parseFloat(alphaEl.value),
+        m=parseInt(compsEl.value,10),
+        p=parseFloat(pvalEl.value);
+    if(!(a>0)||a>1) a=0.05;
+    if(!(m>=1)) m=1;
+    if(m>1000) m=1000;
+
+    var corr=a/m;
+    var conf=(1-corr)*100;
+    var fwer=(1-Math.pow(1-corr,m))*100;
+
+    oAlpha.textContent=fmt(corr);
+    oConf.textContent=conf.toFixed(2)+'%';
+
+    if(!isNaN(p)&&p>=0&&p<=1){
+      if(p<=corr){
+        oVerdict.style.color='var(--accent2)';
+        oVerdict.innerHTML='Significant &mdash; p='+fmt(p)+' &le; '+fmt(corr)
+          +' (FWER &asymp; '+fwer.toFixed(2)+'%)';
+      }else{
+        oVerdict.style.color='var(--warn)';
+        oVerdict.innerHTML='Not significant &mdash; p='+fmt(p)+' &gt; '+fmt(corr)
+          +' (FWER &asymp; '+fwer.toFixed(2)+'%)';
+      }
+    }else{
+      oVerdict.style.color='var(--muted)';
+      oVerdict.textContent='Enter a valid p-value (0–1)';
+    }
+
+    // sweep table
+    var rows='', list=[2,3,4,5,8,10,20];
+    if(list.indexOf(m)<0){ list.push(m); list.sort(function(x,y){return x-y;}); }
+    for(var i=0;i<list.length;i++){
+      var mm=list[i], th=a/mm, hit='';
+      if(!isNaN(p)&&p>=0&&p<=1){
+        hit = p<=th
+          ? '<td class="sig">yes</td>'
+          : '<td class="nsig">no</td>';
+      }else hit='<td class="nsig">&mdash;</td>';
+      var mark = mm===m ? ' style="background:var(--panel)"' : '';
+      rows+='<tr'+mark+'><td>'+mm+'</td><td>'+fmt(th)+'</td>'+hit+'</tr>';
+    }
+    tbody.innerHTML=rows;
+  }
+
+  [alphaEl,compsEl,pvalEl,confSel].forEach(function(el){
+    el.addEventListener('input',compute);
+    el.addEventListener('change',compute);
+  });
+  compute();
+})();
+</script>
+</body>
+</html>

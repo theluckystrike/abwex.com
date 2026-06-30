@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Margin of Error Calculator</title>
+<meta name="description" content="Calculate the margin of error for your conversion rate or survey. Enter sample size, proportion and confidence level for instant results.">
+<link rel="canonical" href="https://abwex.com/tools/margin-of-error-calculator">
+<meta property="og:title" content="Margin of Error Calculator">
+<meta property="og:description" content="Calculate the margin of error for your conversion rate or survey. Enter sample size, proportion and confidence level for instant results.">
+<meta property="og:url" content="https://abwex.com/tools/margin-of-error-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Margin of Error Calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "url": "https://abwex.com/tools/margin-of-error-calculator",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Margin of Error Calculator", "item": "https://abwex.com/tools/margin-of-error-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#0e1117; --panel:#161b22; --panel2:#1c2330; --line:#2b3340;
+  --txt:#e6edf3; --muted:#9aa7b5; --accent:#4f9dff; --accent2:#36d399; --warn:#ffb454;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  line-height:1.6;
+}
+nav{display:flex;gap:18px;padding:16px 22px;border-bottom:1px solid var(--line);font-size:14px}
+nav a{color:var(--accent);text-decoration:none}
+nav a:hover{text-decoration:underline}
+main{max-width:760px;margin:0 auto;padding:26px 20px 50px}
+h1{font-size:1.9rem;line-height:1.25;margin:.2em 0 .3em}
+.intro{color:var(--muted);font-size:1.02rem;margin-bottom:22px}
+section{margin:30px 0}
+h2{font-size:1.3rem;border-bottom:1px solid var(--line);padding-bottom:6px}
+#tool{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.86rem;color:var(--muted);margin-bottom:6px;font-weight:600}
+input,select{
+  width:100%;padding:11px 12px;border-radius:8px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--txt);font-size:1rem;outline:none;
+}
+input:focus,select:focus{border-color:var(--accent)}
+.hint{font-size:.74rem;color:var(--muted);margin-top:4px}
+.out{margin-top:22px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:18px}
+.big{font-size:2.4rem;font-weight:700;color:var(--accent2);letter-spacing:-1px}
+.big span{font-size:1.1rem;color:var(--muted);font-weight:400}
+.row{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:9px 0;font-size:.95rem}
+.row:first-of-type{border-top:none}
+.row b{color:var(--txt)}
+.ci{color:var(--accent);font-weight:600}
+.note{font-size:.8rem;color:var(--warn);margin-top:10px}
+code{background:#0a0d12;padding:2px 6px;border-radius:5px;font-size:.86em;color:#ffd479}
+.formula{background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;font-size:.9rem}
+.related a{display:inline-block;margin:6px 10px 6px 0;padding:8px 14px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:8px;color:var(--accent);text-decoration:none;font-size:.9rem}
+.related a:hover{border-color:var(--accent)}
+footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var(--muted);font-size:.85rem}
+footer a{color:var(--accent);text-decoration:none;margin:0 8px}
+p{margin:.8em 0}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">abwex.com</a>
+  <a href="/tools/">All Tools</a>
+</nav>
+<main>
+  <h1>Compute Your Survey &amp; Conversion Margin of Error</h1>
+  <p class="intro">Estimate how far your observed proportion may stray from the true value. Built for A/B testers and analysts who need fast, defensible confidence intervals around a conversion rate.</p>
+
+  <section id="tool">
+    <div class="grid">
+      <div>
+        <label for="n">Sample size (n)</label>
+        <input id="n" type="number" min="1" step="1" value="1200">
+        <div class="hint">Number of visitors or respondents.</div>
+      </div>
+      <div>
+        <label for="p">Observed proportion / conversion (%)</label>
+        <input id="p" type="number" min="0" max="100" step="0.1" value="12">
+        <div class="hint">Use 50% for the most conservative (widest) estimate.</div>
+      </div>
+      <div>
+        <label for="conf">Confidence level</label>
+        <select id="conf">
+          <option value="1.6449">90%</option>
+          <option value="1.96" selected>95%</option>
+          <option value="2.5758">99%</option>
+        </select>
+        <div class="hint">Controls the z-score multiplier.</div>
+      </div>
+      <div>
+        <label for="pop">Population size (optional)</label>
+        <input id="pop" type="number" min="0" step="1" value="">
+        <div class="hint">Leave blank for an infinite / very large population.</div>
+      </div>
+    </div>
+
+    <div class="out" aria-live="polite">
+      <div class="big" id="moe">±0.00<span>%</span></div>
+      <div class="row"><span>Confidence interval</span><b class="ci" id="ci">–</b></div>
+      <div class="row"><span>Standard error</span><b id="se">–</b></div>
+      <div class="row"><span>Z-score multiplier</span><b id="z">–</b></div>
+      <div class="row"><span>Relative margin</span><b id="rel">–</b></div>
+      <div class="note" id="note"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How the margin of error is calculated</h2>
+    <p>The margin of error (MOE) tells you the half-width of the band around a measured proportion that, on repeated sampling, would contain the true population value at your chosen confidence level. For a single proportion <code>p</code> drawn from a sample of size <code>n</code>, the calculator uses the normal (Wald) approximation:</p>
+    <div class="formula">MOE = z &times; &radic;( p &times; (1 − p) / n )</div>
+    <p>Here <code>z</code> is the critical value of the standard normal distribution: 1.6449 for 90%, 1.96 for 95%, and 2.5758 for 99% confidence. The quantity under the root is the <strong>standard error</strong> of the proportion. Because <code>p(1−p)</code> is maximised at p = 0.5, a 50% conversion rate produces the widest possible interval for any given sample size — which is why pollsters quote MOE at p = 0.5 when they want a worst-case figure.</p>
+    <p>When you supply a finite population, the tool applies the <strong>finite population correction</strong> (FPC), multiplying the standard error by <code>&radic;((N − n) / (N − 1))</code>. This shrinks the margin when your sample is a meaningful fraction of the whole population, since you have already measured a large share of it. With an infinite or blank population the FPC equals one and has no effect.</p>
+    <p>The reported confidence interval is simply <code>p ± MOE</code>, clamped to the 0–100% range. The <strong>relative margin</strong> divides MOE by <code>p</code>, which is often more useful in A/B testing: a ±1.2% absolute margin on a 2% conversion rate is a huge ±60% relative swing, signalling you need far more traffic before the result is trustworthy. Note that the Wald formula loses accuracy for very small samples or proportions near 0% or 100%; in those cases a Wilson or exact interval is preferable.</p>
+  </section>
+
+  <section class="related">
+    <h2>Related Tools</h2>
+    <a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>
+    <a href="/tools/sample-size-calculator">Sample Size Calculator</a>
+    <a href="/tools/z-score-calculator">Z-Score Calculator</a>
+  </section>
+</main>
+
+<footer>
+  <a href="/">Home</a>
+  <a href="/tools/">All Tools</a>
+  <div style="margin-top:8px">© 2026 abwex.com</div>
+</footer>
+
+<script>
+(function(){
+  var nEl=document.getElementById('n'),
+      pEl=document.getElementById('p'),
+      cEl=document.getElementById('conf'),
+      popEl=document.getElementById('pop');
+  var moeEl=document.getElementById('moe'),
+      ciEl=document.getElementById('ci'),
+      seEl=document.getElementById('se'),
+      zEl=document.getElementById('z'),
+      relEl=document.getElementById('rel'),
+      noteEl=document.getElementById('note');
+
+  function fmt(x,d){ return (x*100).toFixed(d===undefined?2:d); }
+
+  function calc(){
+    var n=parseFloat(nEl.value);
+    var pPct=parseFloat(pEl.value);
+    var z=parseFloat(cEl.value);
+    var N=parseFloat(popEl.value);
+
+    if(!(n>0) || isNaN(pPct) || pPct<0 || pPct>100){
+      moeEl.innerHTML='—';
+      ciEl.textContent='–'; seEl.textContent='–';
+      zEl.textContent='–'; relEl.textContent='–';
+      noteEl.textContent='Enter a valid sample size (>0) and proportion (0–100%).';
+      return;
+    }
+
+    var p=pPct/100;
+    var se=Math.sqrt(p*(1-p)/n);
+
+    // Finite population correction
+    var fpcApplied=false;
+    if(N>1 && N>=n){
+      se=se*Math.sqrt((N-n)/(N-1));
+      fpcApplied=true;
+    }
+
+    var moe=z*se;
+    var lo=Math.max(0,p-moe);
+    var hi=Math.min(1,p+moe);
+    var rel=p>0 ? (moe/p)*100 : 0;
+
+    moeEl.innerHTML='±'+fmt(moe)+'<span>%</span>';
+    ciEl.textContent=fmt(lo)+'% – '+fmt(hi)+'%';
+    seEl.textContent=fmt(se,3)+'%';
+    zEl.textContent=z.toFixed(4);
+    relEl.textContent= p>0 ? '±'+rel.toFixed(1)+'%' : 'n/a';
+
+    var msgs=[];
+    if(fpcApplied) msgs.push('Finite population correction applied (N='+N+').');
+    if(rel>30 && p>0) msgs.push('Relative margin is large — collect more data before trusting this rate.');
+    if(p<0.05 || p>0.95) msgs.push('Proportion is near an extreme; Wald approximation is less reliable here.');
+    if(n<30) msgs.push('Small sample (n<30): treat the interval with caution.');
+    noteEl.textContent=msgs.join(' ');
+  }
+
+  [nEl,pEl,cEl,popEl].forEach(function(el){
+    el.addEventListener('input',calc);
+    el.addEventListener('change',calc);
+  });
+  calc();
+})();
+</script>
+</body>
+</html>

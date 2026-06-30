@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Ratio Mismatch (SRM) Checker for A/B Tests</title>
+<meta name="description" content="Detect sample ratio mismatch in your A/B test. Enter visitor counts per variant to instantly check if your traffic split is broken.">
+<link rel="canonical" href="https://abwex.com/tools/sample-ratio-mismatch-checker">
+<meta property="og:title" content="Sample Ratio Mismatch (SRM) Checker for A/B Tests">
+<meta property="og:description" content="Detect sample ratio mismatch in your A/B test. Enter visitor counts per variant to instantly check if your traffic split is broken.">
+<meta property="og:url" content="https://abwex.com/tools/sample-ratio-mismatch-checker">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Sample Ratio Mismatch (SRM) Checker for A/B Tests",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+      "author": {"@type": "Person", "name": "Michael Lip", "url": "https://zovo.one"}
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/"},
+        {"@type": "ListItem", "position": 3, "name": "Sample Ratio Mismatch (SRM) Checker for A/B Tests", "item": "https://abwex.com/tools/sample-ratio-mismatch-checker"}
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#0d1117;--panel:#161b22;--panel2:#1c2430;--line:#2b3340;
+  --txt:#e6edf3;--muted:#9aa6b2;--accent:#4cc9f0;--good:#3fb950;--warn:#f0883e;--bad:#f85149;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.6}
+nav{display:flex;gap:18px;padding:14px 20px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.95rem}
+nav a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:1.7rem;line-height:1.25;margin:.3em 0 .2em}
+.lede{color:var(--muted);font-size:1.05rem;margin-bottom:24px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:22px 0}
+h2{font-size:1.25rem;margin:.2em 0 .6em}
+label{display:block;font-weight:600;margin:14px 0 5px;font-size:.92rem}
+.hint{color:var(--muted);font-weight:400;font-size:.82rem}
+input[type=number],select{width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);
+  border:1px solid var(--line);border-radius:8px;font-size:1rem;outline:none}
+input[type=number]:focus,select:focus{border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.variant-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:end;margin-bottom:6px}
+@media(max-width:520px){.variant-row{grid-template-columns:1fr}}
+#out{margin-top:20px}
+.verdict{border-radius:10px;padding:16px 18px;font-size:1.1rem;font-weight:700;margin-bottom:14px;border:1px solid var(--line)}
+.verdict.good{background:rgba(63,185,80,.12);border-color:var(--good);color:var(--good)}
+.verdict.warn{background:rgba(240,136,62,.12);border-color:var(--warn);color:var(--warn)}
+.verdict.bad{background:rgba(248,81,73,.12);border-color:var(--bad);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+.stat{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)}
+.stat b{font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:6px;background:var(--panel2);overflow:hidden;margin-top:4px;display:flex}
+.bar i{display:block;height:100%}
+button{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
+  padding:9px 14px;font-size:.9rem;cursor:pointer;margin-top:14px}
+button:hover{border-color:var(--accent)}
+.prose p{color:#cdd6df}
+.prose code{background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:.88rem}
+.related a{display:inline-block;color:var(--accent);text-decoration:none;margin:6px 14px 6px 0;font-weight:600}
+.related a:hover{text-decoration:underline}
+footer{border-top:1px solid var(--line);padding:22px 18px;text-align:center;color:var(--muted);font-size:.9rem}
+footer a{color:var(--accent);text-decoration:none;margin:0 10px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">abwex.com</a>
+  <a href="/tools/">All Tools</a>
+</nav>
+<div class="wrap">
+<h1>Check Your A/B Test for a Broken Traffic Split</h1>
+<p class="lede">Enter the visitors assigned to each variant and the split you expected. This SRM checker runs a chi-square goodness-of-fit test and tells you instantly whether your randomization is trustworthy.</p>
+
+<section id="tool">
+  <h2>SRM Checker</h2>
+
+  <label for="split">Expected split <span class="hint">— how you configured the experiment</span></label>
+  <select id="split">
+    <option value="50,50" selected>50 / 50 (two equal variants)</option>
+    <option value="33.34,33.33,33.33">33 / 33 / 33 (three equal variants)</option>
+    <option value="25,25,25,25">25 / 25 / 25 / 25 (four equal variants)</option>
+    <option value="90,10">90 / 10 (ramp / canary)</option>
+    <option value="80,20">80 / 20</option>
+    <option value="custom">Custom weights (set per row)</option>
+  </select>
+
+  <div class="grid" style="margin-top:14px">
+    <div>
+      <label for="alpha">Significance threshold (alpha)</label>
+      <select id="alpha">
+        <option value="0.01" selected>0.01 — recommended for SRM</option>
+        <option value="0.05">0.05</option>
+        <option value="0.001">0.001 — very strict</option>
+      </select>
+    </div>
+  </div>
+
+  <h2 style="font-size:1rem;margin-top:20px">Visitors per variant</h2>
+  <div id="rows">
+    <div class="variant-row">
+      <div><label>Variant A name</label><input type="text" class="vname" value="Control" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>
+      <div><label>Visitors</label><input type="number" class="vcount" value="50214" min="0" step="1"></div>
+      <div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="50" min="0" step="0.01" disabled></div>
+    </div>
+    <div class="variant-row">
+      <div><label>Variant B name</label><input type="text" class="vname" value="Treatment" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>
+      <div><label>Visitors</label><input type="number" class="vcount" value="49021" min="0" step="1"></div>
+      <div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="50" min="0" step="0.01" disabled></div>
+    </div>
+  </div>
+  <button id="addBtn" type="button">+ Add variant</button>
+
+  <div id="out"></div>
+</section>
+
+<section class="prose">
+  <h2>How the SRM check works</h2>
+  <p>A <strong>sample ratio mismatch (SRM)</strong> happens when the share of users actually routed to each variant differs from the split you configured. Even a tiny deviation — say 51.5% vs 48.5% on a 50/50 test — can be statistically impossible by chance once your sample is large, and it usually signals a real bug: a redirect that drops one arm, bot filtering applied unevenly, a logging gap, or a leaky cookie. When that happens, the conversion numbers are no longer comparable and the whole experiment should be paused, not shipped.</p>
+  <p>This tool uses <strong>Pearson's chi-square goodness-of-fit test</strong>. For each variant it computes the expected count <code>E = N &times; w</code>, where <code>N</code> is total visitors and <code>w</code> is that variant's configured weight. It then sums the squared, normalized errors across all <code>k</code> variants:</p>
+  <p><code>&chi;&sup2; = &Sigma; (O&minus;E)&sup2; / E</code></p>
+  <p>where <code>O</code> is the observed visitor count. The statistic follows a chi-square distribution with <code>k&minus;1</code> degrees of freedom. The tool converts &chi;&sup2; to a <strong>p-value</strong> using the regularized upper incomplete gamma function, evaluated in pure JavaScript with a Lanczos gamma approximation and a series/continued-fraction expansion — no server call. If the p-value falls below your alpha (0.01 is the industry-standard SRM threshold, far stricter than the 0.05 used for the metric of interest), the split is flagged as mismatched.</p>
+  <p>The information you gain here that a plain percentage view hides: a 0.3-point imbalance is meaningless at 2,000 users but a five-alarm fire at 2,000,000. Chi-square scales the alarm to your sample size automatically, so you only act when the deviation genuinely exceeds randomization noise.</p>
+</section>
+
+<section class="related">
+  <h2>Related Tools</h2>
+  <a href="/tools/chi-square-test">Chi-Square Test Calculator</a>
+  <a href="/tools/sample-size-calculator">A/B Sample Size Calculator</a>
+  <a href="/tools/p-value-calculator">P-Value Calculator</a>
+</section>
+</div>
+
+<footer>
+  <div><a href="/">Home</a><a href="/tools/">All Tools</a></div>
+  <p>© 2026 abwex.com — built for honest experimentation.</p>
+</footer>
+
+<script>
+(function(){
+  // ---- chi-square -> p-value (pure JS) ----
+  function logGamma(x){
+    var g=[676.5203681218851,-1259.1392167224028,771.32342877765313,
+      -176.61502916214059,12.507343278686905,-0.13857109526572012,
+      9.9843695780195716e-6,1.5056327351493116e-7];
+    if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-logGamma(1-x);
+    x-=1; var a=0.99999999999980993, t=x+7.5;
+    for(var i=0;i<g.length;i++) a+=g[i]/(x+i+1);
+    return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(a);
+  }
+  // regularized lower incomplete gamma P(s,x)
+  function gammaP(s,x){
+    if(x<=0) return 0;
+    if(x<s+1){ // series
+      var sum=1/s, term=sum;
+      for(var n=1;n<200;n++){ term*=x/(s+n); sum+=term; if(Math.abs(term)<Math.abs(sum)*1e-12) break; }
+      return sum*Math.exp(-x+s*Math.log(x)-logGamma(s));
+    } else { // continued fraction for Q, then 1-Q
+      var b=x+1-s, c=1e30, d=1/b, h=d;
+      for(var i=1;i<200;i++){
+        var an=-i*(i-s); b+=2;
+        d=an*d+b; if(Math.abs(d)<1e-30) d=1e-30;
+        c=b+an/c; if(Math.abs(c)<1e-30) c=1e-30;
+        d=1/d; var del=d*c; h*=del;
+        if(Math.abs(del-1)<1e-12) break;
+      }
+      var Q=Math.exp(-x+s*Math.log(x)-logGamma(s))*h;
+      return 1-Q;
+    }
+  }
+  // p-value = P(chi2 > stat) with df
+  function chiSqP(stat,df){
+    if(stat<=0) return 1;
+    return 1-gammaP(df/2, stat/2);
+  }
+
+  var rows=document.getElementById('rows');
+  var out=document.getElementById('out');
+  var splitSel=document.getElementById('split');
+  var alphaSel=document.getElementById('alpha');
+  var addBtn=document.getElementById('addBtn');
+
+  function applySplitWeights(){
+    var v=splitSel.value;
+    var rowEls=rows.querySelectorAll('.variant-row');
+    if(v==='custom'){
+      rowEls.forEach(function(r){ r.querySelector('.vweight').disabled=false; });
+      return;
+    }
+    var parts=v.split(',').map(Number);
+    // ensure row count matches preset
+    while(rowEls.length<parts.length){ addRow(); rowEls=rows.querySelectorAll('.variant-row'); }
+    rowEls.forEach(function(r,i){
+      var w=r.querySelector('.vweight');
+      w.disabled=true;
+      w.value = i<parts.length ? parts[i] : 0;
+    });
+  }
+
+  function addRow(){
+    var idx=rows.querySelectorAll('.variant-row').length;
+    var name='Variant '+String.fromCharCode(65+idx);
+    var div=document.createElement('div');
+    div.className='variant-row';
+    div.innerHTML='<div><label>'+name+' name</label><input type="text" class="vname" value="'+name+'" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>'+
+      '<div><label>Visitors</label><input type="number" class="vcount" value="0" min="0" step="1"></div>'+
+      '<div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="0" min="0" step="0.01"></div>';
+    rows.appendChild(div);
+    bind(div);
+  }
+
+  function fmt(n){ return n.toLocaleString('en-US',{maximumFractionDigits:0}); }
+
+  function compute(){
+    var rowEls=Array.prototype.slice.call(rows.querySelectorAll('.variant-row'));
+    var data=rowEls.map(function(r){
+      return {
+        name:r.querySelector('.vname').value||'Variant',
+        obs:Math.max(0,parseFloat(r.querySelector('.vcount').value)||0),
+        w:Math.max(0,parseFloat(r.querySelector('.vweight').value)||0)
+      };
+    });
+    var N=data.reduce(function(a,d){return a+d.obs;},0);
+    var W=data.reduce(function(a,d){return a+d.w;},0);
+    if(N<=0||W<=0||data.length<2){
+      out.innerHTML='<div class="verdict warn">Enter visitor counts and weights for at least two variants.</div>';
+      return;
+    }
+    var chi=0;
+    data.forEach(function(d){
+      d.exp = N*(d.w/W);
+      d.share = d.obs/N*100;
+      if(d.exp>0) chi += Math.pow(d.obs-d.exp,2)/d.exp;
+    });
+    var df=data.length-1;
+    var p=chiSqP(chi,df);
+    var alpha=parseFloat(alphaSel.value);
+
+    var v, cls;
+    if(p<alpha){ cls='bad'; v='⚠ SRM DETECTED — split is broken (p &lt; '+alpha+'). Do not trust the results.'; }
+    else if(p<alpha*5){ cls='warn'; v='Borderline — watch this test (p = '+p.toFixed(4)+', near threshold).'; }
+    else { cls='good'; v='✓ No SRM — traffic split looks healthy (p = '+p.toFixed(4)+').'; }
+
+    var colors=['#4cc9f0','#f0883e','#3fb950','#bc6bff','#f85149','#ffd166'];
+    var bar='<div class="bar">';
+    data.forEach(function(d,i){ bar+='<i style="width:'+d.share.toFixed(2)+'%;background:'+colors[i%colors.length]+'"></i>'; });
+    bar+='</div>';
+
+    var rowsHtml='';
+    data.forEach(function(d){
+      var dev=d.obs-d.exp;
+      rowsHtml+='<tr><td>'+d.name+'</td><td>'+fmt(d.obs)+'</td><td>'+fmt(d.exp)+'</td><td>'+d.share.toFixed(2)+'%</td><td style="color:'+(Math.abs(dev)>0?'var(--warn)':'var(--muted)')+'">'+(dev>=0?'+':'')+fmt(dev)+'</td></tr>';
+    });
+
+    out.innerHTML=
+      '<div class="verdict '+cls+'">'+v+'</div>'+
+      bar+
+      '<div class="stat"><span>Total visitors (N)</span><b>'+fmt(N)+'</b></div>'+
+      '<div class="stat"><span>Chi-square statistic</span><b>'+chi.toFixed(4)+'</b></div>'+
+      '<div class="stat"><span>Degrees of freedom</span><b>'+df+'</b></div>'+
+      '<div class="stat"><span>p-value</span><b>'+(p<1e-6?p.toExponential(3):p.toFixed(6))+'</b></div>'+
+      '<table><thead><tr><th>Variant</th><th>Observed</th><th>Expected</th><th>Share</th><th>Deviation</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>';
+  }
+
+  function bind(scope){
+    (scope||document).querySelectorAll('.vname,.vcount,.vweight').forEach(function(el){
+      el.addEventListener('input',compute);
+    });
+  }
+
+  splitSel.addEventListener('change',function(){ applySplitWeights(); compute(); });
+  alphaSel.addEventListener('change',compute);
+  addBtn.addEventListener('click',function(){ addRow(); applySplitWeights(); compute(); });
+
+  bind(document);
+  applySplitWeights();
+  compute();
+})();
+</script>
+</body>
+</html>

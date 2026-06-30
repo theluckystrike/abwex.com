@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A/B Test ROI Calculator</title>
+<meta name="description" content="Estimate the ROI of your A/B test. Enter traffic, conversion lift and value per conversion to forecast revenue gain and payback.">
+<link rel="canonical" href="https://abwex.com/tools/ab-test-roi-calculator">
+<meta property="og:title" content="A/B Test ROI Calculator">
+<meta property="og:description" content="Estimate the ROI of your A/B test. Enter traffic, conversion lift and value per conversion to forecast revenue gain and payback.">
+<meta property="og:url" content="https://abwex.com/tools/ab-test-roi-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "A/B Test ROI Calculator",
+      "url": "https://abwex.com/tools/ab-test-roi-calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "A/B Test ROI Calculator", "item": "https://abwex.com/tools/ab-test-roi-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#0e1116;--panel:#161b23;--panel2:#1d2530;--line:#2a323d;
+  --text:#e6edf3;--muted:#9aa7b4;--accent:#4ade80;--accent2:#38bdf8;--warn:#fbbf24;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  line-height:1.6;
+}
+nav{
+  display:flex;gap:20px;padding:16px 22px;border-bottom:1px solid var(--line);
+  background:var(--panel);position:sticky;top:0;z-index:5;
+}
+nav a{color:var(--accent2);text-decoration:none;font-weight:600;font-size:15px}
+nav a:hover{text-decoration:underline}
+.wrap{max-width:880px;margin:0 auto;padding:26px 18px 60px}
+h1{font-size:30px;line-height:1.2;margin:18px 0 8px}
+.lead{color:var(--muted);font-size:17px;margin:0 0 26px}
+h2{font-size:22px;margin:36px 0 12px;border-left:3px solid var(--accent);padding-left:10px}
+section#tool{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:22px;margin-bottom:14px;
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.field input{
+  width:100%;padding:11px 12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:9px;color:var(--text);font-size:16px;
+}
+.field input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 2px rgba(56,189,248,.25)}
+.hint{font-size:11px;color:#6b7785;margin-top:4px}
+.out{
+  margin-top:22px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:12px;padding:20px;
+}
+.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:620px){.cards{grid-template-columns:1fr}}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card .v{font-size:26px;font-weight:700;margin-top:4px}
+.v.good{color:var(--accent)}.v.blue{color:var(--accent2)}.v.warn{color:var(--warn)}
+.verdict{margin-top:16px;padding:12px 14px;border-radius:9px;font-weight:600;font-size:15px}
+.verdict.ok{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.4);color:var(--accent)}
+.verdict.no{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.4);color:var(--warn)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+p{margin:12px 0}
+.prose{color:#cdd7e1}
+.prose code{background:var(--panel2);padding:2px 6px;border-radius:5px;font-size:14px;color:var(--accent)}
+.related a{color:var(--accent2);text-decoration:none;font-weight:600}
+.related a:hover{text-decoration:underline}
+.related li{margin:6px 0}
+footer{
+  border-top:1px solid var(--line);padding:24px 18px;text-align:center;
+  color:var(--muted);font-size:14px;
+}
+footer a{color:var(--accent2);text-decoration:none;margin:0 10px}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">abwex.com</a>
+  <a href="/tools/">All Tools</a>
+</nav>
+<div class="wrap">
+  <h1>Forecast the Revenue Payoff of Your A/B Test</h1>
+  <p class="lead">Plug in your traffic, baseline conversion rate and the lift you expect to win. This calculator projects extra conversions, added revenue and the return on every dollar spent running the experiment.</p>
+
+  <section id="tool">
+    <div class="grid">
+      <div class="field">
+        <label for="visitors">Monthly visitors entering the test</label>
+        <input id="visitors" type="number" min="0" step="100" value="40000">
+        <div class="hint">Total traffic split across control + variant.</div>
+      </div>
+      <div class="field">
+        <label for="baseline">Baseline conversion rate (%)</label>
+        <input id="baseline" type="number" min="0" max="100" step="0.1" value="3.2">
+        <div class="hint">Current control conversion %.</div>
+      </div>
+      <div class="field">
+        <label for="lift">Expected relative lift from winner (%)</label>
+        <input id="lift" type="number" min="0" step="0.5" value="12">
+        <div class="hint">e.g. 12 means variant converts 12% better.</div>
+      </div>
+      <div class="field">
+        <label for="value">Value per conversion ($)</label>
+        <input id="value" type="number" min="0" step="1" value="85">
+        <div class="hint">Avg order value or lead value.</div>
+      </div>
+      <div class="field">
+        <label for="cost">One-time test cost ($)</label>
+        <input id="cost" type="number" min="0" step="50" value="2500">
+        <div class="hint">Design, dev, tooling, analyst time.</div>
+      </div>
+      <div class="field">
+        <label for="months">Months the winner stays live</label>
+        <input id="months" type="number" min="1" step="1" value="12">
+        <div class="hint">Benefit horizon after rollout.</div>
+      </div>
+    </div>
+
+    <div class="out">
+      <div class="cards">
+        <div class="card"><div class="k">Extra conversions / mo</div><div class="v blue" id="oConv">—</div></div>
+        <div class="card"><div class="k">Net revenue (horizon)</div><div class="v good" id="oNet">—</div></div>
+        <div class="card"><div class="k">ROI</div><div class="v" id="oRoi">—</div></div>
+      </div>
+      <div id="verdict" class="verdict ok">—</div>
+      <table>
+        <tr><th>Metric</th><th class="num">Value</th></tr>
+        <tr><td>Variant conversion rate</td><td class="num" id="rVcr">—</td></tr>
+        <tr><td>Added conversions / month</td><td class="num" id="rConv">—</td></tr>
+        <tr><td>Added revenue / month</td><td class="num" id="rMo">—</td></tr>
+        <tr><td>Gross revenue over horizon</td><td class="num" id="rGross">—</td></tr>
+        <tr><td>Payback period</td><td class="num" id="rPay">—</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <h2>How the A/B test ROI math works</h2>
+  <div class="prose">
+    <p>Most ROI sheets stop at "extra revenue." This tool models the full economics of an experiment so you can decide whether the test is worth running <em>before</em> you build it. The engine runs five chained steps:</p>
+    <p>First it converts your baseline rate into the <strong>variant rate</strong> with <code>variant = baseline × (1 + lift/100)</code>. The difference in rates, multiplied by monthly visitors, gives <strong>added conversions per month</strong>: <code>extra = visitors × (variant − baseline)</code>. Note this uses the relative lift convention — a 12% lift on a 3.2% baseline yields a 3.584% variant rate, not 15.2%, which is the single most common ROI miscalculation teams make.</p>
+    <p>Added monthly revenue is <code>extra × value per conversion</code>. We then project it across your benefit horizon (months the winner stays live) to get <strong>gross revenue</strong>, subtract the one-time test cost to get <strong>net revenue</strong>, and compute <code>ROI = net ÷ cost × 100</code>. Finally the <strong>payback period</strong> — <code>cost ÷ monthly revenue</code> — tells you how many months of the rolled-out winner it takes to repay the experiment. A payback under one month with a positive ROI is the green-light signal most growth teams use.</p>
+    <p>The information this adds over a plain "uplift × AOV" estimate is the <em>opportunity-cost frame</em>: by holding test cost and horizon explicit, you can compare a cheap copy test against an expensive checkout rebuild on the same ROI axis. Pair it with a power analysis — a real lift only counts once it clears statistical significance, so size your sample before you trust the projection. ROI assumes the measured lift holds after rollout; in practice apply a discount for novelty decay and regression to the mean.</p>
+  </div>
+
+  <section class="related">
+    <h2>Related Tools</h2>
+    <ul>
+      <li><a href="/tools/conversion-rate-calculator">Conversion Rate Calculator</a> — turn visitors and conversions into a clean baseline rate.</li>
+      <li><a href="/tools/sample-size-calculator">Sample Size Calculator</a> — find how many visitors each variant needs.</li>
+      <li><a href="/tools/mde-calculator">MDE Calculator</a> — the minimum detectable effect your test can actually catch.</li>
+    </ul>
+  </section>
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="/tools/">All Tools</a>
+  </div>
+  <p>© 2026 abwex.com — A/B Test ROI Calculator</p>
+</footer>
+
+<script>
+(function(){
+  var ids=['visitors','baseline','lift','value','cost','months'];
+  var el={};
+  ids.forEach(function(id){ el[id]=document.getElementById(id); });
+
+  function num(id){ var v=parseFloat(el[id].value); return isFinite(v)&&v>=0?v:0; }
+  function money(n){
+    if(!isFinite(n)) n=0;
+    return '$'+n.toLocaleString('en-US',{maximumFractionDigits:0});
+  }
+  function pct(n){ return (isFinite(n)?n:0).toFixed(2)+'%'; }
+
+  function calc(){
+    var visitors=num('visitors');
+    var baseline=num('baseline')/100;
+    var lift=num('lift')/100;
+    var value=num('value');
+    var cost=num('cost');
+    var months=Math.max(1,Math.round(num('months')));
+
+    var variantRate=baseline*(1+lift);
+    var extraPerMonth=visitors*(variantRate-baseline);
+    var revPerMonth=extraPerMonth*value;
+    var gross=revPerMonth*months;
+    var net=gross-cost;
+    var roi=cost>0?(net/cost)*100:(net>0?Infinity:0);
+    var payback=revPerMonth>0?cost/revPerMonth:Infinity;
+
+    document.getElementById('oConv').textContent=extraPerMonth.toLocaleString('en-US',{maximumFractionDigits:0});
+    document.getElementById('oNet').textContent=money(net);
+    var roiEl=document.getElementById('oRoi');
+    roiEl.textContent=isFinite(roi)?Math.round(roi)+'%':'∞';
+    roiEl.className='v '+(net>=0?'good':'warn');
+
+    document.getElementById('rVcr').textContent=pct(variantRate*100);
+    document.getElementById('rConv').textContent=extraPerMonth.toLocaleString('en-US',{maximumFractionDigits:1});
+    document.getElementById('rMo').textContent=money(revPerMonth);
+    document.getElementById('rGross').textContent=money(gross);
+    document.getElementById('rPay').textContent=
+      isFinite(payback)?(payback<1?(payback*30).toFixed(1)+' days':payback.toFixed(1)+' months'):'never';
+
+    var v=document.getElementById('verdict');
+    if(net>0 && isFinite(payback) && payback<=1){
+      v.className='verdict ok';
+      v.textContent='Strong case — positive ROI and the test pays back in under a month of the live winner.';
+    } else if(net>0){
+      v.className='verdict ok';
+      v.textContent='Worth running — net positive over your horizon (payback '+(isFinite(payback)?payback.toFixed(1)+' mo':'—')+').';
+    } else {
+      v.className='verdict no';
+      v.textContent='Marginal — projected revenue does not cover the test cost over this horizon. Increase traffic, lift, or horizon.';
+    }
+  }
+
+  ids.forEach(function(id){ el[id].addEventListener('input',calc); });
+  calc();
+})();
+</script>
+</body>
+</html>
