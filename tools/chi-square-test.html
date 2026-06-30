@@ -1,261 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chi-Square Test Calculator for A/B Testing | ABWex</title>
-  <meta name="description" content="Run chi-square tests on A/B test data. Compare observed vs expected frequencies. Calculate chi-square statistic and degrees of freedom.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/tools/chi-square-test.html">
-  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="Chi-Square Test Calculator for A/B Testing | ABWex">
-  <meta property="og:description" content="Run chi-square tests on A/B test data. Compare observed vs expected frequencies. Calculate chi-square statistic and degrees of freedom.">
-  <meta property="og:url" content="https://abwex.com/tools/chi-square-test.html">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Chi-Square Test Calculator for A/B Testing">
-  <meta name="twitter:description" content="Run chi-square tests on A/B test data. Compare observed vs expected frequencies.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/chi-square-test.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/chi-square-test.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Chi-Square Test Calculator for A/B Testing",
-    "url": "https://abwex.com/tools/chi-square-test.html",
-    "description": "Run chi-square tests on A/B test data. Compare observed vs expected frequencies. Calculate chi-square statistic and degrees of freedom.",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
-    "datePublished": "2026-04-10",
-    "dateModified": "2026-04-10"
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is the chi-square test in A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The chi-square test of independence evaluates whether there is a statistically significant association between the variant (A or B) and the outcome (converted or not converted). It compares observed frequencies in a 2x2 contingency table against the frequencies expected under the null hypothesis of independence. A large chi-square statistic indicates that the observed pattern is unlikely to have occurred by chance."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "When should I use chi-square vs Z-test for A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "For a standard two-variant A/B test with binary outcomes (converted/not converted), the chi-square test and Z-test produce mathematically equivalent results — the chi-square statistic equals the Z-score squared. Use the Z-test when you want a directional result (which variant is better) and confidence intervals. Use chi-square when comparing 3+ variants simultaneously, when you have multi-category outcomes (not just binary), or when working with contingency tables."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What are degrees of freedom in a chi-square test?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Degrees of freedom (df) for a chi-square test of independence equal (rows - 1) * (columns - 1). For a standard A/B test with 2 variants and 2 outcomes (converted/not converted), df = (2-1) * (2-1) = 1. For an A/B/C test with 3 variants, df = (3-1) * (2-1) = 2. The degrees of freedom determine which chi-square distribution to use when computing the p-value."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is Yates' continuity correction and should I use it?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yates' correction subtracts 0.5 from the absolute difference between observed and expected frequencies before squaring: chi-square = sum((|O-E| - 0.5)^2 / E). It makes the chi-square test more conservative (harder to reach significance) and was designed to better approximate the discrete binomial distribution with the continuous chi-square distribution. Modern practice generally avoids Yates' correction because it is overly conservative, especially with large samples. Use it only when any expected cell frequency is below 10."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is the minimum sample size for a chi-square test?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The standard rule of thumb is that all expected cell frequencies should be at least 5. For a 2x2 A/B test contingency table, this means you need enough visitors and conversions that no expected cell drops below 5. With very low conversion rates (below 1%), this can require thousands of visitors. If expected frequencies are below 5, use Fisher's exact test instead, which does not rely on the chi-square approximation."
-        }
-      }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chi-Square Test Calculator for A/B Testing</title>
+<meta name="description" content="Free chi-square test calculator for A/B testing. Enter conversions and visitors for two variants to get the chi-square statistic, p-value, and">
+<link rel="canonical" href="https://abwex.com/tools/chi-square-test">
+<meta property="og:title" content="Chi-Square Test Calculator for A/B Testing">
+<meta property="og:description" content="Free chi-square test calculator for A/B testing. Get the chi-square statistic, p-value, and statistical significance from two variants.">
+<meta property="og:url" content="https://abwex.com/tools/chi-square-test">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Chi-Square Test Calculator for A/B Testing",
+  "url": "https://abwex.com/tools/chi-square-test",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+      { "@type": "ListItem", "position": 3, "name": "chi square test", "item": "https://abwex.com/tools/chi-square-test" }
     ]
   }
-  </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Chi-Square Test"}]}</script>
+}
+</script>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--bd:#30363d;--fg:#e6edf3;--mut:#8b949e;--ac:#58a6ff;--ok:#3fb950;--no:#f85149}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+nav{display:flex;gap:1.2rem;padding:1rem 1.2rem;border-bottom:1px solid var(--bd);font-size:.95rem}
+nav a{color:var(--ac);text-decoration:none}
+nav a:hover{text-decoration:underline}
+main{max-width:780px;margin:0 auto;padding:1.4rem 1.2rem 3rem}
+h1{font-size:1.7rem;line-height:1.25;margin:.6rem 0 .3rem}
+h2{font-size:1.25rem;margin:2rem 0 .6rem}
+p{color:var(--fg)}
+.lead{color:var(--mut);font-size:1.05rem}
+section#tool{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:1.2rem;margin:1.4rem 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:540px){.grid{grid-template-columns:1fr}}
+.fieldset{border:1px solid var(--bd);border-radius:10px;padding:.9rem;margin:0}
+legend{padding:0 .4rem;color:var(--ac);font-weight:600;font-size:.95rem}
+label{display:block;font-size:.85rem;color:var(--mut);margin:.6rem 0 .25rem}
+input{width:100%;padding:.55rem .65rem;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--fg);font-size:1rem}
+input:focus{outline:none;border-color:var(--ac)}
+.out{margin-top:1.2rem;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:1.1rem}
+.verdict{font-size:1.25rem;font-weight:700;margin:0 0 .3rem}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;margin-top:.9rem}
+@media(max-width:540px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:.7rem}
+.stat .k{font-size:.72rem;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-size:1.15rem;font-weight:700;margin-top:.2rem}
+.err{color:var(--no);font-weight:600}
+code{background:var(--card);border:1px solid var(--bd);border-radius:5px;padding:.1rem .35rem;font-size:.9em}
+.formula{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:.8rem 1rem;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.95rem}
+.related a{display:inline-block;margin:.2rem .6rem .2rem 0;color:var(--ac);text-decoration:none;border:1px solid var(--bd);border-radius:20px;padding:.3rem .8rem;font-size:.9rem}
+.related a:hover{border-color:var(--ac)}
+footer{border-top:1px solid var(--bd);padding:1.4rem 1.2rem;text-align:center;color:var(--mut);font-size:.9rem}
+footer a{color:var(--ac);text-decoration:none;margin:0 .5rem}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/about.html">About</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
-      <a href="https://zovo.one/tools" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Chi-Square Test</span></nav>
-      <h1>Chi-Square Test for A/B Testing</h1>
-      <p>Apply the chi-square test of independence to your A/B test data. Build contingency tables, compute the chi-square statistic, and interpret the results correctly.</p>
-    </section>
-
-    <section class="explainer-section">
-      <h2>The Chi-Square Formula</h2>
-      <p>The Pearson chi-square test statistic measures the overall discrepancy between observed and expected frequencies across all cells of a contingency table. The formula is:</p>
-      <p><strong>X^2 = sum((O_i - E_i)^2 / E_i)</strong></p>
-      <p>Where O_i is the observed frequency in cell i and E_i is the expected frequency. Expected frequencies are calculated as: E_ij = (row_i_total * column_j_total) / grand_total. Under the null hypothesis of independence (no association between variant assignment and conversion), the test statistic follows a chi-square distribution with (r-1)(c-1) degrees of freedom, where r is the number of rows and c is the number of columns.</p>
-      <p>For a standard A/B test, the contingency table has 2 rows (variant A and B) and 2 columns (converted, not converted), giving 1 degree of freedom. The chi-square critical value at alpha = 0.05 with 1 df is 3.841. Any test statistic above this value leads to rejection of the null hypothesis.</p>
-
-      <h2>Building Contingency Tables</h2>
-      <p>A contingency table (also called a cross-tabulation) organizes your A/B test data into a matrix of frequencies. For a binary outcome test, the structure is:</p>
-      <p>Row 1 (Variant A): [Conversions_A, Non-conversions_A]. Row 2 (Variant B): [Conversions_B, Non-conversions_B]. Each cell contains the count (not percentage) of observations falling into that combination of variant and outcome.</p>
-      <p>For example, if variant A had 150 conversions out of 3,000 visitors and variant B had 180 conversions out of 3,000 visitors, the table would be: A = [150, 2850], B = [180, 2820]. The expected frequencies under independence would be: E_A_conv = 3000 * 330/6000 = 165, E_A_noconv = 3000 * 5670/6000 = 2835, and similarly for B. The chi-square statistic for this example is approximately 2.88 with p = 0.090.</p>
-
-      <h2>Degrees of Freedom</h2>
-      <p>Degrees of freedom (df) determine which chi-square distribution to compare your test statistic against. For a contingency table, df = (rows - 1) * (columns - 1). This formula reflects the number of cells that are free to vary once you fix the row and column totals.</p>
-      <p>In A/B testing contexts, the most common configurations are:</p>
-      <ul>
-        <li><strong>2 variants, binary outcome (A/B test):</strong> df = (2-1)(2-1) = 1</li>
-        <li><strong>3 variants, binary outcome (A/B/C test):</strong> df = (3-1)(2-1) = 2</li>
-        <li><strong>4 variants, binary outcome (A/B/C/D test):</strong> df = (4-1)(2-1) = 3</li>
-        <li><strong>2 variants, 3 outcomes (e.g., bounce/browse/convert):</strong> df = (2-1)(3-1) = 2</li>
-      </ul>
-      <p>Higher degrees of freedom shift the chi-square distribution to the right, requiring larger test statistics to achieve the same p-value. The critical value at alpha = 0.05 increases from 3.841 (1 df) to 5.991 (2 df) to 7.815 (3 df).</p>
-
-      <h2>When to Use Chi-Square vs Z-Test</h2>
-      <p>For a standard two-variant A/B test with a binary outcome, the chi-square test and the two-proportion Z-test are mathematically equivalent. The chi-square statistic equals the square of the Z-score, and both produce identical p-values. However, they differ in important practical ways:</p>
-      <p>The Z-test is directional: it tells you whether B is specifically better than A (or worse), and it provides confidence intervals on the difference. The chi-square test is non-directional: it only tells you whether the variants differ, without specifying which is better. For this reason, the Z-test is generally preferred for standard A/B tests.</p>
-      <p>The chi-square test becomes the better choice in three scenarios. First, when comparing three or more variants simultaneously — the Z-test is inherently pairwise, while the chi-square test can evaluate all variants at once. Second, when outcomes have more than two categories (e.g., bounced, browsed, purchased). Third, when analyzing survey data or categorical outcomes that are not naturally binary.</p>
-
-      <h2>Interpretation Guide</h2>
-      <p>After computing the chi-square statistic and p-value, interpretation follows these steps. If p is less than your significance level (typically 0.05), reject the null hypothesis — there is a statistically significant association between the variant and the outcome. If p is greater than your significance level, you fail to reject the null hypothesis — the data does not provide sufficient evidence that the variants differ.</p>
-      <p>Important caveats: A significant chi-square result does not tell you the direction of the effect, the size of the effect, or which specific cells are driving the association. For follow-up analysis, examine standardized residuals for each cell: (O - E) / sqrt(E). Cells with standardized residuals above 2 or below -2 are the primary contributors to the significant result. Additionally, always check that expected frequencies meet the minimum threshold (all E_i >= 5) before trusting the chi-square approximation.</p>
-    </section>
-
-    <div class="last-updated"><time datetime="2026-04-10">Last updated: April 10, 2026</time></div>
-
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
-
-      <details>
-        <summary>What is the chi-square test in A/B testing?</summary>
-        <p>The chi-square test of independence evaluates whether there is a statistically significant association between the variant and the outcome. It compares observed frequencies in a contingency table against expected frequencies under the null hypothesis. A large chi-square statistic means the observed pattern is unlikely due to chance alone.</p>
-      </details>
-
-      <details>
-        <summary>When should I use chi-square vs Z-test for A/B testing?</summary>
-        <p>For a standard two-variant binary test, both produce identical p-values (chi-square = Z^2). Use the Z-test when you need directional results and confidence intervals. Use chi-square when comparing 3+ variants simultaneously, with multi-category outcomes, or when working with contingency tables. Try the <a href="/">ABWex calculator</a> for the Z-test approach.</p>
-      </details>
-
-      <details>
-        <summary>What are degrees of freedom in a chi-square test?</summary>
-        <p>Degrees of freedom equal (rows - 1) * (columns - 1) for a contingency table. A standard A/B test has df = 1. An A/B/C test has df = 2. Degrees of freedom determine which chi-square distribution is used to compute the p-value and affect the critical values needed for significance.</p>
-      </details>
-
-      <details>
-        <summary>What is Yates' continuity correction and should I use it?</summary>
-        <p>Yates' correction subtracts 0.5 from each |O - E| difference before squaring, making the test more conservative. It was designed for small samples but is generally considered overly conservative. Modern practice recommends using it only when expected cell frequencies fall below 10. For very small samples, use Fisher's exact test instead.</p>
-      </details>
-
-      <details>
-        <summary>What is the minimum sample size for a chi-square test?</summary>
-        <p>All expected cell frequencies should be at least 5. With low conversion rates, this can require thousands of visitors. If any expected cell is below 5, the chi-square approximation becomes unreliable. Use Fisher's exact test for small samples or the <a href="/tools/p-value-calculator.html">Z-test approach</a> with continuity correction.</p>
-      </details>
-    </section>
-
-    <section class="explainer-section">
-      <h3>Related A/B Testing Tools</h3>
-      <ul>
-        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate p-values using the two-proportion Z-test</li>
-        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Determine required visitors per variant</li>
-        <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a> — Alternative to frequentist hypothesis testing</li>
-      </ul>
-    </section>
-
-    <section class="explainer-section">
-      <h3>About the Author</h3>
-      <p>Built by <strong><a href="https://zovo.one">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
-    </section>
-  </main>
-
-<footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex.com&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
-        <div class="footer-copy">© 2026 <a href="https://zovo.one">Zovo</a> · 47/500 founding spots</div>
-    </div>
-</footer>
-
-<nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+<nav>
+<a href="/">Home</a>
+<a href="/tools/">Tools</a>
 </nav>
+<main>
+<h1>Chi-Square Test Calculator for Two-Variant A/B Tests</h1>
+<p class="lead">Compare two variants from an A/B test and instantly see the Pearson chi-square statistic, the p-value, and whether the difference in conversion rate is statistically significant.</p>
 
-<div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+<section id="tool">
+<form id="f" autocomplete="off">
+<div class="grid">
+<fieldset class="fieldset">
+<legend>Variant A (Control)</legend>
+<label for="va">Visitors</label>
+<input id="va" type="number" min="1" step="1" value="1200" inputmode="numeric">
+<label for="ca">Conversions</label>
+<input id="ca" type="number" min="0" step="1" value="120" inputmode="numeric">
+</fieldset>
+<fieldset class="fieldset">
+<legend>Variant B (Treatment)</legend>
+<label for="vb">Visitors</label>
+<input id="vb" type="number" min="1" step="1" value="1180" inputmode="numeric">
+<label for="cb">Conversions</label>
+<input id="cb" type="number" min="0" step="1" value="156" inputmode="numeric">
+</fieldset>
 </div>
+<label for="alpha" style="margin-top:1rem">Significance level α (e.g. 0.05 for 95% confidence)</label>
+<input id="alpha" type="number" min="0.0001" max="0.5" step="0.01" value="0.05" inputmode="decimal">
+</form>
 
-  <script src="/assets/js/share.js"></script>
-<script src="/assets/js/pro-nudge.js"></script>
-
-<section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
-<h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
-<ul style="list-style:none;padding:0;display:grid;gap:8px;">
-<li><a href="/guides/chi-square-test-guide.html" style="color:#3b82f6;text-decoration:none;">Chi-Square Test Explained — Step-by-Step Calculator for A/B Testing</a></li>
-<li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
-<li><a href="/answers/how-long-to-run-ab-test.html" style="color:#3b82f6;text-decoration:none;">How Long Should I Run My A/B Test?</a></li>
-<li><a href="/answers/is-my-ab-test-significant.html" style="color:#3b82f6;text-decoration:none;">Is My A/B Test Statistically Significant?</a></li>
-</ul>
+<div class="out" id="out" aria-live="polite"><!-- filled by JS --></div>
 </section>
 
+<h2>How the chi-square test works</h2>
+<p>An A/B test produces a 2×2 contingency table: each variant has a count of conversions and non-conversions. The <strong>Pearson chi-square test of independence</strong> asks whether conversion outcome is independent of which variant a visitor saw. If the variants truly performed the same, the observed counts should match the <em>expected</em> counts implied by the pooled conversion rate.</p>
+<p>For each of the four cells we compute the expected count as <code>(row total × column total) / grand total</code>, then sum the squared, normalized differences:</p>
+<div class="formula">χ² = Σ (Observed − Expected)² / Expected</div>
+<p>With a 2×2 table there is <strong>1 degree of freedom</strong>. The resulting χ² value is converted to a p-value using the chi-square distribution. Because df = 1, the p-value equals the two-tailed normal tail probability of √χ², so this calculator uses an accurate error-function approximation rather than a lookup table. A small p-value (below your chosen α) means the observed gap between the two conversion rates is unlikely to be random noise, so you reject the null hypothesis of "no difference."</p>
+<p>This is mathematically equivalent to a two-proportion z-test without continuity correction, which is why the same data drives confidence intervals and sample-size planning. Always confirm each variant has at least a handful of expected conversions; with very small samples the chi-square approximation degrades and an exact (Fisher) test is preferable. Enter your real numbers above to see the verdict update live as you type.</p>
+
+<h2>Related Tools</h2>
+<p class="related">
+<a href="/tools/ab-test-sample-size">A/B Test Sample Size Calculator</a>
+<a href="/tools/p-value-calculator">P-Value Calculator</a>
+<a href="/tools/confidence-interval">Confidence Interval Calculator</a>
+</p>
+</main>
+
+<footer>
+<div>
+<a href="/">Home</a>
+<a href="/tools/">All Tools</a>
+<a href="/tools/chi-square-test">Chi-Square Test</a>
+</div>
+<div style="margin-top:.5rem">© 2026 abwex.com — by <a href="https://zovo.one">Michael Lip</a></div>
+</footer>
+
+<script>
+(function(){
+  var ids=['va','ca','vb','cb','alpha'];
+  var out=document.getElementById('out');
+
+  // Standard normal CDF via erf approximation (Abramowitz & Stegun 7.1.26)
+  function erf(x){
+    var s=x<0?-1:1; x=Math.abs(x);
+    var t=1/(1+0.3275911*x);
+    var y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+    return s*y;
+  }
+  function normCdf(z){ return 0.5*(1+erf(z/Math.SQRT2)); }
+  // Inverse normal CDF (Acklam) for z critical value
+  function normInv(p){
+    var a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+    var b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+    var c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+    var d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+    var pl=0.02425,ph=1-pl,q,r;
+    if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+    if(p<=ph){q=p-0.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+    q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  }
+  function pct(x){return (x*100).toFixed(2)+'%';}
+
+  function calc(){
+    var va=parseFloat(document.getElementById('va').value);
+    var ca=parseFloat(document.getElementById('ca').value);
+    var vb=parseFloat(document.getElementById('vb').value);
+    var cb=parseFloat(document.getElementById('cb').value);
+    var alpha=parseFloat(document.getElementById('alpha').value);
+
+    if(!(va>0)||!(vb>0)||isNaN(ca)||isNaN(cb)||ca<0||cb<0){
+      out.innerHTML='<p class="err">Enter positive visitor counts and non-negative conversions for both variants.</p>';return;
+    }
+    if(ca>va||cb>vb){
+      out.innerHTML='<p class="err">Conversions cannot exceed visitors for a variant.</p>';return;
+    }
+    if(!(alpha>0&&alpha<1)){alpha=0.05;}
+
+    // Observed 2x2: [conv, nonconv] for A and B
+    var na=va, nb=vb;
+    var oa1=ca, oa0=va-ca, ob1=cb, ob0=vb-cb;
+    var totConv=ca+cb, totNon=oa0+ob0, grand=va+vb;
+
+    // Expected counts
+    var ea1=na*totConv/grand, ea0=na*totNon/grand;
+    var eb1=nb*totConv/grand, eb0=nb*totNon/grand;
+
+    var chi=Math.pow(oa1-ea1,2)/ea1 + Math.pow(oa0-ea0,2)/ea0 +
+            Math.pow(ob1-eb1,2)/eb1 + Math.pow(ob0-eb0,2)/eb0;
+
+    // df=1: p = 2*(1 - Phi(sqrt(chi)))
+    var z=Math.sqrt(chi);
+    var p=2*(1-normCdf(z));
+    if(p<0)p=0; if(p>1)p=1;
+
+    var pa=ca/va, pb=cb/vb;
+    var lift=pa>0?((pb-pa)/pa):0;
+
+    // CI for difference of proportions (Wald)
+    var se=Math.sqrt(pa*(1-pa)/va + pb*(1-pb)/vb);
+    var zc=normInv(1-alpha/2);
+    var diff=pb-pa;
+    var lo=diff-zc*se, hi=diff+zc*se;
+
+    var sig=p<alpha;
+    var conf=((1-alpha)*100).toFixed(0);
+    var pStr=p<0.0001?p.toExponential(2):p.toFixed(4);
+
+    var html='';
+    html+='<p class="verdict" style="color:'+(sig?'var(--ok)':'var(--no)')+'">'+
+          (sig?'✓ Statistically significant':'✗ Not statistically significant')+
+          ' at '+conf+'% confidence</p>';
+    html+='<p style="margin:.2rem 0;color:var(--mut)">Variant A: '+pct(pa)+' &nbsp;·&nbsp; Variant B: '+pct(pb)+
+          ' &nbsp;·&nbsp; Relative lift: <strong style="color:'+(lift>=0?'var(--ok)':'var(--no)')+'">'+
+          (lift>=0?'+':'')+(lift*100).toFixed(2)+'%</strong></p>';
+    html+='<div class="stats">';
+    html+='<div class="stat"><div class="k">Chi-square (χ²)</div><div class="v">'+chi.toFixed(3)+'</div></div>';
+    html+='<div class="stat"><div class="k">P-value</div><div class="v">'+pStr+'</div></div>';
+    html+='<div class="stat"><div class="k">Degrees of freedom</div><div class="v">1</div></div>';
+    html+='<div class="stat"><div class="k">'+conf+'% CI for B−A</div><div class="v">'+pct(lo)+' to '+pct(hi)+'</div></div>';
+    html+='<div class="stat"><div class="k">Abs. difference</div><div class="v">'+(diff>=0?'+':'')+pct(diff)+'</div></div>';
+    html+='<div class="stat"><div class="k">Std. error</div><div class="v">'+se.toFixed(5)+'</div></div>';
+    html+='</div>';
+
+    var minExp=Math.min(ea1,ea0,eb1,eb0);
+    if(minExp<5){
+      html+='<p style="margin-top:.8rem;color:var(--no);font-size:.88rem">⚠ Smallest expected count is '+minExp.toFixed(1)+
+            ' (&lt; 5). The chi-square approximation may be unreliable here — consider a Fisher exact test.</p>';
+    }
+    out.innerHTML=html;
+  }
+
+  ids.forEach(function(id){
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
+</script>
 </body>
 </html>
