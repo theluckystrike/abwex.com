@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delta Method Ratio Metric CI Calculator</title>
+<meta name="description" content="Confidence interval for ratio metrics (revenue/visitor, CTR per session) using the delta method, correctly handling the randomization-unit vs">
+<link rel="canonical" href="https://abwex.com/tools/delta-method-ratio-metric-ci-calculator">
+<meta property="og:title" content="Delta Method Ratio Metric CI Calculator">
+<meta property="og:description" content="Confidence interval for ratio metrics (revenue/visitor, CTR per session) using the delta method, correctly handling the randomization-unit vs">
+<meta property="og:url" content="https://abwex.com/tools/delta-method-ratio-metric-ci-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Delta Method Ratio Metric CI Calculator",
+  "description": "Confidence interval for ratio metrics using the delta method, correctly handling the randomization-unit vs analysis-unit mismatch in clustered A/B tests.",
+  "url": "https://abwex.com/tools/delta-method-ratio-metric-ci-calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+      { "@type": "ListItem", "position": 3, "name": "Delta Method Ratio Metric CI Calculator", "item": "https://abwex.com/tools/delta-method-ratio-metric-ci-calculator" }
+    ]
+  }
+}
+</script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --border:#2a3340;
+    --txt:#e6edf3; --muted:#9aa7b4; --accent:#58a6ff; --accent2:#3fb950;
+    --warn:#d29922; --bad:#f85149; --good:#3fb950;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; font-size:16px;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  nav{
+    display:flex;gap:20px;padding:14px 20px;border-bottom:1px solid var(--border);
+    background:var(--panel);font-size:14px;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:24px 20px 60px}
+  h1{font-size:1.7rem;line-height:1.25;margin:18px 0 6px}
+  h2{font-size:1.25rem;margin:34px 0 12px;border-bottom:1px solid var(--border);padding-bottom:6px}
+  .lede{color:var(--muted);font-size:1.02rem;margin:0 0 8px}
+  section#tool{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:22px;margin:22px 0;
+  }
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .col h3{margin:2px 0 12px;font-size:1.05rem}
+  .ctrl{margin-bottom:12px}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+  label .k{color:var(--txt);font-weight:600}
+  input,select{
+    width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--txt);
+    border-radius:8px;padding:9px 10px;font-size:14px;font-family:inherit;
+  }
+  input:focus,select:focus{outline:none;border-color:var(--accent)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .modebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .modebar button{
+    background:var(--panel2);border:1px solid var(--border);color:var(--muted);
+    padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit;
+  }
+  .modebar button.active{background:var(--accent);border-color:var(--accent);color:#04101f;font-weight:600}
+  .out{
+    background:var(--panel2);border:1px solid var(--border);border-radius:10px;
+    padding:18px;margin-top:6px;
+  }
+  .big{font-size:1.9rem;font-weight:700;margin:2px 0}
+  .ci{font-size:1.05rem;color:var(--accent2);font-weight:600}
+  .metricrow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border);font-size:14px}
+  .metricrow:last-child{border-bottom:none}
+  .metricrow .v{font-variant-numeric:tabular-nums;font-weight:600}
+  .verdict{margin-top:14px;padding:12px 14px;border-radius:8px;font-size:14px;font-weight:600}
+  .verdict.sig{background:rgba(63,185,80,.13);border:1px solid var(--good);color:#7ee787}
+  .verdict.nsig{background:rgba(210,153,34,.12);border:1px solid var(--warn);color:#e3b341}
+  .note{font-size:12.5px;color:var(--muted);margin-top:10px}
+  code{background:#20262e;padding:1px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .formula{background:#11161d;border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:13.5px;color:#c9d6e2}
+  .callout{background:rgba(88,166,255,.08);border-left:3px solid var(--accent);padding:12px 16px;border-radius:6px;margin:16px 0;font-size:14.5px}
+  ul{padding-left:20px}
+  footer{border-top:1px solid var(--border);padding:22px 20px;color:var(--muted);font-size:13px;text-align:center}
+  footer a{margin:0 8px}
+  .related a{display:inline-block;margin:4px 10px 4px 0}
+  .warnbox{color:var(--bad);font-size:13px;margin-top:8px;min-height:0}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">Home</a>
+  <a href="/tools/">Tools</a>
+</nav>
+<div class="wrap">
+
+<h1>Ratio Metric Confidence Intervals via the Delta Method</h1>
+<p class="lede">Get a <strong>correct</strong> standard error and confidence interval for ratio metrics like revenue&nbsp;per&nbsp;visitor or clicks&nbsp;per&nbsp;session — the ones a naive two-sample t-test silently gets wrong.</p>
+
+<p>When your randomization unit (the user, session, or cluster you flip on/off) differs from the analysis unit that appears in your ratio's denominator, treating the ratio as a simple mean of independent observations <em>underestimates the variance</em>. This tool applies the delta method to combine the numerator variance, denominator variance, and their covariance into a valid variance for the ratio, then reports the point estimate, standard error, z-based confidence interval, and — if you enter two arms — the two-sided p-value for the difference.</p>
+
+<section id="tool">
+  <div class="modebar" id="modebar">
+    <button data-mode="stats" class="active">Enter means / variances</button>
+    <button data-mode="raw">Enter raw sums (Σ, Σ², Σxy)</button>
+  </div>
+
+  <div class="ctrl">
+    <label><span class="k">Confidence level</span></label>
+    <select id="conf">
+      <option value="90">90%</option>
+      <option value="95" selected>95%</option>
+      <option value="99">99%</option>
+    </select>
+  </div>
+
+  <div class="grid">
+    <div class="col" id="colC">
+      <h3>Control (A)</h3>
+      <div class="ctrl"><label><span class="k">Units n</span> — randomization units</label><input type="number" id="C_n" value="18000" min="2" step="1"></div>
+
+      <!-- stats mode -->
+      <div class="mode-stats">
+        <div class="row2">
+          <div class="ctrl"><label>mean numerator <span class="k">x̄</span></label><input type="number" id="C_mn" value="2.30" step="any"></div>
+          <div class="ctrl"><label>mean denom <span class="k">ȳ</span></label><input type="number" id="C_md" value="1.00" step="any"></div>
+        </div>
+        <div class="row2">
+          <div class="ctrl"><label>Var(numerator)</label><input type="number" id="C_vn" value="9.10" step="any" min="0"></div>
+          <div class="ctrl"><label>Var(denom)</label><input type="number" id="C_vd" value="1.30" step="any" min="0"></div>
+        </div>
+        <div class="ctrl"><label>Cov(num, denom)</label><input type="number" id="C_cov" value="2.05" step="any"></div>
+      </div>
+
+      <!-- raw mode -->
+      <div class="mode-raw" style="display:none">
+        <div class="row2">
+          <div class="ctrl"><label>Σ numerator</label><input type="number" id="C_sx" value="41400" step="any"></div>
+          <div class="ctrl"><label>Σ denom</label><input type="number" id="C_sy" value="18000" step="any"></div>
+        </div>
+        <div class="row2">
+          <div class="ctrl"><label>Σ numerator²</label><input type="number" id="C_sx2" value="259200" step="any"></div>
+          <div class="ctrl"><label>Σ denom²</label><input type="number" id="C_sy2" value="41400" step="any"></div>
+        </div>
+        <div class="ctrl"><label>Σ (num × denom)</label><input type="number" id="C_sxy" value="132480" step="any"></div>
+      </div>
+      <div class="warnbox" id="C_warn"></div>
+    </div>
+
+    <div class="col" id="colT">
+      <h3>Treatment (B) <span style="font-weight:400;color:var(--muted);font-size:12px">— optional</span></h3>
+      <div class="ctrl"><label><span class="k">Units n</span> — leave 0 to skip B</label><input type="number" id="T_n" value="18100" min="0" step="1"></div>
+
+      <div class="mode-stats">
+        <div class="row2">
+          <div class="ctrl"><label>mean numerator <span class="k">x̄</span></label><input type="number" id="T_mn" value="2.42" step="any"></div>
+          <div class="ctrl"><label>mean denom <span class="k">ȳ</span></label><input type="number" id="T_md" value="1.00" step="any"></div>
+        </div>
+        <div class="row2">
+          <div class="ctrl"><label>Var(numerator)</label><input type="number" id="T_vn" value="9.60" step="any" min="0"></div>
+          <div class="ctrl"><label>Var(denom)</label><input type="number" id="T_vd" value="1.34" step="any" min="0"></div>
+        </div>
+        <div class="ctrl"><label>Cov(num, denom)</label><input type="number" id="T_cov" value="2.11" step="any"></div>
+      </div>
+
+      <div class="mode-raw" style="display:none">
+        <div class="row2">
+          <div class="ctrl"><label>Σ numerator</label><input type="number" id="T_sx" value="43802" step="any"></div>
+          <div class="ctrl"><label>Σ denom</label><input type="number" id="T_sy" value="18100" step="any"></div>
+        </div>
+        <div class="row2">
+          <div class="ctrl"><label>Σ numerator²</label><input type="number" id="T_sx2" value="279540" step="any"></div>
+          <div class="ctrl"><label>Σ denom²</label><input type="number" id="T_sy2" value="41842" step="any"></div>
+        </div>
+        <div class="ctrl"><label>Σ (num × denom)</label><input type="number" id="T_sxy" value="145200" step="any"></div>
+      </div>
+      <div class="warnbox" id="T_warn"></div>
+    </div>
+  </div>
+
+  <div class="out" id="output"><em>Enter values above — results update live.</em></div>
+  <p class="note">Var/Cov are the <strong>per-unit</strong> (population-style) second moments across your randomization units. In raw mode the tool derives them from your sums using <code>Var = Σx²/n − (Σx/n)²</code> and <code>Cov = Σxy/n − x̄ȳ</code>. Standard error scales as <code>√(Var(R)/n)</code>.</p>
+</section>
+
+<h2>How the delta method fixes ratio variance</h2>
+<p>A ratio metric is <code>R = mean(numerator) / mean(denominator)</code>. Think revenue-per-visitor, where <em>revenue</em> is the numerator summed per user and <em>visits</em> (or pageviews, sessions) is the denominator. Because both the top and bottom are random and correlated, you cannot treat <code>R</code> as a simple sample mean. The first-order Taylor expansion (the delta method) around the means gives:</p>
+<div class="formula">Var(R) ≈ (1 / ȳ²) · [ Var(x) − 2·R·Cov(x,y) + R²·Var(y) ]   where R = x̄ / ȳ
+
+SE(R) = √( Var(R) / n )     with n = number of randomization units</div>
+<p>The three terms matter: <code>Var(x)</code> is the numerator spread, <code>R²·Var(y)</code> inflates variance when the denominator itself is noisy, and the <code>−2·R·Cov(x,y)</code> term <em>subtracts</em> shared movement — when heavy users generate both more revenue and more visits, that positive covariance reduces the true uncertainty. Drop the covariance term and you typically <strong>over-state</strong> the interval; treat the ratio as an i.i.d. mean of per-event rows and you <strong>under-state</strong> it, because per-event rows within a user are not independent.</p>
+<div class="callout">The classic bug: computing CTR as <code>clicks/impressions</code> across all impression rows and running a t-test on that pooled rate. Impressions from the same randomized user are correlated, so the reported p-value is far too small and teams ship losers. Aggregating to the randomization unit and applying the delta method restores the correct, usually wider, interval.</div>
+<p>For two arms the tool treats the arms as independent, so <code>Var(R_B − R_A) = Var(R_A) + Var(R_B)</code>, forms <code>z = (R_B − R_A) / SE_diff</code>, and returns the two-sided normal p-value. Enter <code>Units n = 0</code> for Treatment to get a single-arm interval only. Everything runs locally in your browser — no data leaves the page.</p>
+
+<h2>Related Tools</h2>
+<p class="related">
+  <a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a>
+  <a href="/tools/bayesian-ab-test-calculator">Bayesian A/B Test Calculator</a>
+  <a href="/tools/cuped-variance-reduction-calculator">CUPED Variance Reduction Calculator</a>
+</p>
+
+</div>
+<footer>
+  <a href="/">Home</a>
+  <a href="/tools/">All Tools</a>
+  <a href="/tools/ab-test-sample-size-calculator">Sample Size</a>
+  <br>© 2026 abwex.com · Built by <a href="https://zovo.one">Michael Lip</a>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var mode = "stats";
+  var Z90=1.6448536269514722, Z95=1.959963984540054, Z99=2.5758293035489004;
+
+  function zForConf(c){ return c==90?Z90 : c==99?Z99 : Z95; }
+  function num(id){ var el=document.getElementById(id); if(!el) return NaN; var v=parseFloat(el.value); return isNaN(v)?NaN:v; }
+
+  // standard normal CDF (Abramowitz & Stegun 7.1.26 via erf)
+  function erf(x){
+    var s = x<0?-1:1; x=Math.abs(x);
+    var t = 1/(1+0.3275911*x);
+    var y = 1 - (((((1.061405429*t - 1.453152027)*t) + 1.421413741)*t - 0.284496736)*t + 0.254829592)*t*Math.exp(-x*x);
+    return s*y;
+  }
+  function normCdf(z){ return 0.5*(1+erf(z/Math.SQRT2)); }
+
+  function fmt(v,d){ if(!isFinite(v)) return "—"; d=(d==null)?4:d; return v.toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}); }
+  function fmtP(p){
+    if(!isFinite(p)) return "—";
+    if(p < 0.0001) return "< 0.0001";
+    return p.toFixed(4);
+  }
+
+  // Returns {ok, n, R, varN, se, msg} for one arm from current mode
+  function readArm(prefix, warnId){
+    var warn = document.getElementById(warnId);
+    warn.textContent = "";
+    var n = num(prefix+"_n");
+    if(!isFinite(n) || n < 2){ return {ok:false, skip:(n===0), n:n}; }
+
+    var meanN, meanD, vN, vD, cov;
+    if(mode==="stats"){
+      meanN=num(prefix+"_mn"); meanD=num(prefix+"_md");
+      vN=num(prefix+"_vn"); vD=num(prefix+"_vd"); cov=num(prefix+"_cov");
+    } else {
+      var sx=num(prefix+"_sx"), sy=num(prefix+"_sy"),
+          sx2=num(prefix+"_sx2"), sy2=num(prefix+"_sy2"), sxy=num(prefix+"_sxy");
+      meanN=sx/n; meanD=sy/n;
+      vN = sx2/n - meanN*meanN;
+      vD = sy2/n - meanD*meanD;
+      cov = sxy/n - meanN*meanD;
+    }
+    if([meanN,meanD,vN,vD,cov].some(function(x){return !isFinite(x);})){
+      warn.textContent="Fill in all fields for this arm.";
+      return {ok:false};
+    }
+    if(meanD===0){ warn.textContent="Mean denominator is 0 — ratio undefined."; return {ok:false}; }
+    if(vN<0 || vD<0){ warn.textContent="Derived variance is negative — check Σx² / Σy² inputs."; return {ok:false}; }
+
+    var R = meanN/meanD;
+    // delta-method per-unit variance of the ratio
+    var varR = (1/(meanD*meanD)) * (vN - 2*R*cov + R*R*vD);
+    if(varR < 0){ warn.textContent="Delta-method variance came out negative (implausible covariance)."; varR=0; }
+    var se = Math.sqrt(varR / n);
+    return {ok:true, n:n, R:R, meanN:meanN, meanD:meanD, varR:varR, se:se};
+  }
+
+  function row(label,val){ return '<div class="metricrow"><span>'+label+'</span><span class="v">'+val+'</span></div>'; }
+
+  function render(){
+    var conf = parseInt(document.getElementById("conf").value,10);
+    var z = zForConf(conf);
+    var A = readArm("C","C_warn");
+    var B = readArm("T","T_warn");
+    var out = document.getElementById("output");
+
+    if(!A.ok){
+      out.innerHTML = '<em>Enter valid Control values (need Units n ≥ 2 and all fields filled).</em>';
+      return;
+    }
+
+    var html = "";
+    // Control block
+    var loA = A.R - z*A.se, hiA = A.R + z*A.se;
+    html += '<div style="margin-bottom:14px">';
+    html += '<div class="metricrow"><span><strong>Control ratio R<sub>A</sub></strong></span><span class="v big" style="font-size:1.3rem">'+fmt(A.R,5)+'</span></div>';
+    html += row("Standard error", fmt(A.se,6));
+    html += '<div class="metricrow"><span>'+conf+'% CI</span><span class="v ci">['+fmt(loA,5)+', '+fmt(hiA,5)+']</span></div>';
+    html += row("Delta-method Var(R) per unit", fmt(A.varR,5));
+    html += '</div>';
+
+    var hasB = B.ok && B.n>=2 && !(B.skip);
+    if(hasB){
+      var loB=B.R - z*B.se, hiB=B.R + z*B.se;
+      html += '<div style="margin-bottom:14px">';
+      html += '<div class="metricrow"><span><strong>Treatment ratio R<sub>B</sub></strong></span><span class="v big" style="font-size:1.3rem">'+fmt(B.R,5)+'</span></div>';
+      html += row("Standard error", fmt(B.se,6));
+      html += '<div class="metricrow"><span>'+conf+'% CI</span><span class="v ci">['+fmt(loB,5)+', '+fmt(hiB,5)+']</span></div>';
+      html += '</div>';
+
+      var diff = B.R - A.R;
+      var seDiff = Math.sqrt(A.se*A.se + B.se*B.se);
+      var lift = A.R!==0 ? (diff/A.R*100) : NaN;
+      var loD=diff - z*seDiff, hiD=diff + z*seDiff;
+      var zStat = seDiff>0 ? diff/seDiff : NaN;
+      var p = isFinite(zStat) ? 2*(1-normCdf(Math.abs(zStat))) : NaN;
+      var sig = isFinite(p) && p < (1-conf/100);
+
+      html += '<div style="border-top:2px solid var(--border);padding-top:12px">';
+      html += '<div class="metricrow"><span><strong>Difference B − A</strong></span><span class="v big" style="font-size:1.3rem">'+fmt(diff,5)+'</span></div>';
+      html += row("Relative lift", isFinite(lift)?fmt(lift,2)+" %":"—");
+      html += row("SE of difference", fmt(seDiff,6));
+      html += '<div class="metricrow"><span>'+conf+'% CI of difference</span><span class="v ci">['+fmt(loD,5)+', '+fmt(hiD,5)+']</span></div>';
+      html += row("z-statistic", fmt(zStat,3));
+      html += row("Two-sided p-value", fmtP(p));
+      html += '</div>';
+
+      html += '<div class="verdict '+(sig?"sig":"nsig")+'">'+
+        (sig
+          ? "Significant at "+conf+"%: the "+conf+"% CI for the difference excludes 0 (p = "+fmtP(p)+"). Treatment moved the ratio metric."
+          : "Not significant at "+conf+"%: the "+conf+"% CI includes 0 (p = "+fmtP(p)+"). Cannot rule out no effect.")+
+        '</div>';
+    } else {
+      html += '<div class="note">Set Treatment <em>Units n</em> ≥ 2 to compare two arms and get a p-value.</div>';
+    }
+
+    out.innerHTML = html;
+  }
+
+  // mode switch
+  var modebar = document.getElementById("modebar");
+  modebar.addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    mode = b.getAttribute("data-mode");
+    Array.prototype.forEach.call(modebar.querySelectorAll("button"), function(x){ x.classList.remove("active"); });
+    b.classList.add("active");
+    Array.prototype.forEach.call(document.querySelectorAll(".mode-stats"), function(x){ x.style.display = (mode==="stats")?"":"none"; });
+    Array.prototype.forEach.call(document.querySelectorAll(".mode-raw"), function(x){ x.style.display = (mode==="raw")?"":"none"; });
+    render();
+  });
+
+  document.addEventListener("input", render);
+  document.addEventListener("change", render);
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CUPED Variance Reduction Calculator</title>
+<meta name="description" content="Estimate how much CUPED covariate adjustment shrinks metric variance and shortens A/B test runtime, from the pre-experiment correlation coefficient.">
+<link rel="canonical" href="https://abwex.com/tools/cuped-variance-reduction-calculator">
+<meta property="og:title" content="CUPED Variance Reduction Calculator">
+<meta property="og:description" content="Estimate how much CUPED covariate adjustment shrinks metric variance and shortens A/B test runtime, from the pre-experiment correlation coefficient.">
+<meta property="og:url" content="https://abwex.com/tools/cuped-variance-reduction-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "CUPED Variance Reduction Calculator",
+      "url": "https://abwex.com/tools/cuped-variance-reduction-calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "description": "Estimate how much CUPED covariate adjustment shrinks metric variance and shortens A/B test runtime, from the pre-experiment correlation coefficient.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "CUPED Variance Reduction Calculator", "item": "https://abwex.com/tools/cuped-variance-reduction-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#0d1117;--panel:#161b22;--panel2:#1c232d;--border:#2b333e;
+  --text:#e6edf3;--muted:#9aa7b4;--accent:#4fd1c5;--accent2:#7c8cff;
+  --good:#56d364;--warn:#f0b429;--radius:10px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.6;font-size:16px}
+a{color:var(--accent)}
+nav{display:flex;gap:18px;padding:14px 20px;border-bottom:1px solid var(--border);
+  background:var(--panel);font-size:14px;position:sticky;top:0;z-index:5}
+nav a{text-decoration:none;font-weight:600}
+.wrap{max-width:860px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:1.7rem;line-height:1.25;margin:18px 0 6px}
+h2{font-size:1.2rem;margin:34px 0 10px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.lede{color:var(--muted);font-size:1.02rem;margin:0 0 8px}
+#tool{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin:22px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 6px;
+  text-transform:uppercase;letter-spacing:.03em}
+.field{margin:0 0 16px}
+input[type=number]{width:100%;background:var(--panel2);border:1px solid var(--border);
+  color:var(--text);border-radius:8px;padding:10px 12px;font-size:16px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.rangerow{display:flex;align-items:center;gap:12px}
+.rangerow input[type=number]{width:96px}
+small.hint{display:block;color:var(--muted);font-weight:400;font-size:12px;
+  text-transform:none;letter-spacing:0;margin-top:5px}
+.out{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:6px}
+@media(max-width:640px){.out{grid-template-columns:1fr}}
+.metric{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.metric .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.metric .v{font-size:1.55rem;font-weight:700;margin-top:4px;color:var(--accent)}
+.metric .s{font-size:12px;color:var(--muted);margin-top:2px}
+.metric.alt .v{color:var(--accent2)}
+.metric.good .v{color:var(--good)}
+canvas{width:100%;height:240px;display:block;background:var(--panel2);
+  border:1px solid var(--border);border-radius:8px;margin-top:8px}
+.callout{background:var(--panel2);border-left:3px solid var(--accent);
+  padding:12px 16px;border-radius:6px;margin:14px 0;font-size:14px;color:var(--muted)}
+code{background:#0a0e14;border:1px solid var(--border);border-radius:4px;
+  padding:1px 6px;font-size:.9em;color:#ffd580}
+.formula{background:#0a0e14;border:1px solid var(--border);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:14px;color:#cfe3ff;margin:12px 0}
+p{margin:12px 0}
+ul{color:var(--text)}
+footer{border-top:1px solid var(--border);margin-top:40px;padding:22px 20px;
+  color:var(--muted);font-size:14px;text-align:center}
+footer a{margin:0 10px;text-decoration:none}
+.related a{display:inline-block;margin:4px 10px 4px 0;background:var(--panel2);
+  border:1px solid var(--border);border-radius:20px;padding:6px 14px;
+  text-decoration:none;font-size:14px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">Home</a>
+  <a href="/tools/">Tools</a>
+</nav>
+<div class="wrap">
+<h1>How much faster does CUPED make your A/B test?</h1>
+<p class="lede">Turn one number — the correlation between a pre-experiment covariate and your metric — into the variance reduction, effective sample-size gain, and runtime savings CUPED buys you.</p>
+
+<section id="tool">
+  <div class="grid">
+    <div>
+      <div class="field">
+        <label for="rho">Correlation &rho; (covariate &harr; metric)</label>
+        <div class="rangerow">
+          <input type="range" id="rhoSlider" min="0" max="0.99" step="0.01" value="0.55">
+          <input type="number" id="rho" min="-0.99" max="0.99" step="0.01" value="0.55">
+        </div>
+        <small class="hint">Pearson correlation between the pre-period covariate (e.g. last week's value) and the in-experiment metric. Sign does not matter — CUPED uses &rho;&sup2;.</small>
+      </div>
+      <div class="field">
+        <label for="baseVar">Baseline metric variance Var(Y)</label>
+        <input type="number" id="baseVar" min="0" step="0.01" value="1">
+        <small class="hint">Optional. The variance of your metric without adjustment. Used to show the adjusted variance in the same units.</small>
+      </div>
+      <div class="field">
+        <label for="days">Planned test duration (days)</label>
+        <input type="number" id="days" min="1" step="1" value="28">
+        <small class="hint">Runtime you'd need without CUPED. We scale it by the sample-size ratio to show the shortened schedule.</small>
+      </div>
+    </div>
+    <div>
+      <div class="out">
+        <div class="metric good">
+          <div class="k">Variance reduction</div>
+          <div class="v" id="oReduc">30.3%</div>
+          <div class="s">1 &minus; &rho;&sup2;</div>
+        </div>
+        <div class="metric">
+          <div class="k">Adjusted variance</div>
+          <div class="v" id="oVar">0.698</div>
+          <div class="s">Var(Y)&middot;(1&minus;&rho;&sup2;)</div>
+        </div>
+        <div class="metric alt">
+          <div class="k">Effective sample&nbsp;&times;</div>
+          <div class="v" id="oEss">1.43&times;</div>
+          <div class="s">1 / (1&minus;&rho;&sup2;)</div>
+        </div>
+        <div class="metric alt">
+          <div class="k">Runtime saved</div>
+          <div class="v" id="oDays">8.5 d</div>
+          <div class="s" id="oDaysNew">28 &rarr; 19.5 d</div>
+        </div>
+      </div>
+      <canvas id="chart" width="420" height="240" aria-label="Variance reduction vs correlation curve"></canvas>
+      <div class="callout" id="verdict"></div>
+    </div>
+  </div>
+</section>
+
+<h2>What CUPED actually does</h2>
+<p>CUPED (Controlled-experiment Using Pre-Experiment Data), introduced by Deng, Xu, Kohavi and Walker at Microsoft, removes the part of your metric that was already predictable <em>before</em> the experiment started. If each user has a covariate <code>X</code> from the pre-period, CUPED forms an adjusted metric:</p>
+<div class="formula">Y_cuped = Y &minus; &theta;&middot;(X &minus; E[X]),&nbsp;&nbsp;where &theta; = Cov(Y, X) / Var(X)</div>
+<p>Because &theta; is the least-squares slope, the adjusted metric keeps the same expected treatment effect — it is unbiased — but its variance drops to:</p>
+<div class="formula">Var(Y_cuped) = Var(Y) &middot; (1 &minus; &rho;&sup2;)</div>
+<p>where &rho; is the correlation between <code>X</code> and <code>Y</code>. That single &rho;&sup2; term is the whole story. Variance in an A/B test drives how many samples you need, and required sample size scales linearly with variance. So the <strong>effective sample-size multiplier</strong> is <code>1 / (1 &minus; &rho;&sup2;)</code>, and — assuming traffic is roughly constant — the required test duration shrinks by the same factor. A covariate correlated at &rho; = 0.7 cuts variance by 49%, nearly doubling your effective users and halving runtime; at &rho; = 0.3 the payoff is a modest 9%.</p>
+<p>The best covariate is usually the same metric measured on the same users in the period just before the test. Notice the reduction depends on &rho;&sup2;, so weak covariates barely help while strong ones pay off super-linearly. The chart above plots <code>1 &minus; &rho;&sup2;</code> across the full correlation range and marks your current value, so you can see whether wiring up the pre-experiment join is worth the engineering before you build it. CUPED changes nothing about your randomization, false-positive rate, or the estimand — it is pure variance reduction, which is why it has become a default in mature experimentation platforms.</p>
+
+<div class="related">
+  <h2>Related Tools</h2>
+  <a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a>
+  <a href="/tools/statistical-significance-calculator">Statistical Significance Calculator</a>
+  <a href="/tools/minimum-detectable-effect-calculator">Minimum Detectable Effect Calculator</a>
+</div>
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/tools/ab-test-sample-size-calculator">Sample Size</a>
+  </div>
+  <p>&copy; 2026 abwex.com &middot; Built by <a href="https://zovo.one">Michael Lip</a></p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var rho=document.getElementById('rho'),
+      rhoSlider=document.getElementById('rhoSlider'),
+      baseVar=document.getElementById('baseVar'),
+      days=document.getElementById('days'),
+      oReduc=document.getElementById('oReduc'),
+      oVar=document.getElementById('oVar'),
+      oEss=document.getElementById('oEss'),
+      oDays=document.getElementById('oDays'),
+      oDaysNew=document.getElementById('oDaysNew'),
+      verdict=document.getElementById('verdict'),
+      cv=document.getElementById('chart'),
+      ctx=cv.getContext('2d');
+
+  function clamp(x,lo,hi){ return x<lo?lo:(x>hi?hi:x); }
+  function num(el,def){ var v=parseFloat(el.value); return isFinite(v)?v:def; }
+
+  function draw(r2, curRho){
+    var W=cv.width, H=cv.height, padL=44, padB=28, padT=14, padR=14;
+    ctx.clearRect(0,0,W,H);
+    var x0=padL, x1=W-padR, y0=H-padB, y1=padT;
+    // axes
+    ctx.strokeStyle='#2b333e'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x0,y1); ctx.lineTo(x0,y0); ctx.lineTo(x1,y0); ctx.stroke();
+    // gridlines + y labels (variance reduction 0..1)
+    ctx.fillStyle='#9aa7b4'; ctx.font='11px -apple-system,sans-serif';
+    for(var g=0; g<=4; g++){
+      var yv=g/4, yy=y0-(y0-y1)*yv;
+      ctx.strokeStyle='#20272f'; ctx.beginPath(); ctx.moveTo(x0,yy); ctx.lineTo(x1,yy); ctx.stroke();
+      ctx.textAlign='right'; ctx.textBaseline='middle';
+      ctx.fillText((yv*100).toFixed(0)+'%', x0-6, yy);
+    }
+    // x labels (rho 0..1 magnitude)
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    for(var gx=0; gx<=5; gx++){
+      var xv=gx/5, xx=x0+(x1-x0)*xv;
+      ctx.fillText(xv.toFixed(1), xx, y0+6);
+    }
+    ctx.fillText('|ρ|', (x0+x1)/2, y0+16);
+    // curve: reduction = 1 - rho^2
+    ctx.strokeStyle='#4fd1c5'; ctx.lineWidth=2; ctx.beginPath();
+    for(var i=0;i<=200;i++){
+      var rr=i/200, red=1-rr*rr;
+      var px=x0+(x1-x0)*rr, py=y0-(y0-y1)*red;
+      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    // current point
+    var ax=Math.abs(clamp(curRho,-0.999,0.999));
+    var cx=x0+(x1-x0)*ax, cy=y0-(y0-y1)*(1-ax*ax);
+    ctx.strokeStyle='#7c8cff'; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(cx,y0); ctx.lineTo(cx,cy); ctx.lineTo(x0,cy); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#7c8cff'; ctx.beginPath(); ctx.arc(cx,cy,4.5,0,Math.PI*2); ctx.fill();
+  }
+
+  function fmt(x,d){ return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toFixed(d); }
+
+  function compute(){
+    var r=clamp(num(rho,0), -0.99, 0.99);
+    var r2=r*r;
+    var reduc=1-r2;                 // remaining variance fraction
+    var reductionPct=r2*100;        // proportional variance REMOVED
+    var bv=Math.max(0,num(baseVar,1));
+    var adjVar=bv*reduc;
+    var ess = reduc>1e-9 ? 1/reduc : Infinity;
+    var d=Math.max(1,num(days,28));
+    var newDays=d*reduc;
+    var saved=d-newDays;
+
+    oReduc.textContent=fmt(reductionPct,1)+'%';
+    oVar.textContent=fmt(adjVar,3);
+    oEss.textContent=(ess===Infinity?'∞':fmt(ess,2))+'×';
+    oDays.textContent=fmt(saved,1)+' d';
+    oDaysNew.textContent=fmt(d,0)+' → '+fmt(newDays,1)+' d';
+
+    var msg;
+    if(reductionPct<5) msg='Weak covariate: &lt;5% variance removed. CUPED is barely worth the engineering here — look for a better pre-period predictor.';
+    else if(reductionPct<20) msg='Modest gain: ~'+fmt(reductionPct,0)+'% variance removed, effective sample ×'+fmt(ess,2)+'. Worth it if the join is cheap.';
+    else if(reductionPct<45) msg='Solid gain: '+fmt(reductionPct,0)+'% variance removed, runtime cut by '+fmt(saved,1)+' days. Standard CUPED territory — ship it.';
+    else msg='Excellent covariate: '+fmt(reductionPct,0)+'% variance removed, '+fmt(ess,2)+'× effective users. This nearly halves (or better) your required runtime.';
+    verdict.innerHTML=msg;
+
+    draw(r2, r);
+  }
+
+  rho.addEventListener('input', function(){
+    var v=clamp(num(rho,0),-0.99,0.99);
+    rhoSlider.value=Math.abs(v);
+    compute();
+  });
+  rhoSlider.addEventListener('input', function(){
+    rho.value=rhoSlider.value;
+    compute();
+  });
+  baseVar.addEventListener('input', compute);
+  days.addEventListener('input', compute);
+  window.addEventListener('resize', compute);
+
+  compute();
+})();
+</script>
+</body>
+</html>

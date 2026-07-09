@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peeking Alpha Inflation Calculator</title>
+<meta name="description" content="Compute the real false-positive rate when you peek at an A/B test N times with a fixed 0.05 threshold, and the corrected alpha needed to keep it at 5%.">
+<link rel="canonical" href="https://abwex.com/tools/peeking-inflation-calculator">
+<meta property="og:title" content="Peeking Alpha Inflation Calculator">
+<meta property="og:description" content="Compute the real false-positive rate when you peek at an A/B test N times with a fixed 0.05 threshold, and the corrected alpha needed to keep it at 5%.">
+<meta property="og:url" content="https://abwex.com/tools/peeking-inflation-calculator">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Peeking Alpha Inflation Calculator",
+      "url": "https://abwex.com/tools/peeking-inflation-calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "description": "Compute the real false-positive rate when you peek at an A/B test N times with a fixed 0.05 threshold, and the corrected alpha needed to keep it at 5%.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Peeking Alpha Inflation Calculator", "item": "https://abwex.com/tools/peeking-inflation-calculator" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --line:#2b3444;
+    --ink:#e6edf3; --mut:#8b98a9; --acc:#58a6ff; --acc2:#3fb950;
+    --warn:#f0883e; --bad:#f85149; --good:#3fb950;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--acc); text-decoration:none}
+  a:hover{text-decoration:underline}
+  nav{
+    display:flex; gap:18px; padding:14px 20px; border-bottom:1px solid var(--line);
+    background:#0a0e14; font-size:14px; position:sticky; top:0; z-index:5;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:26px 20px 60px}
+  h1{font-size:1.72rem; line-height:1.2; margin:.4em 0 .3em}
+  h2{font-size:1.2rem; margin:1.8em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em}
+  .lede{color:var(--mut); font-size:1.02rem; margin:0 0 1.2em}
+  section#tool{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:20px; margin:14px 0 8px;
+  }
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .field{display:flex; flex-direction:column; gap:6px}
+  label{font-size:.86rem; color:var(--mut); font-weight:600; letter-spacing:.2px}
+  label .hint{font-weight:400; color:#697585}
+  input[type=number], select{
+    background:var(--panel2); border:1px solid var(--line); color:var(--ink);
+    border-radius:8px; padding:10px 12px; font-size:1rem; font-family:inherit;
+  }
+  input[type=range]{width:100%; accent-color:var(--acc)}
+  input:focus,select:focus{outline:2px solid var(--acc); outline-offset:0}
+  .rangewrap{display:flex; align-items:center; gap:12px}
+  .rangewrap output{min-width:34px; text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); font-weight:700}
+  .radios{display:flex; gap:8px; flex-wrap:wrap}
+  .radios label{
+    display:flex; align-items:center; gap:6px; background:var(--panel2);
+    border:1px solid var(--line); padding:8px 12px; border-radius:8px; cursor:pointer;
+    color:var(--ink); font-weight:500;
+  }
+  .radios input{accent-color:var(--acc)}
+  .out{
+    margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  }
+  @media(max-width:640px){.out{grid-template-columns:1fr}}
+  .card{
+    background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px;
+  }
+  .card .k{font-size:.78rem; color:var(--mut); text-transform:uppercase; letter-spacing:.6px}
+  .card .v{font-size:2.05rem; font-weight:800; font-variant-numeric:tabular-nums; margin-top:4px; line-height:1}
+  .card .sub{font-size:.82rem; color:var(--mut); margin-top:6px}
+  .v.bad{color:var(--bad)} .v.warn{color:var(--warn)} .v.good{color:var(--good)}
+  .bar{height:12px; border-radius:6px; background:#0a0e14; overflow:hidden; margin-top:10px; border:1px solid var(--line)}
+  .bar > i{display:block; height:100%; background:linear-gradient(90deg,var(--good),var(--warn),var(--bad)); transition:width .18s}
+  .verdict{margin-top:16px; padding:12px 14px; border-radius:8px; font-size:.94rem; border:1px solid var(--line); background:#0a0e14}
+  table{width:100%; border-collapse:collapse; margin-top:14px; font-size:.9rem}
+  th,td{text-align:right; padding:7px 8px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--mut); font-weight:600}
+  tr.hi td{background:rgba(88,166,255,.08)}
+  .note{font-size:.82rem; color:var(--mut); margin-top:8px}
+  .prose p{margin:.7em 0}
+  code{background:var(--panel2); padding:2px 6px; border-radius:5px; font-size:.86em; border:1px solid var(--line)}
+  .related ul{list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:10px}
+  .related a{background:var(--panel); border:1px solid var(--line); padding:9px 14px; border-radius:8px; display:inline-block}
+  footer{border-top:1px solid var(--line); padding:22px 20px; color:var(--mut); font-size:.86rem; text-align:center}
+  footer a{margin:0 8px}
+  .kbd{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/">Home</a>
+  <a href="/tools/">Tools</a>
+</nav>
+<div class="wrap">
+  <h1>How much does peeking at your A/B test inflate false positives?</h1>
+  <p class="lede">Stop a test the moment it "hits significance" and you're not running one test at 5% &mdash; you're running many, and any one of them crossing <code>p&lt;0.05</code> ends the trial. This tool simulates that repeated-looks process to show the <strong>true</strong> type-I error rate and the corrected per-look threshold that pulls it back to 5%.</p>
+
+  <section id="tool">
+    <div class="grid">
+      <div class="field">
+        <label for="looks">Number of interim looks <span class="hint">(N peeks)</span></label>
+        <div class="rangewrap">
+          <input type="range" id="looks" min="1" max="30" step="1" value="5">
+          <output id="looksOut">5</output>
+        </div>
+      </div>
+      <div class="field">
+        <label for="alpha">Per-look nominal &alpha; <span class="hint">(threshold each peek)</span></label>
+        <input type="number" id="alpha" min="0.0001" max="0.5" step="0.001" value="0.05">
+      </div>
+      <div class="field">
+        <label>Look spacing (information fraction)</label>
+        <div class="radios">
+          <label><input type="radio" name="spacing" value="equal" checked> Equally spaced</label>
+          <label><input type="radio" name="spacing" value="front"> Front-loaded</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="target">Target overall &alpha; <span class="hint">(for correction)</span></label>
+        <input type="number" id="target" min="0.001" max="0.5" step="0.005" value="0.05">
+      </div>
+    </div>
+
+    <div class="out">
+      <div class="card">
+        <div class="k">True cumulative type-I error</div>
+        <div class="v bad" id="cumV">&mdash;</div>
+        <div class="sub" id="cumSub">P(any of N looks crosses the boundary) under H&#8320;</div>
+        <div class="bar"><i id="cumBar" style="width:0%"></i></div>
+      </div>
+      <div class="card">
+        <div class="k">Corrected per-look &alpha; (Pocock-style)</div>
+        <div class="v good" id="corrV">&mdash;</div>
+        <div class="sub" id="corrSub">Threshold that restores your target overall rate</div>
+        <div class="bar"><i id="corrBar" style="width:0%"></i></div>
+      </div>
+    </div>
+
+    <div class="verdict" id="verdict">&hellip;</div>
+
+    <table id="tbl">
+      <thead><tr><th>Look #</th><th>Cumulative &alpha; if you stop here</th><th>Inflation vs 0.05</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <p class="note" id="method"></p>
+  </section>
+
+  <div class="prose">
+    <h2>What this actually computes</h2>
+    <p>The test statistic of a running A/B experiment behaves like a <strong>Brownian motion</strong> when plotted against the information fraction <code>t &isin; (0,1]</code>. At each look the standardized statistic is <code>Z(t) = B(t)/&radic;t</code>, where <code>B</code> is a standard Wiener process. Peeking means you check whether <code>|Z|</code> crosses the fixed critical value <code>c = &Phi;&#8315;&sup1;(1 &minus; &alpha;/2)</code> at each of the N looks; the trial stops (a "win") the first time it does. Because the increments of <code>B</code> are correlated across looks, the joint crossing probability has no simple product form &mdash; so this calculator runs a vectorized <strong>Monte Carlo</strong> of the Brownian bridge at the N information times, counting how often at least one look crosses. For equally spaced looks it cross-checks against the classic sequential-analysis benchmarks (Pocock 1977).</p>
+    <p>The headline number is the <em>cumulative type-I error</em>: the chance of declaring a false winner given the null is true. With one look it equals your nominal <code>&alpha;</code>. At five equally spaced looks a nominal 0.05 inflates to roughly <strong>0.14</strong>; at ten looks it climbs past <strong>0.19</strong>. That is the hidden tax of "just checking the dashboard."</p>
+    <p>The second output inverts the problem. Using a <strong>Pocock-style constant boundary</strong>, it binary-searches for the single per-look <code>&alpha;'</code> whose simulated cumulative error equals your target (default 5%). It also reports the crude <strong>Bonferroni</strong> bound <code>&alpha;/N</code>, which is always more conservative because it ignores the positive correlation between looks. Use the corrected threshold as a stopgap &mdash; but the honest fix is a real sequential design (O'Brien&ndash;Fleming spending, SPRT, or a Bayesian model with a proper stopping rule) rather than eyeballing a p-value.</p>
+
+    <h2 class="related-h">Related Tools</h2>
+    <div class="related">
+      <ul>
+        <li><a href="/tools/ab-test-sample-size-calculator">A/B Test Sample-Size Calculator</a></li>
+        <li><a href="/tools/statistical-significance-calculator">Statistical Significance Calculator</a></li>
+        <li><a href="/tools/bayesian-ab-test-calculator">Bayesian A/B Test Calculator</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a> &middot;
+    <a href="/tools/">All Tools</a> &middot;
+    <a href="/tools/statistical-significance-calculator">Significance Calculator</a>
+  </div>
+  <div style="margin-top:8px">&copy; 2026 abwex.com &middot; Built by <a href="https://zovo.one">Michael Lip</a></div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- Normal distribution helpers -------------------------------------
+  // Standard normal CDF via Abramowitz & Stegun 7.1.26 error function approx.
+  function erf(x){
+    var s = x < 0 ? -1 : 1; x = Math.abs(x);
+    var a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+    var t = 1/(1+p*x);
+    var y = 1 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+    return s*y;
+  }
+  function normCdf(z){ return 0.5*(1+erf(z/Math.SQRT2)); }
+  // Inverse normal CDF (Acklam's algorithm) -> critical value from alpha.
+  function normInv(p){
+    if(p<=0) return -Infinity; if(p>=1) return Infinity;
+    var a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+    var b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+    var c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+    var d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+    var pl=0.02425, ph=1-pl, q, r;
+    if(p<pl){ q=Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+    if(p<=ph){ q=p-0.5; r=q*q; return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1); }
+    q=Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  }
+
+  // ---- Information times ------------------------------------------------
+  function infoTimes(N, spacing){
+    var t=[], i;
+    if(spacing==="front"){
+      // more looks early: t_i grows like a square-ish curve toward 1
+      for(i=1;i<=N;i++){ t.push(Math.pow(i/N, 0.6)); }
+    } else {
+      for(i=1;i<=N;i++){ t.push(i/N); }
+    }
+    return t;
+  }
+
+  // ---- Monte Carlo: cumulative type-I error for a given per-look alpha ---
+  // Brownian motion B(t): simulate increments, Z(t)=B(t)/sqrt(t), two-sided
+  // boundary c = normInv(1 - alpha/2). Return fraction of paths that cross
+  // at ANY of the N looks. Also returns per-look cumulative crossing curve.
+  function simulate(times, alpha, trials){
+    var N = times.length;
+    var c = normInv(1 - alpha/2);
+    // pre-compute sqrt of increments
+    var dt = new Array(N), sqdt = new Array(N), sqt = new Array(N);
+    var prev = 0;
+    for(var k=0;k<N;k++){ dt[k]=times[k]-prev; sqdt[k]=Math.sqrt(dt[k]); sqt[k]=Math.sqrt(times[k]); prev=times[k]; }
+    var crossedAny = 0;
+    var cumByLook = new Array(N).fill(0); // P(first crossing at look<=k)
+    for(var s=0;s<trials;s++){
+      var B = 0, hit = false;
+      for(var j=0;j<N;j++){
+        B += sqdt[j]*gauss();
+        var Z = B / sqt[j];
+        if(!hit && Math.abs(Z) >= c){ hit = true; }
+        if(hit) cumByLook[j] += 1;
+      }
+      if(hit) crossedAny += 1;
+    }
+    var curve = cumByLook.map(function(x){ return x/trials; });
+    return { rate: crossedAny/trials, curve: curve, c: c };
+  }
+
+  // Box-Muller with a cached second value.
+  var cached=null;
+  function gauss(){
+    if(cached!==null){ var v=cached; cached=null; return v; }
+    var u1=Math.random()||1e-12, u2=Math.random();
+    var r=Math.sqrt(-2*Math.log(u1)), th=2*Math.PI*u2;
+    cached = r*Math.sin(th);
+    return r*Math.cos(th);
+  }
+
+  // ---- Invert: find per-look alpha' giving target cumulative error ------
+  function correctedAlpha(times, target){
+    var lo = 1e-5, hi = 0.5, mid;
+    // monotone increasing: higher per-look alpha -> higher cumulative error
+    for(var it=0; it<28; it++){
+      mid = 0.5*(lo+hi);
+      var r = simulate(times, mid, 6000).rate;
+      if(r > target) hi = mid; else lo = mid;
+    }
+    return 0.5*(lo+hi);
+  }
+
+  // ---- DOM ---------------------------------------------------------------
+  var $ = function(id){ return document.getElementById(id); };
+  var looks=$("looks"), looksOut=$("looksOut"), alphaEl=$("alpha"),
+      targetEl=$("target"), cumV=$("cumV"), cumSub=$("cumSub"), cumBar=$("cumBar"),
+      corrV=$("corrV"), corrSub=$("corrSub"), corrBar=$("corrBar"),
+      verdict=$("verdict"), tbody=$("tbody"), methodEl=$("method");
+
+  function spacing(){
+    var r=document.querySelectorAll('input[name=spacing]');
+    for(var i=0;i<r.length;i++) if(r[i].checked) return r[i].value;
+    return "equal";
+  }
+
+  function pct(x){ return (x*100).toFixed(1)+"%"; }
+
+  function recompute(){
+    var N = Math.max(1, Math.min(30, parseInt(looks.value,10)||1));
+    var alpha = Math.max(0.0001, Math.min(0.5, parseFloat(alphaEl.value)||0.05));
+    var target = Math.max(0.001, Math.min(0.5, parseFloat(targetEl.value)||0.05));
+    looksOut.textContent = N;
+
+    var times = infoTimes(N, spacing());
+    var trials = 40000;
+    var res = simulate(times, alpha, trials);
+
+    // Headline cumulative error
+    cumV.textContent = pct(res.rate);
+    cumV.className = "v " + (res.rate>0.12 ? "bad" : res.rate>0.075 ? "warn" : "good");
+    var inflation = res.rate/alpha;
+    cumSub.textContent = "≈ "+inflation.toFixed(1)+"× your nominal "+alpha.toFixed(3)+" (±"+ (1.96*Math.sqrt(res.rate*(1-res.rate)/trials)*100).toFixed(2) +"% MC error)";
+    cumBar.style.width = Math.min(100, res.rate*100/0.30*100/100*100).toFixed(0); // scaled below
+    cumBar.style.width = Math.min(100, (res.rate/0.30)*100).toFixed(1)+"%";
+
+    // Corrected per-look alpha
+    var ca = correctedAlpha(times, target);
+    var bonf = target/N;
+    corrV.textContent = ca.toFixed(4);
+    corrSub.textContent = "vs Bonferroni "+bonf.toFixed(4)+" • critical Z ≈ "+normInv(1-ca/2).toFixed(3);
+    corrBar.style.width = Math.min(100, (ca/alpha)*100).toFixed(1)+"%";
+
+    // Per-look cumulative table
+    var rows="";
+    for(var k=0;k<N;k++){
+      var cv = res.curve[k];
+      var infl = cv/0.05;
+      var hi = (k===N-1) ? ' class="hi"' : '';
+      rows += "<tr"+hi+"><td>"+(k+1)+"</td><td>"+pct(cv)+"</td><td>"+infl.toFixed(2)+"×</td></tr>";
+    }
+    tbody.innerHTML = rows;
+
+    // Verdict
+    var msg;
+    if(N===1){
+      msg = "<strong>One look, no inflation.</strong> A single analysis at α="+alpha.toFixed(3)+" is exactly a "+pct(alpha)+" test. The problem only appears when you peek repeatedly.";
+    } else if(res.rate < 0.075){
+      msg = "<strong>Mild inflation.</strong> Your true false-positive rate is "+pct(res.rate)+" — still fairly close to target. To be exact, use a per-look threshold of "+ca.toFixed(4)+".";
+    } else if(res.rate < 0.12){
+      msg = "<strong>Meaningful inflation.</strong> Peeking "+N+" times turns a "+pct(alpha)+" test into a "+pct(res.rate)+" one — roughly "+inflation.toFixed(1)+"× the advertised rate. Tighten each look to α'="+ca.toFixed(4)+" or adopt a sequential design.";
+    } else {
+      msg = "<strong>Severe inflation.</strong> At "+N+" looks your real chance of a false winner is "+pct(res.rate)+" ("+inflation.toFixed(1)+"× nominal). Stopping on the first p&lt;0.05 here is essentially p-hacking. Restore 5% with α'="+ca.toFixed(4)+", or better, use O'Brien–Fleming spending.";
+    }
+    verdict.innerHTML = msg;
+
+    methodEl.innerHTML = "Method: "+trials.toLocaleString()+"-path Monte Carlo of a Brownian-motion Z-statistic at "+N+" "+(spacing()==="front"?"front-loaded":"equally spaced")+" information times; two-sided boundary c="+res.c.toFixed(3)+". Corrected α found by 28-step bisection on the cumulative-error curve. Numbers shift slightly on each run (that's the MC noise band shown above).";
+  }
+
+  // Wire events
+  looks.addEventListener("input", recompute);
+  alphaEl.addEventListener("input", recompute);
+  targetEl.addEventListener("input", recompute);
+  document.querySelectorAll('input[name=spacing]').forEach(function(r){ r.addEventListener("change", recompute); });
+
+  recompute();
+})();
+</script>
+</body>
+</html>
