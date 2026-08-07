@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Bayesian A/B Test Calculator | abwex.com</title>
-  <meta name="description" content="Interactive Bayesian A/B test calculator with Beta conjugate priors, Monte Carlo P(B>A), expected uplift, credible intervals, and posterior density...">
-  <link rel="canonical" href="https://abwex.com/tools/bayesian-ab-test-calculator">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Bayesian A/B Test Calculator | abwex.com</title>
+ <meta name="description" content="Interactive Bayesian A/B test calculator with Beta conjugate priors, Monte Carlo P(B>A), expected uplift, credible intervals, and posterior density...">
+ <link rel="canonical" href="https://abwex.com/tools/bayesian-ab-test-calculator">
+ <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
@@ -18,7 +18,7 @@
       "description": "Compute posterior Beta distributions, P(B>A) via Monte Carlo, expected uplift, 95% credible intervals, and posterior conversion rates. Includes prior sensitivity analysis."
     }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -29,7 +29,7 @@
       ]
     }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -40,7 +40,7 @@
       ]
     }
   </script>
-  <style>
+ <style>
     * {
       box-sizing: border-box;
       margin: 0;
@@ -281,88 +281,88 @@
 </head>
 <body>
 <div class="container">
-  <h1>Bayesian A/B Test</h1>
-  <div class="subhead">Beta-Binomial conjugate · Monte Carlo · Credible intervals</div>
+ <h1>Bayesian A/B Test</h1>
+ <div class="subhead">Beta-Binomial conjugate · Monte Carlo · Credible intervals</div>
 
-  <div class="grid-2">
-    <!-- Control -->
-    <div class="input-card">
-      <h3>🅰 Control</h3>
-      <div class="input-group">
-        <label>Visitors</label>
-        <input type="number" id="ctrlVisitors" value="1000" min="1" step="1">
-      </div>
-      <div class="input-group">
-        <label>Conversions</label>
-        <input type="number" id="ctrlConversions" value="80" min="0" step="1">
-      </div>
-    </div>
-    <!-- Treatment -->
-    <div class="input-card">
-      <h3>🅱 Treatment</h3>
-      <div class="input-group">
-        <label>Visitors</label>
-        <input type="number" id="trtVisitors" value="1000" min="1" step="1">
-      </div>
-      <div class="input-group">
-        <label>Conversions</label>
-        <input type="number" id="trtConversions" value="110" min="0" step="1">
-      </div>
-    </div>
-  </div>
+ <div class="grid-2">
+ <!-- Control -->
+ <div class="input-card">
+ <h3> Control</h3>
+ <div class="input-group">
+ <label>Visitors</label>
+ <input type="number" id="ctrlVisitors" value="1000" min="1" step="1">
+ </div>
+ <div class="input-group">
+ <label>Conversions</label>
+ <input type="number" id="ctrlConversions" value="80" min="0" step="1">
+ </div>
+ </div>
+ <!-- Treatment -->
+ <div class="input-card">
+ <h3> Treatment</h3>
+ <div class="input-group">
+ <label>Visitors</label>
+ <input type="number" id="trtVisitors" value="1000" min="1" step="1">
+ </div>
+ <div class="input-group">
+ <label>Conversions</label>
+ <input type="number" id="trtConversions" value="110" min="0" step="1">
+ </div>
+ </div>
+ </div>
 
-  <!-- Prior row -->
-  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; background: #12121f; border-radius: 1.5rem; padding: 1rem 1.5rem; border:1px solid #2a2a45; margin-bottom: 1rem;">
-    <span style="color:#b3b3e6;">Prior (α, β):</span>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <div class="input-group" style="min-width: 70px; margin-bottom:0;">
-        <label>Alpha</label>
-        <input type="number" id="priorAlpha" value="1" min="0.01" step="0.1" style="width: 80px;">
-      </div>
-      <div class="input-group" style="min-width: 70px; margin-bottom:0;">
-        <label>Beta</label>
-        <input type="number" id="priorBeta" value="1" min="0.01" step="0.1" style="width: 80px;">
-      </div>
-    </div>
-    <button class="btn-primary" id="computeBtn" style="width: auto; padding: 0.6rem 2rem; margin-top:0;">⟳ Compute</button>
-  </div>
+ <!-- Prior row -->
+ <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; background: #12121f; border-radius: 1.5rem; padding: 1rem 1.5rem; border:1px solid #2a2a45; margin-bottom: 1rem;">
+ <span style="color:#b3b3e6;">Prior (α, β):</span>
+ <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+ <div class="input-group" style="min-width: 70px; margin-bottom:0;">
+ <label>Alpha</label>
+ <input type="number" id="priorAlpha" value="1" min="0.01" step="0.1" style="width: 80px;">
+ </div>
+ <div class="input-group" style="min-width: 70px; margin-bottom:0;">
+ <label>Beta</label>
+ <input type="number" id="priorBeta" value="1" min="0.01" step="0.1" style="width: 80px;">
+ </div>
+ </div>
+ <button class="btn-primary" id="computeBtn" style="width: auto; padding: 0.6rem 2rem; margin-top:0;">⟳ Compute</button>
+ </div>
 
-  <!-- Sensitivity -->
-  <div class="sensitivity">
-    <span style="color:#b3b3e6; align-self:center;">Prior sensitivity:</span>
-    <button class="sens-btn active" data-alpha="1" data-beta="1">Flat (1,1)</button>
-    <button class="sens-btn" data-alpha="10" data-beta="10">Skeptical (10,10)</button>
-    <button class="sens-btn" data-alpha="5" data-beta="15">Pessimistic (5,15)</button>
-    <button class="sens-btn" data-alpha="30" data-beta="10">Optimistic (30,10)</button>
-  </div>
+ <!-- Sensitivity -->
+ <div class="sensitivity">
+ <span style="color:#b3b3e6; align-self:center;">Prior sensitivity:</span>
+ <button class="sens-btn active" data-alpha="1" data-beta="1">Flat (1,1)</button>
+ <button class="sens-btn" data-alpha="10" data-beta="10">Skeptical (10,10)</button>
+ <button class="sens-btn" data-alpha="5" data-beta="15">Pessimistic (5,15)</button>
+ <button class="sens-btn" data-alpha="30" data-beta="10">Optimistic (30,10)</button>
+ </div>
 
-  <!-- Results -->
-  <div class="results-panel" id="resultsPanel">
-    <div class="stat-grid" id="statGrid">
-      <div class="stat-card indigo"><div class="value" id="pBA">0.00</div><div class="label">P(B > A)</div></div>
-      <div class="stat-card green"><div class="value" id="uplift">0.00%</div><div class="label">Expected uplift</div></div>
-      <div class="stat-card amber"><div class="value" id="meanA">0.00</div><div class="label">Posterior mean A</div></div>
-      <div class="stat-card rose"><div class="value" id="meanB">0.00</div><div class="label">Posterior mean B</div></div>
-    </div>
+ <!-- Results -->
+ <div class="results-panel" id="resultsPanel">
+ <div class="stat-grid" id="statGrid">
+ <div class="stat-card indigo"><div class="value" id="pBA">0.00</div><div class="label">P(B > A)</div></div>
+ <div class="stat-card green"><div class="value" id="uplift">0.00%</div><div class="label">Expected uplift</div></div>
+ <div class="stat-card amber"><div class="value" id="meanA">0.00</div><div class="label">Posterior mean A</div></div>
+ <div class="stat-card rose"><div class="value" id="meanB">0.00</div><div class="label">Posterior mean B</div></div>
+ </div>
 
-    <div class="chart-wrap">
-      <canvas id="densityCanvas" width="800" height="300"></canvas>
-      <div style="display:flex; justify-content:center; gap:2rem; font-size:0.8rem; color:#9ca3cf; margin-top:0.3rem;">
-        <span><span style="background:#6366f1; display:inline-block; width:12px; height:12px; border-radius:4px;"></span> Control (A)</span>
-        <span><span style="background:#f472b6; display:inline-block; width:12px; height:12px; border-radius:4px;"></span> Treatment (B)</span>
-        <span style="background:#2d2d5a; padding:0.1rem 0.6rem; border-radius:20px;">Shaded: B > A region</span>
-      </div>
-    </div>
+ <div class="chart-wrap">
+ <canvas id="densityCanvas" width="800" height="300"></canvas>
+ <div style="display:flex; justify-content:center; gap:2rem; font-size:0.8rem; color:#9ca3cf; margin-top:0.3rem;">
+ <span><span style="background:#6366f1; display:inline-block; width:12px; height:12px; border-radius:4px;"></span> Control (A)</span>
+ <span><span style="background:#f472b6; display:inline-block; width:12px; height:12px; border-radius:4px;"></span> Treatment (B)</span>
+ <span style="background:#2d2d5a; padding:0.1rem 0.6rem; border-radius:20px;">Shaded: B > A region</span>
+ </div>
+ </div>
 
-    <table>
-      <tr><th>Variant</th><th>Posterior α</th><th>Posterior β</th><th>Conv. rate (mean)</th><th>95% CI (low)</th><th>95% CI (high)</th></tr>
-      <tr><td>Control (A)</td><td id="postAlphaA">-</td><td id="postBetaA">-</td><td id="postMeanA">-</td><td id="ciLowA">-</td><td id="ciHighA">-</td></tr>
-      <tr><td>Treatment (B)</td><td id="postAlphaB">-</td><td id="postBetaB">-</td><td id="postMeanB">-</td><td id="ciLowB">-</td><td id="ciHighB">-</td></tr>
-    </table>
-    <div style="font-size:0.9rem; color:#a5b0d9; padding:0.5rem 0;" id="interpretation">Interpretation will appear here.</div>
-  </div>
+ <table>
+ <tr><th>Variant</th><th>Posterior α</th><th>Posterior β</th><th>Conv. rate (mean)</th><th>95% CI (low)</th><th>95% CI (high)</th></tr>
+ <tr><td>Control (A)</td><td id="postAlphaA">-</td><td id="postBetaA">-</td><td id="postMeanA">-</td><td id="ciLowA">-</td><td id="ciHighA">-</td></tr>
+ <tr><td>Treatment (B)</td><td id="postAlphaB">-</td><td id="postBetaB">-</td><td id="postMeanB">-</td><td id="ciLowB">-</td><td id="ciHighB">-</td></tr>
+ </table>
+ <div style="font-size:0.9rem; color:#a5b0d9; padding:0.5rem 0;" id="interpretation">Interpretation will appear here.</div>
+ </div>
 
-  <div class="footer">© 2025 abwex.com</div>
+ <div class="footer">© 2025 abwex.com</div>
 </div>
 
 <script>
@@ -548,8 +548,8 @@
       else if (pBA > 0.8) interp = 'Moderate evidence that B > A.';
       else if (pBA > 0.5) interp = 'Weak evidence favoring B over A.';
       else if (pBA < 0.05) interp = 'Strong evidence that Control (A) outperforms Treatment.';
-      else interp = 'No conclusive difference — more data may be needed.';
-      document.getElementById('interpretation').textContent = '📊 ' + interp;
+      else interp = 'No conclusive difference, more data may be needed.';
+      document.getElementById('interpretation').textContent = '' + interp;
 
       // draw chart
       drawDensity(postAlphaA, postBetaA, postAlphaB, postBetaB, meanA, meanB);
@@ -668,7 +668,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>

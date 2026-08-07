@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A/B Test Duration Estimator with Early Stopping Analysis | ABWex</title>
-  <meta name="description" content="Free A/B test duration estimator with early stopping analysis. Calculate minimum test runtime from traffic, baseline rate, MDE, and power. Sequential testing boundaries, alpha spending functions, and peeking penalty calculator.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/answers/test-duration-estimator.html">
-  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="A/B Test Duration Estimator with Early Stopping Analysis | ABWex">
-  <meta property="og:description" content="Free A/B test duration estimator. Calculate minimum runtime, sequential testing boundaries, alpha spending function, and peeking penalty for your A/B tests.">
-  <meta property="og:url" content="https://abwex.com/answers/test-duration-estimator.html">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="A/B Test Duration Estimator with Early Stopping Analysis">
-  <meta name="twitter:description" content="Free A/B test duration estimator. Calculate minimum runtime, sequential testing boundaries, and peeking penalty for A/B tests.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/answers/test-duration-estimator.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/answers/test-duration-estimator.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>A/B Test Duration Estimator with Early Stopping Analysis | ABWex</title>
+ <meta name="description" content="Free A/B test duration estimator with early stopping analysis. Calculate minimum test runtime from traffic, baseline rate, MDE, and power. Sequential testing boundaries, alpha spending functions, and peeking penalty calculator.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/answers/test-duration-estimator.html">
+ <link rel="alternate" type="application/atom+xml" title="ABWex, A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+ <meta property="og:title" content="A/B Test Duration Estimator with Early Stopping Analysis | ABWex">
+ <meta property="og:description" content="Free A/B test duration estimator. Calculate minimum runtime, sequential testing boundaries, alpha spending function, and peeking penalty for your A/B tests.">
+ <meta property="og:url" content="https://abwex.com/answers/test-duration-estimator.html">
+ <meta property="og:type" content="website">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="A/B Test Duration Estimator with Early Stopping Analysis">
+ <meta name="twitter:description" content="Free A/B test duration estimator. Calculate minimum runtime, sequential testing boundaries, and peeking penalty for A/B tests.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/answers/test-duration-estimator.html">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/answers/test-duration-estimator.html">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -42,7 +42,7 @@
     }
   }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -90,36 +90,36 @@
     ]
   }
   </script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Answers","item":"https://abwex.com/answers/"},{"@type":"ListItem","position":3,"name":"A/B Test Duration Estimator"}]}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Answers","item":"https://abwex.com/answers/"},{"@type":"ListItem","position":3,"name":"A/B Test Duration Estimator"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/tools/">Tools</a>
-        <a href="/answers/">Answers</a>
-        <a href="/guides/">Guides</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-test-duration-estimator" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-test-duration-estimator" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <section class="hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/answers/">Answers</a> <span>/</span> <span>A/B Test Duration Estimator</span></nav>
-      <h1>A/B Test Duration <span>Estimator</span></h1>
-      <p>Calculate the minimum runtime for your A/B test based on daily traffic, baseline conversion rate, minimum detectable effect, and statistical power. Includes early stopping analysis with sequential testing boundaries, alpha spending functions, and a peeking penalty calculator that shows how checking results early inflates your false positive rate. All computation runs in your browser.</p>
-    </section>
+ <main class="container">
+ <section class="hero">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/answers/">Answers</a> <span>/</span> <span>A/B Test Duration Estimator</span></nav>
+ <h1>A/B Test Duration <span>Estimator</span></h1>
+ <p>Calculate the minimum runtime for your A/B test based on daily traffic, baseline conversion rate, minimum detectable effect, and statistical power. Includes early stopping analysis with sequential testing boundaries, alpha spending functions, and a peeking penalty calculator that shows how checking results early inflates your false positive rate. All computation runs in your browser.</p>
+ </section>
 
-    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
-      <style>
+ <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+ <style>
         .td-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
         .td-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
         @media(max-width:640px){.td-grid{grid-template-columns:1fr}}
@@ -157,252 +157,252 @@
         .td-cal-month{font-size:.85rem;font-weight:600;color:var(--text,#e0e0e0);margin-bottom:.5rem;margin-top:1rem}
       </style>
 
-      <!-- Main Input Card -->
-      <div class="td-card">
-        <h2 style="margin-top:0;font-size:1.3rem;">Test Parameters</h2>
-        <div class="td-grid">
-          <div class="td-field">
-            <label for="td-traffic">Daily Visitors (total across all variants)</label>
-            <input type="number" id="td-traffic" value="5000" min="10" step="100">
-          </div>
-          <div class="td-field">
-            <label for="td-baseline">Baseline Conversion Rate (%)</label>
-            <input type="number" id="td-baseline" value="5" min="0.1" max="99.9" step="0.1">
-          </div>
-        </div>
-        <div class="td-grid" style="margin-top:1rem;">
-          <div class="td-field">
-            <label for="td-mde">Minimum Detectable Effect (% relative)</label>
-            <input type="number" id="td-mde" value="10" min="1" max="100" step="1">
-          </div>
-          <div class="td-field">
-            <label for="td-variants">Number of Variants (including control)</label>
-            <select id="td-variants">
-              <option value="2" selected>2 (A/B)</option>
-              <option value="3">3 (A/B/C)</option>
-              <option value="4">4 (A/B/C/D)</option>
-            </select>
-          </div>
-        </div>
-        <div class="td-grid" style="margin-top:1rem;">
-          <div class="td-field">
-            <label for="td-alpha">Significance Level (&alpha;)</label>
-            <select id="td-alpha">
-              <option value="0.10">0.10 (90% confidence)</option>
-              <option value="0.05" selected>0.05 (95% confidence)</option>
-              <option value="0.01">0.01 (99% confidence)</option>
-            </select>
-          </div>
-          <div class="td-field">
-            <label for="td-power">Statistical Power (1 - &beta;)</label>
-            <select id="td-power">
-              <option value="0.80" selected>80%</option>
-              <option value="0.90">90%</option>
-              <option value="0.95">95%</option>
-            </select>
-          </div>
-        </div>
-        <button class="td-btn" onclick="calcDuration()">Calculate Duration</button>
-      </div>
+ <!-- Main Input Card -->
+ <div class="td-card">
+ <h2 style="margin-top:0;font-size:1.3rem;">Test Parameters</h2>
+ <div class="td-grid">
+ <div class="td-field">
+ <label for="td-traffic">Daily Visitors (total across all variants)</label>
+ <input type="number" id="td-traffic" value="5000" min="10" step="100">
+ </div>
+ <div class="td-field">
+ <label for="td-baseline">Baseline Conversion Rate (%)</label>
+ <input type="number" id="td-baseline" value="5" min="0.1" max="99.9" step="0.1">
+ </div>
+ </div>
+ <div class="td-grid" style="margin-top:1rem;">
+ <div class="td-field">
+ <label for="td-mde">Minimum Detectable Effect (% relative)</label>
+ <input type="number" id="td-mde" value="10" min="1" max="100" step="1">
+ </div>
+ <div class="td-field">
+ <label for="td-variants">Number of Variants (including control)</label>
+ <select id="td-variants">
+ <option value="2" selected>2 (A/B)</option>
+ <option value="3">3 (A/B/C)</option>
+ <option value="4">4 (A/B/C/D)</option>
+ </select>
+ </div>
+ </div>
+ <div class="td-grid" style="margin-top:1rem;">
+ <div class="td-field">
+ <label for="td-alpha">Significance Level (&alpha;)</label>
+ <select id="td-alpha">
+ <option value="0.10">0.10 (90% confidence)</option>
+ <option value="0.05" selected>0.05 (95% confidence)</option>
+ <option value="0.01">0.01 (99% confidence)</option>
+ </select>
+ </div>
+ <div class="td-field">
+ <label for="td-power">Statistical Power (1 - &beta;)</label>
+ <select id="td-power">
+ <option value="0.80" selected>80%</option>
+ <option value="0.90">90%</option>
+ <option value="0.95">95%</option>
+ </select>
+ </div>
+ </div>
+ <button class="td-btn" onclick="calcDuration()">Calculate Duration</button>
+ </div>
 
-      <!-- Results Section -->
-      <div id="td-output" style="display:none;">
-        <div class="td-card">
-          <h3 style="margin-top:0;font-size:1.15rem;">Minimum Test Duration</h3>
-          <div class="td-results">
-            <div class="td-result-row"><span class="td-result-label">Required Sample Size (per variant)</span><span class="td-result-value" id="td-res-sample">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Total Sample Size (all variants)</span><span class="td-result-value" id="td-res-total">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Minimum Duration</span><span class="td-result-value" id="td-res-days">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Recommended Duration (full weeks)</span><span class="td-result-value" id="td-res-weeks">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Absolute Effect Size</span><span class="td-result-value" id="td-res-abs">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Detectable Range</span><span class="td-result-value" id="td-res-range">--</span></div>
-          </div>
-          <div class="td-info" id="td-res-note" style="display:none;"></div>
-        </div>
+ <!-- Results Section -->
+ <div id="td-output" style="display:none;">
+ <div class="td-card">
+ <h3 style="margin-top:0;font-size:1.15rem;">Minimum Test Duration</h3>
+ <div class="td-results">
+ <div class="td-result-row"><span class="td-result-label">Required Sample Size (per variant)</span><span class="td-result-value" id="td-res-sample">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Total Sample Size (all variants)</span><span class="td-result-value" id="td-res-total">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Minimum Duration</span><span class="td-result-value" id="td-res-days">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Recommended Duration (full weeks)</span><span class="td-result-value" id="td-res-weeks">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Absolute Effect Size</span><span class="td-result-value" id="td-res-abs">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Detectable Range</span><span class="td-result-value" id="td-res-range">&middot;</span></div>
+ </div>
+ <div class="td-info" id="td-res-note" style="display:none;"></div>
+ </div>
 
-        <!-- Calendar View -->
-        <div class="td-card" id="td-calendar-card">
-          <h3 style="margin-top:0;font-size:1.15rem;">Recommended Run Period</h3>
-          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.5rem;">Green days show your minimum test window. Start date is tomorrow. Full-week alignment is recommended.</p>
-          <div id="td-calendar-wrap"></div>
-        </div>
+ <!-- Calendar View -->
+ <div class="td-card" id="td-calendar-card">
+ <h3 style="margin-top:0;font-size:1.15rem;">Recommended Run Period</h3>
+ <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.5rem;">Green days show your minimum test window. Start date is tomorrow. Full-week alignment is recommended.</p>
+ <div id="td-calendar-wrap"></div>
+ </div>
 
-        <!-- Sequential Testing Boundaries -->
-        <div class="td-card">
-          <h3 style="margin-top:0;font-size:1.15rem;">Sequential Testing Boundaries (Early Stopping)</h3>
-          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">Critical z-values at each interim look. A test statistic exceeding the boundary allows early stopping while controlling the overall false positive rate.</p>
-          <div class="td-toggle">
-            <button class="active" id="td-seq-obf" onclick="setSeqMethod('obf')">O'Brien-Fleming</button>
-            <button id="td-seq-poc" onclick="setSeqMethod('pocock')">Pocock</button>
-          </div>
-          <div id="td-seq-table-wrap"></div>
-          <div class="td-chart-wrap" style="border:none;padding:0;margin-top:1rem;">
-            <div class="td-chart-title">Sequential Boundary Plot</div>
-            <svg id="td-seq-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
-          </div>
-        </div>
+ <!-- Sequential Testing Boundaries -->
+ <div class="td-card">
+ <h3 style="margin-top:0;font-size:1.15rem;">Sequential Testing Boundaries (Early Stopping)</h3>
+ <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">Critical z-values at each interim look. A test statistic exceeding the boundary allows early stopping while controlling the overall false positive rate.</p>
+ <div class="td-toggle">
+ <button class="active" id="td-seq-obf" onclick="setSeqMethod('obf')">O'Brien-Fleming</button>
+ <button id="td-seq-poc" onclick="setSeqMethod('pocock')">Pocock</button>
+ </div>
+ <div id="td-seq-table-wrap"></div>
+ <div class="td-chart-wrap" style="border:none;padding:0;margin-top:1rem;">
+ <div class="td-chart-title">Sequential Boundary Plot</div>
+ <svg id="td-seq-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
+ </div>
+ </div>
 
-        <!-- Peeking Penalty Calculator -->
-        <div class="td-card">
-          <h3 style="margin-top:0;font-size:1.15rem;">Peeking Penalty Calculator</h3>
-          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">See how checking your test results early inflates the false positive rate above the nominal &alpha;.</p>
-          <div class="td-grid">
-            <div class="td-field">
-              <label for="td-peek-times">Number of Times You Peek</label>
-              <input type="number" id="td-peek-times" value="10" min="1" max="100" step="1">
-            </div>
-            <div class="td-field">
-              <label for="td-peek-alpha">Nominal &alpha; Per Peek</label>
-              <input type="number" id="td-peek-alpha" value="0.05" min="0.001" max="0.20" step="0.005">
-            </div>
-          </div>
-          <button class="td-btn" onclick="calcPeeking()">Calculate Peeking Penalty</button>
-          <div id="td-peek-output" class="td-results" style="display:none;">
-            <div class="td-result-row"><span class="td-result-label">Nominal False Positive Rate</span><span class="td-result-value" id="td-peek-nominal">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Actual False Positive Rate (upper bound)</span><span class="td-result-value" id="td-peek-actual">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Inflation Factor</span><span class="td-result-value" id="td-peek-factor">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Corrected &alpha; Per Peek (Bonferroni)</span><span class="td-result-value" id="td-peek-corrected">--</span></div>
-            <div class="td-result-row"><span class="td-result-label">Corrected &alpha; Per Peek (Sidak)</span><span class="td-result-value" id="td-peek-sidak">--</span></div>
-          </div>
-          <div id="td-peek-table-wrap" style="margin-top:1rem;"></div>
-        </div>
+ <!-- Peeking Penalty Calculator -->
+ <div class="td-card">
+ <h3 style="margin-top:0;font-size:1.15rem;">Peeking Penalty Calculator</h3>
+ <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">See how checking your test results early inflates the false positive rate above the nominal &alpha;.</p>
+ <div class="td-grid">
+ <div class="td-field">
+ <label for="td-peek-times">Number of Times You Peek</label>
+ <input type="number" id="td-peek-times" value="10" min="1" max="100" step="1">
+ </div>
+ <div class="td-field">
+ <label for="td-peek-alpha">Nominal &alpha; Per Peek</label>
+ <input type="number" id="td-peek-alpha" value="0.05" min="0.001" max="0.20" step="0.005">
+ </div>
+ </div>
+ <button class="td-btn" onclick="calcPeeking()">Calculate Peeking Penalty</button>
+ <div id="td-peek-output" class="td-results" style="display:none;">
+ <div class="td-result-row"><span class="td-result-label">Nominal False Positive Rate</span><span class="td-result-value" id="td-peek-nominal">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Actual False Positive Rate (upper bound)</span><span class="td-result-value" id="td-peek-actual">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Inflation Factor</span><span class="td-result-value" id="td-peek-factor">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Corrected &alpha; Per Peek (Bonferroni)</span><span class="td-result-value" id="td-peek-corrected">&middot;</span></div>
+ <div class="td-result-row"><span class="td-result-label">Corrected &alpha; Per Peek (Sidak)</span><span class="td-result-value" id="td-peek-sidak">&middot;</span></div>
+ </div>
+ <div id="td-peek-table-wrap" style="margin-top:1rem;"></div>
+ </div>
 
-        <!-- Alpha Spending Function Chart -->
-        <div class="td-card">
-          <h3 style="margin-top:0;font-size:1.15rem;">Alpha Spending Function</h3>
-          <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">How the total &alpha; budget is distributed across interim analyses under each spending approach.</p>
-          <div class="td-chart-wrap" style="border:none;padding:0;">
-            <svg id="td-alpha-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
-          </div>
-          <div class="td-info">O'Brien-Fleming spends almost no alpha early and nearly all at the final look, preserving maximum power. Pocock spends alpha more evenly, enabling earlier stopping but requiring a larger total sample. The linear spending function (Lan-DeMets) provides a middle ground.</div>
-        </div>
-      </div>
-    </section>
+ <!-- Alpha Spending Function Chart -->
+ <div class="td-card">
+ <h3 style="margin-top:0;font-size:1.15rem;">Alpha Spending Function</h3>
+ <p style="color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:1rem;">How the total &alpha; budget is distributed across interim analyses under each spending approach.</p>
+ <div class="td-chart-wrap" style="border:none;padding:0;">
+ <svg id="td-alpha-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
+ </div>
+ <div class="td-info">O'Brien-Fleming spends almost no alpha early and nearly all at the final look, preserving maximum power. Pocock spends alpha more evenly, enabling earlier stopping but requiring a larger total sample. The linear spending function (Lan-DeMets) provides a middle ground.</div>
+ </div>
+ </div>
+ </section>
 
-    <section class="explainer-section">
-      <h2>How A/B Test Duration Is Calculated</h2>
-      <p>The minimum duration for an A/B test is determined by the required sample size, which depends on four key inputs: the baseline conversion rate, the minimum detectable effect (MDE), the significance level (alpha), and the statistical power (1 minus beta). The sample size formula for a two-proportion z-test is n = (z_{alpha/2} + z_{beta})^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2 per variant, where p1 is the baseline rate, p2 is p1 * (1 + MDE/100) for a relative MDE, and the z-values correspond to the standard normal quantiles for the chosen alpha and power levels.</p>
-      <p>Once you have the per-variant sample size, dividing by the daily traffic per variant gives the minimum number of days. However, this raw number should always be rounded up to complete full weeks. Day-of-week effects are real and substantial in most businesses: weekend traffic often differs dramatically from weekday traffic in both volume and behavior. A test that runs from Monday to Friday captures a biased sample. Always run in full seven-day increments to capture the complete weekly cycle, and consider extending to two or three full weeks if your traffic has strong weekly seasonality.</p>
+ <section class="explainer-section">
+ <h2>How A/B Test Duration Is Calculated</h2>
+ <p>The minimum duration for an A/B test is determined by the required sample size, which depends on four key inputs: the baseline conversion rate, the minimum detectable effect (MDE), the significance level (alpha), and the statistical power (1 minus beta). The sample size formula for a two-proportion z-test is n = (z_{alpha/2} + z_{beta})^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2 per variant, where p1 is the baseline rate, p2 is p1 * (1 + MDE/100) for a relative MDE, and the z-values correspond to the standard normal quantiles for the chosen alpha and power levels.</p>
+ <p>Once you have the per-variant sample size, dividing by the daily traffic per variant gives the minimum number of days. However, this raw number should always be rounded up to complete full weeks. Day-of-week effects are real and substantial in most businesses: weekend traffic often differs dramatically from weekday traffic in both volume and behavior. A test that runs from Monday to Friday captures a biased sample. Always run in full seven-day increments to capture the complete weekly cycle, and consider extending to two or three full weeks if your traffic has strong weekly seasonality.</p>
 
-      <h2>The Danger of Peeking at Results</h2>
-      <p>One of the most common mistakes in A/B testing is repeatedly checking whether results are significant before the planned sample size is reached. This practice, known as peeking or optional stopping, dramatically inflates the false positive rate. The intuition is straightforward: under the null hypothesis, the z-statistic follows a random walk. Given enough time, a random walk will eventually cross any fixed boundary. Each peek gives the random walk another chance to cross the significance threshold by chance.</p>
-      <p>The mathematics confirm this intuition. If you peek k times during a test at a nominal alpha of 0.05, the actual false positive rate is bounded above by 1 - (1 - alpha)^k (the union bound). For 10 peeks, this gives an actual alpha of approximately 0.40, eight times the nominal rate. In practice, the actual inflation is somewhat less severe because the peeks are correlated (the z-statistic does not reset between checks), but simulation studies consistently show that daily peeking over a 30-day test raises the effective alpha from 0.05 to somewhere between 0.14 and 0.20, depending on the traffic accumulation pattern.</p>
-      <p>The peeking penalty calculator in this tool computes both the union bound (worst case) and the Sidak correction (which accounts for some correlation). It also shows the Bonferroni-corrected alpha per peek that you would need to use at each check in order to maintain the desired overall false positive rate. For most practical purposes, the solution is simpler: determine your sample size in advance, commit to the full test duration, and only analyze results after the planned sample is collected.</p>
+ <h2>The Danger of Peeking at Results</h2>
+ <p>One of the most common mistakes in A/B testing is repeatedly checking whether results are significant before the planned sample size is reached. This practice, known as peeking or optional stopping, dramatically inflates the false positive rate. The intuition is straightforward: under the null hypothesis, the z-statistic follows a random walk. Given enough time, a random walk will eventually cross any fixed boundary. Each peek gives the random walk another chance to cross the significance threshold by chance.</p>
+ <p>The mathematics confirm this intuition. If you peek k times during a test at a nominal alpha of 0.05, the actual false positive rate is bounded above by 1 - (1 - alpha)^k (the union bound). For 10 peeks, this gives an actual alpha of approximately 0.40, eight times the nominal rate. In practice, the actual inflation is somewhat less severe because the peeks are correlated (the z-statistic does not reset between checks), but simulation studies consistently show that daily peeking over a 30-day test raises the effective alpha from 0.05 to somewhere between 0.14 and 0.20, depending on the traffic accumulation pattern.</p>
+ <p>The peeking penalty calculator in this tool computes both the union bound (worst case) and the Sidak correction (which accounts for some correlation). It also shows the Bonferroni-corrected alpha per peek that you would need to use at each check in order to maintain the desired overall false positive rate. For most practical purposes, the solution is simpler: determine your sample size in advance, commit to the full test duration, and only analyze results after the planned sample is collected.</p>
 
-      <h2>Sequential Testing: Principled Early Stopping</h2>
-      <p>Sequential testing methods provide a mathematically rigorous framework for looking at your data during the test without inflating the false positive rate. The core idea is to use progressively stricter or more lenient significance boundaries at each interim analysis, carefully budgeting the total alpha across all looks. The two most common approaches are the O'Brien-Fleming and Pocock group sequential boundaries.</p>
-      <p>O'Brien-Fleming boundaries start extremely conservative and become progressively more lenient. At the first interim look (say, 20% of the planned sample), the critical z-value might be 4.56, making early stopping virtually impossible unless the effect is enormous. By the final analysis, the critical z-value is approximately 2.04 for a 5-look design, barely more than the standard 1.96. This means you lose almost no power compared to a fixed-sample test. The O'Brien-Fleming approach is ideal when you expect moderate effects and want the option to stop early only for surprisingly large effects.</p>
-      <p>Pocock boundaries use the same critical z-value at every interim look. For a 5-look design at alpha = 0.05, each look uses z = 2.41. This makes early stopping easier than O'Brien-Fleming but requires a larger total sample size (typically 15-30% more) to maintain equivalent power. The Pocock approach is appropriate when you believe the effect could be very large and want maximum early stopping flexibility.</p>
-      <p>The alpha spending function generalizes these approaches. The O'Brien-Fleming spending function is alpha(t) = 2 - 2 * Phi(z_{alpha/2} / sqrt(t)), where t is the information fraction (proportion of planned sample collected) and Phi is the standard normal CDF. The Pocock spending function is alpha(t) = alpha * ln(1 + (e - 1) * t). The Lan-DeMets approach allows you to define any spending function and derive the appropriate boundaries, even when the interim analyses are not equally spaced.</p>
+ <h2>Sequential Testing, Principled Early Stopping</h2>
+ <p>Sequential testing methods provide a mathematically rigorous framework for looking at your data during the test without inflating the false positive rate. The core idea is to use progressively stricter or more lenient significance boundaries at each interim analysis, carefully budgeting the total alpha across all looks. The two most common approaches are the O'Brien-Fleming and Pocock group sequential boundaries.</p>
+ <p>O'Brien-Fleming boundaries start extremely conservative and become progressively more lenient. At the first interim look (say, 20% of the planned sample), the critical z-value might be 4.56, making early stopping virtually impossible unless the effect is enormous. By the final analysis, the critical z-value is approximately 2.04 for a 5-look design, barely more than the standard 1.96. This means you lose almost no power compared to a fixed-sample test. The O'Brien-Fleming approach is ideal when you expect moderate effects and want the option to stop early only for surprisingly large effects.</p>
+ <p>Pocock boundaries use the same critical z-value at every interim look. For a 5-look design at alpha = 0.05, each look uses z = 2.41. This makes early stopping easier than O'Brien-Fleming but requires a larger total sample size (typically 15-30% more) to maintain equivalent power. The Pocock approach is appropriate when you believe the effect could be very large and want maximum early stopping flexibility.</p>
+ <p>The alpha spending function generalizes these approaches. The O'Brien-Fleming spending function is alpha(t) = 2 - 2 * Phi(z_{alpha/2} / sqrt(t)), where t is the information fraction (proportion of planned sample collected) and Phi is the standard normal CDF. The Pocock spending function is alpha(t) = alpha * ln(1 + (e - 1) * t). The Lan-DeMets approach allows you to define any spending function and derive the appropriate boundaries, even when the interim analyses are not equally spaced.</p>
 
-      <h2>Calendar Planning for A/B Tests</h2>
-      <p>Beyond the raw number of days, practical test planning requires calendar awareness. Avoid starting tests on holidays or during promotional periods that alter normal behavior. If your business has strong seasonal patterns (e-commerce around Black Friday, tax software in March), tests conducted during atypical periods may not generalize. The calendar view in this tool shows your recommended run period starting from tomorrow, aligned to full weeks, so you can immediately identify whether the test window overlaps with any known disruptions.</p>
-      <p>For multi-variant tests (A/B/C/D), the traffic is split across more variants, so each variant receives fewer daily visitors and the test takes proportionally longer. With 4 variants and fixed total daily traffic, the test takes twice as long as a simple A/B test. This is one reason to be judicious about the number of variants: each additional variant significantly extends the required duration. If you must test many variants, consider a multi-armed bandit approach or a preliminary screening phase followed by a confirmatory A/B test of the top candidates.</p>
+ <h2>Calendar Planning for A/B Tests</h2>
+ <p>Beyond the raw number of days, practical test planning requires calendar awareness. Avoid starting tests on holidays or during promotional periods that alter normal behavior. If your business has strong seasonal patterns (e-commerce around Black Friday, tax software in March), tests conducted during atypical periods may not generalize. The calendar view in this tool shows your recommended run period starting from tomorrow, aligned to full weeks, so you can immediately identify whether the test window overlaps with any known disruptions.</p>
+ <p>For multi-variant tests (A/B/C/D), the traffic is split across more variants, so each variant receives fewer daily visitors and the test takes proportionally longer. With 4 variants and fixed total daily traffic, the test takes twice as long as a simple A/B test. That's one reason to be judicious about the number of variants: each additional variant significantly extends the required duration. If you must test many variants, consider a multi-armed bandit approach or a preliminary screening phase followed by a confirmatory A/B test of the top candidates.</p>
 
-      <h2>Interpreting the Results</h2>
-      <p>The sample size calculator gives you a minimum requirement, not a sufficient one. Several factors can increase the actual duration needed. First, real-world traffic fluctuates: weekends and holidays reduce daily visitors, extending the calendar time to reach the planned sample. Second, if users return multiple times during the test, you have fewer independent observations than raw pageviews suggest. Third, the sample size formula assumes a two-sided test; if you are testing a directional hypothesis, a one-sided test requires a smaller sample. Fourth, if you are running multiple tests simultaneously on the same traffic, the interference between tests can bias results.</p>
-      <p>A useful rule of thumb: take the calculator's minimum duration, round up to the next full week, and add one additional week as a buffer. If the result is fewer than 14 days, run for at least 14 days regardless. Two full weeks captures two complete weekly cycles and provides enough data to detect day-of-week interactions. If your sample size requirement is very large (exceeding three months of traffic), reconsider whether the MDE is realistic or whether you should focus on larger changes that are easier to detect.</p>
-    </section>
+ <h2>Interpreting the Results</h2>
+ <p>The sample size calculator gives you a minimum requirement, not a sufficient one. Several factors can increase the actual duration needed. First, real-world traffic fluctuates: weekends and holidays reduce daily visitors, extending the calendar time to reach the planned sample. Second, if users return multiple times during the test, you have fewer independent observations than raw pageviews suggest. Third, the sample size formula assumes a two-sided test; if you are testing a directional hypothesis, a one-sided test requires a smaller sample. Fourth, if you are running multiple tests simultaneously on the same traffic, the interference between tests can bias results.</p>
+ <p>A useful rule of thumb: take the calculator's minimum duration, round up to the next full week, and add one additional week as a buffer. If the result is fewer than 14 days, run for at least 14 days regardless. Two full weeks captures two complete weekly cycles and provides enough data to detect day-of-week interactions. If your sample size requirement is very large (exceeding three months of traffic), reconsider whether the MDE is realistic or whether you should focus on larger changes that are easier to detect.</p>
+ </section>
 
-    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+ <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
 
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
+ <section class="faq-section">
+ <h2>Common questions</h2>
 
-      <details>
-        <summary>How long should I run my A/B test?</summary>
-        <p>The minimum duration depends on your daily traffic, baseline conversion rate, minimum detectable effect, and desired power. Use the formula n = (z_{alpha/2} + z_{beta})^2 * (p1*(1-p1) + p2*(1-p2)) / delta^2 per variant, divided by daily visitors per variant. Always round up to full weeks to capture day-of-week effects.</p>
-      </details>
+ <details>
+ <summary>How long should I run my A/B test?</summary>
+ <p>The minimum duration depends on your daily traffic, baseline conversion rate, minimum detectable effect, and desired power. Use the formula n = (z_{alpha/2} + z_{beta})^2 * (p1*(1-p1) + p2*(1-p2)) / delta^2 per variant, divided by daily visitors per variant. Always round up to full weeks to capture day-of-week effects.</p>
+ </details>
 
-      <details>
-        <summary>What is early stopping in A/B testing and why is it dangerous?</summary>
-        <p>Early stopping means ending a test before the planned sample size because interim results look significant. This inflates false positive rates far beyond the nominal alpha. With daily peeking at alpha = 0.05 over 30 days, the actual false positive rate can exceed 20%. Use sequential testing boundaries (O'Brien-Fleming or Pocock) for principled early stopping.</p>
-      </details>
+ <details>
+ <summary>What is early stopping in A/B testing and why is it dangerous?</summary>
+ <p>Early stopping means ending a test before the planned sample size because interim results look significant. This inflates false positive rates far beyond the nominal alpha. With daily peeking at alpha = 0.05 over 30 days, the actual false positive rate can exceed 20%. Use sequential testing boundaries (O'Brien-Fleming or Pocock) for principled early stopping.</p>
+ </details>
 
-      <details>
-        <summary>What is an alpha spending function?</summary>
-        <p>An alpha spending function controls how the total Type I error budget is distributed across interim analyses. O'Brien-Fleming spends very little alpha early, preserving power. Pocock distributes alpha evenly. The Lan-DeMets approach generalizes this with a continuous function alpha(t) where t is the information fraction.</p>
-      </details>
+ <details>
+ <summary>What is an alpha spending function?</summary>
+ <p>An alpha spending function controls how the total Type I error budget is distributed across interim analyses. O'Brien-Fleming spends very little alpha early, preserving power. Pocock distributes alpha evenly. The Lan-DeMets approach generalizes this with a continuous function alpha(t) where t is the information fraction.</p>
+ </details>
 
-      <details>
-        <summary>How does peeking at A/B test results inflate false positives?</summary>
-        <p>Each peek gives the test statistic's random walk another chance to cross the significance boundary by chance. With 10 peeks at alpha = 0.05, the actual false positive rate can reach 14-40%. The peeking penalty calculator quantifies this inflation and shows the corrected alpha you need per peek.</p>
-      </details>
+ <details>
+ <summary>How does peeking at A/B test results inflate false positives?</summary>
+ <p>Each peek gives the test statistic's random walk another chance to cross the significance boundary by chance. With 10 peeks at alpha = 0.05, the actual false positive rate can reach 14-40%. The peeking penalty calculator quantifies this inflation and shows the corrected alpha you need per peek.</p>
+ </details>
 
-      <details>
-        <summary>Should I use O'Brien-Fleming or Pocock boundaries for my sequential test?</summary>
-        <p>O'Brien-Fleming is preferred for most A/B tests. It preserves nearly all power of a fixed-sample test and the final critical value is close to 1.96. Pocock uses equal boundaries, making early stopping easier but requiring 15-30% more total samples. Choose Pocock only when you strongly expect a large effect.</p>
-      </details>
-    </section>
+ <details>
+ <summary>Should I use O'Brien-Fleming or Pocock boundaries for my sequential test?</summary>
+ <p>O'Brien-Fleming is preferred for most A/B tests. It preserves nearly all power of a fixed-sample test and the final critical value is close to 1.96. Pocock uses equal boundaries, making early stopping easier but requiring 15-30% more total samples. Choose Pocock only when you strongly expect a large effect.</p>
+ </details>
+ </section>
 
-    <section class="explainer-section">
-      <h3>Related A/B Testing Tools</h3>
-      <ul>
-        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Quick sample size estimation for A/B tests</li>
-        <li><a href="/tools/conversion-rate-calculator.html">Conversion Rate Calculator</a> — Conversion rates with confidence intervals</li>
-        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Determine required sample size with power curves</li>
-        <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a> — Deep-dive guide on test duration planning</li>
-      </ul>
-    </section>
+ <section class="explainer-section">
+ <h3>Related A/B Testing Tools</h3>
+ <ul>
+ <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a>, Quick sample size estimation for A/B tests</li>
+ <li><a href="/tools/conversion-rate-calculator.html">Conversion Rate Calculator</a>, Conversion rates with confidence intervals</li>
+ <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a>, Determine required sample size with power curves</li>
+ <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a>, Deep-dive guide on test duration planning</li>
+ </ul>
+ </section>
 
-    <section class="explainer-section">
-      <h3>About the Author</h3>
-      <p>Built by <strong><a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-test-duration-estimator">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
-    </section>
-  </main>
+ <section class="explainer-section">
+ <h3>About the Author</h3>
+ <p>Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-test-duration-estimator">Michael Lip</a>, Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+ </section>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
-        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=answers-test-duration-estimator">Zovo</a> &middot; 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=answers-test-duration-estimator">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-test-duration-estimator">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-test-duration-estimator">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-test-duration-estimator" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-test-duration-estimator" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
-  <script>
+ <script>
   (function(){
     /* ===== UTILITIES ===== */
     function normCdf(x){if(x<-8)return 0;if(x>8)return 1;var t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327,p=d*Math.exp(-x*x/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.3302744))));return x>0?1-p:p;}
@@ -758,13 +758,13 @@
     calcDuration();
   })();
   </script>
-  <script src="/assets/js/share.js"></script>
+ <script src="/assets/js/share.js"></script>
 <script src="/assets/js/pro-nudge.js"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
-<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</a></li>
+<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</a></li>
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/answers/how-long-to-run-ab-test.html" style="color:#3b82f6;text-decoration:none;">How Long Should I Run My A/B Test?</a></li>
 <li><a href="/answers/is-my-ab-test-significant.html" style="color:#3b82f6;text-decoration:none;">Is My A/B Test Statistically Significant?</a></li>

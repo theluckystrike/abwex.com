@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Multivariate Test Duration Estimator — How Long to Run</title>
-  <meta name="description" content="Calculate how long your multivariate test (MVT) needs to run. Enter variations, baseline rate, effect, traffic, significance & power. Get sample size &...">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/tools/mvt-duration-estimator">
-  <!-- JSON-LD FAQ -->
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Multivariate Test Duration Estimator, How Long to Run</title>
+ <meta name="description" content="Calculate how long your multivariate test (MVT) needs to run. Enter variations, baseline rate, effect, traffic, significance & power. Get sample size &...">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/tools/mvt-duration-estimator">
+ <!-- JSON-LD FAQ -->
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -40,7 +40,7 @@
     ]
   }
   </script>
-  <style>
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -278,123 +278,123 @@
     }
   </style>
 
-    <meta property="og:title" content="Multivariate Test Duration Estimator — How Long to Run">
-    <meta property="og:description" content="Calculate how long your multivariate test (MVT) needs to run. Enter variations, baseline rate, effect, traffic, significance & power. Get sample size &...">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abwex.com/tools/mvt-duration-estimator">
+ <meta property="og:title" content="Multivariate Test Duration Estimator, How Long to Run">
+ <meta property="og:description" content="Calculate how long your multivariate test (MVT) needs to run. Enter variations, baseline rate, effect, traffic, significance & power. Get sample size &...">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://abwex.com/tools/mvt-duration-estimator">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>📊 Multivariate Test Duration Estimator <small>how long to run your MVT</small></h1>
-    <p style="color:#94a3b8; margin-top:0.25rem;">Calculate required sample size & timeline for multivariate tests (MVT) with up to 10 variations.</p>
-  </header>
+ <header>
+ <h1> Multivariate Test Duration Estimator <small>how long to run your MVT</small></h1>
+ <p style="color:#94a3b8; margin-top:0.25rem;">Calculate required sample size & timeline for multivariate tests (MVT) with up to 10 variations.</p>
+ </header>
 
-  <!-- Calculator card -->
-  <div class="card">
-    <div class="grid-2">
-      <div>
-        <div class="form-group">
-          <label for="variations">Number of variations (2–10)</label>
-          <input type="number" id="variations" min="2" max="10" value="4" step="1">
-          <div class="input-hint">Including control</div>
-        </div>
-        <div class="form-group">
-          <label for="baseline">Baseline conversion rate (%)</label>
-          <input type="number" id="baseline" min="0.1" max="99.9" step="0.1" value="5.0">
-        </div>
-        <div class="form-group">
-          <label for="mde">Minimum detectable effect (relative %)</label>
-          <input type="number" id="mde" min="0.5" max="50" step="0.5" value="10">
-          <div class="input-hint">Relative lift over baseline</div>
-        </div>
-      </div>
-      <div>
-        <div class="form-group">
-          <label for="traffic">Daily traffic (visitors)</label>
-          <input type="number" id="traffic" min="10" max="10000000" step="100" value="5000">
-        </div>
-        <div class="form-group">
-          <label for="significance">Significance level (α)</label>
-          <select id="significance">
-            <option value="0.10">90% (α=0.10)</option>
-            <option value="0.05" selected>95% (α=0.05)</option>
-            <option value="0.01">99% (α=0.01)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="power">Statistical power (1−β)</label>
-          <select id="power">
-            <option value="0.80">80%</option>
-            <option value="0.90" selected>90%</option>
-            <option value="0.95">95%</option>
-          </select>
-        </div>
-        <div style="margin-top: 1.8rem;">
-          <button class="btn" id="calculateBtn">⟳ Calculate duration</button>
-          <button class="btn btn-outline" id="resetBtn">Reset defaults</button>
-        </div>
-      </div>
-    </div>
-  </div>
+ <!-- Calculator card -->
+ <div class="card">
+ <div class="grid-2">
+ <div>
+ <div class="form-group">
+ <label for="variations">Number of variations (2–10)</label>
+ <input type="number" id="variations" min="2" max="10" value="4" step="1">
+ <div class="input-hint">Including control</div>
+ </div>
+ <div class="form-group">
+ <label for="baseline">Baseline conversion rate (%)</label>
+ <input type="number" id="baseline" min="0.1" max="99.9" step="0.1" value="5.0">
+ </div>
+ <div class="form-group">
+ <label for="mde">Minimum detectable effect (relative %)</label>
+ <input type="number" id="mde" min="0.5" max="50" step="0.5" value="10">
+ <div class="input-hint">Relative lift over baseline</div>
+ </div>
+ </div>
+ <div>
+ <div class="form-group">
+ <label for="traffic">Daily traffic (visitors)</label>
+ <input type="number" id="traffic" min="10" max="10000000" step="100" value="5000">
+ </div>
+ <div class="form-group">
+ <label for="significance">Significance level (α)</label>
+ <select id="significance">
+ <option value="0.10">90% (α=0.10)</option>
+ <option value="0.05" selected>95% (α=0.05)</option>
+ <option value="0.01">99% (α=0.01)</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label for="power">Statistical power (1−β)</label>
+ <select id="power">
+ <option value="0.80">80%</option>
+ <option value="0.90" selected>90%</option>
+ <option value="0.95">95%</option>
+ </select>
+ </div>
+ <div style="margin-top: 1.8rem;">
+ <button class="btn" id="calculateBtn">⟳ Calculate duration</button>
+ <button class="btn btn-outline" id="resetBtn">Reset defaults</button>
+ </div>
+ </div>
+ </div>
+ </div>
 
-  <!-- Results: summary stats -->
-  <div class="card" id="resultsCard">
-    <h2>📈 Estimated requirements</h2>
-    <div class="stat-grid" id="statsGrid">
-      <div class="stat-box"><div class="value" id="samplePerVar">—</div><div class="label">per variation</div></div>
-      <div class="stat-box"><div class="value" id="totalSample">—</div><div class="label">total sample</div></div>
-      <div class="stat-box"><div class="value" id="estDays">—</div><div class="label">estimated days</div></div>
-      <div class="stat-box"><div class="value" id="completionDate">—</div><div class="label">completion date</div></div>
-    </div>
+ <!-- Results: summary stats -->
+ <div class="card" id="resultsCard">
+ <h2> Estimated requirements</h2>
+ <div class="stat-grid" id="statsGrid">
+ <div class="stat-box"><div class="value" id="samplePerVar">&middot;</div><div class="label">per variation</div></div>
+ <div class="stat-box"><div class="value" id="totalSample">&middot;</div><div class="label">total sample</div></div>
+ <div class="stat-box"><div class="value" id="estDays">&middot;</div><div class="label">estimated days</div></div>
+ <div class="stat-box"><div class="value" id="completionDate">&middot;</div><div class="label">completion date</div></div>
+ </div>
 
-    <!-- Timeline visualization -->
-    <h3>⏳ Timeline</h3>
-    <div class="timeline-bar">
-      <span class="timeline-label">Start</span>
-      <div class="timeline-track">
-        <div class="timeline-fill" id="timelineFill" style="width: 0%;"></div>
-      </div>
-      <span class="timeline-label" id="timelineEndLabel">—</span>
-    </div>
-    <p style="color:#94a3b8; font-size:0.9rem;" id="timelineNote">Adjust inputs and click calculate.</p>
+ <!-- Timeline visualization -->
+ <h3> Timeline</h3>
+ <div class="timeline-bar">
+ <span class="timeline-label">Start</span>
+ <div class="timeline-track">
+ <div class="timeline-fill" id="timelineFill" style="width: 0%;"></div>
+ </div>
+ <span class="timeline-label" id="timelineEndLabel">&middot;</span>
+ </div>
+ <p style="color:#94a3b8; font-size:0.9rem;" id="timelineNote">Adjust inputs and click calculate.</p>
 
-    <!-- Comparison table: duration at different MDE levels -->
-    <h3>📊 Duration comparison at different MDE levels</h3>
-    <div style="overflow-x: auto;">
-      <table id="mdeComparisonTable">
-        <thead>
-          <tr><th>MDE (relative)</th><th>Sample per variation</th><th>Total sample</th><th>Est. days</th><th>Completion</th></tr>
-        </thead>
-        <tbody id="mdeTableBody">
-          <tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+ <!-- Comparison table: duration at different MDE levels -->
+ <h3> Duration comparison at different MDE levels</h3>
+ <div style="overflow-x: auto;">
+ <table id="mdeComparisonTable">
+ <thead>
+ <tr><th>MDE (relative)</th><th>Sample per variation</th><th>Total sample</th><th>Est. days</th><th>Completion</th></tr>
+ </thead>
+ <tbody id="mdeTableBody">
+ <tr><td>&middot;</td><td>&middot;</td><td>&middot;</td><td>&middot;</td><td>&middot;</td></tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
 
-  <!-- Explanation & FAQ -->
-  <div class="card">
-    <h2>❓ Why MVTs need more traffic than A/B tests</h2>
-    <p style="color:#cbd5e1; margin-bottom:1rem;">Multivariate tests compare <strong>multiple variations simultaneously</strong>, increasing the number of comparisons. To maintain statistical power and control the false discovery rate, each variation requires a similar sample size as a single A/B test, but multiplied by the number of variations. Additionally, corrections (e.g., Bonferroni) adjust significance thresholds, further increasing required sample sizes. Less traffic per variation means longer duration.</p>
-    
-    <h3>📖 Frequently asked questions</h3>
-    <div class="faq-item">
-      <div class="faq-question">How is sample size calculated?</div>
-      <div class="faq-answer">We use a normal approximation: <code>n = ( (Z_α/2 + Z_β)² * (p0*(1-p0) + p1*(1-p1)) ) / (p1-p0)²</code>, with Bonferroni correction for multiple variations (α' = α / (variations-1)). p1 = baseline * (1 + MDE/100).</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">What if my daily traffic is low?</div>
-      <div class="faq-answer">Low traffic increases duration proportionally. Consider reducing variations, increasing MDE, or lowering significance/power to get faster results.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">Why does the timeline show a completion date?</div>
-      <div class="faq-answer">Based on estimated days from today. It assumes steady traffic and no early stopping. Always plan for a fixed horizon.</div>
-    </div>
-  </div>
+ <!-- Explanation & FAQ -->
+ <div class="card">
+ <h2> Why MVTs need more traffic than A/B tests</h2>
+ <p style="color:#cbd5e1; margin-bottom:1rem;">Multivariate tests compare multiple variations simultaneously, increasing the number of comparisons. To maintain statistical power and control the false discovery rate, each variation requires a similar sample size as a single A/B test, but multiplied by the number of variations. Also, corrections (e.g., Bonferroni) adjust significance thresholds, further increasing required sample sizes. Less traffic per variation means longer duration.</p>
+ 
+ <h3> Common questions</h3>
+ <div class="faq-item">
+ <div class="faq-question">How is sample size calculated?</div>
+ <div class="faq-answer">We use a normal approximation: <code>n = ( (Z_α/2 + Z_β)² * (p0*(1-p0) + p1*(1-p1)) ) / (p1-p0)²</code>, with Bonferroni correction for multiple variations (α' = α / (variations-1)). p1 = baseline * (1 + MDE/100).</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-question">What if my daily traffic is low?</div>
+ <div class="faq-answer">Low traffic increases duration proportionally. Consider reducing variations, increasing MDE, or lowering significance/power to get faster results.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-question">Why does the timeline show a completion date?</div>
+ <div class="faq-answer">Based on estimated days from today. It assumes steady traffic and no early stopping. Always plan for a fixed horizon.</div>
+ </div>
+ </div>
 
-  <footer>© 2025 abwex.com</footer>
+ <footer>© 2025 abwex.com</footer>
 <div style="margin:20px auto;max-width:728px;text-align:center">
 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -495,8 +495,8 @@
 
       // Completion date
       const today = new Date();
-      let completionDate = '—';
-      let dateStr = '—';
+      let completionDate = '&middot;';
+      let dateStr = '&middot;';
       if (isFinite(days) && days > 0 && days < 36500) {
         const end = new Date(today);
         end.setDate(end.getDate() + days);
@@ -519,7 +519,7 @@
         if (days > 365) fillPercent = 100;
       }
       timelineFill.style.width = fillPercent + '%';
-      timelineEndLabel.textContent = completionDate !== '—' ? completionDate : '—';
+      timelineEndLabel.textContent = completionDate !== '&middot;' ? completionDate : '&middot;';
       timelineNote.textContent = isFinite(days) ? `Estimated duration: ${days} day(s) from today.` : 'Insufficient data.';
 
       // Build comparison table for MDE levels: 5%, 7.5%, 10%, 15%, 20% (relative)
@@ -531,7 +531,7 @@
         let d = Infinity;
         if (traffic > 0 && isFinite(total)) d = Math.ceil(total / traffic);
         if (d < 1 && isFinite(total)) d = 1;
-        let comp = '—';
+        let comp = '&middot;';
         if (isFinite(d) && d > 0 && d < 36500) {
           const end = new Date(today);
           end.setDate(end.getDate() + d);
@@ -564,7 +564,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>

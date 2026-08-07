@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>P-Value Calculator — A/B Test Significance Tool</title>
+<title>P-Value Calculator, A/B Test Significance Tool</title>
 <meta name="description" content="Free p-value calculator for A/B testing. Enter conversions and visitors for two variants to get the p-value, z-score, lift and statistical significance">
 <link rel="canonical" href="https://abwex.com/tools/p-value-calculator.html">
-<meta property="og:title" content="P-Value Calculator — A/B Test Significance Tool">
+<meta property="og:title" content="P-Value Calculator, A/B Test Significance Tool">
 <meta property="og:description" content="Free p-value calculator for A/B testing. Enter conversions and visitors for two variants to get the p-value, z-score, lift and statistical significance">
 <meta property="og:url" content="https://abwex.com/tools/p-value-calculator">
 <meta property="og:type" content="website">
@@ -65,76 +65,76 @@ code{background:#0d1117;border:1px solid var(--bd);border-radius:5px;padding:1px
 </head>
 <body>
 <nav>
-  <a href="/">Home</a>
-  <a href="/tools/">Tools</a>
+ <a href="/">Home</a>
+ <a href="/tools/">Tools</a>
 </nav>
 <main>
 <h1>A/B Test P-Value Calculator</h1>
 <p class="lead">Find out whether the difference between your control and variant is statistically significant. Enter the visitors and conversions for each group to compute the p-value, z-score and observed lift in real time.</p>
 
 <section id="tool">
-  <div class="grid">
-    <div class="col">
-      <h3>Control (A)</h3>
-      <label for="va">Visitors</label>
-      <input id="va" type="number" min="1" step="1" value="1200">
-      <label for="ca">Conversions</label>
-      <input id="ca" type="number" min="0" step="1" value="120">
-    </div>
-    <div class="col">
-      <h3>Variant (B)</h3>
-      <label for="vb">Visitors</label>
-      <input id="vb" type="number" min="1" step="1" value="1200">
-      <label for="cb">Conversions</label>
-      <input id="cb" type="number" min="0" step="1" value="150">
-    </div>
-  </div>
-  <label for="tail">Test type</label>
-  <select id="tail">
-    <option value="2">Two-tailed (B differs from A)</option>
-    <option value="1">One-tailed (B is better than A)</option>
-  </select>
-  <label for="alpha">Significance level (alpha)</label>
-  <select id="alpha">
-    <option value="0.10">0.10 — 90% confidence</option>
-    <option value="0.05" selected>0.05 — 95% confidence</option>
-    <option value="0.01">0.01 — 99% confidence</option>
-  </select>
+ <div class="grid">
+ <div class="col">
+ <h3>Control (A)</h3>
+ <label for="va">Visitors</label>
+ <input id="va" type="number" min="1" step="1" value="1200">
+ <label for="ca">Conversions</label>
+ <input id="ca" type="number" min="0" step="1" value="120">
+ </div>
+ <div class="col">
+ <h3>Variant (B)</h3>
+ <label for="vb">Visitors</label>
+ <input id="vb" type="number" min="1" step="1" value="1200">
+ <label for="cb">Conversions</label>
+ <input id="cb" type="number" min="0" step="1" value="150">
+ </div>
+ </div>
+ <label for="tail">Test type</label>
+ <select id="tail">
+ <option value="2">Two-tailed (B differs from A)</option>
+ <option value="1">One-tailed (B is better than A)</option>
+ </select>
+ <label for="alpha">Significance level (alpha)</label>
+ <select id="alpha">
+ <option value="0.10">0.10, 90% confidence</option>
+ <option value="0.05" selected>0.05, 95% confidence</option>
+ <option value="0.01">0.01, 99% confidence</option>
+ </select>
 
-  <div class="out" id="out" aria-live="polite">
-    <div class="big" id="pval">—</div>
-    <div class="verdict" id="verdict">—</div>
-    <div style="margin-top:14px">
-      <div class="row"><span>Control rate (A)</span><span id="ra">—</span></div>
-      <div class="row"><span>Variant rate (B)</span><span id="rb">—</span></div>
-      <div class="row"><span>Observed lift</span><span id="lift">—</span></div>
-      <div class="row"><span>Z-score</span><span id="z">—</span></div>
-      <div class="row"><span>Confidence</span><span id="conf">—</span></div>
-    </div>
-    <p class="muted" id="note"></p>
-  </div>
+ <div class="out" id="out" aria-live="polite">
+ <div class="big" id="pval">&middot;</div>
+ <div class="verdict" id="verdict">&middot;</div>
+ <div style="margin-top:14px">
+ <div class="row"><span>Control rate (A)</span><span id="ra">&middot;</span></div>
+ <div class="row"><span>Variant rate (B)</span><span id="rb">&middot;</span></div>
+ <div class="row"><span>Observed lift</span><span id="lift">&middot;</span></div>
+ <div class="row"><span>Z-score</span><span id="z">&middot;</span></div>
+ <div class="row"><span>Confidence</span><span id="conf">&middot;</span></div>
+ </div>
+ <p class="muted" id="note"></p>
+ </div>
 </section>
 
 <h2>How the p-value is calculated</h2>
-<p>This calculator runs a <strong>two-proportion z-test</strong>, the standard significance test for A/B experiments with binary outcomes such as sign-ups, purchases or clicks. It first computes each group's conversion rate, <code>p_A = c_A / n_A</code> and <code>p_B = c_B / n_B</code>. Under the null hypothesis the two rates are equal, so the variances are estimated from a <em>pooled</em> conversion rate <code>p = (c_A + c_B) / (n_A + n_B)</code>.</p>
+<p>This calculator runs a two-proportion z-test, the standard significance test for A/B experiments with binary outcomes such as sign-ups, purchases or clicks. It first computes each group's conversion rate, <code>p_A = c_A / n_A</code> and <code>p_B = c_B / n_B</code>. Under the null hypothesis the two rates are equal, so the variances are estimated from a <em>pooled</em> conversion rate <code>p = (c_A + c_B) / (n_A + n_B)</code>.</p>
 <p>The standard error of the difference is <code>SE = sqrt(p·(1−p)·(1/n_A + 1/n_B))</code>, and the test statistic is the z-score <code>z = (p_B − p_A) / SE</code>. The z-score is converted to a p-value using the standard normal cumulative distribution, approximated here with the Abramowitz &amp; Stegun error-function formula (accurate to about 7 decimal places). A two-tailed test reports <code>2·(1 − Φ(|z|))</code>; a one-tailed test reports <code>1 − Φ(z)</code>.</p>
-<p>The p-value is the probability of seeing a difference at least this large purely by chance if the variants truly performed the same. When the p-value falls below your chosen alpha (0.05 means 95% confidence) the result is declared statistically significant and you can reject the null hypothesis. A non-significant result does not prove the variants are equal — it usually means you need more samples. Significance ignores business impact, so always read it alongside the observed lift and absolute volume before shipping a winner.</p>
+<p>The p-value is the probability of seeing a difference at least this large purely by chance if the variants truly performed the same. When the p-value falls below your chosen alpha (0.05 means 95% confidence) the result is declared statistically significant and you can reject the null hypothesis. A non-significant result does not prove the variants are equal. It usually means you need more samples. Significance ignores business impact, so always read it alongside the observed lift and absolute volume before shipping a winner.</p>
 
 <h2>Related Tools</h2>
 <ul>
-  <li><a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a></li>
-  <li><a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a></li>
-  <li><a href="/tools/chi-square-calculator">Chi-Square Calculator</a></li>
+ <li><a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a></li>
+ <li><a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a></li>
+ <li><a href="/tools/chi-square-calculator">Chi-Square Calculator</a></li>
 </ul>
 </main>
 
 <footer>
-  <div>
-    <a href="/">Home</a>
-    <a href="/tools/">All Tools</a>
-    <a href="/tools/confidence-interval-calculator">Confidence Interval</a>
-  </div>
-  <p>© 2026 abwex.com — A/B testing statistics tools.</p>
+ <div>
+ <a href="/">Home</a>
+ <a href="/tools/">All Tools</a>
+ <a href="/tools/confidence-interval-calculator">Confidence Interval</a>
+ </div>
+ <p>© 2026 abwex.com, A/B testing statistics tools.</p>
 </footer>
 
 <script>
@@ -159,10 +159,10 @@ code{background:#0d1117;border:1px solid var(--bd);border-radius:5px;padding:1px
     var note=$("note"), out=$("out");
 
     if(!(nA>0)||!(nB>0)||isNaN(cA)||isNaN(cB)||cA<0||cB<0||cA>nA||cB>nB){
-      $("pval").textContent="—";
+      $("pval").textContent="&middot;";
       $("verdict").textContent="Enter valid numbers";
       $("verdict").className="verdict";
-      ["ra","rb","lift","z","conf"].forEach(function(i){$(i).textContent="—";});
+      ["ra","rb","lift","z","conf"].forEach(function(i){$(i).textContent="&middot;";});
       note.textContent="Conversions must be between 0 and the number of visitors.";
       return;
     }
@@ -188,7 +188,7 @@ code{background:#0d1117;border:1px solid var(--bd);border-radius:5px;padding:1px
 
     var v=$("verdict");
     if(sig){
-      v.textContent=(pB>pA?"Significant — B beats A":"Significant — B is worse than A");
+      v.textContent=(pB>pA?"Significant, B beats A":"Significant, B is worse than A");
       v.className="verdict sig";
       note.textContent="At alpha = "+alpha+", the difference is statistically significant. You can reject the null hypothesis.";
     } else {

@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>False discovery rate calculator for A/B tests</title>
-  <meta name="description" content="Paste your p values and get Benjamini Hochberg, Benjamini Yekutieli, Holm and Bonferroni adjusted values side by side. Tracking 10 metrics with no correction gave a 40.2% false winner rate in a first party simulation.">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="False discovery rate calculator for A/B tests">
-  <meta property="og:description" content="Adjust p values with four corrections and see what tracking several metrics costs you, measured over 36 cells at 200,000 simulated experiments each.">
-  <meta property="og:url" content="https://abwex.com/tools/false-discovery-rate-calculator/">
-  <meta property="og:site_name" content="Zovo Tools">
-  <link rel="canonical" href="https://abwex.com/tools/false-discovery-rate-calculator/">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>False discovery rate calculator for A/B tests</title>
+ <meta name="description" content="Paste your p values and get Benjamini Hochberg, Benjamini Yekutieli, Holm and Bonferroni adjusted values side by side. Tracking 10 metrics with no correction gave a 40.2% false winner rate in a first party simulation.">
+ <meta name="theme-color" content="#0a0a0a">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="False discovery rate calculator for A/B tests">
+ <meta property="og:description" content="Adjust p values with four corrections and see what tracking several metrics costs you, measured over 36 cells at 200,000 simulated experiments each.">
+ <meta property="og:url" content="https://abwex.com/tools/false-discovery-rate-calculator/">
+ <meta property="og:site_name" content="Zovo Tools">
+ <link rel="canonical" href="https://abwex.com/tools/false-discovery-rate-calculator/">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
     {"@type":"WebPage","@id":"https://abwex.com/tools/false-discovery-rate-calculator/#webpage","url":"https://abwex.com/tools/false-discovery-rate-calculator/","name":"False discovery rate calculator for A/B tests","isPartOf":{"@id":"https://abwex.com/#website"}},
     {"@type":"BreadcrumbList","@id":"https://abwex.com/tools/false-discovery-rate-calculator/#breadcrumb","itemListElement":[
@@ -28,7 +28,7 @@
     {"@type":"Person","@id":"https://zovo.one/#michael-lip","name":"Michael Lip","url":"https://zovo.one","description":"Independent calculator builder, operator of ABWex and the Zovo Tools network."}
   ]}
   </script>
-  <style>
+ <style>
     .lede { color: var(--text-dim); font-size: 1.05rem; }
     .byline { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-display); margin-bottom: 28px; }
     .byline a { color: var(--text-dim); }
@@ -81,216 +81,216 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/tools/" class="active">Tools</a>
-        <a href="/answers/">Answers</a>
-        <a href="/guides/">Guides</a>
-        <a href="/blog/">Blog</a>
-        <div class="nav-right">
-          <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-          <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tool-fdr" class="nav-zovo">Zovo Tools</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/" class="active">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tool-fdr" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <div class="crumb"><a href="/">ABWex</a> / <a href="/tools/">Tools</a> / False discovery rate calculator</div>
+ <main class="container">
+ <div class="crumb"><a href="/">ABWex</a> / <a href="/tools/">Tools</a> / False discovery rate calculator</div>
 
-    <section class="hero" style="text-align:left;padding:24px 0 8px;">
-      <h1>False discovery rate <span>calculator</span></h1>
-    </section>
+ <section class="hero" style="text-align:left;padding:24px 0 8px;">
+ <h1>False discovery rate <span>calculator</span></h1>
+ </section>
 
-    <p class="byline">By <a href="https://zovo.one">Michael Lip</a>. Updated 2026-08-07.</p>
+ <p class="byline">By <a href="https://zovo.one">Michael Lip</a>. Updated 2026-08-07.</p>
 
-    <p class="lede">Paste the p values from one experiment. You'll get Benjamini Hochberg, Benjamini Yekutieli, Holm and Bonferroni adjusted values side by side, and a survives or does not survive verdict for every metric at the alpha you set. It all runs in your browser. Nothing is uploaded.</p>
+ <p class="lede">Paste the p values from one experiment. You'll get Benjamini Hochberg, Benjamini Yekutieli, Holm and Bonferroni adjusted values side by side, and a survives or does not survive verdict for every metric at the alpha you set. It all runs in your browser. Nothing is uploaded.</p>
 
-    <p>Tracking more metrics costs more than most experiment dashboards admit. I ran a Monte Carlo study for this page, 200,000 experiments per cell. Ten independent metrics with no real effect on any of them produced at least one false winner in 40.2% of experiments. Not the 5% the alpha suggests. At twenty metrics it hit 64.1%.</p>
+ <p>Tracking more metrics costs more than most experiment dashboards admit. I ran a Monte Carlo study for this page, 200,000 experiments per cell. Ten independent metrics with no real effect on any of them produced at least one false winner in 40.2% of experiments. Not the 5% the alpha suggests. At twenty metrics it hit 64.1%.</p>
 
-    <p>The study, its seed and its generator sit further down, and you can rerun any cell of it in your own browser.</p>
+ <p>The study, its seed and its generator sit further down, and you can rerun any cell of it in your own browser.</p>
 
-    <section>
-      <h2>Adjust your p values</h2>
-      <div class="card">
-        <form id="calc">
-          <label for="pvals">One p value per line. Put a metric name in front of the number if you want it labelled.</label>
-          <textarea id="pvals" spellcheck="false" aria-describedby="drawnote"></textarea>
-          <div class="calc-row">
-            <div class="input-field">
-              <label for="alpha">Alpha</label>
-              <input type="number" id="alpha" value="0.05" min="0.0001" max="0.9999" step="0.001">
-            </div>
-            <button type="submit" class="btn btn-primary">Adjust these p values</button>
-            <button type="button" id="draw" class="btn btn-secondary">Fill with a drawn example</button>
-            <button type="button" id="clear" class="btn btn-secondary">Clear</button>
-          </div>
-          <p class="mut" id="drawnote" style="margin-top:12px;"></p>
-        </form>
-      </div>
+ <section>
+ <h2>Adjust your p values</h2>
+ <div class="card">
+ <form id="calc">
+ <label for="pvals">One p value per line. Put a metric name in front of the number if you want it labelled.</label>
+ <textarea id="pvals" spellcheck="false" aria-describedby="drawnote"></textarea>
+ <div class="calc-row">
+ <div class="input-field">
+ <label for="alpha">Alpha</label>
+ <input type="number" id="alpha" value="0.05" min="0.0001" max="0.9999" step="0.001">
+ </div>
+ <button type="submit" class="btn btn-primary">Adjust these p values</button>
+ <button type="button" id="draw" class="btn btn-secondary">Fill with a drawn example</button>
+ <button type="button" id="clear" class="btn btn-secondary">Clear</button>
+ </div>
+ <p class="mut" id="drawnote" style="margin-top:12px;"></p>
+ </form>
+ </div>
 
-      <div id="out"></div>
+ <div id="out"></div>
 
-      <p class="mut">This tool corrects p values you supply. It doesn't run the underlying test, so the test itself, its tail count and its alpha stay yours to state alongside any result. The drawn example is two sided. Adjusted values are cross checked against statsmodels and the tolerance is recorded below.</p>
-    </section>
+ <p class="mut">This tool corrects p values you supply. It doesn't run the underlying test, so the test itself, its tail count and its alpha stay yours to state alongside any result. The drawn example is two sided. Adjusted values are cross checked against statsmodels and the tolerance is recorded below.</p>
+ </section>
 
-    <section>
-      <h2>How the four corrections work</h2>
-      <p>All four take the same input, your list of raw p values, and hand back adjusted values you compare against alpha. What differs is the quantity each one holds down.</p>
+ <section>
+ <h2>How the four corrections work</h2>
+ <p>All four take the same input, your list of raw p values, and hand back adjusted values you compare against alpha. What differs is the quantity each one holds down.</p>
 
-      <h3>Bonferroni</h3>
-      <p>One multiplication, no ordering. In R's p.adjust it's the method where <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">the p-values are multiplied by the number of comparisons</a>, and Bonferroni, Holm, Hochberg and Hommel are all <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">designed to give strong control of the family-wise error rate</a>. From the other side, a Laryngoscope methods review puts it as generating a stricter significance cutoff by dividing the original significance level by the number of comparisons. statsmodels calls its bonferroni method <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">a one-step correction</a>, which is what it is.</p>
+ <h3>Bonferroni</h3>
+ <p>One multiplication, no ordering. In R's p.adjust it's the method where <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">the p-values are multiplied by the number of comparisons</a>, and Bonferroni, Holm, Hochberg and Hommel are all <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">designed to give strong control of the family-wise error rate</a>. From the other side, a Laryngoscope methods review puts it as generating a stricter significance cutoff by dividing the original significance level by the number of comparisons. statsmodels calls its bonferroni method <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">a one-step correction</a>, which is what it is.</p>
 
-      <h3>Holm</h3>
-      <p>Holm sorts your p values and walks up the list, so the smallest p faces the full penalty and later ranks face less. statsmodels describes its holm method as a <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">step-down method using Bonferroni adjustments</a>. R puts the practical conclusion this way, that there seems no reason to use the unmodified Bonferroni correction because it is <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">dominated by Holm's method</a>, which is also valid under arbitrary assumptions. The simulation further down agrees on power, in the one cell it covers.</p>
+ <h3>Holm</h3>
+ <p>Holm sorts your p values and walks up the list, so the smallest p faces the full penalty and later ranks face less. statsmodels describes its holm method as a <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">step-down method using Bonferroni adjustments</a>. R puts the practical conclusion this way, that there seems no reason to use the unmodified Bonferroni correction because it is <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">dominated by Holm's method</a>, which is also valid under arbitrary assumptions. The simulation further down agrees on power, in the one cell it covers.</p>
 
-      <h3>Benjamini Hochberg</h3>
-      <p>BH controls something different. The false discovery rate is <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">the expected proportion of false discoveries amongst the rejected hypotheses</a>, and that's the quantity the BH and BY methods in R's p.adjust control. Because it's <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">a less stringent condition than the family-wise error rate</a>, BH is typically more powerful than the family-wise methods. SciPy states the same trade in its own words, that <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.false_discovery_control.html">false discovery control procedures tend to offer higher power than familywise error rate control procedures</a> such as the Bonferroni correction.</p>
+ <h3>Benjamini Hochberg</h3>
+ <p>BH controls something different. The false discovery rate is <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">the expected proportion of false discoveries amongst the rejected hypotheses</a>, and that's the quantity the BH and BY methods in R's p.adjust control. Because it's <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">a less stringent condition than the family-wise error rate</a>, BH is typically more powerful than the family-wise methods. SciPy states the same trade in its own words, that <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.false_discovery_control.html">false discovery control procedures tend to offer higher power than familywise error rate control procedures</a> such as the Bonferroni correction.</p>
 
-      <h3>Benjamini Yekutieli</h3>
-      <p>BY is BH with a penalty for not knowing how your metrics depend on each other. It replaces the target level with that level divided by the sum of one over i across the m tests, and it <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">controls the FDR under the most general form of dependence structure</a>. R notes it's more conservative than BH. Reach for it when you can't argue your metrics are positively related, which is the case the assumptions section below covers.</p>
+ <h3>Benjamini Yekutieli</h3>
+ <p>BY is BH with a penalty for not knowing how your metrics depend on each other. It replaces the target level with that level divided by the sum of one over i across the m tests, and it <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html">controls the FDR under the most general form of dependence structure</a>. R notes it's more conservative than BH. Reach for it when you can't argue your metrics are positively related, which is the case the assumptions section below covers.</p>
 
-      <p>In statsmodels the string fdr_bh selects the <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">Benjamini/Hochberg (non-negative)</a> procedure and fdr_by selects Benjamini/Yekutieli. The step up table in the calculator shows the mechanism instead of hiding it. Rank the p values smallest first, compare each against alpha times its rank over the number of tests, find the largest rank still under its line, and keep everything at or below that rank.</p>
-    </section>
+ <p>In statsmodels the string fdr_bh selects the <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">Benjamini/Hochberg (non-negative)</a> procedure and fdr_by selects Benjamini/Yekutieli. The step up table in the calculator shows the mechanism instead of hiding it. Rank the p values smallest first, compare each against alpha times its rank over the number of tests, find the largest rank still under its line, and keep everything at or below that rank.</p>
+ </section>
 
-    <section>
-      <h2>What tracking several metrics actually costs you</h2>
-      <p>Every page ranking for this query adjusts a list of p values and stops. None of them answer the question an experimenter walks in with, which is what watching a handful of metrics on one test does to the odds of shipping a false winner, and what the correction costs in detection.</p>
-      <p>So I simulated it rather than quoting anyone. The study is 36 parameter cells at 200,000 simulated experiments each, alpha 0.05, seed 20260728. It sweeps the metric count over 3, 5, 10 and 20, the between metric correlation over zero, 0.3 and 0.6, and the share of metrics that are true nulls over 100%, 80% and 50%.</p>
+ <section>
+ <h2>What tracking several metrics actually costs you</h2>
+ <p>Every page ranking for this query adjusts a list of p values and stops. None of them answer the question an experimenter walks in with, which is what watching a handful of metrics on one test does to the odds of shipping a false winner, and what the correction costs in detection.</p>
+ <p>So I simulated it rather than quoting anyone. The study is 36 parameter cells at 200,000 simulated experiments each, alpha 0.05, seed 20260728. It sweeps the metric count over 3, 5, 10 and 20, the between metric correlation over zero, 0.3 and 0.6, and the share of metrics that are true nulls over 100%, 80% and 50%.</p>
 
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-value sig-red">40.2%</div>
-          <div class="stat-label">false winner rate at 10 true nulls, no correction</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value sig-red">64.1%</div>
-          <div class="stat-label">same, at 20 metrics</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value sig-yellow">35.5%</div>
-          <div class="stat-label">at 20 metrics once correlation reaches 0.6</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value sig-green">66.6%</div>
-          <div class="stat-label">BH detection at 20 metrics, half real, against Bonferroni 41.3%</div>
-        </div>
-      </div>
+ <div class="stat-grid">
+ <div class="stat-card">
+ <div class="stat-value sig-red">40.2%</div>
+ <div class="stat-label">false winner rate at 10 true nulls, no correction</div>
+ </div>
+ <div class="stat-card">
+ <div class="stat-value sig-red">64.1%</div>
+ <div class="stat-label">same, at 20 metrics</div>
+ </div>
+ <div class="stat-card">
+ <div class="stat-value sig-yellow">35.5%</div>
+ <div class="stat-label">at 20 metrics once correlation reaches 0.6</div>
+ </div>
+ <div class="stat-card">
+ <div class="stat-value sig-green">66.6%</div>
+ <div class="stat-label">BH detection at 20 metrics, half real, against Bonferroni 41.3%</div>
+ </div>
+ </div>
 
-      <h3>What those four numbers mean</h3>
-      <p>Ten metrics, every one a true null, nothing corrected, and at least one comes back a winner four times in ten. That's the headline. At twenty metrics it's closer to two in three.</p>
-      <p>Correlated metrics soften the problem without fixing it. Hold the count at 20 true nulls and move from independent metrics to a correlation of 0.6, and the false winner rate drops from 64.1% to 35.5%. Better. Still nothing like 5%.</p>
-      <p>Benjamini Hochberg keeps far more of your detection than Bonferroni once the metric count grows. At 20 metrics with half carrying a real effect, BH found 66.6% of the true effects against Bonferroni's 41.3%, and its realised false discovery proportion averaged 2.5%. Holm found more than plain Bonferroni in that same cell too, 44% against 41.3%, with both holding the false winner rate under the study alpha.</p>
+ <h3>What those four numbers mean</h3>
+ <p>Ten metrics, every one a true null, nothing corrected, and at least one comes back a winner four times in ten. That's the headline. At twenty metrics it's closer to two in three.</p>
+ <p>Correlated metrics soften the problem without fixing it. Hold the count at 20 true nulls and move from independent metrics to a correlation of 0.6, and the false winner rate drops from 64.1% to 35.5%. Better. Still nothing like 5%.</p>
+ <p>Benjamini Hochberg keeps far more of your detection than Bonferroni once the metric count grows. At 20 metrics with half carrying a real effect, BH found 66.6% of the true effects against Bonferroni's 41.3%, and its realised false discovery proportion averaged 2.5%. Holm found more than plain Bonferroni in that same cell too, 44% against 41.3%, with both holding the false winner rate under the study alpha.</p>
 
-      <h3>Pick a cell and look at it</h3>
-      <div class="card">
-        <div class="sel-row">
-          <div class="input-field"><label for="selM">Metrics tracked</label><select id="selM"></select></div>
-          <div class="input-field"><label for="selRho">Correlation between metrics</label><select id="selRho"></select></div>
-          <div class="input-field"><label for="selPi">Share that are true nulls</label><select id="selPi"></select></div>
-        </div>
-        <div id="cellout"></div>
-        <button type="button" id="replicate" class="btn btn-secondary btn-sm" style="margin-top:12px;">Rerun this cell in your browser</button>
-        <div id="repout"></div>
-      </div>
+ <h3>Pick a cell and look at it</h3>
+ <div class="card">
+ <div class="sel-row">
+ <div class="input-field"><label for="selM">Metrics tracked</label><select id="selM"></select></div>
+ <div class="input-field"><label for="selRho">Correlation between metrics</label><select id="selRho"></select></div>
+ <div class="input-field"><label for="selPi">Share that are true nulls</label><select id="selPi"></select></div>
+ </div>
+ <div id="cellout"></div>
+ <button type="button" id="replicate" class="btn btn-secondary btn-sm" style="margin-top:12px;">Rerun this cell in your browser</button>
+ <div id="repout"></div>
+ </div>
 
-      <h3>The known answer check</h3>
-      <p>A simulation you can't check is a story. When every metric is a true null and nothing is corrected, the family-wise error rate has a closed form, and the Laryngoscope review writes it as one minus, one minus alpha, raised to the power of the number of simultaneous comparisons.</p>
-      <p>Measured against that formula, at 3 metrics the study got 14.3% where the formula gives 14.3%. At 10 metrics, 40.2% against 40.1%. At 20 metrics, 64.1% against 64.2%. That agreement is the reason to trust the cells where no closed form exists.</p>
-    </section>
+ <h3>The known answer check</h3>
+ <p>A simulation you can't check is a story. When every metric is a true null and nothing is corrected, the family-wise error rate has a closed form, and the Laryngoscope review writes it as one minus, one minus alpha, raised to the power of the number of simultaneous comparisons.</p>
+ <p>Measured against that formula, at 3 metrics the study got 14.3% where the formula gives 14.3%. At 10 metrics, 40.2% against 40.1%. At 20 metrics, 64.1% against 64.2%. That agreement is the reason to trust the cells where no closed form exists.</p>
+ </section>
 
-    <section>
-      <h2>What has to be true for these numbers to hold</h2>
-      <p>SciPy states the guarantee carefully. When <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.false_discovery_control.html">p-values correspond to independent tests, or to tests with positive regression dependencies</a>, rejecting the hypotheses whose BH adjusted p-values fall below q controls the false discovery rate at a level no greater than q times the number of true nulls over the number tested.</p>
+ <section>
+ <h2>What has to be true for these numbers to hold</h2>
+ <p>SciPy states the guarantee carefully. When <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.false_discovery_control.html">p-values correspond to independent tests, or to tests with positive regression dependencies</a>, rejecting the hypotheses whose BH adjusted p-values fall below q controls the false discovery rate at a level no greater than q times the number of true nulls over the number tested.</p>
 
-      <p>Metrics that move together are usually fine, and that's a result rather than a hope. Benjamini and Yekutieli proved that BH also controls the false discovery rate when the test statistics have <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-4/The-control-of-the-false-discovery-rate-in-multiple-testing/10.1214/aos/1013699998.full">positive regression dependency on each of the test statistics corresponding to the true null hypotheses</a>. Their paper says the condition covers <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-4/The-control-of-the-false-discovery-rate-in-multiple-testing/10.1214/aos/1013699998.full">multivariate normal test statistics with positive correlation matrix</a>, multivariate t, and comparisons of many treatments with a single control. Revenue, orders and add to cart on the same visitors sit in that family.</p>
+ <p>Metrics that move together are usually fine, and that's a result rather than a hope. Benjamini and Yekutieli proved that BH also controls the false discovery rate when the test statistics have <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-4/The-control-of-the-false-discovery-rate-in-multiple-testing/10.1214/aos/1013699998.full">positive regression dependency on each of the test statistics corresponding to the true null hypotheses</a>. Their paper says the condition covers <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-4/The-control-of-the-false-discovery-rate-in-multiple-testing/10.1214/aos/1013699998.full">multivariate normal test statistics with positive correlation matrix</a>, multivariate t, and comparisons of many treatments with a single control. Revenue, orders and add to cart on the same visitors sit in that family.</p>
 
-      <p>Negative correlation is the gap here, and naming it beats inventing an estimate. The correlation cells in this study are positive only, so a family of strongly negatively correlated metrics is outside what was measured. For all other forms of dependency Benjamini and Yekutieli give a simple conservative modification of the procedure. That's the BY column in the calculator above, so the gap has an answer even though the simulation doesn't cover it.</p>
+ <p>Negative correlation is the gap here, and naming it beats inventing an estimate. The correlation cells in this study are positive only, so a family of strongly negatively correlated metrics is outside what was measured. For all other forms of dependency Benjamini and Yekutieli give a simple conservative modification of the procedure. That's the BY column in the calculator above, so the gap has an answer even though the simulation doesn't cover it.</p>
 
-      <p>Two more limits worth naming.</p>
-      <ul class="limits">
-        <li>The alpha argument of statsmodels multipletests is documented as <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">the FWER, family-wise error rate</a>. Read the label on whatever tool you use before assuming a box called alpha means what you assume it means.</li>
-        <li>A correction cleans up multiplicity and nothing else. Not peeking, not interference between overlapping experiments, not a metric definition that drifted mid test.</li>
-      </ul>
-    </section>
+ <p>Two more limits worth naming.</p>
+ <ul class="limits">
+ <li>The alpha argument of statsmodels multipletests is documented as <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">the FWER, family-wise error rate</a>. Read the label on whatever tool you use before assuming a box called alpha means what you assume it means.</li>
+ <li>A correction cleans up multiplicity and nothing else. Not peeking, not interference between overlapping experiments, not a metric definition that drifted mid test.</li>
+ </ul>
+ </section>
 
-    <section>
-      <h2>How this calculator was checked</h2>
-      <p>The adjusted values here were compared against statsmodels multipletests across 3,600 reject decisions, spanning families of two up to fifty simultaneous tests. Every reject decision matched. The largest absolute difference in adjusted p values was 2.22e-16, which is floating point noise rather than disagreement.</p>
-      <p>statsmodels returns a reject array that is true for hypotheses that can be rejected at the given alpha, together with <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">p-values corrected for multiple tests</a>, and both halves were compared. SciPy documents that its own adjusted values are <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.false_discovery_control.html">comparable to those produced by the R function p.adjust</a> and by statsmodels multipletests, so the three reference implementations agree on the values this page reproduces.</p>
-    </section>
+ <section>
+ <h2>How this calculator was checked</h2>
+ <p>The adjusted values here were compared against statsmodels multipletests across 3,600 reject decisions, spanning families of two up to fifty simultaneous tests. Every reject decision matched. The largest absolute difference in adjusted p values was 2.22e-16, which is floating point noise rather than disagreement.</p>
+ <p>statsmodels returns a reject array that is true for hypotheses that can be rejected at the given alpha, together with <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html">p-values corrected for multiple tests</a>, and both halves were compared. SciPy documents that its own adjusted values are <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.false_discovery_control.html">comparable to those produced by the R function p.adjust</a> and by statsmodels multipletests, so the three reference implementations agree on the values this page reproduces.</p>
+ </section>
 
-    <section>
-      <h2>Where these numbers come from</h2>
-      <p>Built by Michael Lip, who maintains the open source statistics routines behind this site, MIT licensed at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>. Those routines include the normal and inverse normal CDF, the Lanczos log gamma, a regularized incomplete beta by continued fraction, and Simpson rule integration for the probability that B beats A.</p>
-      <p>Nothing here is typed by hand into copy. Adjusted values come from the code in this page, recomputed from whatever you paste. The study figures are read from the dataset committed to that repository.</p>
-      <p>The run behind them, 36 cells at 200,000 experiments each on seed 20260728, was performed for this page. Both files are published so you can rerun it instead of trusting a table.</p>
-      <ul class="src-list">
-        <li><a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/build_fdr_simulation.py">datasets/build_fdr_simulation.py</a>, the generator</li>
-        <li><a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/fdr_simulation.json">datasets/fdr_simulation.json</a>, the raw output</li>
-        <li><a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/verify_against_statsmodels.py">datasets/verify_against_statsmodels.py</a>, the statsmodels cross check</li>
-      </ul>
-      <p>Where a closed form exists the simulation is checked against it before publishing, which is the check printed above. The one thing this site doesn't have is a live data feed, and it never claims one. Everything you see is either your own input recomputed in front of you, or a dataset in the repository carrying its seed and its generator.</p>
-    </section>
+ <section>
+ <h2>Where these numbers come from</h2>
+ <p>Built by Michael Lip, who maintains the open source statistics routines behind this site, MIT licensed at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>. Those routines include the normal and inverse normal CDF, the Lanczos log gamma, a regularized incomplete beta by continued fraction, and Simpson rule integration for the probability that B beats A.</p>
+ <p>Nothing here is typed by hand into copy. Adjusted values come from the code in this page, recomputed from whatever you paste. The study figures are read from the dataset committed to that repository.</p>
+ <p>The run behind them, 36 cells at 200,000 experiments each on seed 20260728, was performed for this page. Both files are published so you can rerun it instead of trusting a table.</p>
+ <ul class="src-list">
+ <li><a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/build_fdr_simulation.py">datasets/build_fdr_simulation.py</a>, the generator</li>
+ <li><a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/fdr_simulation.json">datasets/fdr_simulation.json</a>, the raw output</li>
+ <li><a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/verify_against_statsmodels.py">datasets/verify_against_statsmodels.py</a>, the statsmodels cross check</li>
+ </ul>
+ <p>Where a closed form exists the simulation is checked against it before publishing, which is the check printed above. The one thing this site doesn't have is a live data feed, and it never claims one. Everything you see is either your own input recomputed in front of you, or a dataset in the repository carrying its seed and its generator.</p>
+ </section>
 
-    <section class="faq-section" style="padding:0;">
-      <h2 style="text-align:left;">Common questions</h2>
+ <section class="faq-section" style="padding:0;">
+ <h2 style="text-align:left;">Common questions</h2>
 
-      <div class="faq-item">
-        <div class="faq-q">Do I need a correction for only two metrics</div>
-        <div class="faq-a">The penalty is small, but small isn't zero. Optimizely puts the general shape of it well, that with traditional statistics <a href="https://support.optimizely.com/hc/en-us/articles/4410283967245-False-discovery-rate-control">the risk of generating at least one false positive result increases as you add more metrics and variations</a> to an experiment. Paste both p values into the tool and look at what the correction costs, rather than deciding it in the abstract.</div>
-      </div>
+ <div class="faq-item">
+ <div class="faq-q">Do I need a correction for only two metrics</div>
+ <div class="faq-a">The penalty is small, but small isn't zero. Optimizely puts the general shape of it well, that with traditional statistics <a href="https://support.optimizely.com/hc/en-us/articles/4410283967245-False-discovery-rate-control">the risk of generating at least one false positive result increases as you add more metrics and variations</a> to an experiment. Paste both p values into the tool and look at what the correction costs, rather than deciding it in the abstract.</div>
+ </div>
 
-      <div class="faq-item">
-        <div class="faq-q">False discovery rate or false positive rate</div>
-        <div class="faq-a">Different denominators. Optimizely defines the false positive rate as <a href="https://support.optimizely.com/hc/en-us/articles/4410283967245-False-discovery-rate-control">the proportion of false positives out of all negative outcomes</a>, which is a different denominator from the false discovery rate. The second one is scoped to the hypotheses you actually rejected, so it's the one that speaks to a shipping decision.</div>
-      </div>
+ <div class="faq-item">
+ <div class="faq-q">False discovery rate or false positive rate</div>
+ <div class="faq-a">Different denominators. Optimizely defines the false positive rate as <a href="https://support.optimizely.com/hc/en-us/articles/4410283967245-False-discovery-rate-control">the proportion of false positives out of all negative outcomes</a>, which is a different denominator from the false discovery rate. The second one is scoped to the hypotheses you actually rejected, so it's the one that speaks to a shipping decision.</div>
+ </div>
 
-      <div class="faq-item">
-        <div class="faq-q">Is Benjamini Hochberg what the experimentation platforms use</div>
-        <div class="faq-a">Optimizely's Stats Engine uses <a href="https://support.optimizely.com/hc/en-us/articles/4410283967245-False-discovery-rate-control">a tiered version of the Benjamini-Hochberg procedure</a> for false discovery rate control across multiple metrics and variations. Optimizely also describes false discovery rate control as a statistical procedure for correcting multiplicity caused by running multiple hypothesis tests simultaneously, which is the same job this page does on p values you paste in.</div>
-      </div>
+ <div class="faq-item">
+ <div class="faq-q">Is Benjamini Hochberg what the experimentation platforms use</div>
+ <div class="faq-a">Optimizely's Stats Engine uses <a href="https://support.optimizely.com/hc/en-us/articles/4410283967245-False-discovery-rate-control">a tiered version of the Benjamini-Hochberg procedure</a> for false discovery rate control across multiple metrics and variations. Optimizely also describes false discovery rate control as a statistical procedure for correcting multiplicity caused by running multiple hypothesis tests simultaneously, which is the same job this page does on p values you paste in.</div>
+ </div>
 
-      <div class="faq-item">
-        <div class="faq-q">Which column should I read first</div>
-        <div class="faq-a">If a false winner costs you a release you can roll back, read the Benjamini Hochberg column, since it holds down the share of false discoveries among your winners and keeps more detection. If one false claim leaves the building and can't be walked back, read Holm, which controls the stronger family-wise quantity and still beat plain Bonferroni on detection in the cell measured here. If you can't argue your metrics are positively related, read Benjamini Yekutieli.</div>
-      </div>
+ <div class="faq-item">
+ <div class="faq-q">Which column should I read first</div>
+ <div class="faq-a">If a false winner costs you a release you can roll back, read the Benjamini Hochberg column, since it holds down the share of false discoveries among your winners and keeps more detection. If one false claim leaves the building and can't be walked back, read Holm, which controls the stronger family-wise quantity and still beat plain Bonferroni on detection in the cell measured here. If you can't argue your metrics are positively related, read Benjamini Yekutieli.</div>
+ </div>
 
-      <div class="faq-item">
-        <div class="faq-q">Where do the papers live</div>
-        <div class="faq-a">Benjamini and Hochberg 1995 is titled Controlling the false discovery rate, a practical and powerful approach to multiple testing, DOI 10.1111/j.2517-6161.1995.tb02031.x. Holm 1979 is A Simple Sequentially Rejective Multiple Test Procedure, DOI 10.2307/4615733. Both are listed with journal, volume and pages in the R p.adjust references, Benjamini and Hochberg in Journal of the Royal Statistical Society Series B, 1995, volume 57, pages 289 to 300, and Holm in Scandinavian Journal of Statistics, 1979, volume 6, pages 65 to 70. Benjamini and Yekutieli, The control of the false discovery rate in multiple testing under dependency, ran in <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-4/The-control-of-the-false-discovery-rate-in-multiple-testing/10.1214/aos/1013699998.full">The Annals of Statistics volume 29, issue 4, 2001, pages 1165 to 1188</a>, DOI 10.1214/aos/1013699998.</div>
-      </div>
-    </section>
+ <div class="faq-item">
+ <div class="faq-q">Where do the papers live</div>
+ <div class="faq-a">Benjamini and Hochberg 1995 is titled Controlling the false discovery rate, a practical and powerful approach to multiple testing, DOI 10.1111/j.2517-6161.1995.tb02031.x. Holm 1979 is A Simple Sequentially Rejective Multiple Test Procedure, DOI 10.2307/4615733. Both are listed with journal, volume and pages in the R p.adjust references, Benjamini and Hochberg in Journal of the Royal Statistical Society Series B, 1995, volume 57, pages 289 to 300, and Holm in Scandinavian Journal of Statistics, 1979, volume 6, pages 65 to 70. Benjamini and Yekutieli, The control of the false discovery rate in multiple testing under dependency, ran in <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-4/The-control-of-the-false-discovery-rate-in-multiple-testing/10.1214/aos/1013699998.full">The Annals of Statistics volume 29, issue 4, 2001, pages 1165 to 1188</a>, DOI 10.1214/aos/1013699998.</div>
+ </div>
+ </section>
 
-    <section>
-      <h2>Read this before you act on the output</h2>
-      <ul class="limits">
-        <li>Results are statistical estimates and not business or financial advice.</li>
-        <li>Every calculation assumes visitors were randomly assigned and that each visitor counts once.</li>
-        <li>Normal approximation results need at least five expected conversions and five expected non conversions in each variant. Below that the output is unreliable.</li>
-        <li>A statistically significant result isn't the same as a lift worth shipping.</li>
-        <li>A p value is the probability of seeing data this extreme if the null hypothesis is true. It isn't the probability that the variant is better.</li>
-        <li>Worked examples use the inputs printed on the page and won't match your own test.</li>
-        <li>These tools don't adjust for seasonality, novelty effects, overlapping experiments or interference unless the page says so.</li>
-        <li>For a high stakes decision, have the design and the result reviewed by a qualified analyst.</li>
-      </ul>
-    </section>
-  </main>
+ <section>
+ <h2>Read this before you act on the output</h2>
+ <ul class="limits">
+ <li>Results are statistical estimates and not business or financial advice.</li>
+ <li>Every calculation assumes visitors were randomly assigned and that each visitor counts once.</li>
+ <li>Normal approximation results need at least five expected conversions and five expected non conversions in each variant. Below that the output is unreliable.</li>
+ <li>A statistically significant result isn't the same as a lift worth shipping.</li>
+ <li>A p value is the probability of seeing data this extreme if the null hypothesis is true. It isn't the probability that the variant is better.</li>
+ <li>Worked examples use the inputs printed on the page and won't match your own test.</li>
+ <li>These tools don't adjust for seasonality, novelty effects, overlapping experiments or interference unless the page says so.</li>
+ <li>For a high stakes decision, have the design and the result reviewed by a qualified analyst.</li>
+ </ul>
+ </section>
+ </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">Zovo Tools</div>
-      <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever &rarr;</a>
-      <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tool-fdr">Zovo</a> &middot; 47/500 founding spots</div>
-    </div>
-  </footer>
+ <footer class="site-footer">
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tool-fdr">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
+ </footer>
 
-  <script id="sim-data" type="application/json">{"id":"fdr_simulation","title":"Monte Carlo study of multiple-testing corrections in A/B tests","generated_utc":"2026-07-28","method":"Equicorrelated Gaussian z-statistics, Z_i = sqrt(rho)*C + sqrt(1-rho)*E_i with C and E_i iid standard normal, two-sided p-values, alpha 0.05. m0 true nulls have mu 0; the m1 true effects have mu = z_(1-alpha/2) + z_(power), so 'uncorrected_power' is the detection rate a single uncorrected metric would have.","simulations_per_cell":200000,"alpha":0.05,"seed":20260728,"reproduce":"python3 build_fdr_simulation.py in sites/abwex/datasets/","corrections":["none","bonferroni","holm","bh"],"metrics_defined":{"fwer":"share of experiments with at least one false positive among the true-null metrics","fdr_mean":"mean realised false discovery proportion V/max(R,1)","power_mean":"mean share of the true effects declared significant","any_false_win":"share of experiments that declared at least one null metric a winner"},"cells":[{"m":3,"rho":0.0,"pi0":1.0,"m0":3,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1426,"fdr_mean":0.1426,"power_mean":null,"any_false_win":0.1426},"bonferroni":{"fwer":0.0484,"fdr_mean":0.0484,"power_mean":null,"any_false_win":0.0484},"holm":{"fwer":0.0484,"fdr_mean":0.0484,"power_mean":null,"any_false_win":0.0484},"bh":{"fwer":0.0492,"fdr_mean":0.0492,"power_mean":null,"any_false_win":0.0492}}},{"m":3,"rho":0.0,"pi0":0.8,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0986,"fdr_mean":0.0594,"power_mean":0.801,"any_false_win":0.0986},"bonferroni":{"fwer":0.0335,"fdr_mean":0.0225,"power_mean":0.6584,"any_false_win":0.0335},"holm":{"fwer":0.0444,"fdr_mean":0.0271,"power_mean":0.6605,"any_false_win":0.0444},"bh":{"fwer":0.0581,"fdr_mean":0.0335,"power_mean":0.6651,"any_false_win":0.0581}}},{"m":3,"rho":0.0,"pi0":0.5,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0961,"fdr_mean":0.0579,"power_mean":0.8002,"any_false_win":0.0961},"bonferroni":{"fwer":0.0327,"fdr_mean":0.022,"power_mean":0.6575,"any_false_win":0.0327},"holm":{"fwer":0.0432,"fdr_mean":0.0265,"power_mean":0.6594,"any_false_win":0.0432},"bh":{"fwer":0.0569,"fdr_mean":0.0328,"power_mean":0.6638,"any_false_win":0.0569}}},{"m":3,"rho":0.3,"pi0":1.0,"m0":3,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1365,"fdr_mean":0.1365,"power_mean":null,"any_false_win":0.1365},"bonferroni":{"fwer":0.0471,"fdr_mean":0.0471,"power_mean":null,"any_false_win":0.0471},"holm":{"fwer":0.0471,"fdr_mean":0.0471,"power_mean":null,"any_false_win":0.0471},"bh":{"fwer":0.0485,"fdr_mean":0.0485,"power_mean":null,"any_false_win":0.0485}}},{"m":3,"rho":0.3,"pi0":0.8,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0959,"fdr_mean":0.0605,"power_mean":0.7994,"any_false_win":0.0959},"bonferroni":{"fwer":0.0327,"fdr_mean":0.0229,"power_mean":0.6579,"any_false_win":0.0327},"holm":{"fwer":0.0427,"fdr_mean":0.0275,"power_mean":0.6595,"any_false_win":0.0427},"bh":{"fwer":0.0558,"fdr_mean":0.0338,"power_mean":0.663,"any_false_win":0.0558}}},{"m":3,"rho":0.3,"pi0":0.5,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0946,"fdr_mean":0.0593,"power_mean":0.8028,"any_false_win":0.0946},"bonferroni":{"fwer":0.032,"fdr_mean":0.0221,"power_mean":0.6602,"any_false_win":0.032},"holm":{"fwer":0.0423,"fdr_mean":0.0268,"power_mean":0.6618,"any_false_win":0.0423},"bh":{"fwer":0.0551,"fdr_mean":0.0329,"power_mean":0.6653,"any_false_win":0.0551}}},{"m":3,"rho":0.6,"pi0":1.0,"m0":3,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1188,"fdr_mean":0.1188,"power_mean":null,"any_false_win":0.1188},"bonferroni":{"fwer":0.0423,"fdr_mean":0.0423,"power_mean":null,"any_false_win":0.0423},"holm":{"fwer":0.0423,"fdr_mean":0.0423,"power_mean":null,"any_false_win":0.0423},"bh":{"fwer":0.0453,"fdr_mean":0.0453,"power_mean":null,"any_false_win":0.0453}}},{"m":3,"rho":0.6,"pi0":0.8,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0882,"fdr_mean":0.0614,"power_mean":0.8005,"any_false_win":0.0882},"bonferroni":{"fwer":0.0306,"fdr_mean":0.0226,"power_mean":0.6582,"any_false_win":0.0306},"holm":{"fwer":0.0387,"fdr_mean":0.0271,"power_mean":0.6587,"any_false_win":0.0387},"bh":{"fwer":0.0495,"fdr_mean":0.0328,"power_mean":0.6607,"any_false_win":0.0495}}},{"m":3,"rho":0.6,"pi0":0.5,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0884,"fdr_mean":0.0613,"power_mean":0.8009,"any_false_win":0.0884},"bonferroni":{"fwer":0.0303,"fdr_mean":0.0225,"power_mean":0.6591,"any_false_win":0.0303},"holm":{"fwer":0.0386,"fdr_mean":0.027,"power_mean":0.6597,"any_false_win":0.0386},"bh":{"fwer":0.0498,"fdr_mean":0.0329,"power_mean":0.6617,"any_false_win":0.0498}}},{"m":5,"rho":0.0,"pi0":1.0,"m0":5,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2248,"fdr_mean":0.2248,"power_mean":null,"any_false_win":0.2248},"bonferroni":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"holm":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"bh":{"fwer":0.0497,"fdr_mean":0.0497,"power_mean":null,"any_false_win":0.0497}}},{"m":5,"rho":0.0,"pi0":0.8,"m0":4,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1854,"fdr_mean":0.1129,"power_mean":0.8005,"any_false_win":0.1854},"bonferroni":{"fwer":0.0389,"fdr_mean":0.0274,"power_mean":0.5903,"any_false_win":0.0389},"holm":{"fwer":0.0448,"fdr_mean":0.0299,"power_mean":0.5914,"any_false_win":0.0448},"bh":{"fwer":0.0664,"fdr_mean":0.0399,"power_mean":0.5979,"any_false_win":0.0664}}},{"m":5,"rho":0.0,"pi0":0.5,"m0":2,"m1":3,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0981,"fdr_mean":0.0311,"power_mean":0.7997,"any_false_win":0.0981},"bonferroni":{"fwer":0.0205,"fdr_mean":0.0084,"power_mean":0.5888,"any_false_win":0.0205},"holm":{"fwer":0.035,"fdr_mean":0.0121,"power_mean":0.6302,"any_false_win":0.035},"bh":{"fwer":0.0649,"fdr_mean":0.0202,"power_mean":0.7059,"any_false_win":0.0649}}},{"m":5,"rho":0.3,"pi0":1.0,"m0":5,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2086,"fdr_mean":0.2086,"power_mean":null,"any_false_win":0.2086},"bonferroni":{"fwer":0.0475,"fdr_mean":0.0475,"power_mean":null,"any_false_win":0.0475},"holm":{"fwer":0.0475,"fdr_mean":0.0475,"power_mean":null,"any_false_win":0.0475},"bh":{"fwer":0.0493,"fdr_mean":0.0493,"power_mean":null,"any_false_win":0.0493}}},{"m":5,"rho":0.3,"pi0":0.8,"m0":4,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.174,"fdr_mean":0.1106,"power_mean":0.801,"any_false_win":0.174},"bonferroni":{"fwer":0.0382,"fdr_mean":0.0276,"power_mean":0.591,"any_false_win":0.0382},"holm":{"fwer":0.0432,"fdr_mean":0.0299,"power_mean":0.5919,"any_false_win":0.0432},"bh":{"fwer":0.0623,"fdr_mean":0.0395,"power_mean":0.5967,"any_false_win":0.0623}}},{"m":5,"rho":0.3,"pi0":0.5,"m0":2,"m1":3,"uncorrected_power":0.8,"results":{"none":{"fwer":0.095,"fdr_mean":0.0345,"power_mean":0.8002,"any_false_win":0.095},"bonferroni":{"fwer":0.0196,"fdr_mean":0.0096,"power_mean":0.5888,"any_false_win":0.0196},"holm":{"fwer":0.0346,"fdr_mean":0.0135,"power_mean":0.6274,"any_false_win":0.0346},"bh":{"fwer":0.0601,"fdr_mean":0.0204,"power_mean":0.6981,"any_false_win":0.0601}}},{"m":5,"rho":0.6,"pi0":1.0,"m0":5,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1665,"fdr_mean":0.1665,"power_mean":null,"any_false_win":0.1665},"bonferroni":{"fwer":0.0388,"fdr_mean":0.0388,"power_mean":null,"any_false_win":0.0388},"holm":{"fwer":0.0388,"fdr_mean":0.0388,"power_mean":null,"any_false_win":0.0388},"bh":{"fwer":0.0427,"fdr_mean":0.0427,"power_mean":null,"any_false_win":0.0427}}},{"m":5,"rho":0.6,"pi0":0.8,"m0":4,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1443,"fdr_mean":0.1019,"power_mean":0.7991,"any_false_win":0.1443},"bonferroni":{"fwer":0.033,"fdr_mean":0.0251,"power_mean":0.5882,"any_false_win":0.033},"holm":{"fwer":0.037,"fdr_mean":0.0275,"power_mean":0.5884,"any_false_win":0.037},"bh":{"fwer":0.0524,"fdr_mean":0.0369,"power_mean":0.5903,"any_false_win":0.0524}}},{"m":5,"rho":0.6,"pi0":0.5,"m0":2,"m1":3,"uncorrected_power":0.8,"results":{"none":{"fwer":0.087,"fdr_mean":0.0421,"power_mean":0.8003,"any_false_win":0.087},"bonferroni":{"fwer":0.0182,"fdr_mean":0.011,"power_mean":0.5904,"any_false_win":0.0182},"holm":{"fwer":0.0314,"fdr_mean":0.0149,"power_mean":0.626,"any_false_win":0.0314},"bh":{"fwer":0.0492,"fdr_mean":0.0198,"power_mean":0.6926,"any_false_win":0.0492}}},{"m":10,"rho":0.0,"pi0":1.0,"m0":10,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.4022,"fdr_mean":0.4022,"power_mean":null,"any_false_win":0.4022},"bonferroni":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"holm":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"bh":{"fwer":0.0498,"fdr_mean":0.0498,"power_mean":null,"any_false_win":0.0498}}},{"m":10,"rho":0.0,"pi0":0.8,"m0":8,"m1":2,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3356,"fdr_mean":0.1482,"power_mean":0.8012,"any_false_win":0.3356},"bonferroni":{"fwer":0.0393,"fdr_mean":0.0231,"power_mean":0.4982,"any_false_win":0.0393},"holm":{"fwer":0.044,"fdr_mean":0.0246,"power_mean":0.5055,"any_false_win":0.044},"bh":{"fwer":0.0866,"fdr_mean":0.0399,"power_mean":0.5596,"any_false_win":0.0866}}},{"m":10,"rho":0.0,"pi0":0.5,"m0":5,"m1":5,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2267,"fdr_mean":0.0504,"power_mean":0.8,"any_false_win":0.2267},"bonferroni":{"fwer":0.0245,"fdr_mean":0.0081,"power_mean":0.4978,"any_false_win":0.0245},"holm":{"fwer":0.034,"fdr_mean":0.01,"power_mean":0.5303,"any_false_win":0.034},"bh":{"fwer":0.1076,"fdr_mean":0.0248,"power_mean":0.6709,"any_false_win":0.1076}}},{"m":10,"rho":0.3,"pi0":1.0,"m0":10,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3499,"fdr_mean":0.3499,"power_mean":null,"any_false_win":0.3499},"bonferroni":{"fwer":0.0454,"fdr_mean":0.0454,"power_mean":null,"any_false_win":0.0454},"holm":{"fwer":0.0454,"fdr_mean":0.0454,"power_mean":null,"any_false_win":0.0454},"bh":{"fwer":0.0478,"fdr_mean":0.0478,"power_mean":null,"any_false_win":0.0478}}},{"m":10,"rho":0.3,"pi0":0.8,"m0":8,"m1":2,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2993,"fdr_mean":0.1453,"power_mean":0.7987,"any_false_win":0.2993},"bonferroni":{"fwer":0.0377,"fdr_mean":0.0239,"power_mean":0.4981,"any_false_win":0.0377},"holm":{"fwer":0.042,"fdr_mean":0.0254,"power_mean":0.5051,"any_false_win":0.042},"bh":{"fwer":0.0789,"fdr_mean":0.0397,"power_mean":0.556,"any_false_win":0.0789}}},{"m":10,"rho":0.3,"pi0":0.5,"m0":5,"m1":5,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2071,"fdr_mean":0.0552,"power_mean":0.8005,"any_false_win":0.2071},"bonferroni":{"fwer":0.0238,"fdr_mean":0.011,"power_mean":0.4976,"any_false_win":0.0238},"holm":{"fwer":0.0341,"fdr_mean":0.0129,"power_mean":0.5293,"any_false_win":0.0341},"bh":{"fwer":0.095,"fdr_mean":0.0256,"power_mean":0.6589,"any_false_win":0.095}}},{"m":10,"rho":0.6,"pi0":1.0,"m0":10,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2505,"fdr_mean":0.2505,"power_mean":null,"any_false_win":0.2505},"bonferroni":{"fwer":0.0347,"fdr_mean":0.0347,"power_mean":null,"any_false_win":0.0347},"holm":{"fwer":0.0347,"fdr_mean":0.0347,"power_mean":null,"any_false_win":0.0347},"bh":{"fwer":0.0396,"fdr_mean":0.0396,"power_mean":null,"any_false_win":0.0396}}},{"m":10,"rho":0.6,"pi0":0.8,"m0":8,"m1":2,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2224,"fdr_mean":0.1306,"power_mean":0.7999,"any_false_win":0.2224},"bonferroni":{"fwer":0.0292,"fdr_mean":0.0202,"power_mean":0.4983,"any_false_win":0.0292},"holm":{"fwer":0.0325,"fdr_mean":0.0217,"power_mean":0.5049,"any_false_win":0.0325},"bh":{"fwer":0.0584,"fdr_mean":0.0348,"power_mean":0.5526,"any_false_win":0.0584}}},{"m":10,"rho":0.6,"pi0":0.5,"m0":5,"m1":5,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1674,"fdr_mean":0.066,"power_mean":0.7996,"any_false_win":0.1674},"bonferroni":{"fwer":0.0206,"fdr_mean":0.0121,"power_mean":0.4973,"any_false_win":0.0206},"holm":{"fwer":0.0299,"fdr_mean":0.0144,"power_mean":0.5282,"any_false_win":0.0299},"bh":{"fwer":0.0688,"fdr_mean":0.0241,"power_mean":0.6491,"any_false_win":0.0688}}},{"m":20,"rho":0.0,"pi0":1.0,"m0":20,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.6407,"fdr_mean":0.6407,"power_mean":null,"any_false_win":0.6407},"bonferroni":{"fwer":0.0494,"fdr_mean":0.0494,"power_mean":null,"any_false_win":0.0494},"holm":{"fwer":0.0494,"fdr_mean":0.0494,"power_mean":null,"any_false_win":0.0494},"bh":{"fwer":0.0507,"fdr_mean":0.0507,"power_mean":null,"any_false_win":0.0507}}},{"m":20,"rho":0.0,"pi0":0.8,"m0":16,"m1":4,"uncorrected_power":0.8,"results":{"none":{"fwer":0.5622,"fdr_mean":0.1728,"power_mean":0.8,"any_false_win":0.5622},"bonferroni":{"fwer":0.0402,"fdr_mean":0.0182,"power_mean":0.4111,"any_false_win":0.0402},"holm":{"fwer":0.0436,"fdr_mean":0.019,"power_mean":0.4191,"any_false_win":0.0436},"bh":{"fwer":0.1254,"fdr_mean":0.0401,"power_mean":0.5323,"any_false_win":0.1254}}},{"m":20,"rho":0.0,"pi0":0.5,"m0":10,"m1":10,"uncorrected_power":0.8,"results":{"none":{"fwer":0.4017,"fdr_mean":0.0543,"power_mean":0.7999,"any_false_win":0.4017},"bonferroni":{"fwer":0.0251,"fdr_mean":0.0055,"power_mean":0.4127,"any_false_win":0.0251},"holm":{"fwer":0.0325,"fdr_mean":0.0065,"power_mean":0.4397,"any_false_win":0.0325},"bh":{"fwer":0.182,"fdr_mean":0.0254,"power_mean":0.6656,"any_false_win":0.182}}},{"m":20,"rho":0.3,"pi0":1.0,"m0":20,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.5398,"fdr_mean":0.5398,"power_mean":null,"any_false_win":0.5398},"bonferroni":{"fwer":0.0441,"fdr_mean":0.0441,"power_mean":null,"any_false_win":0.0441},"holm":{"fwer":0.0441,"fdr_mean":0.0441,"power_mean":null,"any_false_win":0.0441},"bh":{"fwer":0.047,"fdr_mean":0.047,"power_mean":null,"any_false_win":0.047}}},{"m":20,"rho":0.3,"pi0":0.8,"m0":16,"m1":4,"uncorrected_power":0.8,"results":{"none":{"fwer":0.4753,"fdr_mean":0.1671,"power_mean":0.7999,"any_false_win":0.4753},"bonferroni":{"fwer":0.0365,"fdr_mean":0.0204,"power_mean":0.4127,"any_false_win":0.0365},"holm":{"fwer":0.0403,"fdr_mean":0.0213,"power_mean":0.4211,"any_false_win":0.0403},"bh":{"fwer":0.1061,"fdr_mean":0.04,"power_mean":0.5285,"any_false_win":0.1061}}},{"m":20,"rho":0.3,"pi0":0.5,"m0":10,"m1":10,"uncorrected_power":0.8,"results":{"none":{"fwer":0.352,"fdr_mean":0.0596,"power_mean":0.8011,"any_false_win":0.352},"bonferroni":{"fwer":0.0229,"fdr_mean":0.009,"power_mean":0.4133,"any_false_win":0.0229},"holm":{"fwer":0.0314,"fdr_mean":0.01,"power_mean":0.4423,"any_false_win":0.0314},"bh":{"fwer":0.1454,"fdr_mean":0.0256,"power_mean":0.6488,"any_false_win":0.1454}}},{"m":20,"rho":0.6,"pi0":1.0,"m0":20,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3551,"fdr_mean":0.3551,"power_mean":null,"any_false_win":0.3551},"bonferroni":{"fwer":0.0307,"fdr_mean":0.0307,"power_mean":null,"any_false_win":0.0307},"holm":{"fwer":0.0307,"fdr_mean":0.0307,"power_mean":null,"any_false_win":0.0307},"bh":{"fwer":0.036,"fdr_mean":0.036,"power_mean":null,"any_false_win":0.036}}},{"m":20,"rho":0.6,"pi0":0.8,"m0":16,"m1":4,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3164,"fdr_mean":0.1459,"power_mean":0.8004,"any_false_win":0.3164},"bonferroni":{"fwer":0.0261,"fdr_mean":0.0161,"power_mean":0.4115,"any_false_win":0.0261},"holm":{"fwer":0.0291,"fdr_mean":0.017,"power_mean":0.4202,"any_false_win":0.0291},"bh":{"fwer":0.0681,"fdr_mean":0.0324,"power_mean":0.5232,"any_false_win":0.0681}}},{"m":20,"rho":0.6,"pi0":0.5,"m0":10,"m1":10,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2516,"fdr_mean":0.0713,"power_mean":0.7997,"any_false_win":0.2516},"bonferroni":{"fwer":0.0183,"fdr_mean":0.0101,"power_mean":0.4122,"any_false_win":0.0183},"holm":{"fwer":0.026,"fdr_mean":0.0112,"power_mean":0.4425,"any_false_win":0.026},"bh":{"fwer":0.0899,"fdr_mean":0.0224,"power_mean":0.6335,"any_false_win":0.0899}}}]}</script>
-  <script src="/assets/js/fdr-calculator.js?v=80f3ff54" defer></script>
+ <script id="sim-data" type="application/json">{"id":"fdr_simulation","title":"Monte Carlo study of multiple-testing corrections in A/B tests","generated_utc":"2026-07-28","method":"Equicorrelated Gaussian z-statistics, Z_i = sqrt(rho)*C + sqrt(1-rho)*E_i with C and E_i iid standard normal, two-sided p-values, alpha 0.05. m0 true nulls have mu 0; the m1 true effects have mu = z_(1-alpha/2) + z_(power), so 'uncorrected_power' is the detection rate a single uncorrected metric would have.","simulations_per_cell":200000,"alpha":0.05,"seed":20260728,"reproduce":"python3 build_fdr_simulation.py in sites/abwex/datasets/","corrections":["none","bonferroni","holm","bh"],"metrics_defined":{"fwer":"share of experiments with at least one false positive among the true-null metrics","fdr_mean":"mean realised false discovery proportion V/max(R,1)","power_mean":"mean share of the true effects declared significant","any_false_win":"share of experiments that declared at least one null metric a winner"},"cells":[{"m":3,"rho":0.0,"pi0":1.0,"m0":3,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1426,"fdr_mean":0.1426,"power_mean":null,"any_false_win":0.1426},"bonferroni":{"fwer":0.0484,"fdr_mean":0.0484,"power_mean":null,"any_false_win":0.0484},"holm":{"fwer":0.0484,"fdr_mean":0.0484,"power_mean":null,"any_false_win":0.0484},"bh":{"fwer":0.0492,"fdr_mean":0.0492,"power_mean":null,"any_false_win":0.0492}}},{"m":3,"rho":0.0,"pi0":0.8,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0986,"fdr_mean":0.0594,"power_mean":0.801,"any_false_win":0.0986},"bonferroni":{"fwer":0.0335,"fdr_mean":0.0225,"power_mean":0.6584,"any_false_win":0.0335},"holm":{"fwer":0.0444,"fdr_mean":0.0271,"power_mean":0.6605,"any_false_win":0.0444},"bh":{"fwer":0.0581,"fdr_mean":0.0335,"power_mean":0.6651,"any_false_win":0.0581}}},{"m":3,"rho":0.0,"pi0":0.5,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0961,"fdr_mean":0.0579,"power_mean":0.8002,"any_false_win":0.0961},"bonferroni":{"fwer":0.0327,"fdr_mean":0.022,"power_mean":0.6575,"any_false_win":0.0327},"holm":{"fwer":0.0432,"fdr_mean":0.0265,"power_mean":0.6594,"any_false_win":0.0432},"bh":{"fwer":0.0569,"fdr_mean":0.0328,"power_mean":0.6638,"any_false_win":0.0569}}},{"m":3,"rho":0.3,"pi0":1.0,"m0":3,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1365,"fdr_mean":0.1365,"power_mean":null,"any_false_win":0.1365},"bonferroni":{"fwer":0.0471,"fdr_mean":0.0471,"power_mean":null,"any_false_win":0.0471},"holm":{"fwer":0.0471,"fdr_mean":0.0471,"power_mean":null,"any_false_win":0.0471},"bh":{"fwer":0.0485,"fdr_mean":0.0485,"power_mean":null,"any_false_win":0.0485}}},{"m":3,"rho":0.3,"pi0":0.8,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0959,"fdr_mean":0.0605,"power_mean":0.7994,"any_false_win":0.0959},"bonferroni":{"fwer":0.0327,"fdr_mean":0.0229,"power_mean":0.6579,"any_false_win":0.0327},"holm":{"fwer":0.0427,"fdr_mean":0.0275,"power_mean":0.6595,"any_false_win":0.0427},"bh":{"fwer":0.0558,"fdr_mean":0.0338,"power_mean":0.663,"any_false_win":0.0558}}},{"m":3,"rho":0.3,"pi0":0.5,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0946,"fdr_mean":0.0593,"power_mean":0.8028,"any_false_win":0.0946},"bonferroni":{"fwer":0.032,"fdr_mean":0.0221,"power_mean":0.6602,"any_false_win":0.032},"holm":{"fwer":0.0423,"fdr_mean":0.0268,"power_mean":0.6618,"any_false_win":0.0423},"bh":{"fwer":0.0551,"fdr_mean":0.0329,"power_mean":0.6653,"any_false_win":0.0551}}},{"m":3,"rho":0.6,"pi0":1.0,"m0":3,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1188,"fdr_mean":0.1188,"power_mean":null,"any_false_win":0.1188},"bonferroni":{"fwer":0.0423,"fdr_mean":0.0423,"power_mean":null,"any_false_win":0.0423},"holm":{"fwer":0.0423,"fdr_mean":0.0423,"power_mean":null,"any_false_win":0.0423},"bh":{"fwer":0.0453,"fdr_mean":0.0453,"power_mean":null,"any_false_win":0.0453}}},{"m":3,"rho":0.6,"pi0":0.8,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0882,"fdr_mean":0.0614,"power_mean":0.8005,"any_false_win":0.0882},"bonferroni":{"fwer":0.0306,"fdr_mean":0.0226,"power_mean":0.6582,"any_false_win":0.0306},"holm":{"fwer":0.0387,"fdr_mean":0.0271,"power_mean":0.6587,"any_false_win":0.0387},"bh":{"fwer":0.0495,"fdr_mean":0.0328,"power_mean":0.6607,"any_false_win":0.0495}}},{"m":3,"rho":0.6,"pi0":0.5,"m0":2,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0884,"fdr_mean":0.0613,"power_mean":0.8009,"any_false_win":0.0884},"bonferroni":{"fwer":0.0303,"fdr_mean":0.0225,"power_mean":0.6591,"any_false_win":0.0303},"holm":{"fwer":0.0386,"fdr_mean":0.027,"power_mean":0.6597,"any_false_win":0.0386},"bh":{"fwer":0.0498,"fdr_mean":0.0329,"power_mean":0.6617,"any_false_win":0.0498}}},{"m":5,"rho":0.0,"pi0":1.0,"m0":5,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2248,"fdr_mean":0.2248,"power_mean":null,"any_false_win":0.2248},"bonferroni":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"holm":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"bh":{"fwer":0.0497,"fdr_mean":0.0497,"power_mean":null,"any_false_win":0.0497}}},{"m":5,"rho":0.0,"pi0":0.8,"m0":4,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1854,"fdr_mean":0.1129,"power_mean":0.8005,"any_false_win":0.1854},"bonferroni":{"fwer":0.0389,"fdr_mean":0.0274,"power_mean":0.5903,"any_false_win":0.0389},"holm":{"fwer":0.0448,"fdr_mean":0.0299,"power_mean":0.5914,"any_false_win":0.0448},"bh":{"fwer":0.0664,"fdr_mean":0.0399,"power_mean":0.5979,"any_false_win":0.0664}}},{"m":5,"rho":0.0,"pi0":0.5,"m0":2,"m1":3,"uncorrected_power":0.8,"results":{"none":{"fwer":0.0981,"fdr_mean":0.0311,"power_mean":0.7997,"any_false_win":0.0981},"bonferroni":{"fwer":0.0205,"fdr_mean":0.0084,"power_mean":0.5888,"any_false_win":0.0205},"holm":{"fwer":0.035,"fdr_mean":0.0121,"power_mean":0.6302,"any_false_win":0.035},"bh":{"fwer":0.0649,"fdr_mean":0.0202,"power_mean":0.7059,"any_false_win":0.0649}}},{"m":5,"rho":0.3,"pi0":1.0,"m0":5,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2086,"fdr_mean":0.2086,"power_mean":null,"any_false_win":0.2086},"bonferroni":{"fwer":0.0475,"fdr_mean":0.0475,"power_mean":null,"any_false_win":0.0475},"holm":{"fwer":0.0475,"fdr_mean":0.0475,"power_mean":null,"any_false_win":0.0475},"bh":{"fwer":0.0493,"fdr_mean":0.0493,"power_mean":null,"any_false_win":0.0493}}},{"m":5,"rho":0.3,"pi0":0.8,"m0":4,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.174,"fdr_mean":0.1106,"power_mean":0.801,"any_false_win":0.174},"bonferroni":{"fwer":0.0382,"fdr_mean":0.0276,"power_mean":0.591,"any_false_win":0.0382},"holm":{"fwer":0.0432,"fdr_mean":0.0299,"power_mean":0.5919,"any_false_win":0.0432},"bh":{"fwer":0.0623,"fdr_mean":0.0395,"power_mean":0.5967,"any_false_win":0.0623}}},{"m":5,"rho":0.3,"pi0":0.5,"m0":2,"m1":3,"uncorrected_power":0.8,"results":{"none":{"fwer":0.095,"fdr_mean":0.0345,"power_mean":0.8002,"any_false_win":0.095},"bonferroni":{"fwer":0.0196,"fdr_mean":0.0096,"power_mean":0.5888,"any_false_win":0.0196},"holm":{"fwer":0.0346,"fdr_mean":0.0135,"power_mean":0.6274,"any_false_win":0.0346},"bh":{"fwer":0.0601,"fdr_mean":0.0204,"power_mean":0.6981,"any_false_win":0.0601}}},{"m":5,"rho":0.6,"pi0":1.0,"m0":5,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1665,"fdr_mean":0.1665,"power_mean":null,"any_false_win":0.1665},"bonferroni":{"fwer":0.0388,"fdr_mean":0.0388,"power_mean":null,"any_false_win":0.0388},"holm":{"fwer":0.0388,"fdr_mean":0.0388,"power_mean":null,"any_false_win":0.0388},"bh":{"fwer":0.0427,"fdr_mean":0.0427,"power_mean":null,"any_false_win":0.0427}}},{"m":5,"rho":0.6,"pi0":0.8,"m0":4,"m1":1,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1443,"fdr_mean":0.1019,"power_mean":0.7991,"any_false_win":0.1443},"bonferroni":{"fwer":0.033,"fdr_mean":0.0251,"power_mean":0.5882,"any_false_win":0.033},"holm":{"fwer":0.037,"fdr_mean":0.0275,"power_mean":0.5884,"any_false_win":0.037},"bh":{"fwer":0.0524,"fdr_mean":0.0369,"power_mean":0.5903,"any_false_win":0.0524}}},{"m":5,"rho":0.6,"pi0":0.5,"m0":2,"m1":3,"uncorrected_power":0.8,"results":{"none":{"fwer":0.087,"fdr_mean":0.0421,"power_mean":0.8003,"any_false_win":0.087},"bonferroni":{"fwer":0.0182,"fdr_mean":0.011,"power_mean":0.5904,"any_false_win":0.0182},"holm":{"fwer":0.0314,"fdr_mean":0.0149,"power_mean":0.626,"any_false_win":0.0314},"bh":{"fwer":0.0492,"fdr_mean":0.0198,"power_mean":0.6926,"any_false_win":0.0492}}},{"m":10,"rho":0.0,"pi0":1.0,"m0":10,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.4022,"fdr_mean":0.4022,"power_mean":null,"any_false_win":0.4022},"bonferroni":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"holm":{"fwer":0.0487,"fdr_mean":0.0487,"power_mean":null,"any_false_win":0.0487},"bh":{"fwer":0.0498,"fdr_mean":0.0498,"power_mean":null,"any_false_win":0.0498}}},{"m":10,"rho":0.0,"pi0":0.8,"m0":8,"m1":2,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3356,"fdr_mean":0.1482,"power_mean":0.8012,"any_false_win":0.3356},"bonferroni":{"fwer":0.0393,"fdr_mean":0.0231,"power_mean":0.4982,"any_false_win":0.0393},"holm":{"fwer":0.044,"fdr_mean":0.0246,"power_mean":0.5055,"any_false_win":0.044},"bh":{"fwer":0.0866,"fdr_mean":0.0399,"power_mean":0.5596,"any_false_win":0.0866}}},{"m":10,"rho":0.0,"pi0":0.5,"m0":5,"m1":5,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2267,"fdr_mean":0.0504,"power_mean":0.8,"any_false_win":0.2267},"bonferroni":{"fwer":0.0245,"fdr_mean":0.0081,"power_mean":0.4978,"any_false_win":0.0245},"holm":{"fwer":0.034,"fdr_mean":0.01,"power_mean":0.5303,"any_false_win":0.034},"bh":{"fwer":0.1076,"fdr_mean":0.0248,"power_mean":0.6709,"any_false_win":0.1076}}},{"m":10,"rho":0.3,"pi0":1.0,"m0":10,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3499,"fdr_mean":0.3499,"power_mean":null,"any_false_win":0.3499},"bonferroni":{"fwer":0.0454,"fdr_mean":0.0454,"power_mean":null,"any_false_win":0.0454},"holm":{"fwer":0.0454,"fdr_mean":0.0454,"power_mean":null,"any_false_win":0.0454},"bh":{"fwer":0.0478,"fdr_mean":0.0478,"power_mean":null,"any_false_win":0.0478}}},{"m":10,"rho":0.3,"pi0":0.8,"m0":8,"m1":2,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2993,"fdr_mean":0.1453,"power_mean":0.7987,"any_false_win":0.2993},"bonferroni":{"fwer":0.0377,"fdr_mean":0.0239,"power_mean":0.4981,"any_false_win":0.0377},"holm":{"fwer":0.042,"fdr_mean":0.0254,"power_mean":0.5051,"any_false_win":0.042},"bh":{"fwer":0.0789,"fdr_mean":0.0397,"power_mean":0.556,"any_false_win":0.0789}}},{"m":10,"rho":0.3,"pi0":0.5,"m0":5,"m1":5,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2071,"fdr_mean":0.0552,"power_mean":0.8005,"any_false_win":0.2071},"bonferroni":{"fwer":0.0238,"fdr_mean":0.011,"power_mean":0.4976,"any_false_win":0.0238},"holm":{"fwer":0.0341,"fdr_mean":0.0129,"power_mean":0.5293,"any_false_win":0.0341},"bh":{"fwer":0.095,"fdr_mean":0.0256,"power_mean":0.6589,"any_false_win":0.095}}},{"m":10,"rho":0.6,"pi0":1.0,"m0":10,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2505,"fdr_mean":0.2505,"power_mean":null,"any_false_win":0.2505},"bonferroni":{"fwer":0.0347,"fdr_mean":0.0347,"power_mean":null,"any_false_win":0.0347},"holm":{"fwer":0.0347,"fdr_mean":0.0347,"power_mean":null,"any_false_win":0.0347},"bh":{"fwer":0.0396,"fdr_mean":0.0396,"power_mean":null,"any_false_win":0.0396}}},{"m":10,"rho":0.6,"pi0":0.8,"m0":8,"m1":2,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2224,"fdr_mean":0.1306,"power_mean":0.7999,"any_false_win":0.2224},"bonferroni":{"fwer":0.0292,"fdr_mean":0.0202,"power_mean":0.4983,"any_false_win":0.0292},"holm":{"fwer":0.0325,"fdr_mean":0.0217,"power_mean":0.5049,"any_false_win":0.0325},"bh":{"fwer":0.0584,"fdr_mean":0.0348,"power_mean":0.5526,"any_false_win":0.0584}}},{"m":10,"rho":0.6,"pi0":0.5,"m0":5,"m1":5,"uncorrected_power":0.8,"results":{"none":{"fwer":0.1674,"fdr_mean":0.066,"power_mean":0.7996,"any_false_win":0.1674},"bonferroni":{"fwer":0.0206,"fdr_mean":0.0121,"power_mean":0.4973,"any_false_win":0.0206},"holm":{"fwer":0.0299,"fdr_mean":0.0144,"power_mean":0.5282,"any_false_win":0.0299},"bh":{"fwer":0.0688,"fdr_mean":0.0241,"power_mean":0.6491,"any_false_win":0.0688}}},{"m":20,"rho":0.0,"pi0":1.0,"m0":20,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.6407,"fdr_mean":0.6407,"power_mean":null,"any_false_win":0.6407},"bonferroni":{"fwer":0.0494,"fdr_mean":0.0494,"power_mean":null,"any_false_win":0.0494},"holm":{"fwer":0.0494,"fdr_mean":0.0494,"power_mean":null,"any_false_win":0.0494},"bh":{"fwer":0.0507,"fdr_mean":0.0507,"power_mean":null,"any_false_win":0.0507}}},{"m":20,"rho":0.0,"pi0":0.8,"m0":16,"m1":4,"uncorrected_power":0.8,"results":{"none":{"fwer":0.5622,"fdr_mean":0.1728,"power_mean":0.8,"any_false_win":0.5622},"bonferroni":{"fwer":0.0402,"fdr_mean":0.0182,"power_mean":0.4111,"any_false_win":0.0402},"holm":{"fwer":0.0436,"fdr_mean":0.019,"power_mean":0.4191,"any_false_win":0.0436},"bh":{"fwer":0.1254,"fdr_mean":0.0401,"power_mean":0.5323,"any_false_win":0.1254}}},{"m":20,"rho":0.0,"pi0":0.5,"m0":10,"m1":10,"uncorrected_power":0.8,"results":{"none":{"fwer":0.4017,"fdr_mean":0.0543,"power_mean":0.7999,"any_false_win":0.4017},"bonferroni":{"fwer":0.0251,"fdr_mean":0.0055,"power_mean":0.4127,"any_false_win":0.0251},"holm":{"fwer":0.0325,"fdr_mean":0.0065,"power_mean":0.4397,"any_false_win":0.0325},"bh":{"fwer":0.182,"fdr_mean":0.0254,"power_mean":0.6656,"any_false_win":0.182}}},{"m":20,"rho":0.3,"pi0":1.0,"m0":20,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.5398,"fdr_mean":0.5398,"power_mean":null,"any_false_win":0.5398},"bonferroni":{"fwer":0.0441,"fdr_mean":0.0441,"power_mean":null,"any_false_win":0.0441},"holm":{"fwer":0.0441,"fdr_mean":0.0441,"power_mean":null,"any_false_win":0.0441},"bh":{"fwer":0.047,"fdr_mean":0.047,"power_mean":null,"any_false_win":0.047}}},{"m":20,"rho":0.3,"pi0":0.8,"m0":16,"m1":4,"uncorrected_power":0.8,"results":{"none":{"fwer":0.4753,"fdr_mean":0.1671,"power_mean":0.7999,"any_false_win":0.4753},"bonferroni":{"fwer":0.0365,"fdr_mean":0.0204,"power_mean":0.4127,"any_false_win":0.0365},"holm":{"fwer":0.0403,"fdr_mean":0.0213,"power_mean":0.4211,"any_false_win":0.0403},"bh":{"fwer":0.1061,"fdr_mean":0.04,"power_mean":0.5285,"any_false_win":0.1061}}},{"m":20,"rho":0.3,"pi0":0.5,"m0":10,"m1":10,"uncorrected_power":0.8,"results":{"none":{"fwer":0.352,"fdr_mean":0.0596,"power_mean":0.8011,"any_false_win":0.352},"bonferroni":{"fwer":0.0229,"fdr_mean":0.009,"power_mean":0.4133,"any_false_win":0.0229},"holm":{"fwer":0.0314,"fdr_mean":0.01,"power_mean":0.4423,"any_false_win":0.0314},"bh":{"fwer":0.1454,"fdr_mean":0.0256,"power_mean":0.6488,"any_false_win":0.1454}}},{"m":20,"rho":0.6,"pi0":1.0,"m0":20,"m1":0,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3551,"fdr_mean":0.3551,"power_mean":null,"any_false_win":0.3551},"bonferroni":{"fwer":0.0307,"fdr_mean":0.0307,"power_mean":null,"any_false_win":0.0307},"holm":{"fwer":0.0307,"fdr_mean":0.0307,"power_mean":null,"any_false_win":0.0307},"bh":{"fwer":0.036,"fdr_mean":0.036,"power_mean":null,"any_false_win":0.036}}},{"m":20,"rho":0.6,"pi0":0.8,"m0":16,"m1":4,"uncorrected_power":0.8,"results":{"none":{"fwer":0.3164,"fdr_mean":0.1459,"power_mean":0.8004,"any_false_win":0.3164},"bonferroni":{"fwer":0.0261,"fdr_mean":0.0161,"power_mean":0.4115,"any_false_win":0.0261},"holm":{"fwer":0.0291,"fdr_mean":0.017,"power_mean":0.4202,"any_false_win":0.0291},"bh":{"fwer":0.0681,"fdr_mean":0.0324,"power_mean":0.5232,"any_false_win":0.0681}}},{"m":20,"rho":0.6,"pi0":0.5,"m0":10,"m1":10,"uncorrected_power":0.8,"results":{"none":{"fwer":0.2516,"fdr_mean":0.0713,"power_mean":0.7997,"any_false_win":0.2516},"bonferroni":{"fwer":0.0183,"fdr_mean":0.0101,"power_mean":0.4122,"any_false_win":0.0183},"holm":{"fwer":0.026,"fdr_mean":0.0112,"power_mean":0.4425,"any_false_win":0.026},"bh":{"fwer":0.0899,"fdr_mean":0.0224,"power_mean":0.6335,"any_false_win":0.0899}}}]}</script>
+ <script src="/assets/js/fdr-calculator.js?v=80f3ff54" defer></script>
 </body>
 </html>

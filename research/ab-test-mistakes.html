@@ -1,96 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A/B Testing Mistakes — 20 Most Common Statistical Errors | ABWex</title>
-  <meta name="description" content="Reference table of 20 common A/B testing mistakes with severity, category, examples, and correct approaches. Statistical, design, and analysis errors explained.">
-  <link rel="canonical" href="https://abwex.com/research/ab-test-mistakes.html">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/research/ab-test-mistakes.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/ab-test-mistakes.html">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="A/B Testing Mistakes — 20 Most Common Statistical Errors">
-  <meta property="og:description" content="Reference table of 20 common A/B testing mistakes with severity, category, examples, and correct approaches.">
-  <meta property="og:url" content="https://abwex.com/research/ab-test-mistakes.html">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="A/B Testing Mistakes — 20 Most Common Statistical Errors">
-  <meta name="twitter:description" content="Reference table of 20 common A/B testing mistakes with severity, category, examples, and correct approaches.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Dataset",
-    "name": "A/B Testing Mistakes — 20 Most Common Statistical Errors",
-    "description": "A curated dataset of 20 common A/B testing mistakes organized by category (statistical, design, analysis) with severity ratings, real-world examples, correct approaches, and references. Community engagement validated via StackExchange API on stats.stackexchange.com and stackoverflow.com.",
-    "url": "https://abwex.com/research/ab-test-mistakes.html",
-    "license": "https://creativecommons.org/licenses/by/4.0/",
-    "creator": {"@type": "Person", "name": "Michael Lip", "url": "https://zovo.one"},
-    "datePublished": "2026-04-11",
-    "dateModified": "2026-04-11",
-    "keywords": ["A/B testing", "statistical errors", "peeking problem", "multiple comparisons", "sample size", "false positive"],
-    "distribution": {
-      "@type": "DataDownload",
-      "encodingFormat": "application/json",
-      "contentUrl": "https://abwex.com/research/ab-test-mistakes.html"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is the most common A/B testing mistake?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The most common mistake is peeking at results and stopping the test early when a 'significant' result appears. This inflates the false positive rate from the intended 5% to as high as 30%. The p-value is only valid at the pre-determined sample size. If you must monitor results continuously, use sequential testing methods like SPRT (Sequential Probability Ratio Test) or alpha-spending functions that mathematically account for multiple looks."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How does the multiple comparisons problem affect A/B tests?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Testing multiple metrics or variants without correction dramatically increases false positives. With 20 metrics at alpha=0.05, you expect 1 false positive by chance alone. The Bonferroni correction divides alpha by the number of comparisons (0.05/20 = 0.0025 per test). The less conservative Benjamini-Hochberg procedure controls the false discovery rate instead. Always pre-specify your primary metric before running the test."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Why is it wrong to run an A/B test without calculating sample size first?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Without a pre-calculated sample size, you have no guarantee of statistical power — the probability of detecting a real effect. An underpowered test (e.g., 30% power) means you will miss 70% of real improvements, leading to the false conclusion that changes have no effect. The sample size formula requires specifying your baseline conversion rate, minimum detectable effect, significance level (alpha), and desired power (typically 80%)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is Simpson's Paradox in A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Simpson's Paradox occurs when a trend that appears in segmented data reverses when the data is combined. In A/B testing, variant B might outperform A among both mobile and desktop users, yet A outperforms B in the aggregate — because mobile users (who convert less overall) were disproportionately assigned to B. This is why randomization must be checked and why segment-level analysis should complement aggregate results."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I avoid the novelty effect in A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The novelty effect causes inflated metrics for new designs simply because they are new and attract curiosity. To mitigate it: (1) Run tests for at least 2-4 weeks to let the effect wear off. (2) Segment results by new vs. returning users — new users are less affected by novelty. (3) Analyze the time series of daily conversion rates — if the variant's advantage decreases over time, novelty is likely a factor. (4) Consider running a holdback test after implementation."
-        }
-      }
-    ]
-  }
-  </script>
-  <style>
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>A/B Testing Mistakes, 20 Most Common Statistical Errors | ABWex</title>
+ <meta name="description" content="Reference table of 20 common A/B testing mistakes with severity, category, examples, and correct approaches. Statistical, design, and analysis errors explained.">
+ <link rel="canonical" href="https://abwex.com/research/ab-test-mistakes.html">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/research/ab-test-mistakes.html">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/ab-test-mistakes.html">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="A/B Testing Mistakes, 20 Most Common Statistical Errors">
+ <meta property="og:description" content="Reference table of 20 common A/B testing mistakes with severity, category, examples, and correct approaches.">
+ <meta property="og:url" content="https://abwex.com/research/ab-test-mistakes.html">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="A/B Testing Mistakes, 20 Most Common Statistical Errors">
+ <meta name="twitter:description" content="Reference table of 20 common A/B testing mistakes with severity, category, examples, and correct approaches.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"A/B Testing Mistakes, 20 Most Common Statistical Errors","description":"A curated dataset of 20 common A/B testing mistakes organized by category (statistical, design, analysis) with severity ratings, real-world examples, correct approaches, and references. Community engagement validated via StackExchange API on stats.stackexchange.com and stackoverflow.com.","url":"https://abwex.com/research/ab-test-mistakes.html","license":"https://creativecommons.org/licenses/by/4.0/","creator":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one"},"datePublished":"2026-04-11","dateModified":"2026-04-11","keywords":["A/B testing","statistical errors","peeking problem","multiple comparisons","sample size","false positive"],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://abwex.com/research/ab-test-mistakes.html"}}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the most common A/B testing mistake?","acceptedAnswer":{"@type":"Answer","text":"The most common mistake is peeking at results and stopping the test early when a 'significant' result appears. This inflates the false positive rate from the intended 5% to as high as 30%. The p-value is only valid at the pre-determined sample size. If you must monitor results continuously, use sequential testing methods like SPRT (Sequential Probability Ratio Test) or alpha-spending functions that mathematically account for multiple looks."}},{"@type":"Question","name":"How does the multiple comparisons problem affect A/B tests?","acceptedAnswer":{"@type":"Answer","text":"Testing multiple metrics or variants without correction dramatically increases false positives. With 20 metrics at alpha=0.05, you expect 1 false positive by chance alone. The Bonferroni correction divides alpha by the number of comparisons (0.05/20 = 0.0025 per test). The less conservative Benjamini-Hochberg procedure controls the false discovery rate instead. Always pre-specify your primary metric before running the test."}},{"@type":"Question","name":"Why is it wrong to run an A/B test without calculating sample size first?","acceptedAnswer":{"@type":"Answer","text":"Without a pre-calculated sample size, you have no guarantee of statistical power, the probability of detecting a real effect. An underpowered test (e.g., 30% power) means you will miss 70% of real improvements, leading to the false conclusion that changes have no effect. The sample size formula requires specifying your baseline conversion rate, minimum detectable effect, significance level (alpha), and desired power (typically 80%)."}},{"@type":"Question","name":"What is Simpson's Paradox in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"Simpson's Paradox occurs when a trend that appears in segmented data reverses when the data is combined. In A/B testing, variant B might outperform A among both mobile and desktop users, yet A outperforms B in the aggregate, because mobile users (who convert less overall) were disproportionately assigned to B. This is why randomization must be checked and why segment-level analysis should complement aggregate results."}},{"@type":"Question","name":"How do I avoid the novelty effect in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"The novelty effect causes inflated metrics for new designs simply because they are new and attract curiosity. To mitigate it: (1) Run tests for at least 2-4 weeks to let the effect wear off. (2) Segment results by new vs. returning users, new users are less affected by novelty. (3) Analyze the time series of daily conversion rates, if the variant's advantage decreases over time, novelty is likely a factor. (4) Consider running a holdback test after implementation."}}]}</script>
+ <style>
     .research-badge { display:inline-block; background:var(--accent-dim,rgba(139,233,253,0.1)); color:var(--accent,#8be9fd); padding:4px 12px; border-radius:var(--radius,8px); font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:1rem; }
     .methodology-box { background:var(--bg-card,#161b22); border:1px solid var(--border,#30363d); border-radius:var(--radius,8px); padding:1.25rem; margin:1.5rem 0; }
     .methodology-box h3 { font-size:0.8rem; text-transform:uppercase; color:var(--accent,#8be9fd); margin-bottom:0.75rem; }
@@ -112,160 +47,160 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://abwex.com/research/"},{"@type":"ListItem","position":3,"name":"A/B Testing Mistakes"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/about.html">About</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-mistakes" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/about.html">About</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-mistakes" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <section class="hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>A/B Testing Mistakes</span></nav>
-      <span class="research-badge">Original Research</span>
-      <h1>A/B Testing Mistakes — 20 Most Common Statistical Errors</h1>
-      <p>A comprehensive reference of the 20 most common A/B testing mistakes organized by category, with severity ratings, real-world examples, and the correct approach for each one.</p>
-      <p style="font-size:0.85rem;color:var(--text-muted);">By <a href="/about.html">Michael Lip</a> · Updated April 2026</p>
-    </section>
+ <main class="container">
+ <section class="hero">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>A/B Testing Mistakes</span></nav>
+ <span class="research-badge">Original Research</span>
+ <h1>A/B Testing Mistakes, 20 Most Common Statistical Errors</h1>
+ <p>A full reference of the 20 most common A/B testing mistakes organized by category, with severity ratings, real-world examples, and the correct approach for each one.</p>
+ <p style="font-size:0.85rem;color:var(--text-muted);">By <a href="/about.html">Michael Lip</a> · Updated April 2026</p>
+ </section>
 
-    <div class="methodology-box">
-      <h3>Methodology</h3>
-      <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">Mistakes were identified by analyzing top-voted A/B testing questions on StackOverflow and stats.stackexchange.com via the StackExchange API v2.3, cross-referenced with published case studies from Google, Microsoft (ExP team), Booking.com, and Optimizely. Severity is rated Critical (invalidates results), High (significantly biases results), or Medium (reduces reliability). Each mistake includes a concrete example and the statistically correct alternative.</p>
-    </div>
+ <div class="methodology-box">
+ <h3>Methodology</h3>
+ <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">Mistakes were identified by analyzing top-voted A/B testing questions on StackOverflow and stats.stackexchange.com via the StackExchange API v2.3, cross-referenced with published case studies from Google, Microsoft (ExP team), Booking.com, and Optimizely. Severity is rated Critical (invalidates results), High (significantly biases results), or Medium (reduces reliability). Each mistake includes a concrete example and the statistically correct alternative.</p>
+ </div>
 
-    <div class="data-table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Mistake</th>
-            <th>Category</th>
-            <th>Severity</th>
-            <th>Example</th>
-            <th>Correct Approach</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>1</td><td>Peeking and stopping early</td><td><span class="cat-stat">Statistical</span></td><td class="sev-critical">Critical</td><td>Stopping test after 3 days because p &lt; 0.05</td><td>Use sequential testing (SPRT) or run to pre-calculated sample size</td></tr>
-          <tr><td>2</td><td>No sample size calculation</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Running test until "it feels like enough data"</td><td>Calculate required n using power formula before launch</td></tr>
-          <tr><td>3</td><td>Multiple comparisons without correction</td><td><span class="cat-stat">Statistical</span></td><td class="sev-critical">Critical</td><td>Testing 20 metrics, declaring winner on any p &lt; 0.05</td><td>Apply Bonferroni or Benjamini-Hochberg correction</td></tr>
-          <tr><td>4</td><td>Using one-tailed test inappropriately</td><td><span class="cat-stat">Statistical</span></td><td class="sev-high">High</td><td>One-tailed test to "make it easier to reach significance"</td><td>Use two-tailed unless you truly cannot act on decreases</td></tr>
-          <tr><td>5</td><td>Ignoring minimum detectable effect</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Expecting to detect 1% lift with 500 daily visitors</td><td>Set realistic MDE based on traffic and business impact</td></tr>
-          <tr><td>6</td><td>Not running full business cycles</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Running Mon-Thu and missing weekend traffic patterns</td><td>Always run at least 7 days (full week); ideally 2-4 weeks</td></tr>
-          <tr><td>7</td><td>Changing test mid-flight</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Modifying variant B's copy halfway through the test</td><td>Stop current test, start a new one with changes</td></tr>
-          <tr><td>8</td><td>Non-random assignment</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Assigning mobile to A and desktop to B</td><td>Use proper randomization at user level with persistent bucketing</td></tr>
-          <tr><td>9</td><td>Survivorship bias in analysis</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>Only analyzing users who completed checkout</td><td>Use intent-to-treat: analyze all assigned users</td></tr>
-          <tr><td>10</td><td>Ignoring novelty effect</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>Declaring winner after 1 week of an exciting new design</td><td>Run 2-4 weeks; segment new vs. returning users</td></tr>
-          <tr><td>11</td><td>Simpson's Paradox</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>B wins in every segment but loses in aggregate</td><td>Check randomization balance; analyze segments and aggregate</td></tr>
-          <tr><td>12</td><td>Testing too many variants</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Running A/B/C/D/E with 1,000 daily visitors</td><td>Limit variants; n per variant must meet sample size requirement</td></tr>
-          <tr><td>13</td><td>Confusing statistical and practical significance</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-medium">Medium</td><td>p=0.04 for a 0.01% conversion lift — "significant!"</td><td>Always evaluate effect size and business impact alongside p-value</td></tr>
-          <tr><td>14</td><td>Not tracking guardrail metrics</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Conversion up 5% but page load time up 40%</td><td>Define guardrail metrics (latency, errors, revenue) before launch</td></tr>
-          <tr><td>15</td><td>Segment post-hoc fishing</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>Slicing by 50 segments to find one where B wins</td><td>Pre-register segments of interest; correct for multiplicity</td></tr>
-          <tr><td>16</td><td>Wrong unit of randomization</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Randomizing per pageview, user sees both A and B</td><td>Randomize per user with consistent hashing or cookie-based bucketing</td></tr>
-          <tr><td>17</td><td>Ignoring interaction effects</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-medium">Medium</td><td>Running two tests simultaneously that affect the same page</td><td>Use factorial design or ensure non-overlapping test surfaces</td></tr>
-          <tr><td>18</td><td>Using conversion rate as only metric</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-medium">Medium</td><td>Conversion up but average order value down 20%</td><td>Track revenue per visitor as primary metric; conversion as secondary</td></tr>
-          <tr><td>19</td><td>Not validating tracking implementation</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>A/A test shows 15% difference due to broken tracking</td><td>Run A/A test first to validate instrumentation and randomization</td></tr>
-          <tr><td>20</td><td>Declaring no effect from underpowered test</td><td><span class="cat-stat">Statistical</span></td><td class="sev-high">High</td><td>"No significant difference" with 200 total conversions</td><td>Distinguish "no effect" from "unable to detect effect"; report CI</td></tr>
-        </tbody>
-      </table>
-    </div>
+ <div class="data-table-wrap">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>#</th>
+ <th>Mistake</th>
+ <th>Category</th>
+ <th>Severity</th>
+ <th>Example</th>
+ <th>Correct Approach</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td>1</td><td>Peeking and stopping early</td><td><span class="cat-stat">Statistical</span></td><td class="sev-critical">Critical</td><td>Stopping test after 3 days because p &lt; 0.05</td><td>Use sequential testing (SPRT) or run to pre-calculated sample size</td></tr>
+ <tr><td>2</td><td>No sample size calculation</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Running test until "it feels like enough data"</td><td>Calculate required n using power formula before launch</td></tr>
+ <tr><td>3</td><td>Multiple comparisons without correction</td><td><span class="cat-stat">Statistical</span></td><td class="sev-critical">Critical</td><td>Testing 20 metrics, declaring winner on any p &lt; 0.05</td><td>Apply Bonferroni or Benjamini-Hochberg correction</td></tr>
+ <tr><td>4</td><td>Using one-tailed test inappropriately</td><td><span class="cat-stat">Statistical</span></td><td class="sev-high">High</td><td>One-tailed test to "make it easier to reach significance"</td><td>Use two-tailed unless you truly cannot act on decreases</td></tr>
+ <tr><td>5</td><td>Ignoring minimum detectable effect</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Expecting to detect 1% lift with 500 daily visitors</td><td>Set realistic MDE based on traffic and business impact</td></tr>
+ <tr><td>6</td><td>Not running full business cycles</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Running Mon-Thu and missing weekend traffic patterns</td><td>Always run at least 7 days (full week); ideally 2-4 weeks</td></tr>
+ <tr><td>7</td><td>Changing test mid-flight</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Modifying variant B's copy halfway through the test</td><td>Stop current test, start a new one with changes</td></tr>
+ <tr><td>8</td><td>Non-random assignment</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Assigning mobile to A and desktop to B</td><td>Use proper randomization at user level with persistent bucketing</td></tr>
+ <tr><td>9</td><td>Survivorship bias in analysis</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>Only analyzing users who completed checkout</td><td>Use intent-to-treat: analyze all assigned users</td></tr>
+ <tr><td>10</td><td>Ignoring novelty effect</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>Declaring winner after 1 week of an exciting new design</td><td>Run 2-4 weeks; segment new vs. returning users</td></tr>
+ <tr><td>11</td><td>Simpson's Paradox</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>B wins in every segment but loses in aggregate</td><td>Check randomization balance; analyze segments and aggregate</td></tr>
+ <tr><td>12</td><td>Testing too many variants</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Running A/B/C/D/E with 1,000 daily visitors</td><td>Limit variants; n per variant must meet sample size requirement</td></tr>
+ <tr><td>13</td><td>Confusing statistical and practical significance</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-medium">Medium</td><td>p=0.04 for a 0.01% conversion lift, "significant"</td><td>Always evaluate effect size and business impact alongside p-value</td></tr>
+ <tr><td>14</td><td>Not tracking guardrail metrics</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>Conversion up 5% but page load time up 40%</td><td>Define guardrail metrics (latency, errors, revenue) before launch</td></tr>
+ <tr><td>15</td><td>Segment post-hoc fishing</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-high">High</td><td>Slicing by 50 segments to find one where B wins</td><td>Pre-register segments of interest; correct for multiplicity</td></tr>
+ <tr><td>16</td><td>Wrong unit of randomization</td><td><span class="cat-design">Design</span></td><td class="sev-critical">Critical</td><td>Randomizing per pageview, user sees both A and B</td><td>Randomize per user with consistent hashing or cookie-based bucketing</td></tr>
+ <tr><td>17</td><td>Ignoring interaction effects</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-medium">Medium</td><td>Running two tests simultaneously that affect the same page</td><td>Use factorial design or ensure non-overlapping test surfaces</td></tr>
+ <tr><td>18</td><td>Using conversion rate as only metric</td><td><span class="cat-analysis">Analysis</span></td><td class="sev-medium">Medium</td><td>Conversion up but average order value down 20%</td><td>Track revenue per visitor as primary metric; conversion as secondary</td></tr>
+ <tr><td>19</td><td>Not validating tracking implementation</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>A/A test shows 15% difference due to broken tracking</td><td>Run A/A test first to validate instrumentation and randomization</td></tr>
+ <tr><td>20</td><td>Declaring no effect from underpowered test</td><td><span class="cat-stat">Statistical</span></td><td class="sev-high">High</td><td>"No significant difference" with 200 total conversions</td><td>Distinguish "no effect" from "unable to detect effect"; report CI</td></tr>
+ </tbody>
+ </table>
+ </div>
 
-    <div class="download-btns">
-      <button onclick="downloadData('json')">Download JSON</button>
-      <button onclick="downloadData('csv')">Download CSV</button>
-    </div>
+ <div class="download-btns">
+ <button onclick="downloadData('json')">Download JSON</button>
+ <button onclick="downloadData('csv')">Download CSV</button>
+ </div>
 
-    <section style="max-width:800px;margin:2rem auto;">
-      <h2>Key Insights</h2>
-      <p><strong>6 of 20 mistakes are Critical — they invalidate results entirely.</strong> Peeking, no sample size calc, multiple comparisons, mid-flight changes, non-random assignment, and wrong randomization unit are not minor errors. They make your test results meaningless regardless of sample size or duration.</p>
-      <p><strong>Design mistakes are preventable with a pre-test checklist.</strong> 8 of the 20 mistakes are design errors that occur before the test even starts. A simple checklist (sample size calculated? randomization unit correct? guardrails defined? A/A test passed?) prevents most of them.</p>
-      <p><strong>Analysis mistakes are subtler but equally dangerous.</strong> Simpson's Paradox, survivorship bias, and segment fishing can all reverse the true direction of an effect. These require statistical literacy to detect — automated tools can flag some but not all of them.</p>
-      <p><strong>The peeking problem is the #1 mistake in practice.</strong> Virtually every team that manually monitors A/B tests will peek. The solution is either automated stopping rules (sequential testing) or strict organizational discipline to wait for the predetermined sample size.</p>
-    </section>
+ <section style="max-width:800px;margin:2rem auto;">
+ <h2>Key Insights</h2>
+ <p>6 of 20 mistakes are Critical, they invalidate results entirely. Peeking, no sample size calc, multiple comparisons, mid-flight changes, non-random assignment, and wrong randomization unit are not minor errors. They make your test results meaningless regardless of sample size or duration.</p>
+ <p>Design mistakes are preventable with a pre-test checklist. 8 of the 20 mistakes are design errors that occur before the test even starts. A simple checklist (sample size calculated? randomization unit correct? guardrails defined? A/A test passed?) prevents most of them.</p>
+ <p>Analysis mistakes are subtler but equally dangerous. Simpson's Paradox, survivorship bias, and segment fishing can all reverse the true direction of an effect. These require statistical literacy to detect, automated tools can flag some but not all of them.</p>
+ <p>The peeking problem is the #1 mistake in practice. Virtually every team that manually monitors A/B tests will peek. The solution is either automated stopping rules (sequential testing) or strict organizational discipline to wait for the predetermined sample size.</p>
+ </section>
 
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
-      <details>
-        <summary>What is the most common A/B testing mistake?</summary>
-        <p>Peeking at results and stopping early when a "significant" result appears. This inflates the false positive rate from 5% to as high as 30%. The p-value is only valid at the pre-determined sample size. Use sequential testing (SPRT) or alpha-spending functions if you need to monitor continuously.</p>
-      </details>
-      <details>
-        <summary>How does the multiple comparisons problem affect A/B tests?</summary>
-        <p>Testing multiple metrics or variants without correction increases false positives. With 20 metrics at alpha=0.05, expect 1 false positive by chance. Apply Bonferroni (alpha/k) or Benjamini-Hochberg correction. Always pre-specify your primary metric before launching the test.</p>
-      </details>
-      <details>
-        <summary>Why is it wrong to run an A/B test without calculating sample size first?</summary>
-        <p>Without pre-calculated sample size, you have no power guarantee. An underpowered test (30% power) misses 70% of real improvements, leading to false "no effect" conclusions. The formula requires baseline rate, MDE, alpha, and desired power (typically 80%).</p>
-      </details>
-      <details>
-        <summary>What is Simpson's Paradox in A/B testing?</summary>
-        <p>Simpson's Paradox occurs when a trend in segmented data reverses in the aggregate. Variant B might win among both mobile and desktop users, yet A wins overall — because mobile users (lower conversion) were disproportionately assigned to B. Check randomization balance and analyze both segments and aggregate.</p>
-      </details>
-      <details>
-        <summary>How do I avoid the novelty effect in A/B testing?</summary>
-        <p>Run tests for at least 2-4 weeks to let novelty wear off. Segment new vs. returning users. Analyze daily conversion time series — if variant advantage decreases over time, novelty is a factor. Consider a holdback test after implementation to confirm the effect persists.</p>
-      </details>
-    </section>
-  </main>
+ <section class="faq-section">
+ <h2>Common questions</h2>
+ <details>
+ <summary>What is the most common A/B testing mistake?</summary>
+ <p>Peeking at results and stopping early when a "significant" result appears. This inflates the false positive rate from 5% to as high as 30%. The p-value is only valid at the pre-determined sample size. Use sequential testing (SPRT) or alpha-spending functions if you need to monitor continuously.</p>
+ </details>
+ <details>
+ <summary>How does the multiple comparisons problem affect A/B tests?</summary>
+ <p>Testing multiple metrics or variants without correction increases false positives. With 20 metrics at alpha=0.05, expect 1 false positive by chance. Apply Bonferroni (alpha/k) or Benjamini-Hochberg correction. Always pre-specify your primary metric before launching the test.</p>
+ </details>
+ <details>
+ <summary>Why is it wrong to run an A/B test without calculating sample size first?</summary>
+ <p>Without pre-calculated sample size, you have no power guarantee. An underpowered test (30% power) misses 70% of real improvements, leading to false "no effect" conclusions. The formula requires baseline rate, MDE, alpha, and desired power (typically 80%).</p>
+ </details>
+ <details>
+ <summary>What is Simpson's Paradox in A/B testing?</summary>
+ <p>Simpson's Paradox occurs when a trend in segmented data reverses in the aggregate. Variant B might win among both mobile and desktop users, yet A wins overall, because mobile users (lower conversion) were disproportionately assigned to B. Check randomization balance and analyze both segments and aggregate.</p>
+ </details>
+ <details>
+ <summary>How do I avoid the novelty effect in A/B testing?</summary>
+ <p>Run tests for at least 2-4 weeks to let novelty wear off. Segment new vs. returning users. Analyze daily conversion time series, if variant advantage decreases over time, novelty is a factor. Consider a holdback test after implementation to confirm the effect persists.</p>
+ </details>
+ </section>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
-        <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=research-ab-test-mistakes">Zovo</a> · 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=research-ab-test-mistakes">Zovo</a> · 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-mistakes">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-mistakes">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-ab-test-mistakes" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-ab-test-mistakes" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
 <script>
@@ -291,7 +226,7 @@ function downloadData(format) {
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
-<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</a></li>
+<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</a></li>
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/answers/how-long-to-run-ab-test.html" style="color:#3b82f6;text-decoration:none;">How Long Should I Run My A/B Test?</a></li>
 <li><a href="/answers/is-my-ab-test-significant.html" style="color:#3b82f6;text-decoration:none;">Is My A/B Test Statistically Significant?</a></li>

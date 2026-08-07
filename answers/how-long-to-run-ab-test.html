@@ -1,207 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>How Long Should I Run My A/B Test? | ABWex</title>
-  <meta name="description" content="At 1,000 daily visitors with 5% conversion: run 7-8 days to detect a 20% lift. Never stop early because it looks significant — that inflates false positive rates.">
-  <link rel="canonical" href="https://abwex.com/answers/how-long-to-run-ab-test.html">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="How Long Should I Run My A/B Test?">
-  <meta property="og:description" content="At 1,000 daily visitors with 5% conversion: run 7-8 days for a 20% lift. Never stop early.">
-  <meta property="og:url" content="https://abwex.com/answers/how-long-to-run-ab-test.html">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="How Long Should I Run My A/B Test?">
-  <meta name="twitter:description" content="At 1,000 daily visitors with 5% conversion: run 7-8 days for a 20% lift. Never stop early.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How long should I run my A/B test?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "At 1,000 daily visitors with a 5% conversion rate, run for 7-8 days to detect a 20% relative lift. The duration = required sample size per variant / (daily visitors / number of variants). Never stop early because it 'looks significant' — that inflates false positive rates due to the peeking problem."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the peeking problem in A/B testing?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The peeking problem occurs when you repeatedly check your test results and stop as soon as you see significance. This inflates your false positive rate from the intended 5% to as high as 30%. The solution is to pre-calculate your required sample size and commit to running the test until you reach it."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Should I run my A/B test for at least 7 days?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Even if you reach your sample size in fewer days, run for at least one full business cycle (7 days) to capture day-of-week effects. Conversion rates often vary significantly between weekdays and weekends, and stopping mid-week can introduce bias."
-      }
-    }
-  ]
-}
-</script>
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>How Long Should I Run My A/B Test? | ABWex</title>
+ <meta name="description" content="At 1,000 daily visitors with 5% conversion: run 7-8 days to detect a 20% lift. Never stop early because it looks significant, that inflates false positive rates.">
+ <link rel="canonical" href="https://abwex.com/answers/how-long-to-run-ab-test.html">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="How Long Should I Run My A/B Test?">
+ <meta property="og:description" content="At 1,000 daily visitors with 5% conversion: run 7-8 days for a 20% lift. Never stop early.">
+ <meta property="og:url" content="https://abwex.com/answers/how-long-to-run-ab-test.html">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="How Long Should I Run My A/B Test?">
+ <meta name="twitter:description" content="At 1,000 daily visitors with 5% conversion: run 7-8 days for a 20% lift. Never stop early.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long should I run my A/B test?","acceptedAnswer":{"@type":"Answer","text":"At 1,000 daily visitors with a 5% conversion rate, run for 7-8 days to detect a 20% relative lift. The duration = required sample size per variant / (daily visitors / number of variants). Never stop early because it 'looks significant', that inflates false positive rates due to the peeking problem."}},{"@type":"Question","name":"What is the peeking problem in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"The peeking problem occurs when you repeatedly check your test results and stop as soon as you see significance. This inflates your false positive rate from the intended 5% to as high as 30%. The solution is to pre-calculate your required sample size and commit to running the test until you reach it."}},{"@type":"Question","name":"Should I run my A/B test for at least 7 days?","acceptedAnswer":{"@type":"Answer","text":"Yes. Even if you reach your sample size in fewer days, run for at least one full business cycle (7 days) to capture day-of-week effects. Conversion rates often vary significantly between weekdays and weekends, and stopping mid-week can introduce bias."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Answers","item":"https://abwex.com/answers/"},{"@type":"ListItem","position":3,"name":"How Long to Run"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/about.html">About</a>
-        <a href="/blog/">Blog</a>
-        <div class="nav-right">
-          <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-          <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-how-long-to-run-ab-test" class="nav-zovo">Zovo Tools</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/about.html">About</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-how-long-to-run-ab-test" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container" style="max-width:780px;margin:0 auto;padding:2rem 1.5rem;">
-    <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:0.9rem;">
-      <a href="/">Home</a> &rsaquo; <a href="/answers/">Answers</a> &rsaquo; <span>How Long to Run</span>
-    </nav>
+ <main class="container" style="max-width:780px;margin:0 auto;padding:2rem 1.5rem;">
+ <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:0.9rem;">
+ <a href="/">Home</a> &rsaquo; <a href="/answers/">Answers</a> &rsaquo; <span>How Long to Run</span>
+ </nav>
 
-    <article>
-      <h1>How Long Should I Run My A/B Test?</h1>
+ <article>
+ <h1>How Long Should I Run My A/B Test?</h1>
 
-      <p><strong>At 1,000 daily visitors with a 5% conversion rate: run for 7-8 days to detect a 20% relative lift. Never stop early because it "looks significant" -- that inflates false positive rates (the peeking problem).</strong></p>
+ <p>At 1,000 daily visitors with a 5% conversion rate: run for 7-8 days to detect a 20% relative lift. Never stop early because it "looks significant", that inflates false positive rates (the peeking problem).</p>
 
-      <h2>Duration Formula</h2>
-      <pre style="background:var(--bg-secondary,#1a1a2e);padding:1rem;border-radius:8px;overflow-x:auto;"><code>days = required_sample_per_variant / (daily_visitors / num_variants)</code></pre>
-      <p>For a 5% baseline, 20% MDE, 95% confidence, 80% power:</p>
-      <ul>
-        <li>Required per variant: ~3,623 visitors</li>
-        <li>At 1,000 daily visitors split 50/50: 500 per variant per day</li>
-        <li>Days needed: 3,623 / 500 = <strong>7.2 days</strong> (round up to 8)</li>
-      </ul>
+ <h2>Duration Formula</h2>
+ <pre style="background:var(--bg-secondary,#1a1a2e);padding:1rem;border-radius:8px;overflow-x:auto;"><code>days = required_sample_per_variant / (daily_visitors / num_variants)</code></pre>
+ <p>For a 5% baseline, 20% MDE, 95% confidence, 80% power:</p>
+ <ul>
+ <li>Required per variant: ~3,623 visitors</li>
+ <li>At 1,000 daily visitors split 50/50: 500 per variant per day</li>
+ <li>Days needed: 3,623 / 500 = <strong>7.2 days</strong> (round up to 8)</li>
+ </ul>
 
-      <h2>Duration by Traffic Level</h2>
-      <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
-        <thead>
-          <tr style="border-bottom:2px solid var(--border,#333);">
-            <th style="text-align:left;padding:8px;">Daily Visitors</th>
-            <th style="text-align:left;padding:8px;">20% MDE</th>
-            <th style="text-align:left;padding:8px;">10% MDE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--border,#333);">
-            <td style="padding:8px;">500</td>
-            <td style="padding:8px;">15 days</td>
-            <td style="padding:8px;">59 days</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border,#333);">
-            <td style="padding:8px;">1,000</td>
-            <td style="padding:8px;">8 days</td>
-            <td style="padding:8px;">30 days</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border,#333);">
-            <td style="padding:8px;">5,000</td>
-            <td style="padding:8px;">2 days*</td>
-            <td style="padding:8px;">6 days</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border,#333);">
-            <td style="padding:8px;">10,000</td>
-            <td style="padding:8px;">1 day*</td>
-            <td style="padding:8px;">3 days*</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="font-size:0.85rem;color:var(--text-muted,#888);">* Even with enough samples, always run at least 7 days to account for day-of-week effects. 5% baseline, 80% power.</p>
+ <h2>Duration by Traffic Level</h2>
+ <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+ <thead>
+ <tr style="border-bottom:2px solid var(--border,#333);">
+ <th style="text-align:left;padding:8px;">Daily Visitors</th>
+ <th style="text-align:left;padding:8px;">20% MDE</th>
+ <th style="text-align:left;padding:8px;">10% MDE</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr style="border-bottom:1px solid var(--border,#333);">
+ <td style="padding:8px;">500</td>
+ <td style="padding:8px;">15 days</td>
+ <td style="padding:8px;">59 days</td>
+ </tr>
+ <tr style="border-bottom:1px solid var(--border,#333);">
+ <td style="padding:8px;">1,000</td>
+ <td style="padding:8px;">8 days</td>
+ <td style="padding:8px;">30 days</td>
+ </tr>
+ <tr style="border-bottom:1px solid var(--border,#333);">
+ <td style="padding:8px;">5,000</td>
+ <td style="padding:8px;">2 days*</td>
+ <td style="padding:8px;">6 days</td>
+ </tr>
+ <tr style="border-bottom:1px solid var(--border,#333);">
+ <td style="padding:8px;">10,000</td>
+ <td style="padding:8px;">1 day*</td>
+ <td style="padding:8px;">3 days*</td>
+ </tr>
+ </tbody>
+ </table>
+ <p style="font-size:0.85rem;color:var(--text-muted,#888);">* Even with enough samples, always run at least 7 days to account for day-of-week effects. 5% baseline, 80% power.</p>
 
-      <h2>The Peeking Problem</h2>
-      <p>Checking results repeatedly and stopping when significance appears inflates your false positive rate from 5% to as high as 30%. This happens because random fluctuations in small samples can temporarily produce "significant" results that vanish with more data. The solution:</p>
-      <ol>
-        <li>Calculate your sample size before starting</li>
-        <li>Commit to running until you reach it</li>
-        <li>Run at least one full week (7 days) regardless</li>
-        <li>Only analyze results after the test is complete</li>
-      </ol>
+ <h2>The Peeking Problem</h2>
+ <p>Checking results repeatedly and stopping when significance appears inflates your false positive rate from 5% to as high as 30%. This happens because random fluctuations in small samples can temporarily produce "significant" results that vanish with more data. The solution:</p>
+ <ol>
+ <li>Calculate your sample size before starting</li>
+ <li>Commit to running until you reach it</li>
+ <li>Run at least one full week (7 days) regardless</li>
+ <li>Only analyze results after the test is complete</li>
+ </ol>
 
-      <h2>Minimum 7-Day Rule</h2>
-      <p>Even if your math says you only need 2 days of data, always run for at least 7 days. Conversion rates vary by day of week -- weekday shoppers behave differently from weekend browsers. A test that runs Monday through Wednesday may produce results that do not hold on weekends.</p>
+ <h2>Minimum 7-Day Rule</h2>
+ <p>Even if your math says you only need 2 days of data, always run for at least 7 days. Conversion rates vary by day of week, weekday shoppers behave differently from weekend browsers. A test that runs Monday through Wednesday may produce results that do not hold on weekends.</p>
 
-      <p>Use the <a href="/">ABWex calculator</a> to compute exact durations for your traffic level and desired sensitivity.</p>
+ <p>Use the <a href="/">ABWex calculator</a> to compute exact durations for your traffic level and desired sensitivity.</p>
 
-      <section class="related-links">
-        <h2>Related Questions</h2>
-        <div class="related-grid">
-          <a href="/answers/ab-test-sample-size-calculator.html" class="related-card">How many visitors do I need for an A/B test?</a>
-          <a href="/answers/is-my-ab-test-significant.html" class="related-card">Is my A/B test statistically significant?</a>
-          <a href="/tools/sample-size-calculator.html" class="related-card">Sample size calculator tool</a>
-          <a href="/research/ab-test-duration-calculator.html" class="related-card">A/B test duration deep dive</a>
-        </div>
-      </section>
+ <section class="related-links">
+ <h2>Related Questions</h2>
+ <div class="related-grid">
+ <a href="/answers/ab-test-sample-size-calculator.html" class="related-card">How many visitors do I need for an A/B test?</a>
+ <a href="/answers/is-my-ab-test-significant.html" class="related-card">Is my A/B test statistically significant?</a>
+ <a href="/tools/sample-size-calculator.html" class="related-card">Sample size calculator tool</a>
+ <a href="/research/ab-test-duration-calculator.html" class="related-card">A/B test duration walkthrough</a>
+ </div>
+ </section>
 
-      <div class="last-updated"><time datetime="2026-04-11">Last updated: April 11, 2026</time></div>
-    </article>
-  </main>
+ <div class="last-updated"><time datetime="2026-04-11">Last updated: April 11, 2026</time></div>
+ </article>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
-        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=answers-how-long-to-run-ab-test">Zovo</a> &middot; 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=answers-how-long-to-run-ab-test">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-how-long-to-run-ab-test">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-how-long-to-run-ab-test">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-how-long-to-run-ab-test" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-how-long-to-run-ab-test" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
@@ -209,8 +178,8 @@
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/answers/is-my-ab-test-significant.html" style="color:#3b82f6;text-decoration:none;">Is My A/B Test Statistically Significant?</a></li>
-<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</a></li>
-<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes — 20 Most Common Statistical Errors</a></li>
+<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</a></li>
+<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes, 20 Most Common Statistical Errors</a></li>
 </ul>
 </section>
 

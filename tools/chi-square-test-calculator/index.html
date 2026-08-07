@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Chi-Square Test Calculator | abwex.com</title>
-  <meta name="description" content="Interactive Chi-Square Test Calculator: Goodness-of-Fit & Test of Independence. Computes chi², p-value (incomplete gamma), Cramér's V, critical values, step-by-step table.">
-  <link rel="canonical" href="https://abwex.com/tools/chi-square-test-calculator.html">
-  <meta name="robots" content="index, follow">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Chi-Square Test Calculator | abwex.com</title>
+ <meta name="description" content="Interactive Chi-Square Test Calculator: Goodness-of-Fit & Test of Independence. Computes chi², p-value (incomplete gamma), Cramér's V, critical values, step-by-step table.">
+ <link rel="canonical" href="https://abwex.com/tools/chi-square-test-calculator.html">
+ <meta name="robots" content="index, follow">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -19,7 +19,7 @@
     "description": "Interactive Chi-Square test calculator with Goodness-of-Fit and Independence test modes. Provides p-value, effect size, critical values, and step-by-step calculations."
   }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -30,7 +30,7 @@
     ]
   }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -41,7 +41,7 @@
     ]
   }
   </script>
-  <style>
+ <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #0f0f1a;
@@ -129,53 +129,53 @@
 </head>
 <body>
 <div class="container">
-  <h1>χ² Test Calculator</h1>
-  <div class="sub">Goodness-of-Fit &amp; Test of Independence · abwex.com</div>
+ <h1>χ² Test Calculator</h1>
+ <div class="sub">Goodness-of-Fit &amp; Test of Independence · abwex.com</div>
 
-  <!-- Mode Tabs -->
-  <div class="mode-tabs">
-    <button class="mode-btn active" data-mode="gof">Goodness-of-Fit</button>
-    <button class="mode-btn" data-mode="indep">Independence (contingency)</button>
-  </div>
+ <!-- Mode Tabs -->
+ <div class="mode-tabs">
+ <button class="mode-btn active" data-mode="gof">Goodness-of-Fit</button>
+ <button class="mode-btn" data-mode="indep">Independence (contingency)</button>
+ </div>
 
-  <!-- Goodness-of-Fit Section -->
-  <div id="gofSection" class="tool-section active">
-    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-      <div class="input-group" style="flex: 0 1 140px;">
-        <label>Categories (k)</label>
-        <select id="gofK"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>
-      </div>
-      <div class="input-group" style="flex: 0 1 200px;">
-        <label>Expected type</label>
-        <select id="gofExpType"><option value="prob">Probabilities (sum=1)</option><option value="freq">Frequencies</option></select>
-      </div>
-    </div>
-    <div id="gofInputs" class="grid-inputs"></div>
-    <button class="btn-primary" id="gofCalcBtn">Calculate χ²</button>
-    <div id="gofResults"></div>
-  </div>
+ <!-- Goodness-of-Fit Section -->
+ <div id="gofSection" class="tool-section active">
+ <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+ <div class="input-group" style="flex: 0 1 140px;">
+ <label>Categories (k)</label>
+ <select id="gofK"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>
+ </div>
+ <div class="input-group" style="flex: 0 1 200px;">
+ <label>Expected type</label>
+ <select id="gofExpType"><option value="prob">Probabilities (sum=1)</option><option value="freq">Frequencies</option></select>
+ </div>
+ </div>
+ <div id="gofInputs" class="grid-inputs"></div>
+ <button class="btn-primary" id="gofCalcBtn">Calculate χ²</button>
+ <div id="gofResults"></div>
+ </div>
 
-  <!-- Independence Section -->
-  <div id="indepSection" class="tool-section">
-    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-      <div class="input-group" style="flex: 0 1 120px;"><label>Rows</label><select id="indepRows"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
-      <div class="input-group" style="flex: 0 1 120px;"><label>Cols</label><select id="indepCols"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
-      <button class="btn-secondary" id="resetIndepBtn">Reset table</button>
-    </div>
-    <div id="indepTableWrap" class="table-wrap"></div>
-    <button class="btn-primary" id="indepCalcBtn">Calculate χ²</button>
-    <div id="indepResults"></div>
-  </div>
+ <!-- Independence Section -->
+ <div id="indepSection" class="tool-section">
+ <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+ <div class="input-group" style="flex: 0 1 120px;"><label>Rows</label><select id="indepRows"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+ <div class="input-group" style="flex: 0 1 120px;"><label>Cols</label><select id="indepCols"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+ <button class="btn-secondary" id="resetIndepBtn">Reset table</button>
+ </div>
+ <div id="indepTableWrap" class="table-wrap"></div>
+ <button class="btn-primary" id="indepCalcBtn">Calculate χ²</button>
+ <div id="indepResults"></div>
+ </div>
 
-  <!-- FAQ (schema) -->
-  <div style="margin-top: 2.5rem;">
-    <h3 style="margin-bottom: 1rem;">❓ FAQ</h3>
-    <div class="faq-item"><strong>What is the Chi-Square test?</strong> <br>It compares observed vs expected frequencies. Goodness-of-Fit checks distribution; Independence checks association between two variables.</div>
-    <div class="faq-item"><strong>How is p-value computed?</strong> <br>Using regularized incomplete gamma function P(a,x) via series expansion (accurate for df 1–20).</div>
-    <div class="faq-item"><strong>What is Cramér's V?</strong> <br>Effect size for contingency tables: V = √(χ²/(n·min(r-1,c-1))). 0 = no association, 1 = perfect.</div>
-  </div>
+ <!-- FAQ (schema) -->
+ <div style="margin-top: 2.5rem;">
+ <h3 style="margin-bottom: 1rem;"> FAQ</h3>
+ <div class="faq-item"><strong>What is the Chi-Square test?</strong> <br>It compares observed vs expected frequencies. Goodness-of-Fit checks distribution; Independence checks association between two variables.</div>
+ <div class="faq-item"><strong>How is p-value computed?</strong> <br>Using regularized incomplete gamma function P(a,x) via series expansion (accurate for df 1–20).</div>
+ <div class="faq-item"><strong>What is Cramér's V?</strong> <br>Effect size for contingency tables: V = √(χ²/(n·min(r-1,c-1))). 0 = no association, 1 = perfect.</div>
+ </div>
 
-  <div class="footer">© 2025 abwex.com</div>
+ <div class="footer">© 2025 abwex.com</div>
 </div>
 
 <script>
@@ -274,13 +274,13 @@
         if (isNaN(o) || isNaN(e) || o < 0 || e < 0) { ok = false; break; }
         O.push(o); E.push(e);
       }
-      if (!ok) { gofResults.innerHTML = '<div class="conclusion">⚠️ Please enter valid non-negative numbers.</div>'; return; }
+      if (!ok) { gofResults.innerHTML = '<div class="conclusion">Please enter valid non-negative numbers.</div>'; return; }
       const isProb = gofExpType.value === 'prob';
       let totalObs = O.reduce((a,b)=>a+b,0);
       let Eadj = E.slice();
       if (isProb) {
         const sumProb = E.reduce((a,b)=>a+b,0);
-        if (Math.abs(sumProb - 1) > 0.001) { gofResults.innerHTML = '<div class="conclusion">⚠️ Probabilities must sum to 1.</div>'; return; }
+        if (Math.abs(sumProb - 1) > 0.001) { gofResults.innerHTML = '<div class="conclusion">Probabilities must sum to 1.</div>'; return; }
         Eadj = E.map(p => p * totalObs);
       } else {
         // expected frequencies: if sum differs from observed sum? we allow any, but chi2 uses given expected
@@ -295,8 +295,8 @@
       }
       const df = k - 1;
       const p = chi2Pvalue(chi2, df);
-      const crit05v = df <= 20 ? crit05[df-1] : '—';
-      const crit01v = df <= 20 ? crit01[df-1] : '—';
+      const crit05v = df <= 20 ? crit05[df-1] : '&middot;';
+      const crit01v = df <= 20 ? crit01[df-1] : '&middot;';
       const reject05 = chi2 > crit05v;
       const reject01 = chi2 > crit01v;
       let conclusion = `χ² = ${chi2.toFixed(4)}, df = ${df}, p-value = ${p.toFixed(4)}. `;
@@ -330,11 +330,11 @@
           const val = (i===0 && j===0)?12:(i===0&&j===1)?15:(i===0&&j===2)?10:(i===0&&j===3)?8:(i===1&&j===0)?18:(i===1&&j===1)?20:(i===1&&j===2)?15:(i===1&&j===3)?12:(i===2&&j===0)?8:(i===2&&j===1)?10:(i===2&&j===2)?12:(i===2&&j===3)?10:(i===3&&j===0)?6:(i===3&&j===1)?8:(i===3&&j===2)?10:(i===3&&j===3)?7:5;
           html += `<td><input class="indepCell" data-r="${i}" data-c="${j}" type="number" step="any" min="0" value="${val}" style="width:70px;background:#1e1e38;border:1px solid #2f2f5a;color:white;padding:0.4rem;border-radius:20px;text-align:center;"></td>`;
         }
-        html += `<td class="rowTotal" id="rowTotal${i}">—</td></tr>`;
+        html += `<td class="rowTotal" id="rowTotal${i}">&middot;</td></tr>`;
       }
       html += '</tbody><tfoot><tr><th>Col total</th>';
-      for (let j = 0; j < c; j++) html += `<td class="colTotal" id="colTotal${j}">—</td>`;
-      html += `<td id="grandTotal">—</td></tr></tfoot></table>`;
+      for (let j = 0; j < c; j++) html += `<td class="colTotal" id="colTotal${j}">&middot;</td>`;
+      html += `<td id="grandTotal">&middot;</td></tr></tfoot></table>`;
       indepTableWrap.innerHTML = html;
     }
     function computeIndep() {
@@ -360,7 +360,7 @@
       for (let i = 0; i < r; i++) document.getElementById(`rowTotal${i}`).textContent = rowTotals[i].toFixed(2);
       for (let j = 0; j < c; j++) document.getElementById(`colTotal${j}`).textContent = colTotals[j].toFixed(2);
       document.getElementById('grandTotal').textContent = grand.toFixed(2);
-      if (grand === 0) { indepResults.innerHTML = '<div class="conclusion">⚠️ Grand total is zero.</div>'; return; }
+      if (grand === 0) { indepResults.innerHTML = '<div class="conclusion">Grand total is zero.</div>'; return; }
       let chi2 = 0;
       const steps = [];
       for (let i = 0; i < r; i++) {
@@ -374,8 +374,8 @@
       }
       const df = (r-1)*(c-1);
       const p = chi2Pvalue(chi2, df);
-      const crit05v = df <= 20 ? crit05[df-1] : '—';
-      const crit01v = df <= 20 ? crit01[df-1] : '—';
+      const crit05v = df <= 20 ? crit05[df-1] : '&middot;';
+      const crit01v = df <= 20 ? crit01[df-1] : '&middot;';
       const reject05 = chi2 > crit05v;
       const n = grand;
       const minDim = Math.min(r-1, c-1);
@@ -415,7 +415,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>

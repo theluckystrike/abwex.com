@@ -101,11 +101,11 @@ footer a{color:var(--ac);text-decoration:none;margin:0 .5rem}
 </section>
 
 <h2>How the chi-square test works</h2>
-<p>An A/B test produces a 2×2 contingency table: each variant has a count of conversions and non-conversions. The <strong>Pearson chi-square test of independence</strong> asks whether conversion outcome is independent of which variant a visitor saw. If the variants truly performed the same, the observed counts should match the <em>expected</em> counts implied by the pooled conversion rate.</p>
+<p>An A/B test produces a 2×2 contingency table: each variant has a count of conversions and non-conversions. The Pearson chi-square test of independence asks whether conversion outcome is independent of which variant a visitor saw. If the variants truly performed the same, the observed counts should match the <em>expected</em> counts implied by the pooled conversion rate.</p>
 <p>For each of the four cells we compute the expected count as <code>(row total × column total) / grand total</code>, then sum the squared, normalized differences:</p>
 <div class="formula">χ² = Σ (Observed − Expected)² / Expected</div>
-<p>With a 2×2 table there is <strong>1 degree of freedom</strong>. The resulting χ² value is converted to a p-value using the chi-square distribution. Because df = 1, the p-value equals the two-tailed normal tail probability of √χ², so this calculator uses an accurate error-function approximation rather than a lookup table. A small p-value (below your chosen α) means the observed gap between the two conversion rates is unlikely to be random noise, so you reject the null hypothesis of "no difference."</p>
-<p>This is mathematically equivalent to a two-proportion z-test without continuity correction, which is why the same data drives confidence intervals and sample-size planning. Always confirm each variant has at least a handful of expected conversions; with very small samples the chi-square approximation degrades and an exact (Fisher) test is preferable. Enter your real numbers above to see the verdict update live as you type.</p>
+<p>With a 2×2 table there is 1 degree of freedom. The resulting χ² value is converted to a p-value using the chi-square distribution. Because df = 1, the p-value equals the two-tailed normal tail probability of √χ², so this calculator uses an accurate error-function approximation rather than a lookup table. A small p-value (below your chosen α) means the observed gap between the two conversion rates is unlikely to be random noise, so you reject the null hypothesis of "no difference."</p>
+<p>That's mathematically equivalent to a two-proportion z-test without continuity correction, which is why the same data drives confidence intervals and sample-size planning. Always confirm each variant has at least a handful of expected conversions; with very small samples the chi-square approximation degrades and an exact (Fisher) test is preferable. Enter your real numbers above to see the verdict update live as you type.</p>
 
 <h2>Related Tools</h2>
 <p class="related">
@@ -121,7 +121,7 @@ footer a{color:var(--ac);text-decoration:none;margin:0 .5rem}
 <a href="/tools/">All Tools</a>
 <a href="/tools/chi-square-test">Chi-Square Test</a>
 </div>
-<div style="margin-top:.5rem">© 2026 abwex.com — by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-chi-square-test">Michael Lip</a></div>
+<div style="margin-top:.5rem">© 2026 abwex.com, by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-chi-square-test">Michael Lip</a></div>
 </footer>
 
 <script>
@@ -197,7 +197,7 @@ footer a{color:var(--ac);text-decoration:none;margin:0 .5rem}
 
     var html='';
     html+='<p class="verdict" style="color:'+(sig?'var(--ok)':'var(--no)')+'">'+
-          (sig?'✓ Statistically significant':'✗ Not statistically significant')+
+          (sig?'Statistically significant':'Not statistically significant')+
           ' at '+conf+'% confidence</p>';
     html+='<p style="margin:.2rem 0;color:var(--mut)">Variant A: '+pct(pa)+' &nbsp;·&nbsp; Variant B: '+pct(pb)+
           ' &nbsp;·&nbsp; Relative lift: <strong style="color:'+(lift>=0?'var(--ok)':'var(--no)')+'">'+
@@ -213,8 +213,8 @@ footer a{color:var(--ac);text-decoration:none;margin:0 .5rem}
 
     var minExp=Math.min(ea1,ea0,eb1,eb0);
     if(minExp<5){
-      html+='<p style="margin-top:.8rem;color:var(--no);font-size:.88rem">⚠ Smallest expected count is '+minExp.toFixed(1)+
-            ' (&lt; 5). The chi-square approximation may be unreliable here — consider a Fisher exact test.</p>';
+      html+='<p style="margin-top:.8rem;color:var(--no);font-size:.88rem">Smallest expected count is '+minExp.toFixed(1)+
+            ' (&lt; 5). The chi-square approximation may be unreliable here, consider a Fisher exact test.</p>';
     }
     out.innerHTML=html;
   }

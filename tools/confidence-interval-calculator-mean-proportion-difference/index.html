@@ -2,24 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confidence Interval Calculator — Mean, Proportion & Difference</title>
-  <meta name="description" content="Calculate confidence intervals for mean, proportion (Wilson), and difference of means. Interactive with visual number line and plain English.">
-  <link rel="canonical" href="https://abwex.com/tools/confidence-interval-calculator-mean-proportion-difference">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Confidence Interval Calculator — Mean, Proportion & Difference",
-    "url": "https://abwex.com/confidence-interval-calculator/",
-    "description": "Interactive calculator for confidence intervals: mean, proportion (Wilson score), difference of means. Visual number line and plain English interpretation.",
-    "applicationCategory": "Statistics",
-    "operatingSystem": "All",
-    "browserRequirements": "JavaScript enabled"
-  }
-  </script>
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Confidence Interval Calculator, Mean, Proportion & Difference</title>
+ <meta name="description" content="Calculate confidence intervals for mean, proportion (Wilson), and difference of means. Interactive with visual number line and plain English.">
+ <link rel="canonical" href="https://abwex.com/tools/confidence-interval-calculator-mean-proportion-difference">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Confidence Interval Calculator, Mean, Proportion & Difference","url":"https://abwex.com/confidence-interval-calculator/","description":"Interactive calculator for confidence intervals: mean, proportion (Wilson score), difference of means. Visual number line and plain English interpretation.","applicationCategory":"Statistics","operatingSystem":"All","browserRequirements":"JavaScript enabled"}</script>
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -43,7 +32,7 @@
     ]
   }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -54,7 +43,7 @@
     ]
   }
   </script>
-  <style>
+ <style>
     * {
       box-sizing: border-box;
       margin: 0;
@@ -297,75 +286,75 @@
 </head>
 <body>
 <div class="container">
-  <h1>⚡ Confidence Interval Calculator</h1>
-  <div class="subhead">Mean · Proportion (Wilson) · Difference of means — with visual CI</div>
+ <h1> Confidence Interval Calculator</h1>
+ <div class="subhead">Mean · Proportion (Wilson) · Difference of means, with visual CI</div>
 
-  <div class="card">
-    <div class="mode-tabs" id="modeTabs">
-      <button class="mode-btn active" data-mode="mean">CI for Mean</button>
-      <button class="mode-btn" data-mode="proportion">CI for Proportion</button>
-      <button class="mode-btn" data-mode="diffmeans">CI for Difference of Means</button>
-    </div>
+ <div class="card">
+ <div class="mode-tabs" id="modeTabs">
+ <button class="mode-btn active" data-mode="mean">CI for Mean</button>
+ <button class="mode-btn" data-mode="proportion">CI for Proportion</button>
+ <button class="mode-btn" data-mode="diffmeans">CI for Difference of Means</button>
+ </div>
 
-    <!-- Confidence level selector (global) -->
-    <div class="confidence-selector">
-      <span>Confidence level:</span>
-      <button class="conf-btn" data-cl="90">90%</button>
-      <button class="conf-btn active" data-cl="95">95%</button>
-      <button class="conf-btn" data-cl="99">99%</button>
-    </div>
+ <!-- Confidence level selector (global) -->
+ <div class="confidence-selector">
+ <span>Confidence level:</span>
+ <button class="conf-btn" data-cl="90">90%</button>
+ <button class="conf-btn active" data-cl="95">95%</button>
+ <button class="conf-btn" data-cl="99">99%</button>
+ </div>
 
-    <!-- Mode panels -->
-    <div id="modePanels">
-      <!-- Mean mode -->
-      <div class="mode-panel" id="panel-mean">
-        <div class="grid-2">
-          <div class="input-group"><label>Sample mean (x̄)</label><input type="number" id="meanInput" step="any" value="100"></div>
-          <div class="input-group"><label>Sample std dev (s)</label><input type="number" id="stdInput" step="any" value="15"></div>
-          <div class="input-group"><label>Sample size (n)</label><input type="number" id="nInput" step="1" value="50"></div>
-        </div>
-      </div>
-      <!-- Proportion mode -->
-      <div class="mode-panel hidden" id="panel-proportion">
-        <div class="grid-2">
-          <div class="input-group"><label>Number of successes</label><input type="number" id="successInput" step="1" value="25"></div>
-          <div class="input-group"><label>Sample size (n)</label><input type="number" id="nPropInput" step="1" value="100"></div>
-        </div>
-      </div>
-      <!-- Diff of means mode -->
-      <div class="mode-panel hidden" id="panel-diffmeans">
-        <div class="grid-2">
-          <div class="input-group"><label>Group 1 mean</label><input type="number" id="mean1Input" step="any" value="105"></div>
-          <div class="input-group"><label>Group 2 mean</label><input type="number" id="mean2Input" step="any" value="95"></div>
-          <div class="input-group"><label>Group 1 std dev</label><input type="number" id="std1Input" step="any" value="12"></div>
-          <div class="input-group"><label>Group 2 std dev</label><input type="number" id="std2Input" step="any" value="14"></div>
-          <div class="input-group"><label>Group 1 n</label><input type="number" id="n1Input" step="1" value="40"></div>
-          <div class="input-group"><label>Group 2 n</label><input type="number" id="n2Input" step="1" value="35"></div>
-        </div>
-      </div>
-    </div>
+ <!-- Mode panels -->
+ <div id="modePanels">
+ <!-- Mean mode -->
+ <div class="mode-panel" id="panel-mean">
+ <div class="grid-2">
+ <div class="input-group"><label>Sample mean (x̄)</label><input type="number" id="meanInput" step="any" value="100"></div>
+ <div class="input-group"><label>Sample std dev (s)</label><input type="number" id="stdInput" step="any" value="15"></div>
+ <div class="input-group"><label>Sample size (n)</label><input type="number" id="nInput" step="1" value="50"></div>
+ </div>
+ </div>
+ <!-- Proportion mode -->
+ <div class="mode-panel hidden" id="panel-proportion">
+ <div class="grid-2">
+ <div class="input-group"><label>Number of successes</label><input type="number" id="successInput" step="1" value="25"></div>
+ <div class="input-group"><label>Sample size (n)</label><input type="number" id="nPropInput" step="1" value="100"></div>
+ </div>
+ </div>
+ <!-- Diff of means mode -->
+ <div class="mode-panel hidden" id="panel-diffmeans">
+ <div class="grid-2">
+ <div class="input-group"><label>Group 1 mean</label><input type="number" id="mean1Input" step="any" value="105"></div>
+ <div class="input-group"><label>Group 2 mean</label><input type="number" id="mean2Input" step="any" value="95"></div>
+ <div class="input-group"><label>Group 1 std dev</label><input type="number" id="std1Input" step="any" value="12"></div>
+ <div class="input-group"><label>Group 2 std dev</label><input type="number" id="std2Input" step="any" value="14"></div>
+ <div class="input-group"><label>Group 1 n</label><input type="number" id="n1Input" step="1" value="40"></div>
+ <div class="input-group"><label>Group 2 n</label><input type="number" id="n2Input" step="1" value="35"></div>
+ </div>
+ </div>
+ </div>
 
-    <button class="btn-primary" id="calculateBtn">Calculate Confidence Interval</button>
+ <button class="btn-primary" id="calculateBtn">Calculate Confidence Interval</button>
 
-    <!-- Results -->
-    <div class="results-panel" id="resultsPanel">
-      <div style="display:flex; justify-content: space-between; flex-wrap: wrap;">
-        <div><span class="stat-label">Point estimate</span> <span class="stat-value" id="pointEstimate">—</span></div>
-        <div><span class="stat-label">Margin of error</span> <span class="stat-value" id="marginError">—</span></div>
-        <div><span class="stat-label">CI bounds</span> <span class="stat-value indigo" id="ciBounds">—</span></div>
-      </div>
-      <div class="number-line-container">
-        <div class="number-line" id="numberLine">
-          <div class="line-track"></div>
-          <div class="ci-range" id="ciRange" style="left:20%; width:30%;"></div>
-          <div class="point-estimate-marker" id="pointMarker" style="left:35%;"></div>
-        </div>
-        <div class="line-labels"><span id="lowerLabel">—</span><span id="upperLabel">—</span></div>
-      </div>
-      <div class="interpret" id="interpretation">Interpretation will appear here.</div>
-    </div>
-  </div>
-  <div class="footnote">abwex.com — statistics tools with clarity</div>
+ <!-- Results -->
+ <div class="results-panel" id="resultsPanel">
+ <div style="display:flex; justify-content: space-between; flex-wrap: wrap;">
+ <div><span class="stat-label">Point estimate</span> <span class="stat-value" id="pointEstimate">&middot;</span></div>
+ <div><span class="stat-label">Margin of error</span> <span class="stat-value" id="marginError">&middot;</span></div>
+ <div><span class="stat-label">CI bounds</span> <span class="stat-value indigo" id="ciBounds">&middot;</span></div>
+ </div>
+ <div class="number-line-container">
+ <div class="number-line" id="numberLine">
+ <div class="line-track"></div>
+ <div class="ci-range" id="ciRange" style="left:20%; width:30%;"></div>
+ <div class="point-estimate-marker" id="pointMarker" style="left:35%;"></div>
+ </div>
+ <div class="line-labels"><span id="lowerLabel">&middot;</span><span id="upperLabel">&middot;</span></div>
+ </div>
+ <div class="interpret" id="interpretation">Interpretation will appear here.</div>
+ </div>
+ </div>
+ <div class="footnote">abwex.com, statistics tools with clarity</div>
 </div>
 
 <script>
@@ -483,11 +472,11 @@
           interpretation = `We are ${confidenceLevel*100}% confident that the true difference (μ₁−μ₂) lies between ${lower.toFixed(3)} and ${upper.toFixed(3)}.`;
         }
       } catch(e) {
-        pointEstimateEl.textContent = '—';
-        marginErrorEl.textContent = '—';
-        ciBoundsEl.textContent = '—';
-        lowerLabel.textContent = '—';
-        upperLabel.textContent = '—';
+        pointEstimateEl.textContent = '&middot;';
+        marginErrorEl.textContent = '&middot;';
+        ciBoundsEl.textContent = '&middot;';
+        lowerLabel.textContent = '&middot;';
+        upperLabel.textContent = '&middot;';
         ciRange.style.left = '10%';
         ciRange.style.width = '30%';
         pointMarker.style.left = '25%';
@@ -563,7 +552,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>

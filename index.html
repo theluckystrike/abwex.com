@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A/B Test Statistical Significance Calculator — ABWex</title>
-  <meta name="description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue impact projections, sample size calculator, and visual charts. No sign-up required.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/">
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-<link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="ABWex — A/B Test Statistical Significance Calculator (Frequentist & Bayesian)">
-  <meta property="og:description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue impact projections, sample size calculator, and visual charts.">
-  <meta property="og:url" content="https://abwex.com/">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ABWex — A/B Test Statistical Significance Calculator">
-  <meta name="twitter:description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue projections, and sample size planning.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>A/B Test Statistical Significance Calculator, ABWex</title>
+ <meta name="description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue impact projections, sample size calculator, and visual charts. No sign-up required.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/">
+ <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="alternate" type="application/atom+xml" title="ABWex, A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+ <meta property="og:title" content="ABWex, A/B Test Statistical Significance Calculator (Frequentist & Bayesian)">
+ <meta property="og:description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue impact projections, sample size calculator, and visual charts.">
+ <meta property="og:url" content="https://abwex.com/">
+ <meta property="og:type" content="website">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="ABWex, A/B Test Statistical Significance Calculator">
+ <meta name="twitter:description" content="Free A/B test calculator with frequentist Z-test and Bayesian analysis. Multi-variant comparison, revenue projections, and sample size planning.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -43,182 +43,111 @@
     "browserRequirements": "Requires JavaScript"
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is statistical significance in A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test: z = (p1-p2) / sqrt(p_pool*(1-p_pool)*(1/n1+1/n2))."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Bayesian vs frequentist A/B testing: which should I use?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss. Bayesian methods give you P(B beats A) directly, while frequentist methods give you a p-value that measures evidence against the null hypothesis."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How long should I run an A/B test?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Run your test until you reach the pre-calculated sample size. Use ABWex's Sample Size Calculator to determine this before starting. For a typical 5% baseline conversion rate and 10% minimum detectable effect at 80% power, you need approximately 31,000 visitors per variant. Stopping early inflates false positive rates. Always run for at least one full business cycle (typically 7 days) to account for day-of-week effects."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What sample size do I need for A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sample size depends on four factors: your baseline conversion rate, the minimum effect you want to detect (MDE), desired statistical power (typically 80%), and significance level (typically 0.05). The formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1(1-p1) + p2(1-p2)) / delta^2. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate requires about 31,000 visitors per variant."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What does p-value mean in A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The p-value is the probability of observing a difference as large as (or larger than) your actual result, assuming there is no real difference between variants (the null hypothesis). A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better — that is a common misinterpretation. For that probability, use Bayesian analysis."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I compare more than two variants at once?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, ABWex's Multi-Variant tab supports comparing up to 4 variants (A/B/C/D) simultaneously. It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is best."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I calculate revenue impact from an A/B test?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Enter your average revenue per conversion and monthly traffic in ABWex's Revenue Impact section. It projects monthly and annual revenue changes based on the conversion rate difference between your control and variant, helping you make data-driven business decisions."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is ABWex free to use?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, ABWex is completely free with no sign-up required. All statistical calculations run in your browser using JavaScript — your data is never sent to any server, ensuring complete privacy for sensitive business metrics."
-        }
-      }
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is statistical significance in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test: z = (p1-p2) / sqrt(p_pool*(1-p_pool)*(1/n1+1/n2))."}},{"@type":"Question","name":"Bayesian vs frequentist A/B testing: which should I use?","acceptedAnswer":{"@type":"Answer","text":"Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss. Bayesian methods give you P(B beats A) directly, while frequentist methods give you a p-value that measures evidence against the null hypothesis."}},{"@type":"Question","name":"How long should I run an A/B test?","acceptedAnswer":{"@type":"Answer","text":"Run your test until you reach the pre-calculated sample size. Use ABWex's Sample Size Calculator to determine this before starting. For a typical 5% baseline conversion rate and 10% minimum detectable effect at 80% power, you need approximately 31,000 visitors per variant. Stopping early inflates false positive rates. Always run for at least one full business cycle (typically 7 days) to account for day-of-week effects."}},{"@type":"Question","name":"What sample size do I need for A/B testing?","acceptedAnswer":{"@type":"Answer","text":"Sample size depends on four factors: your baseline conversion rate, the minimum effect you want to detect (MDE), desired statistical power (typically 80%), and significance level (typically 0.05). The formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1(1-p1) + p2(1-p2)) / delta^2. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate requires about 31,000 visitors per variant."}},{"@type":"Question","name":"What does p-value mean in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"The p-value is the probability of observing a difference as large as (or larger than) your actual result, assuming there is no real difference between variants (the null hypothesis). A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better, that is a common misinterpretation. For that probability, use Bayesian analysis."}},{"@type":"Question","name":"Can I compare more than two variants at once?","acceptedAnswer":{"@type":"Answer","text":"Yes, ABWex's Multi-Variant tab supports comparing up to 4 variants (A/B/C/D) simultaneously. It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is best."}},{"@type":"Question","name":"How do I calculate revenue impact from an A/B test?","acceptedAnswer":{"@type":"Answer","text":"Enter your average revenue per conversion and monthly traffic in ABWex's Revenue Impact section. It projects monthly and annual revenue changes based on the conversion rate difference between your control and variant, helping you make data-driven business decisions."}},{"@type":"Question","name":"Is ABWex free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes, ABWex is completely free with no sign-up required. All statistical calculations run in your browser using JavaScript, your data is never sent to any server, ensuring complete privacy for sensitive business metrics."}}]}</script>
+ <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebSite","name":"ABWex","url":"https://abwex.com/","sameAs":["https://github.com/theluckystrike/abwex.com"],"author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one"}}
   </script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/" class="active">Calculator</a>
-        <a href="/tools/">Tools</a>
-        <a href="/answers/">Answers</a>
-        <a href="/guides/">Guides</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=home" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/" class="active">Calculator</a>
+ <a href="/tools/">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=home" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <section class="hero">
-      <h1>A/B Test <span>Significance</span> Calculator</h1>
-      <p>Frequentist and Bayesian analysis, multi-variant comparison, revenue impact projections, and sample size planning. All math runs in your browser.</p>
-    </section>
+ <main class="container">
+ <section class="hero">
+ <h1>A/B Test <span>Significance</span> Calculator</h1>
+ <p>Frequentist and Bayesian analysis, multi-variant comparison, revenue impact projections, and sample size planning. All math runs in your browser.</p>
+ </section>
 
-    <div class="tab-bar">
-      <button class="tab-btn active" data-tab="calc">Calculator</button>
-      <button class="tab-btn" data-tab="multi">Multi-Variant</button>
-      <button class="tab-btn" data-tab="sample">Sample Size</button>
-    </div>
+ <div class="tab-bar">
+ <button class="tab-btn active" data-tab="calc">Calculator</button>
+ <button class="tab-btn" data-tab="multi">Multi-Variant</button>
+ <button class="tab-btn" data-tab="sample">Sample Size</button>
+ </div>
 
-    <div id="calc-content" class="tab-pane active"></div>
-    <div id="multi-content" class="tab-pane"></div>
-    <div id="sample-content" class="tab-pane"></div>
+ <div id="calc-content" class="tab-pane active"></div>
+ <div id="multi-content" class="tab-pane"></div>
+ <div id="sample-content" class="tab-pane"></div>
 
-    <section class="explainer-section">
-      <h2>How the A/B Test Calculator Works</h2>
-      <p>ABWex provides two distinct statistical frameworks for analyzing A/B test results. The frequentist mode uses the two-proportion Z-test, which compares conversion rates between your control and variant by computing a Z-score and corresponding p-value. The formula pools the conversion rates to estimate the common proportion under the null hypothesis, then measures how many standard deviations the observed difference falls from zero. When the p-value drops below your significance threshold (typically 0.05), you can reject the null hypothesis and declare the result statistically significant.</p>
-      <p>The Bayesian mode takes a fundamentally different approach. It models each variant's conversion rate as a Beta distribution — specifically, Beta(conversions + 1, visitors - conversions + 1) using a uniform prior. ABWex then computes P(B beats A) through numerical integration using Simpson's rule for deterministic, reproducible results. The overlapping Beta distribution curves are rendered as SVG paths so you can visually see the probability mass overlap between variants. The expected loss calculation tells you the average conversion rate you would sacrifice by choosing the wrong variant, which translates directly into business risk.</p>
-      <p>The Multi-Variant tab extends both modes to support up to four variants (A/B/C/D). It automatically generates all pairwise comparisons, highlights the winning variant, and in Bayesian mode shows the probability that each variant is the absolute best. The Sample Size pre-calculator uses the standard power analysis formula to determine how many visitors you need per variant before starting your test, and includes a duration estimator based on your daily traffic.</p>
+ <section class="explainer-section">
+ <h2>How the A/B Test Calculator Works</h2>
+ <p>ABWex provides two distinct statistical frameworks for analyzing A/B test results. The frequentist mode uses the two-proportion Z-test, which compares conversion rates between your control and variant by computing a Z-score and corresponding p-value. The formula pools the conversion rates to estimate the common proportion under the null hypothesis, then measures how many standard deviations the observed difference falls from zero. When the p-value drops below your significance threshold (typically 0.05), you can reject the null hypothesis and declare the result statistically significant.</p>
+ <p>The Bayesian mode takes a fundamentally different approach. It models each variant's conversion rate as a Beta distribution, specifically, Beta(conversions + 1, visitors - conversions + 1) using a uniform prior. ABWex then computes P(B beats A) through numerical integration using Simpson's rule for deterministic, reproducible results. The overlapping Beta distribution curves are rendered as SVG paths so you can visually see the probability mass overlap between variants. The expected loss calculation tells you the average conversion rate you would sacrifice by choosing the wrong variant, which translates directly into business risk.</p>
+ <p>The Multi-Variant tab extends both modes to support up to four variants (A/B/C/D). It automatically generates all pairwise comparisons, highlights the winning variant, and in Bayesian mode shows the probability that each variant is the absolute best. The Sample Size pre-calculator uses the standard power analysis formula to determine how many visitors you need per variant before starting your test, and includes a duration estimator based on your daily traffic.</p>
 
-      <h3>Features</h3>
-      <p>ABWex includes frequentist Z-test with p-value, Z-score, and confidence intervals, Bayesian Beta-Binomial analysis with P(B beats A) and expected loss, multi-variant comparison for up to four variants with pairwise analysis, a revenue impact calculator that projects monthly and annual revenue changes based on your average revenue per conversion and traffic volume, a sample size pre-calculator with power curves and duration estimates, color-coded significance indicators, formula transparency showing the exact math behind every result, and full client-side processing with no server dependency.</p>
+ <h3>Features</h3>
+ <p>ABWex includes frequentist Z-test with p-value, Z-score, and confidence intervals, Bayesian Beta-Binomial analysis with P(B beats A) and expected loss, multi-variant comparison for up to four variants with pairwise analysis, a revenue impact calculator that projects monthly and annual revenue changes based on your average revenue per conversion and traffic volume, a sample size pre-calculator with power curves and duration estimates, color-coded significance indicators, formula transparency showing the exact math behind every result, and full client-side processing with no server dependency.</p>
 
-      <h3>Who Uses This</h3>
-      <p>Product managers use ABWex to evaluate feature experiments and decide whether to ship changes. Growth engineers run conversion rate optimization tests on landing pages, signup flows, and pricing pages. Marketing teams compare ad creative and email subject line performance. Data analysts validate experiment results using both frequentist and Bayesian frameworks. Startups with limited traffic use the Bayesian mode to make informed decisions before reaching traditional significance thresholds. If you also need to <a href="https://enhio.com">optimize your landing page copy</a> or <a href="https://krzen.com">compress images for faster page loads</a>, those companion tools integrate well with the A/B testing workflow.</p>
+ <h3>Who Uses This</h3>
+ <p>Product managers use ABWex to evaluate feature experiments and decide whether to ship changes. Growth engineers run conversion rate optimization tests on landing pages, signup flows, and pricing pages. Marketing teams compare ad creative and email subject line performance. Data analysts validate experiment results using both frequentist and Bayesian frameworks. Startups with limited traffic use the Bayesian mode to make informed decisions before reaching traditional significance thresholds. If you also need to <a href="https://enhio.com">improve your landing page copy</a> or <a href="https://krzen.com">compress images for faster page loads</a>, those companion tools integrate well with the A/B testing workflow.</p>
 
-      <h3>Privacy</h3>
-      <p>All statistical calculations run locally in your browser using JavaScript. Your conversion data, visitor counts, and revenue figures are never sent to any server, never stored, and never shared. There are no cookies, no analytics trackers, and no accounts required. The source code is open on <a href="https://github.com/theluckystrike/abwex.com">GitHub</a>. For teams building ML-powered experimentation platforms, <a href="https://kappakit.com">KappaKit</a> provides useful development utilities.</p>
-    </section>
+ <h3>Privacy</h3>
+ <p>All statistical calculations run locally in your browser using JavaScript. Your conversion data, visitor counts, and revenue figures are never sent to any server, never stored, and never shared. There are no cookies, no analytics trackers, and no accounts required. The source code is open on <a href="https://github.com/theluckystrike/abwex.com">GitHub</a>. For teams building ML-powered experimentation platforms, <a href="https://kappakit.com">KappaKit</a> provides useful development utilities.</p>
+ </section>
 
-    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+ <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
 
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
+ <section class="faq-section">
+ <h2>Common questions</h2>
 
-      <details>
-        <summary>What is statistical significance in A/B testing?</summary>
-        <p>Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test.</p>
-      </details>
+ <details>
+ <summary>What is statistical significance in A/B testing?</summary>
+ <p>Statistical significance means the observed difference between your control and variant is unlikely to be due to random chance. In A/B testing, a result is typically considered significant when the p-value is below 0.05, meaning there is less than a 5% probability the difference occurred by chance. ABWex calculates this using the two-proportion Z-test.</p>
+ </details>
 
-      <details>
-        <summary>Bayesian vs frequentist A/B testing: which should I use?</summary>
-        <p>Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss from choosing wrong. Toggle between modes using the switch above the calculator.</p>
-      </details>
+ <details>
+ <summary>Bayesian vs frequentist A/B testing: which should I use?</summary>
+ <p>Use frequentist testing when you have a fixed sample size and want a yes/no answer about significance. Use Bayesian testing when you want to know the probability that one variant is better, need to make decisions with smaller samples, or want to quantify expected loss from choosing wrong. Toggle between modes using the switch above the calculator.</p>
+ </details>
 
-      <details>
-        <summary>How long should I run an A/B test?</summary>
-        <p>Run your test until you reach the pre-calculated sample size. Use the Sample Size tab to determine this before starting. Stopping early because you see a significant result inflates your false positive rate. Always run for at least one full business cycle (7 days minimum) to account for day-of-week effects, and never peek repeatedly at results without adjusting for multiple comparisons.</p>
-      </details>
+ <details>
+ <summary>How long should I run an A/B test?</summary>
+ <p>Run your test until you reach the pre-calculated sample size. Use the Sample Size tab to determine this before starting. Stopping early because you see a significant result inflates your false positive rate. Always run for at least one full business cycle (7 days minimum) to account for day-of-week effects, and never peek repeatedly at results without adjusting for multiple comparisons.</p>
+ </details>
 
-      <details>
-        <summary>What sample size do I need for A/B testing?</summary>
-        <p>It depends on your baseline conversion rate, the minimum effect size you want to detect, and your desired power level. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate at 80% power requires approximately 31,000 visitors per variant. Use the Sample Size tab for your exact numbers.</p>
-      </details>
+ <details>
+ <summary>What sample size do I need for A/B testing?</summary>
+ <p>It depends on your baseline conversion rate, the minimum effect size you want to detect, and your desired power level. As a rough guide: detecting a 10% relative improvement on a 5% conversion rate at 80% power requires approximately 31,000 visitors per variant. Use the Sample Size tab for your exact numbers.</p>
+ </details>
 
-      <details>
-        <summary>What does p-value mean in A/B testing?</summary>
-        <p>The p-value is the probability of observing a difference as large as your actual result, assuming there is no real difference between variants. A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better. For that probability, switch to Bayesian mode which gives you P(B beats A) directly.</p>
-      </details>
+ <details>
+ <summary>What does p-value mean in A/B testing?</summary>
+ <p>The p-value is the probability of observing a difference as large as your actual result, assuming there is no real difference between variants. A p-value of 0.03 means there is a 3% chance of seeing this result if the variants perform identically. It does NOT mean there is a 97% chance the variant is better. For that probability, switch to Bayesian mode which gives you P(B beats A) directly.</p>
+ </details>
 
-      <details>
-        <summary>Can I compare more than two variants at once?</summary>
-        <p>Yes, ABWex's Multi-Variant tab supports comparing up to 4 variants (A/B/C/D) simultaneously. It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is the absolute best among all variants.</p>
-      </details>
+ <details>
+ <summary>Can I compare more than two variants at once?</summary>
+ <p>Yes, ABWex's Multi-Variant tab supports comparing up to 4 variants (A/B/C/D) simultaneously. It compares all pairs, highlights the winner, and in Bayesian mode shows the probability that each variant is the absolute best among all variants.</p>
+ </details>
 
-      <details>
-        <summary>How do I calculate revenue impact from an A/B test?</summary>
-        <p>Enter your average revenue per conversion and monthly traffic in ABWex's Revenue Impact section. It projects monthly and annual revenue changes based on the conversion rate difference, helping you translate statistical results into business decisions.</p>
-      </details>
+ <details>
+ <summary>How do I calculate revenue impact from an A/B test?</summary>
+ <p>Enter your average revenue per conversion and monthly traffic in ABWex's Revenue Impact section. It projects monthly and annual revenue changes based on the conversion rate difference, helping you translate statistical results into business decisions.</p>
+ </details>
 
-      <details>
-        <summary>Is ABWex free to use?</summary>
-        <p>Yes, ABWex is completely free with no sign-up required. All statistical calculations run in your browser — your data is never sent to any server, ensuring complete privacy for sensitive business metrics.</p>
-      </details>
-    </section>
+ <details>
+ <summary>Is ABWex free to use?</summary>
+ <p>Yes, ABWex is completely free with no sign-up required. All statistical calculations run in your browser. Your data is never sent to any server, ensuring complete privacy for sensitive business metrics.</p>
+ </details>
+ </section>
 
-    <!-- Internal Content Discovery -->
-    <section class="content-discovery" style="max-width:960px;margin:3rem auto;padding:0 1rem;">
-      <style>
+ <!-- Internal Content Discovery -->
+ <section class="content-discovery" style="max-width:960px;margin:3rem auto;padding:0 1rem;">
+ <style>
         .content-discovery h2 { text-align:center; margin-bottom:2rem; }
         .content-discovery .disc-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem; margin-bottom:2.5rem; }
         .content-discovery .disc-group h3 { font-size:1.1rem; margin-bottom:0.75rem; color:var(--accent, #14B8A6); border-bottom:1px solid var(--border, #333); padding-bottom:0.5rem; }
@@ -227,95 +156,95 @@
         .content-discovery .disc-group a { color:var(--text, #e0e0e0); text-decoration:none; font-size:0.9rem; }
         .content-discovery .disc-group a:hover { color:var(--accent, #14B8A6); text-decoration:underline; }
       </style>
-      <h2>Explore ABWex</h2>
-      <div class="disc-grid">
-        <div class="disc-group">
-          <h3>Testing Tools</h3>
-          <ul>
-            <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a></li>
-            <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a></li>
-            <li><a href="/tools/chi-square-test.html">Chi-Square Test</a></li>
-            <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a></li>
-            <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing</a></li>
-          </ul>
-        </div>
-        <div class="disc-group">
-          <h3>Answers</h3>
-          <ul>
-            <li><a href="/answers/ab-test-sample-size-calculator.html">A/B Test Sample Size Calculator</a></li>
-            <li><a href="/answers/is-my-ab-test-significant.html">Is My A/B Test Significant?</a></li>
-            <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a></li>
-          </ul>
-        </div>
-        <div class="disc-group">
-          <h3>Research</h3>
-          <ul>
-            <li><a href="/research/ab-test-duration-calculator.html">A/B Test Duration Calculator</a></li>
-            <li><a href="/research/ab-test-mistakes.html">A/B Test Mistakes</a></li>
-          </ul>
-        </div>
-        <div class="disc-group">
-          <h3>Guides</h3>
-          <ul>
-            <li><a href="/guides/chi-square-test-guide.html">Chi-Square Test Explained</a></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
+ <h2>Explore ABWex</h2>
+ <div class="disc-grid">
+ <div class="disc-group">
+ <h3>Testing Tools</h3>
+ <ul>
+ <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a></li>
+ <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a></li>
+ <li><a href="/tools/chi-square-test.html">Chi-Square Test</a></li>
+ <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a></li>
+ <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Answers</h3>
+ <ul>
+ <li><a href="/answers/ab-test-sample-size-calculator.html">A/B Test Sample Size Calculator</a></li>
+ <li><a href="/answers/is-my-ab-test-significant.html">Is My A/B Test Significant?</a></li>
+ <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Research</h3>
+ <ul>
+ <li><a href="/research/ab-test-duration-calculator.html">A/B Test Duration Calculator</a></li>
+ <li><a href="/research/ab-test-mistakes.html">A/B Test Mistakes</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Guides</h3>
+ <ul>
+ <li><a href="/guides/chi-square-test-guide.html">Chi-Square Test Explained</a></li>
+ </ul>
+ </div>
+ </div>
+ </section>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
-        <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=home">Zovo</a> · 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=home">Zovo</a> · 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=home">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=home">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=home" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=home" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
-  <script src="/assets/app.js"></script>
-  <script src="/assets/js/share.js"></script>
+ <script src="/assets/app.js"></script>
+ <script src="/assets/js/share.js"></script>
 </body>
 </html>

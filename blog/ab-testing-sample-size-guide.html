@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A/B Testing Sample Size: How Much Traffic You Need — ABWex</title>
-  <meta name="description" content="Sample size tables for common A/B testing scenarios, the math behind the formula, and a reality check on how long tests take at different traffic levels.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
-<link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="A/B Testing Sample Size: How Much Traffic You Actually Need — ABWex">
-  <meta property="og:description" content="Sample size tables for common A/B testing scenarios, the math behind the formula, and a reality check on how long tests take at different traffic levels.">
-  <meta property="og:url" content="https://abwex.com/blog/ab-testing-sample-size-guide.html">
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="A/B Testing Sample Size: How Much Traffic You Actually Need">
-  <meta name="twitter:description" content="Sample size tables for common A/B testing scenarios and a reality check on how long tests take.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>A/B Testing Sample Size: How Much Traffic You Need, ABWex</title>
+ <meta name="description" content="Sample size tables for common A/B testing scenarios, the math behind the formula, and a reality check on how long tests take at different traffic levels.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
+<link rel="alternate" type="application/atom+xml" title="ABWex, A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+ <meta property="og:title" content="A/B Testing Sample Size: How Much Traffic You Actually Need, ABWex">
+ <meta property="og:description" content="Sample size tables for common A/B testing scenarios, the math behind the formula, and a reality check on how long tests take at different traffic levels.">
+ <meta property="og:url" content="https://abwex.com/blog/ab-testing-sample-size-guide.html">
+ <meta property="og:type" content="article">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="A/B Testing Sample Size: How Much Traffic You Actually Need">
+ <meta name="twitter:description" content="Sample size tables for common A/B testing scenarios and a reality check on how long tests take.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/blog/ab-testing-sample-size-guide.html">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -34,42 +34,42 @@
     "mainEntityOfPage": "https://abwex.com/blog/ab-testing-sample-size-guide.html"
   }
   </script>
-  <script type="application/ld+json">
+ <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://abwex.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "A/B Testing Sample Size: How Much Traffic You Need"}]}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/about.html">About</a>
-        <a href="/blog/" class="active">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro ✦</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=blog-ab-testing-sample-size-guide" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/about.html">About</a>
+ <a href="/blog/" class="active">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=blog-ab-testing-sample-size-guide" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <article class="article">
-    <h1>A/B Testing Sample Size: How Much Traffic You Actually Need</h1>
-    <div class="meta">By <a href="/about.html">Michael Lip</a> &middot; April 2025 &middot; 8 min read</div>
+ <article class="article">
+ <h1>A/B Testing Sample Size, How Much Traffic You Actually Need</h1>
+ <div class="meta">By <a href="/about.html">Michael Lip</a> &middot; April 2025 &middot; 8 min read</div>
 
-    <p>The number one mistake in A/B testing is stopping too early. The number two mistake is not calculating sample size before starting. This guide gives you the actual numbers for common scenarios, explains the math, and provides a reality check on how long tests take at real-world traffic levels.</p>
+ <p>The number one mistake in A/B testing is stopping too early. The number two mistake is not calculating sample size before starting. This guide gives you the actual numbers for common scenarios, explains the math, and provides a reality check on how long tests take at real-world traffic levels.</p>
 
-    <h2>The Formula</h2>
+ <h2>The Formula</h2>
 
-    <p>For a two-proportion Z-test comparing conversion rates, the required sample size per variant is:</p>
+ <p>For a two-proportion Z-test comparing conversion rates, the required sample size per variant is:</p>
 
-    <pre><code>n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2
+ <pre><code>n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2
 
 Where:
   Z_alpha/2 = 1.96 for 95% significance (alpha = 0.05)
@@ -77,15 +77,15 @@ Where:
   p1        = baseline conversion rate
   p2        = baseline * (1 + minimum detectable effect)</code></pre>
 
-    <p>Use <a href="/">ABWex's Sample Size Calculator</a> to compute this for your specific numbers.</p>
+ <p>Use <a href="/">ABWex's Sample Size Calculator</a> to compute this for your specific numbers.</p>
 
-    <h2>Sample Size Tables</h2>
+ <h2>Sample Size Tables</h2>
 
-    <h3>At 80% power, 95% significance (alpha = 0.05)</h3>
+ <h3>At 80% power, 95% significance (alpha = 0.05)</h3>
 
-    <p>This is the most common configuration. Numbers are per variant (multiply by 2 for total).</p>
+ <p>That's the most common configuration. Numbers are per variant (multiply by 2 for total).</p>
 
-    <pre><code>Baseline    MDE 5%      MDE 10%     MDE 15%     MDE 20%
+ <pre><code>Baseline    MDE 5%      MDE 10%     MDE 15%     MDE 20%
 --------------------------------------------------------------
 1%          305,756     76,439      33,973      19,110
 2%          150,366     37,591      16,707      9,398
@@ -95,17 +95,17 @@ Where:
 15%         17,306      4,327       1,923       1,081
 20%         12,236      3,059       1,360       765</code></pre>
 
-    <p>Key observations from this table:</p>
+ <p>Key observations from this table:</p>
 
-    <ul>
-      <li><strong>Low baseline rates are expensive.</strong> A 1% conversion rate with a 5% MDE requires 306,000 visitors per variant. That is 612,000 total.</li>
-      <li><strong>Doubling the MDE cuts sample size by 75%.</strong> Going from 5% MDE to 10% MDE at a 5% baseline drops from 58,709 to 14,677. If you can accept detecting only larger effects, tests finish much faster.</li>
-      <li><strong>Higher baselines need fewer visitors.</strong> A 20% conversion rate at 10% MDE needs only 3,059 per variant. Landing pages with high conversion rates can be tested quickly.</li>
-    </ul>
+ <ul>
+ <li><strong>Low baseline rates are expensive.</strong> A 1% conversion rate with a 5% MDE requires 306,000 visitors per variant. That is 612,000 total.</li>
+ <li><strong>Doubling the MDE cuts sample size by 75%.</strong> Going from 5% MDE to 10% MDE at a 5% baseline drops from 58,709 to 14,677. If you can accept detecting only larger effects, tests finish much faster.</li>
+ <li><strong>Higher baselines need fewer visitors.</strong> A 20% conversion rate at 10% MDE needs only 3,059 per variant. Landing pages with high conversion rates can be tested quickly.</li>
+ </ul>
 
-    <h3>At 90% power, 95% significance</h3>
+ <h3>At 90% power, 95% significance</h3>
 
-    <pre><code>Baseline    MDE 5%      MDE 10%     MDE 15%     MDE 20%
+ <pre><code>Baseline    MDE 5%      MDE 10%     MDE 15%     MDE 20%
 --------------------------------------------------------------
 1%          409,095     102,274     45,455      25,569
 2%          201,083     50,271      22,343      12,568
@@ -113,13 +113,13 @@ Where:
 10%         37,011      9,253       4,112       2,313
 20%         16,366      4,091       1,818       1,023</code></pre>
 
-    <p>Going from 80% to 90% power increases sample size by roughly 34%. The extra confidence costs real traffic.</p>
+ <p>Going from 80% to 90% power increases sample size by roughly 34%. The extra confidence costs real traffic.</p>
 
-    <h2>Reality Check: How Long Will This Take?</h2>
+ <h2>Reality Check, How Long Will This Take?</h2>
 
-    <p>Here is the test duration at different daily traffic levels, assuming 50/50 split (per variant gets half of traffic). Using 5% baseline, 10% MDE, 80% power = 14,677 per variant.</p>
+ <p>Here is the test duration at different daily traffic levels, assuming 50/50 split (per variant gets half of traffic). Using 5% baseline, 10% MDE, 80% power = 14,677 per variant.</p>
 
-    <pre><code>Daily Traffic    Per Variant/Day    Days to Complete
+ <pre><code>Daily Traffic    Per Variant/Day    Days to Complete
 ---------------------------------------------------
 500              250                59 days
 1,000            500                30 days
@@ -128,106 +128,106 @@ Where:
 50,000           25,000             1 day
 100,000          50,000             < 1 day</code></pre>
 
-    <p>If your site gets 1,000 daily visitors: a standard A/B test with a 10% MDE takes a full month. A 5% MDE test at the same traffic takes nearly 4 months. This is the uncomfortable reality that most A/B testing blog posts gloss over.</p>
+ <p>If your site gets 1,000 daily visitors: a standard A/B test with a 10% MDE takes a full month. A 5% MDE test at the same traffic takes nearly 4 months. That's the uncomfortable reality that most A/B testing blog posts gloss over.</p>
 
-    <p>For developer utilities that complement your testing workflow, check out <a href="https://kappakit.com/tools/">KappaKit's developer toolkit</a>.</p>
+ <p>For developer utilities that complement your testing workflow, check out <a href="https://kappakit.com/tools/">KappaKit's developer toolkit</a>.</p>
 
-    <h2>What If You Do Not Have Enough Traffic?</h2>
+ <h2>What If You Do Not Have Enough Traffic?</h2>
 
-    <p>If the sample size calculation shows you need more traffic than you realistically get in a reasonable timeframe, you have four options:</p>
+ <p>If the sample size calculation shows you need more traffic than you realistically get in a reasonable timeframe, you have four options:</p>
 
-    <ol>
-      <li><strong>Increase your MDE.</strong> Instead of trying to detect a 5% improvement, look for a 20% improvement. This cuts sample size by roughly 16x. Test bigger, bolder changes.</li>
-      <li><strong>Use Bayesian methods.</strong> Bayesian analysis gives useful information at smaller sample sizes. You will not get a "significant" p-value, but you can get a probability like "75% chance B is better" which may be actionable enough. Toggle to Bayesian mode on <a href="/">ABWex</a>.</li>
-      <li><strong>Narrow your audience.</strong> Instead of testing on all visitors, test on a high-intent segment (e.g., visitors who reach the pricing page). Higher baseline conversion rates need fewer samples.</li>
-      <li><strong>Accept less power.</strong> Dropping from 80% to 70% power reduces sample size by about 15%. You increase the chance of missing a real effect, but if you are traffic-constrained, it may be a reasonable tradeoff.</li>
-    </ol>
+ <ol>
+ <li><strong>Increase your MDE.</strong> Instead of trying to detect a 5% improvement, look for a 20% improvement. This cuts sample size by roughly 16x. Test bigger, bolder changes.</li>
+ <li><strong>Use Bayesian methods.</strong> Bayesian analysis gives useful information at smaller sample sizes. You will not get a "significant" p-value, but you can get a probability like "75% chance B is better" which may be actionable enough. Toggle to Bayesian mode on <a href="/">ABWex</a>.</li>
+ <li><strong>Narrow your audience.</strong> Instead of testing on all visitors, test on a high-intent segment (e.g., visitors who reach the pricing page). Higher baseline conversion rates need fewer samples.</li>
+ <li><strong>Accept less power.</strong> Dropping from 80% to 70% power reduces sample size by about 15%. You increase the chance of missing a real effect, but if you are traffic-constrained, it may be a reasonable tradeoff.</li>
+ </ol>
 
-    <h2>The Multiple Testing Problem</h2>
+ <h2>The Multiple Testing Problem</h2>
 
-    <p>If you check results every day and stop when you see significance, your actual false positive rate is much higher than 5%. This is called the multiple testing problem or "peeking." A simulation by Evan Miller showed that peeking at results daily can inflate the false positive rate from 5% to over 30%.</p>
+ <p>If you check results every day and stop when you see significance, your actual false positive rate is much higher than 5%. That's called the multiple testing problem or "peeking." A simulation by Evan Miller showed that peeking at results daily can inflate the false positive rate from 5% to over 30%.</p>
 
-    <p>Solutions:</p>
-    <ul>
-      <li>Calculate sample size before starting and commit to it</li>
-      <li>Use sequential testing methods (alpha spending functions) if you must peek</li>
-      <li>Use Bayesian methods, which do not suffer from the peeking problem</li>
-      <li>ABWex's "When to Stop" advisor warns you about this</li>
-    </ul>
+ <p>Solutions:</p>
+ <ul>
+ <li>Calculate sample size before starting and commit to it</li>
+ <li>Use sequential testing methods (alpha spending functions) if you must peek</li>
+ <li>Use Bayesian methods, which do not suffer from the peeking problem</li>
+ <li>ABWex's "When to Stop" advisor warns you about this</li>
+ </ul>
 
-    <h2>Practical Recommendations</h2>
+ <h2>Practical Recommendations</h2>
 
-    <ol>
-      <li>Always calculate sample size before starting a test. Use the <a href="/">Sample Size tab on ABWex</a>.</li>
-      <li>For most websites (1,000-10,000 daily visitors), target a 10-20% MDE. Detecting 5% improvements requires enormous traffic.</li>
-      <li>Run tests for at least 7 days regardless of sample size to capture day-of-week effects.</li>
-      <li>Do not stop early because you see significance. Finish the predetermined sample size.</li>
-      <li>If you have low traffic, test fewer variants. Each additional variant splits your traffic further.</li>
-    </ol>
+ <ol>
+ <li>Always calculate sample size before starting a test. Use the <a href="/">Sample Size tab on ABWex</a>.</li>
+ <li>For most websites (1,000-10,000 daily visitors), target a 10-20% MDE. Detecting 5% improvements requires enormous traffic.</li>
+ <li>Run tests for at least 7 days regardless of sample size to capture day-of-week effects.</li>
+ <li>Do not stop early because you see significance. Finish the predetermined sample size.</li>
+ <li>If you have low traffic, test fewer variants. Each additional variant splits your traffic further.</li>
+ </ol>
 
-    <p>Calculate your exact numbers at <a href="/">abwex.com</a>.</p>
+ <p>Calculate your exact numbers at <a href="/">abwex.com</a>.</p>
 
-    <p><em>Part of the <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=blog-ab-testing-sample-size-guide">analytics tools</a> tools collection.</em></p>
-        <section class="appendix">
-          <h3>Additional Resources</h3>
-          <ul>
-          <li><a href="https://en.wikipedia.org/wiki/Sample_size_determination" target="_blank">Wikipedia: Sample size determination</a></li>
-          <li><a href="https://en.wikipedia.org/wiki/Statistical_significance" target="_blank">Wikipedia: Statistical significance</a></li>
-          <li><a href="https://docs.scipy.org/doc/scipy/reference/stats.html" target="_blank">SciPy statistics module documentation</a></li>
-          </ul>
-        </section>
+ <p><em>Part of the <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=blog-ab-testing-sample-size-guide">analytics tools</a> tools collection.</em></p>
+ <section class="appendix">
+ <h3>Additional Resources</h3>
+ <ul>
+ <li><a href="https://en.wikipedia.org/wiki/Sample_size_determination" target="_blank">Wikipedia: Sample size determination</a></li>
+ <li><a href="https://en.wikipedia.org/wiki/Statistical_significance" target="_blank">Wikipedia: Statistical significance</a></li>
+ <li><a href="https://docs.scipy.org/doc/scipy/reference/stats.html" target="_blank">SciPy statistics module documentation</a></li>
+ </ul>
+ </section>
 
-  </article>
+ </article>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
-        <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=blog-ab-testing-sample-size-guide">Zovo</a> · 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=blog-ab-testing-sample-size-guide">Zovo</a> · 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=blog-ab-testing-sample-size-guide">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=blog-ab-testing-sample-size-guide">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=blog-ab-testing-sample-size-guide" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=blog-ab-testing-sample-size-guide" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
@@ -235,8 +235,8 @@ Where:
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/blog/bayesian-vs-frequentist-ab-testing.html" style="color:#3b82f6;text-decoration:none;">Bayesian vs Frequentist A/B Testing: When to Use Which</a></li>
-<li><a href="/guides/multivariate-testing-guide.html" style="color:#3b82f6;text-decoration:none;">Multivariate Testing (MVT) Guide — Factorial Design Calculator</a></li>
-<li><a href="/tools/bayesian-ab-testing.html" style="color:#3b82f6;text-decoration:none;">Bayesian A/B Testing Guide — Beta-Binomial Method</a></li>
+<li><a href="/guides/multivariate-testing-guide.html" style="color:#3b82f6;text-decoration:none;">Multivariate Testing (MVT) Guide, Factorial Design Calculator</a></li>
+<li><a href="/tools/bayesian-ab-testing.html" style="color:#3b82f6;text-decoration:none;">Bayesian A/B Testing Guide, Beta-Binomial Method</a></li>
 </ul>
 </section>
 

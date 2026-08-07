@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>Funnel Conversion Calculator — Analyze Drop-Off at Every Step | abwex.com</title>
-  <meta name="description" content="Interactive funnel conversion calculator: add up to 10 steps, reorder, visualize drop-off, compare with industry benchmarks, and export CSV. Dark theme, mobile-ready.">
-  <meta name="keywords" content="funnel conversion, drop-off analysis, conversion rate, benchmark, CSV export, abwex">
-  <link rel="canonical" href="https://abwex.com/tools/funnel-conversion-calculator">
-  <!-- JSON-LD FAQ -->
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+ <title>Funnel Conversion Calculator, Analyze Drop-Off at Every Step | abwex.com</title>
+ <meta name="description" content="Interactive funnel conversion calculator: add up to 10 steps, reorder, visualize drop-off, compare with industry benchmarks, and export CSV. Dark theme, mobile-ready.">
+ <meta name="keywords" content="funnel conversion, drop-off analysis, conversion rate, benchmark, CSV export, abwex">
+ <link rel="canonical" href="https://abwex.com/tools/funnel-conversion-calculator">
+ <!-- JSON-LD FAQ -->
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -40,7 +40,7 @@
     ]
   }
   </script>
-  <style>
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -364,53 +364,53 @@
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>⚡ Funnel Conversion Calculator</h1>
-    <div class="subhead">Analyze drop-off at every step · up to 10 steps · reorder · benchmarks</div>
-  </header>
+ <header>
+ <h1> Funnel Conversion Calculator</h1>
+ <div class="subhead">Analyze drop-off at every step · up to 10 steps · reorder · benchmarks</div>
+ </header>
 
-  <div class="tool-grid">
-    <!-- Step editor card -->
-    <div class="card">
-      <div class="card-title">📊 Funnel steps</div>
-      <div id="stepListContainer" class="step-list"></div>
-      <div class="add-step-wrap">
-        <button id="addStepBtn" class="btn-primary">+ Add step</button>
-      </div>
-    </div>
+ <div class="tool-grid">
+ <!-- Step editor card -->
+ <div class="card">
+ <div class="card-title"> Funnel steps</div>
+ <div id="stepListContainer" class="step-list"></div>
+ <div class="add-step-wrap">
+ <button id="addStepBtn" class="btn-primary">+ Add step</button>
+ </div>
+ </div>
 
-    <!-- Benchmark card -->
-    <div class="card">
-      <div class="card-title">📈 Benchmark comparison</div>
-      <div class="benchmark-area">
-        <span style="color:#cbd5e1;">Industry average conversion (%)</span>
-        <input type="number" id="benchmarkInput" class="benchmark-input" value="3.5" step="0.1" min="0" max="100">
-        <span style="color:#94a3b8; font-size:0.9rem;">vs your overall: <strong id="benchmarkVs">—</strong></span>
-      </div>
-    </div>
+ <!-- Benchmark card -->
+ <div class="card">
+ <div class="card-title"> Benchmark comparison</div>
+ <div class="benchmark-area">
+ <span style="color:#cbd5e1;">Industry average conversion (%)</span>
+ <input type="number" id="benchmarkInput" class="benchmark-input" value="3.5" step="0.1" min="0" max="100">
+ <span style="color:#94a3b8; font-size:0.9rem;">vs your overall: <strong id="benchmarkVs">&middot;</strong></span>
+ </div>
+ </div>
 
-    <!-- Visualization card -->
-    <div class="card">
-      <div class="card-title">📉 Funnel visualization (relative size)</div>
-      <div id="funnelBars" class="funnel-viz"></div>
-    </div>
+ <!-- Visualization card -->
+ <div class="card">
+ <div class="card-title"> Funnel visualization (relative size)</div>
+ <div id="funnelBars" class="funnel-viz"></div>
+ </div>
 
-    <!-- Summary & table -->
-    <div class="card">
-      <div class="card-title">📋 Step analysis</div>
-      <div id="statsSummary" class="stats-grid"></div>
-      <div style="overflow-x:auto;">
-        <table id="stepTable">
-          <thead>
-            <tr><th>Step</th><th>Visitors</th><th>Step conv. %</th><th>Cumulative %</th><th>Drop-off</th><th>Drop-off %</th></tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-      <button id="exportCsvBtn" class="export-btn">⬇ Export CSV</button>
-    </div>
-  </div>
-  <footer>© 2025 abwex.com</footer>
+ <!-- Summary & table -->
+ <div class="card">
+ <div class="card-title"> Step analysis</div>
+ <div id="statsSummary" class="stats-grid"></div>
+ <div style="overflow-x:auto;">
+ <table id="stepTable">
+ <thead>
+ <tr><th>Step</th><th>Visitors</th><th>Step conv. %</th><th>Cumulative %</th><th>Drop-off</th><th>Drop-off %</th></tr>
+ </thead>
+ <tbody id="tableBody"></tbody>
+ </table>
+ </div>
+ <button id="exportCsvBtn" class="export-btn"> Export CSV</button>
+ </div>
+ </div>
+ <footer>© 2025 abwex.com</footer>
 </div>
 
 <script>
@@ -478,7 +478,7 @@
             <div class="step-actions">
               <button class="btn-icon" data-action="move-up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''}>▲</button>
               <button class="btn-icon" data-action="move-down" data-idx="${idx}" ${idx === steps.length-1 ? 'disabled' : ''}>▼</button>
-              <button class="btn-icon btn-danger" data-action="remove" data-idx="${idx}" ${steps.length <= 1 ? 'disabled' : ''}>✕</button>
+              <button class="btn-icon btn-danger" data-action="remove" data-idx="${idx}" ${steps.length <= 1 ? 'disabled' : ''}>&times;</button>
             </div>
           </div>
         `;
@@ -587,7 +587,7 @@
         <div class="stat-card"><div class="stat-label">Overall conversion</div><div class="stat-value">${overallConversion.toFixed(2)}%</div></div>
         <div class="stat-card"><div class="stat-label">Total drop-off</div><div class="stat-value negative">${totalDrop.toLocaleString()} (${totalDropPct.toFixed(1)}%)</div></div>
         <div class="stat-card"><div class="stat-label">Steps</div><div class="stat-value">${steps.length}</div></div>
-        <div class="stat-card"><div class="stat-label">First → Last</div><div class="stat-value">${firstVis.toLocaleString()} → ${lastVis.toLocaleString()}</div></div>
+        <div class="stat-card"><div class="stat-label">First Last</div><div class="stat-value">${firstVis.toLocaleString()} ${lastVis.toLocaleString()}</div></div>
       `;
 
       // table
@@ -596,8 +596,8 @@
         const m = metrics[idx];
         const isBiggest = biggestDropIdx === idx;
         const rowClass = isBiggest ? 'biggest-drop-row' : '';
-        const dropOffVal = idx === 0 ? '—' : m.dropOff.toLocaleString();
-        const dropOffPctVal = idx === 0 ? '—' : m.dropOffPct.toFixed(1) + '%';
+        const dropOffVal = idx === 0 ? '&middot;' : m.dropOff.toLocaleString();
+        const dropOffPctVal = idx === 0 ? '&middot;' : m.dropOffPct.toFixed(1) + '%';
         const stepConvVal = idx === 0 ? '100%' : m.stepConv.toFixed(2) + '%';
         const cumVal = m.cumulative.toFixed(2) + '%';
         rows += `<tr class="${rowClass}">
@@ -615,12 +615,12 @@
     // ----- benchmark -----
     function updateBenchmark() {
       if (steps.length < 2) {
-        benchmarkVs.textContent = '—';
+        benchmarkVs.textContent = '&middot;';
         return;
       }
       const { overallConversion } = computeMetrics();
       const bench = parseFloat(benchmarkInput.value);
-      if (isNaN(bench)) { benchmarkVs.textContent = '—'; return; }
+      if (isNaN(bench)) { benchmarkVs.textContent = '&middot;'; return; }
       const diff = overallConversion - bench;
       const sign = diff >= 0 ? '+' : '';
       benchmarkVs.textContent = `${sign}${diff.toFixed(2)}% (${diff >= 0 ? 'above' : 'below'})`;

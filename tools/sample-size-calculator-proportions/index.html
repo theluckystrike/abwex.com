@@ -1,71 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Sample Size Calculator — Proportions | abwex.com</title>
-  <meta name="description" content="Compute required sample size for proportion-based A/B tests. Adjust baseline conversion, minimum detectable effect, significance, power, and traffic...">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/tools/sample-size-calculator-proportions">
-  <meta property="og:title" content="Sample Size Calculator — Proportions | abwex.com">
-  <meta property="og:description" content="Compute required sample size for proportion-based A/B tests. Adjust baseline conversion, minimum detectable effect, significance, power, and traffic split.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://abwex.com/tools/sample-size-calculator-proportions">
-  <meta name="twitter:card" content="summary_large_image">
-  <script type="application/ld+json">
-    [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Sample Size Calculator — Proportions",
-        "url": "https://abwex.com/tools/sample-size-calculator-proportions",
-        "applicationCategory": "Statistical Tool",
-        "operatingSystem": "All",
-        "browserRequirements": "JavaScript enabled",
-        "description": "Compute required sample size for proportion-based A/B tests with sensitivity analysis and power curve."
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is the minimum detectable effect (MDE)?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The MDE is the smallest relative or absolute change in conversion rate you want to detect. It directly impacts sample size: smaller effects require larger samples."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Why does traffic split matter?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Unequal splits (e.g., 80/20) increase total sample size because the smaller group needs more observations to achieve the same statistical power."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How is sample size calculated for proportions?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "We use a two-proportion z-test formula: n = (z_α/2 + z_β)² * (p1(1-p1) + p2(1-p2)) / (p2-p1)², adjusted for unequal splits."
-            }
-          }
-        ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://abwex.com" },
-          { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://abwex.com/tools" },
-          { "@type": "ListItem", "position": 3, "name": "Sample Size Calculator — Proportions", "item": "https://abwex.com/tools/sample-size-calculator-proportions" }
-        ]
-      }
-    ]
-  </script>
-  <style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Sample Size Calculator, Proportions | abwex.com</title>
+ <meta name="description" content="Compute required sample size for proportion-based A/B tests. Adjust baseline conversion, minimum detectable effect, significance, power, and traffic...">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/tools/sample-size-calculator-proportions">
+ <meta property="og:title" content="Sample Size Calculator, Proportions | abwex.com">
+ <meta property="og:description" content="Compute required sample size for proportion-based A/B tests. Adjust baseline conversion, minimum detectable effect, significance, power, and traffic split.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://abwex.com/tools/sample-size-calculator-proportions">
+ <meta name="twitter:card" content="summary_large_image">
+ <script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebApplication","name":"Sample Size Calculator, Proportions","url":"https://abwex.com/tools/sample-size-calculator-proportions","applicationCategory":"Statistical Tool","operatingSystem":"All","browserRequirements":"JavaScript enabled","description":"Compute required sample size for proportion-based A/B tests with sensitivity analysis and power curve."},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum detectable effect (MDE)?","acceptedAnswer":{"@type":"Answer","text":"The MDE is the smallest relative or absolute change in conversion rate you want to detect. It directly impacts sample size: smaller effects require larger samples."}},{"@type":"Question","name":"Why does traffic split matter?","acceptedAnswer":{"@type":"Answer","text":"Unequal splits (e.g., 80/20) increase total sample size because the smaller group needs more observations to achieve the same statistical power."}},{"@type":"Question","name":"How is sample size calculated for proportions?","acceptedAnswer":{"@type":"Answer","text":"We use a two-proportion z-test formula: n = (z_α/2 + z_β)² * (p1(1-p1) + p2(1-p2)) / (p2-p1)², adjusted for unequal splits."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools"},{"@type":"ListItem","position":3,"name":"Sample Size Calculator, Proportions","item":"https://abwex.com/tools/sample-size-calculator-proportions"}]}]</script>
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -260,122 +208,122 @@
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>📊 Sample Size · Proportions</h1>
-    <div class="subhead">Two‑proportion z‑test · unequal splits · sensitivity & power</div>
-  </header>
+ <header>
+ <h1> Sample Size · Proportions</h1>
+ <div class="subhead">Two‑proportion z‑test · unequal splits · sensitivity & power</div>
+ </header>
 
-  <div class="card">
-    <div class="grid-2">
-      <div>
-        <div class="form-group">
-          <label>Baseline conversion p₁ (%)</label>
-          <input type="number" id="p1" step="0.1" min="0.1" max="99.9" value="5.0">
-        </div>
-        <div class="form-group">
-          <label>MDE mode</label>
-          <select id="mdeMode">
-            <option value="relative">Relative lift (%)</option>
-            <option value="absolute">Absolute Δ (pp)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>MDE value</label>
-          <input type="number" id="mdeVal" step="0.5" min="0.5" value="10">
-          <div class="input-hint">Relative % or absolute percentage points</div>
-        </div>
-        <div class="grid-3">
-          <div class="form-group">
-            <label>α (significance)</label>
-            <select id="alpha">
-              <option value="0.01">0.01</option>
-              <option value="0.05" selected>0.05</option>
-              <option value="0.10">0.10</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Power (1−β)</label>
-            <select id="power">
-              <option value="0.80">0.80</option>
-              <option value="0.90" selected>0.90</option>
-              <option value="0.95">0.95</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Test type</label>
-            <select id="tails">
-              <option value="two">Two-tailed</option>
-              <option value="one">One-tailed</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="form-group">
-          <label>Traffic split (control : treatment)</label>
-          <div style="display:flex; gap:0.5rem; align-items:center;">
-            <input type="number" id="splitC" step="1" min="1" max="99" value="50" style="width:45%;">
-            <span style="color:#94a3b8;">:</span>
-            <input type="number" id="splitT" step="1" min="1" max="99" value="50" style="width:45%;">
-          </div>
-          <div class="input-hint">e.g., 50:50 or 80:20</div>
-        </div>
-        <div class="form-group">
-          <label>Daily traffic (total visitors)</label>
-          <input type="number" id="dailyTraffic" step="100" min="100" value="5000">
-        </div>
-        <div style="margin-top: 1.8rem;">
-          <button class="btn" id="computeBtn">⟳ Compute sample size</button>
-        </div>
-      </div>
-    </div>
+ <div class="card">
+ <div class="grid-2">
+ <div>
+ <div class="form-group">
+ <label>Baseline conversion p₁ (%)</label>
+ <input type="number" id="p1" step="0.1" min="0.1" max="99.9" value="5.0">
+ </div>
+ <div class="form-group">
+ <label>MDE mode</label>
+ <select id="mdeMode">
+ <option value="relative">Relative lift (%)</option>
+ <option value="absolute">Absolute Δ (pp)</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>MDE value</label>
+ <input type="number" id="mdeVal" step="0.5" min="0.5" value="10">
+ <div class="input-hint">Relative % or absolute percentage points</div>
+ </div>
+ <div class="grid-3">
+ <div class="form-group">
+ <label>α (significance)</label>
+ <select id="alpha">
+ <option value="0.01">0.01</option>
+ <option value="0.05" selected>0.05</option>
+ <option value="0.10">0.10</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Power (1−β)</label>
+ <select id="power">
+ <option value="0.80">0.80</option>
+ <option value="0.90" selected>0.90</option>
+ <option value="0.95">0.95</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Test type</label>
+ <select id="tails">
+ <option value="two">Two-tailed</option>
+ <option value="one">One-tailed</option>
+ </select>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div class="form-group">
+ <label>Traffic split (control : treatment)</label>
+ <div style="display:flex; gap:0.5rem; align-items:center;">
+ <input type="number" id="splitC" step="1" min="1" max="99" value="50" style="width:45%;">
+ <span style="color:#94a3b8;">:</span>
+ <input type="number" id="splitT" step="1" min="1" max="99" value="50" style="width:45%;">
+ </div>
+ <div class="input-hint">e.g., 50:50 or 80:20</div>
+ </div>
+ <div class="form-group">
+ <label>Daily traffic (total visitors)</label>
+ <input type="number" id="dailyTraffic" step="100" min="100" value="5000">
+ </div>
+ <div style="margin-top: 1.8rem;">
+ <button class="btn" id="computeBtn">⟳ Compute sample size</button>
+ </div>
+ </div>
+ </div>
 
-    <!-- Results -->
-    <div class="result-block" id="resultArea">
-      <div class="flex-row">
-        <div class="stat-box">
-          <div class="result-label">n per variant</div>
-          <div class="result-number" id="nPerVariant">—</div>
-        </div>
-        <div class="stat-box">
-          <div class="result-label">Total sample</div>
-          <div class="result-number" id="nTotal">—</div>
-        </div>
-        <div class="stat-box">
-          <div class="result-label">Days needed</div>
-          <div class="result-number" id="daysNeeded">—</div>
-        </div>
-      </div>
-      <div style="margin-top:0.8rem; display:flex; gap:1rem; flex-wrap:wrap;">
-        <span><span class="badge">p₂</span> <strong id="p2display">—</strong></span>
-        <span><span class="badge">Δ absolute</span> <strong id="deltaAbs">—</strong></span>
-        <span><span class="badge">Relative lift</span> <strong id="relLift">—</strong></span>
-      </div>
-    </div>
-  </div>
+ <!-- Results -->
+ <div class="result-block" id="resultArea">
+ <div class="flex-row">
+ <div class="stat-box">
+ <div class="result-label">n per variant</div>
+ <div class="result-number" id="nPerVariant">&middot;</div>
+ </div>
+ <div class="stat-box">
+ <div class="result-label">Total sample</div>
+ <div class="result-number" id="nTotal">&middot;</div>
+ </div>
+ <div class="stat-box">
+ <div class="result-label">Days needed</div>
+ <div class="result-number" id="daysNeeded">&middot;</div>
+ </div>
+ </div>
+ <div style="margin-top:0.8rem; display:flex; gap:1rem; flex-wrap:wrap;">
+ <span><span class="badge">p₂</span> <strong id="p2display">&middot;</strong></span>
+ <span><span class="badge">Δ absolute</span> <strong id="deltaAbs">&middot;</strong></span>
+ <span><span class="badge">Relative lift</span> <strong id="relLift">&middot;</strong></span>
+ </div>
+ </div>
+ </div>
 
-  <!-- Sensitivity + chart row -->
-  <div class="grid-2" style="margin-bottom: 2rem;">
-    <div class="card">
-      <h3 style="font-weight:500; margin-bottom:0.8rem; color:#c7d2fe;">📈 Sensitivity (MDE lift)</h3>
-      <div style="overflow-x:auto;">
-        <table id="sensitivityTable">
-          <thead><tr><th>Relative lift</th><th>n per variant</th><th>Total</th></tr></thead>
-          <tbody id="sensBody"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="card">
-      <h3 style="font-weight:500; margin-bottom:0.8rem; color:#c7d2fe;">⚡ Power curve</h3>
-      <div class="chart-container">
-        <canvas id="powerCanvas"></canvas>
-      </div>
-    </div>
-  </div>
+ <!-- Sensitivity + chart row -->
+ <div class="grid-2" style="margin-bottom: 2rem;">
+ <div class="card">
+ <h3 style="font-weight:500; margin-bottom:0.8rem; color:#c7d2fe;"> Sensitivity (MDE lift)</h3>
+ <div style="overflow-x:auto;">
+ <table id="sensitivityTable">
+ <thead><tr><th>Relative lift</th><th>n per variant</th><th>Total</th></tr></thead>
+ <tbody id="sensBody"></tbody>
+ </table>
+ </div>
+ </div>
+ <div class="card">
+ <h3 style="font-weight:500; margin-bottom:0.8rem; color:#c7d2fe;"> Power curve</h3>
+ <div class="chart-container">
+ <canvas id="powerCanvas"></canvas>
+ </div>
+ </div>
+ </div>
 
-  <footer class="footer">
-    © 2025 abwex.com
-  </footer>
+ <footer class="footer">
+ © 2025 abwex.com
+ </footer>
 <div style="margin:20px auto;max-width:728px;text-align:center">
 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -485,23 +433,23 @@
       const daily = parseFloat(dailyTraffic.value) || 5000;
 
       if (isNaN(p1) || isNaN(mde) || p1 <= 0 || p1 >= 100 || mde <= 0) {
-        nPerVariant.textContent = '—';
-        nTotal.textContent = '—';
-        daysNeeded.textContent = '—';
-        p2display.textContent = '—';
-        deltaAbs.textContent = '—';
-        relLift.textContent = '—';
+        nPerVariant.textContent = '&middot;';
+        nTotal.textContent = '&middot;';
+        daysNeeded.textContent = '&middot;';
+        p2display.textContent = '&middot;';
+        deltaAbs.textContent = '&middot;';
+        relLift.textContent = '&middot;';
         return;
       }
 
       const result = computeSample(p1, mode, mde, alpha, power, tails, cS, tS);
       if (!result) {
-        nPerVariant.textContent = '—';
-        nTotal.textContent = '—';
-        daysNeeded.textContent = '—';
-        p2display.textContent = '—';
-        deltaAbs.textContent = '—';
-        relLift.textContent = '—';
+        nPerVariant.textContent = '&middot;';
+        nTotal.textContent = '&middot;';
+        daysNeeded.textContent = '&middot;';
+        p2display.textContent = '&middot;';
+        deltaAbs.textContent = '&middot;';
+        relLift.textContent = '&middot;';
         return;
       }
 
@@ -531,7 +479,7 @@
         if (res) {
           html += `<tr><td>${lift}%</td><td>${res.nControl} / ${res.nTreatment}</td><td>${res.total}</td></tr>`;
         } else {
-          html += `<tr><td>${lift}%</td><td>—</td><td>—</td></tr>`;
+          html += `<tr><td>${lift}%</td><td>&middot;</td><td>&middot;</td></tr>`;
         }
       }
       sensBody.innerHTML = html;
@@ -660,7 +608,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>

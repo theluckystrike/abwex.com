@@ -100,121 +100,121 @@
 </head>
 <body>
 <nav>
-  <a href="/">Home</a>
-  <a href="/tools/">Tools</a>
+ <a href="/">Home</a>
+ <a href="/tools/">Tools</a>
 </nav>
 <div class="wrap">
 
 <h1>Ratio Metric Confidence Intervals via the Delta Method</h1>
-<p class="lede">Get a <strong>correct</strong> standard error and confidence interval for ratio metrics like revenue&nbsp;per&nbsp;visitor or clicks&nbsp;per&nbsp;session — the ones a naive two-sample t-test silently gets wrong.</p>
+<p class="lede">Get a correct standard error and confidence interval for ratio metrics like revenue&nbsp;per&nbsp;visitor or clicks&nbsp;per&nbsp;session, the ones a naive two-sample t-test silently gets wrong.</p>
 
-<p>When your randomization unit (the user, session, or cluster you flip on/off) differs from the analysis unit that appears in your ratio's denominator, treating the ratio as a simple mean of independent observations <em>underestimates the variance</em>. This tool applies the delta method to combine the numerator variance, denominator variance, and their covariance into a valid variance for the ratio, then reports the point estimate, standard error, z-based confidence interval, and — if you enter two arms — the two-sided p-value for the difference.</p>
+<p>When your randomization unit (the user, session, or cluster you flip on/off) differs from the analysis unit that appears in your ratio's denominator, treating the ratio as a simple mean of independent observations <em>underestimates the variance</em>. This tool applies the delta method to combine the numerator variance, denominator variance, and their covariance into a valid variance for the ratio, then reports the point estimate, standard error, z-based confidence interval, and, if you enter two arms, the two-sided p-value for the difference.</p>
 
 <section id="tool">
-  <div class="modebar" id="modebar">
-    <button data-mode="stats" class="active">Enter means / variances</button>
-    <button data-mode="raw">Enter raw sums (Σ, Σ², Σxy)</button>
-  </div>
+ <div class="modebar" id="modebar">
+ <button data-mode="stats" class="active">Enter means / variances</button>
+ <button data-mode="raw">Enter raw sums (Σ, Σ², Σxy)</button>
+ </div>
 
-  <div class="ctrl">
-    <label><span class="k">Confidence level</span></label>
-    <select id="conf">
-      <option value="90">90%</option>
-      <option value="95" selected>95%</option>
-      <option value="99">99%</option>
-    </select>
-  </div>
+ <div class="ctrl">
+ <label><span class="k">Confidence level</span></label>
+ <select id="conf">
+ <option value="90">90%</option>
+ <option value="95" selected>95%</option>
+ <option value="99">99%</option>
+ </select>
+ </div>
 
-  <div class="grid">
-    <div class="col" id="colC">
-      <h3>Control (A)</h3>
-      <div class="ctrl"><label><span class="k">Units n</span> — randomization units</label><input type="number" id="C_n" value="18000" min="2" step="1"></div>
+ <div class="grid">
+ <div class="col" id="colC">
+ <h3>Control (A)</h3>
+ <div class="ctrl"><label><span class="k">Units n</span>, randomization units</label><input type="number" id="C_n" value="18000" min="2" step="1"></div>
 
-      <!-- stats mode -->
-      <div class="mode-stats">
-        <div class="row2">
-          <div class="ctrl"><label>mean numerator <span class="k">x̄</span></label><input type="number" id="C_mn" value="2.30" step="any"></div>
-          <div class="ctrl"><label>mean denom <span class="k">ȳ</span></label><input type="number" id="C_md" value="1.00" step="any"></div>
-        </div>
-        <div class="row2">
-          <div class="ctrl"><label>Var(numerator)</label><input type="number" id="C_vn" value="9.10" step="any" min="0"></div>
-          <div class="ctrl"><label>Var(denom)</label><input type="number" id="C_vd" value="1.30" step="any" min="0"></div>
-        </div>
-        <div class="ctrl"><label>Cov(num, denom)</label><input type="number" id="C_cov" value="2.05" step="any"></div>
-      </div>
+ <!-- stats mode -->
+ <div class="mode-stats">
+ <div class="row2">
+ <div class="ctrl"><label>mean numerator <span class="k">x̄</span></label><input type="number" id="C_mn" value="2.30" step="any"></div>
+ <div class="ctrl"><label>mean denom <span class="k">ȳ</span></label><input type="number" id="C_md" value="1.00" step="any"></div>
+ </div>
+ <div class="row2">
+ <div class="ctrl"><label>Var(numerator)</label><input type="number" id="C_vn" value="9.10" step="any" min="0"></div>
+ <div class="ctrl"><label>Var(denom)</label><input type="number" id="C_vd" value="1.30" step="any" min="0"></div>
+ </div>
+ <div class="ctrl"><label>Cov(num, denom)</label><input type="number" id="C_cov" value="2.05" step="any"></div>
+ </div>
 
-      <!-- raw mode -->
-      <div class="mode-raw" style="display:none">
-        <div class="row2">
-          <div class="ctrl"><label>Σ numerator</label><input type="number" id="C_sx" value="41400" step="any"></div>
-          <div class="ctrl"><label>Σ denom</label><input type="number" id="C_sy" value="18000" step="any"></div>
-        </div>
-        <div class="row2">
-          <div class="ctrl"><label>Σ numerator²</label><input type="number" id="C_sx2" value="259200" step="any"></div>
-          <div class="ctrl"><label>Σ denom²</label><input type="number" id="C_sy2" value="41400" step="any"></div>
-        </div>
-        <div class="ctrl"><label>Σ (num × denom)</label><input type="number" id="C_sxy" value="132480" step="any"></div>
-      </div>
-      <div class="warnbox" id="C_warn"></div>
-    </div>
+ <!-- raw mode -->
+ <div class="mode-raw" style="display:none">
+ <div class="row2">
+ <div class="ctrl"><label>Σ numerator</label><input type="number" id="C_sx" value="41400" step="any"></div>
+ <div class="ctrl"><label>Σ denom</label><input type="number" id="C_sy" value="18000" step="any"></div>
+ </div>
+ <div class="row2">
+ <div class="ctrl"><label>Σ numerator²</label><input type="number" id="C_sx2" value="259200" step="any"></div>
+ <div class="ctrl"><label>Σ denom²</label><input type="number" id="C_sy2" value="41400" step="any"></div>
+ </div>
+ <div class="ctrl"><label>Σ (num × denom)</label><input type="number" id="C_sxy" value="132480" step="any"></div>
+ </div>
+ <div class="warnbox" id="C_warn"></div>
+ </div>
 
-    <div class="col" id="colT">
-      <h3>Treatment (B) <span style="font-weight:400;color:var(--muted);font-size:12px">— optional</span></h3>
-      <div class="ctrl"><label><span class="k">Units n</span> — leave 0 to skip B</label><input type="number" id="T_n" value="18100" min="0" step="1"></div>
+ <div class="col" id="colT">
+ <h3>Treatment (B) <span style="font-weight:400;color:var(--muted);font-size:12px">, optional</span></h3>
+ <div class="ctrl"><label><span class="k">Units n</span>, leave 0 to skip B</label><input type="number" id="T_n" value="18100" min="0" step="1"></div>
 
-      <div class="mode-stats">
-        <div class="row2">
-          <div class="ctrl"><label>mean numerator <span class="k">x̄</span></label><input type="number" id="T_mn" value="2.42" step="any"></div>
-          <div class="ctrl"><label>mean denom <span class="k">ȳ</span></label><input type="number" id="T_md" value="1.00" step="any"></div>
-        </div>
-        <div class="row2">
-          <div class="ctrl"><label>Var(numerator)</label><input type="number" id="T_vn" value="9.60" step="any" min="0"></div>
-          <div class="ctrl"><label>Var(denom)</label><input type="number" id="T_vd" value="1.34" step="any" min="0"></div>
-        </div>
-        <div class="ctrl"><label>Cov(num, denom)</label><input type="number" id="T_cov" value="2.11" step="any"></div>
-      </div>
+ <div class="mode-stats">
+ <div class="row2">
+ <div class="ctrl"><label>mean numerator <span class="k">x̄</span></label><input type="number" id="T_mn" value="2.42" step="any"></div>
+ <div class="ctrl"><label>mean denom <span class="k">ȳ</span></label><input type="number" id="T_md" value="1.00" step="any"></div>
+ </div>
+ <div class="row2">
+ <div class="ctrl"><label>Var(numerator)</label><input type="number" id="T_vn" value="9.60" step="any" min="0"></div>
+ <div class="ctrl"><label>Var(denom)</label><input type="number" id="T_vd" value="1.34" step="any" min="0"></div>
+ </div>
+ <div class="ctrl"><label>Cov(num, denom)</label><input type="number" id="T_cov" value="2.11" step="any"></div>
+ </div>
 
-      <div class="mode-raw" style="display:none">
-        <div class="row2">
-          <div class="ctrl"><label>Σ numerator</label><input type="number" id="T_sx" value="43802" step="any"></div>
-          <div class="ctrl"><label>Σ denom</label><input type="number" id="T_sy" value="18100" step="any"></div>
-        </div>
-        <div class="row2">
-          <div class="ctrl"><label>Σ numerator²</label><input type="number" id="T_sx2" value="279540" step="any"></div>
-          <div class="ctrl"><label>Σ denom²</label><input type="number" id="T_sy2" value="41842" step="any"></div>
-        </div>
-        <div class="ctrl"><label>Σ (num × denom)</label><input type="number" id="T_sxy" value="145200" step="any"></div>
-      </div>
-      <div class="warnbox" id="T_warn"></div>
-    </div>
-  </div>
+ <div class="mode-raw" style="display:none">
+ <div class="row2">
+ <div class="ctrl"><label>Σ numerator</label><input type="number" id="T_sx" value="43802" step="any"></div>
+ <div class="ctrl"><label>Σ denom</label><input type="number" id="T_sy" value="18100" step="any"></div>
+ </div>
+ <div class="row2">
+ <div class="ctrl"><label>Σ numerator²</label><input type="number" id="T_sx2" value="279540" step="any"></div>
+ <div class="ctrl"><label>Σ denom²</label><input type="number" id="T_sy2" value="41842" step="any"></div>
+ </div>
+ <div class="ctrl"><label>Σ (num × denom)</label><input type="number" id="T_sxy" value="145200" step="any"></div>
+ </div>
+ <div class="warnbox" id="T_warn"></div>
+ </div>
+ </div>
 
-  <div class="out" id="output"><em>Enter values above — results update live.</em></div>
-  <p class="note">Var/Cov are the <strong>per-unit</strong> (population-style) second moments across your randomization units. In raw mode the tool derives them from your sums using <code>Var = Σx²/n − (Σx/n)²</code> and <code>Cov = Σxy/n − x̄ȳ</code>. Standard error scales as <code>√(Var(R)/n)</code>.</p>
+ <div class="out" id="output"><em>Enter values above, results update live.</em></div>
+ <p class="note">Var/Cov are the per-unit (population-style) second moments across your randomization units. In raw mode the tool derives them from your sums using <code>Var = Σx²/n − (Σx/n)²</code> and <code>Cov = Σxy/n − x̄ȳ</code>. Standard error scales as <code>√(Var(R)/n)</code>.</p>
 </section>
 
 <h2>How the delta method fixes ratio variance</h2>
 <p>A ratio metric is <code>R = mean(numerator) / mean(denominator)</code>. Think revenue-per-visitor, where <em>revenue</em> is the numerator summed per user and <em>visits</em> (or pageviews, sessions) is the denominator. Because both the top and bottom are random and correlated, you cannot treat <code>R</code> as a simple sample mean. The first-order Taylor expansion (the delta method) around the means gives:</p>
-<div class="formula">Var(R) ≈ (1 / ȳ²) · [ Var(x) − 2·R·Cov(x,y) + R²·Var(y) ]   where R = x̄ / ȳ
+<div class="formula">Var(R) ≈ (1 / ȳ²) · [ Var(x) − 2·R·Cov(x,y) + R²·Var(y) ] where R = x̄ / ȳ
 
-SE(R) = √( Var(R) / n )     with n = number of randomization units</div>
-<p>The three terms matter: <code>Var(x)</code> is the numerator spread, <code>R²·Var(y)</code> inflates variance when the denominator itself is noisy, and the <code>−2·R·Cov(x,y)</code> term <em>subtracts</em> shared movement — when heavy users generate both more revenue and more visits, that positive covariance reduces the true uncertainty. Drop the covariance term and you typically <strong>over-state</strong> the interval; treat the ratio as an i.i.d. mean of per-event rows and you <strong>under-state</strong> it, because per-event rows within a user are not independent.</p>
+SE(R) = √( Var(R) / n ) with n = number of randomization units</div>
+<p>The three terms matter: <code>Var(x)</code> is the numerator spread, <code>R²·Var(y)</code> inflates variance when the denominator itself is noisy, and the <code>−2·R·Cov(x,y)</code> term <em>subtracts</em> shared movement, when heavy users generate both more revenue and more visits, that positive covariance reduces the true uncertainty. Drop the covariance term and you typically over-state the interval; treat the ratio as an i.i.d. mean of per-event rows and you under-state it, because per-event rows within a user are not independent.</p>
 <div class="callout">The classic bug: computing CTR as <code>clicks/impressions</code> across all impression rows and running a t-test on that pooled rate. Impressions from the same randomized user are correlated, so the reported p-value is far too small and teams ship losers. Aggregating to the randomization unit and applying the delta method restores the correct, usually wider, interval.</div>
-<p>For two arms the tool treats the arms as independent, so <code>Var(R_B − R_A) = Var(R_A) + Var(R_B)</code>, forms <code>z = (R_B − R_A) / SE_diff</code>, and returns the two-sided normal p-value. Enter <code>Units n = 0</code> for Treatment to get a single-arm interval only. Everything runs locally in your browser — no data leaves the page.</p>
+<p>For two arms the tool treats the arms as independent, so <code>Var(R_B − R_A) = Var(R_A) + Var(R_B)</code>, forms <code>z = (R_B − R_A) / SE_diff</code>, and returns the two-sided normal p-value. Enter <code>Units n = 0</code> for Treatment to get a single-arm interval only. Everything runs locally in your browser, no data leaves the page.</p>
 
 <h2>Related Tools</h2>
 <p class="related">
-  <a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a>
-  <a href="/tools/bayesian-ab-test-calculator">Bayesian A/B Test Calculator</a>
-  <a href="/tools/cuped-variance-reduction-calculator">CUPED Variance Reduction Calculator</a>
+ <a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a>
+ <a href="/tools/bayesian-ab-test-calculator">Bayesian A/B Test Calculator</a>
+ <a href="/tools/cuped-variance-reduction-calculator">CUPED Variance Reduction Calculator</a>
 </p>
 
 </div>
 <footer>
-  <a href="/">Home</a>
-  <a href="/tools/">All Tools</a>
-  <a href="/tools/ab-test-sample-size-calculator">Sample Size</a>
-  <br>© 2026 abwex.com · Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-delta-method-ratio-metric-ci-calculator">Michael Lip</a>
+ <a href="/">Home</a>
+ <a href="/tools/">All Tools</a>
+ <a href="/tools/ab-test-sample-size-calculator">Sample Size</a>
+ <br>© 2026 abwex.com · Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-delta-method-ratio-metric-ci-calculator">Michael Lip</a>
 </footer>
 
 <script>
@@ -235,9 +235,9 @@ SE(R) = √( Var(R) / n )     with n = number of randomization units</div>
   }
   function normCdf(z){ return 0.5*(1+erf(z/Math.SQRT2)); }
 
-  function fmt(v,d){ if(!isFinite(v)) return "—"; d=(d==null)?4:d; return v.toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}); }
+  function fmt(v,d){ if(!isFinite(v)) return "&middot;"; d=(d==null)?4:d; return v.toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}); }
   function fmtP(p){
-    if(!isFinite(p)) return "—";
+    if(!isFinite(p)) return "&middot;";
     if(p < 0.0001) return "< 0.0001";
     return p.toFixed(4);
   }
@@ -265,8 +265,8 @@ SE(R) = √( Var(R) / n )     with n = number of randomization units</div>
       warn.textContent="Fill in all fields for this arm.";
       return {ok:false};
     }
-    if(meanD===0){ warn.textContent="Mean denominator is 0 — ratio undefined."; return {ok:false}; }
-    if(vN<0 || vD<0){ warn.textContent="Derived variance is negative — check Σx² / Σy² inputs."; return {ok:false}; }
+    if(meanD===0){ warn.textContent="Mean denominator is 0, ratio undefined."; return {ok:false}; }
+    if(vN<0 || vD<0){ warn.textContent="Derived variance is negative, check Σx² / Σy² inputs."; return {ok:false}; }
 
     var R = meanN/meanD;
     // delta-method per-unit variance of the ratio
@@ -319,7 +319,7 @@ SE(R) = √( Var(R) / n )     with n = number of randomization units</div>
 
       html += '<div style="border-top:2px solid var(--border);padding-top:12px">';
       html += '<div class="metricrow"><span><strong>Difference B − A</strong></span><span class="v big" style="font-size:1.3rem">'+fmt(diff,5)+'</span></div>';
-      html += row("Relative lift", isFinite(lift)?fmt(lift,2)+" %":"—");
+      html += row("Relative lift", isFinite(lift)?fmt(lift,2)+" %":"&middot;");
       html += row("SE of difference", fmt(seDiff,6));
       html += '<div class="metricrow"><span>'+conf+'% CI of difference</span><span class="v ci">['+fmt(loD,5)+', '+fmt(hiD,5)+']</span></div>';
       html += row("z-statistic", fmt(zStat,3));

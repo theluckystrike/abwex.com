@@ -1,123 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz | ABWex</title>
-  <meta name="description" content="Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/research/statistical-significance-explained.html">
-  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz | ABWex">
-  <meta property="og:description" content="Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes.">
-  <meta property="og:url" content="https://abwex.com/research/statistical-significance-explained.html">
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz">
-  <meta name="twitter:description" content="Interactive guide to statistical significance. Explore p-values visually, take the misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/research/statistical-significance-explained.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/statistical-significance-explained.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Statistical Significance Explained — P-Value Explorer & Misconceptions Quiz",
-    "url": "https://abwex.com/research/statistical-significance-explained.html",
-    "description": "Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.",
-    "author": { "@type": "Person", "name": "Michael Lip", "url": "https://zovo.one" },
-    "publisher": { "@type": "Organization", "name": "ABWex", "url": "https://abwex.com" },
-    "datePublished": "2026-05-25",
-    "dateModified": "2026-05-25",
-    "mainEntityOfPage": "https://abwex.com/research/statistical-significance-explained.html",
-    "image": "https://abwex.com/assets/og-image.png"
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What does a p-value actually tell you?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A p-value is the probability of observing data at least as extreme as the collected data, assuming the null hypothesis is true. It does NOT tell you the probability that the null hypothesis is true, nor the probability that your result occurred by chance. A p-value of 0.03 means that if there were truly no effect, you would see data this extreme only 3% of the time. It says nothing about the size or practical importance of the effect."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is a p-value of 0.05 a reliable threshold for significance?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The 0.05 threshold is a convention, not a law of nature. Ronald Fisher originally proposed it as a convenient reference point, not a rigid cutoff. A p-value of 0.049 and 0.051 represent nearly identical evidence, yet one is 'significant' and the other is not. Many fields are moving toward reporting exact p-values with effect sizes and confidence intervals rather than relying on binary significant/not-significant decisions. Some journals now require alpha of 0.005 for claims of new discoveries."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is the difference between statistical significance and practical significance?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Statistical significance means the observed effect is unlikely to be due to random chance alone. Practical significance means the effect is large enough to matter in the real world. With a large enough sample, even trivially small effects become statistically significant. For example, an A/B test with 10 million visitors might detect a 0.01 percentage point conversion rate increase (p < 0.05), but this difference has no practical business value. Always pair p-values with effect size measures like Cohen's d or confidence intervals."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Why do researchers misinterpret p-values so often?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "P-value misinterpretation is widespread because the definition is counterintuitive. It requires reasoning about the probability of data given a hypothesis, not the probability of a hypothesis given data (which is what most people actually want to know). Common errors include believing p-values measure the probability the null is true, that 1 minus p equals the probability the alternative is true, or that a non-significant result means no effect exists. These are all incorrect. Bayesian methods directly answer the question most people are actually asking."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do effect sizes like Cohen's d complement p-values?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Effect sizes quantify how large an observed difference is, independent of sample size. Cohen's d measures the standardized mean difference (difference divided by pooled standard deviation). Values of 0.2, 0.5, and 0.8 are conventionally considered small, medium, and large effects. Unlike p-values, effect sizes do not change with sample size — a Cohen's d of 0.3 means the same thing whether you have 100 or 100,000 observations. Reporting both p-values and effect sizes gives a complete picture: the p-value addresses whether the effect is real, and the effect size addresses whether it matters."
-        }
-      }
-    ]
-  }
-  </script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://abwex.com/research/"},{"@type":"ListItem","position":3,"name":"Statistical Significance Explained"}]}</script>
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Statistical Significance Explained, P-Value Explorer & Misconceptions Quiz | ABWex</title>
+ <meta name="description" content="Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/research/statistical-significance-explained.html">
+ <link rel="alternate" type="application/atom+xml" title="ABWex, A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+ <meta property="og:title" content="Statistical Significance Explained, P-Value Explorer & Misconceptions Quiz | ABWex">
+ <meta property="og:description" content="Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes.">
+ <meta property="og:url" content="https://abwex.com/research/statistical-significance-explained.html">
+ <meta property="og:type" content="article">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Statistical Significance Explained, P-Value Explorer & Misconceptions Quiz">
+ <meta name="twitter:description" content="Interactive guide to statistical significance. Explore p-values visually, take the misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/research/statistical-significance-explained.html">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/statistical-significance-explained.html">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Statistical Significance Explained, P-Value Explorer & Misconceptions Quiz","url":"https://abwex.com/research/statistical-significance-explained.html","description":"Interactive guide to statistical significance. Explore p-values with a visual distribution overlap tool, test your knowledge with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w.","author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one"},"publisher":{"@type":"Organization","name":"ABWex","url":"https://abwex.com"},"datePublished":"2026-05-25","dateModified":"2026-05-25","mainEntityOfPage":"https://abwex.com/research/statistical-significance-explained.html","image":"https://abwex.com/assets/og-image.png"}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does a p-value actually tell you?","acceptedAnswer":{"@type":"Answer","text":"A p-value is the probability of observing data at least as extreme as the collected data, assuming the null hypothesis is true. It does NOT tell you the probability that the null hypothesis is true, nor the probability that your result occurred by chance. A p-value of 0.03 means that if there were truly no effect, you would see data this extreme only 3% of the time. It says nothing about the size or practical importance of the effect."}},{"@type":"Question","name":"Is a p-value of 0.05 a reliable threshold for significance?","acceptedAnswer":{"@type":"Answer","text":"The 0.05 threshold is a convention, not a law of nature. Ronald Fisher originally proposed it as a convenient reference point, not a rigid cutoff. A p-value of 0.049 and 0.051 represent nearly identical evidence, yet one is 'significant' and the other is not. Many fields are moving toward reporting exact p-values with effect sizes and confidence intervals rather than relying on binary significant/not-significant decisions. Some journals now require alpha of 0.005 for claims of new discoveries."}},{"@type":"Question","name":"What is the difference between statistical significance and practical significance?","acceptedAnswer":{"@type":"Answer","text":"Statistical significance means the observed effect is unlikely to be due to random chance alone. Practical significance means the effect is large enough to matter in the real world. With a large enough sample, even trivially small effects become statistically significant. For example, an A/B test with 10 million visitors might detect a 0.01 percentage point conversion rate increase (p < 0.05), but this difference has no practical business value. Always pair p-values with effect size measures like Cohen's d or confidence intervals."}},{"@type":"Question","name":"Why do researchers misinterpret p-values so often?","acceptedAnswer":{"@type":"Answer","text":"P-value misinterpretation is widespread because the definition is counterintuitive. It requires reasoning about the probability of data given a hypothesis, not the probability of a hypothesis given data (which is what most people actually want to know). Common errors include believing p-values measure the probability the null is true, that 1 minus p equals the probability the alternative is true, or that a non-significant result means no effect exists. These are all incorrect. Bayesian methods directly answer the question most people are actually asking."}},{"@type":"Question","name":"How do effect sizes like Cohen's d complement p-values?","acceptedAnswer":{"@type":"Answer","text":"Effect sizes quantify how large an observed difference is, independent of sample size. Cohen's d measures the standardized mean difference (difference divided by pooled standard deviation). Values of 0.2, 0.5, and 0.8 are conventionally considered small, medium, and large effects. Unlike p-values, effect sizes do not change with sample size, a Cohen's d of 0.3 means the same thing whether you have 100 or 100,000 observations. Reporting both p-values and effect sizes gives a complete picture: the p-value addresses whether the effect is real, and the effect size addresses whether it matters."}}]}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://abwex.com/research/"},{"@type":"ListItem","position":3,"name":"Statistical Significance Explained"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/tools/">Tools</a>
-        <a href="/answers/">Answers</a>
-        <a href="/guides/">Guides</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-statistical-significance-explained" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-statistical-significance-explained" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <section class="hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>Statistical Significance Explained</span></nav>
-      <h1>Statistical Significance <span>Explained</span></h1>
-      <p>Explore p-values interactively with distribution overlap visualization, challenge your understanding with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w. All computation runs in your browser.</p>
-    </section>
+ <main class="container">
+ <section class="hero">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>Statistical Significance Explained</span></nav>
+ <h1>Statistical Significance <span>Explained</span></h1>
+ <p>Explore p-values interactively with distribution overlap visualization, challenge your understanding with a 10-question misconceptions quiz, and calculate effect sizes with Cohen's d, h, and w. All computation runs in your browser.</p>
+ </section>
 
-    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
-      <style>
+ <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+ <style>
         .ss-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
         .ss-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
         @media(max-width:640px){.ss-grid{grid-template-columns:1fr}}
@@ -151,320 +90,320 @@
         .ss-tab-panel.active{display:block}
       </style>
 
-      <!-- Tab Navigation -->
-      <div class="ss-tab-bar">
-        <button class="ss-tab active" onclick="switchTab('pvalue')">P-Value Explorer</button>
-        <button class="ss-tab" onclick="switchTab('quiz')">Misconceptions Quiz</button>
-        <button class="ss-tab" onclick="switchTab('ci')">Confidence Intervals</button>
-        <button class="ss-tab" onclick="switchTab('effect')">Effect Size Calculator</button>
-      </div>
+ <!-- Tab Navigation -->
+ <div class="ss-tab-bar">
+ <button class="ss-tab active" onclick="switchTab('pvalue')">P-Value Explorer</button>
+ <button class="ss-tab" onclick="switchTab('quiz')">Misconceptions Quiz</button>
+ <button class="ss-tab" onclick="switchTab('ci')">Confidence Intervals</button>
+ <button class="ss-tab" onclick="switchTab('effect')">Effect Size Calculator</button>
+ </div>
 
-      <!-- TAB 1: P-Value Interactive Explorer -->
-      <div id="tab-pvalue" class="ss-tab-panel active">
-        <div class="ss-card">
-          <h2 style="margin-top:0;font-size:1.3rem;">P-Value Interactive Explorer</h2>
-          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Adjust sample size, effect size, and alpha to see how two distributions overlap and where the p-value region falls.</p>
-          <div class="ss-grid">
-            <div class="ss-field">
-              <label for="pv-n">Sample Size (per group)</label>
-              <input type="number" id="pv-n" value="100" min="10" max="100000" step="10">
-            </div>
-            <div class="ss-field">
-              <label for="pv-effect">True Effect Size (Cohen's d)</label>
-              <input type="number" id="pv-effect" value="0.5" min="0" max="3" step="0.05">
-            </div>
-            <div class="ss-field">
-              <label for="pv-alpha">Significance Level (alpha)</label>
-              <select id="pv-alpha">
-                <option value="0.01">0.01 (99% confidence)</option>
-                <option value="0.05" selected>0.05 (95% confidence)</option>
-                <option value="0.10">0.10 (90% confidence)</option>
-              </select>
-            </div>
-            <div class="ss-field">
-              <label for="pv-tails">Test Type</label>
-              <select id="pv-tails">
-                <option value="two" selected>Two-Tailed</option>
-                <option value="one">One-Tailed (right)</option>
-              </select>
-            </div>
-          </div>
-          <button class="ss-btn" onclick="updatePVExplorer()">Update Visualization</button>
-        </div>
+ <!-- TAB 1: P-Value Interactive Explorer -->
+ <div id="tab-pvalue" class="ss-tab-panel active">
+ <div class="ss-card">
+ <h2 style="margin-top:0;font-size:1.3rem;">P-Value Interactive Explorer</h2>
+ <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Adjust sample size, effect size, and alpha to see how two distributions overlap and where the p-value region falls.</p>
+ <div class="ss-grid">
+ <div class="ss-field">
+ <label for="pv-n">Sample Size (per group)</label>
+ <input type="number" id="pv-n" value="100" min="10" max="100000" step="10">
+ </div>
+ <div class="ss-field">
+ <label for="pv-effect">True Effect Size (Cohen's d)</label>
+ <input type="number" id="pv-effect" value="0.5" min="0" max="3" step="0.05">
+ </div>
+ <div class="ss-field">
+ <label for="pv-alpha">Significance Level (alpha)</label>
+ <select id="pv-alpha">
+ <option value="0.01">0.01 (99% confidence)</option>
+ <option value="0.05" selected>0.05 (95% confidence)</option>
+ <option value="0.10">0.10 (90% confidence)</option>
+ </select>
+ </div>
+ <div class="ss-field">
+ <label for="pv-tails">Test Type</label>
+ <select id="pv-tails">
+ <option value="two" selected>Two-Tailed</option>
+ <option value="one">One-Tailed (right)</option>
+ </select>
+ </div>
+ </div>
+ <button class="ss-btn" onclick="updatePVExplorer()">Update Visualization</button>
+ </div>
 
-        <div class="ss-chart-wrap">
-          <div class="ss-chart-title">Distribution Overlap — Null vs. Alternative Hypothesis</div>
-          <svg id="pv-chart" viewBox="0 0 700 350" style="width:100%;height:auto;"></svg>
-        </div>
+ <div class="ss-chart-wrap">
+ <div class="ss-chart-title">Distribution Overlap, Null vs. Alternative Hypothesis</div>
+ <svg id="pv-chart" viewBox="0 0 700 350" style="width:100%;height:auto;"></svg>
+ </div>
 
-        <div id="pv-results" class="ss-card" style="margin-top:1.5rem;">
-          <div class="ss-result-row"><span class="ss-result-label">Observed Test Statistic (z)</span><span class="ss-result-value" id="pv-r-z">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">P-Value</span><span class="ss-result-value" id="pv-r-pval">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Critical Value</span><span class="ss-result-value" id="pv-r-crit">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Statistical Power</span><span class="ss-result-value" id="pv-r-power">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Decision</span><span class="ss-result-value" id="pv-r-decision">--</span></div>
-        </div>
-        <div class="ss-info">The shaded teal region shows where p-values fall below alpha. The orange curve is the alternative hypothesis distribution. Greater separation means higher power and smaller p-values.</div>
-      </div>
+ <div id="pv-results" class="ss-card" style="margin-top:1.5rem;">
+ <div class="ss-result-row"><span class="ss-result-label">Observed Test Statistic (z)</span><span class="ss-result-value" id="pv-r-z">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">P-Value</span><span class="ss-result-value" id="pv-r-pval">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Critical Value</span><span class="ss-result-value" id="pv-r-crit">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Statistical Power</span><span class="ss-result-value" id="pv-r-power">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Decision</span><span class="ss-result-value" id="pv-r-decision">&middot;</span></div>
+ </div>
+ <div class="ss-info">The shaded teal region shows where p-values fall below alpha. The orange curve is the alternative hypothesis distribution. Greater separation means higher power and smaller p-values.</div>
+ </div>
 
-      <!-- TAB 2: Misconceptions Quiz -->
-      <div id="tab-quiz" class="ss-tab-panel">
-        <div class="ss-card">
-          <h2 style="margin-top:0;font-size:1.3rem;">P-Value Misconceptions Quiz</h2>
-          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1rem;">Test your understanding of statistical significance. 10 questions on common p-value myths and misinterpretations.</p>
-          <div class="ss-quiz-counter" id="quiz-counter">Question 1 of 10</div>
-          <div id="quiz-question" style="font-size:1.05rem;font-weight:500;margin-bottom:1rem;line-height:1.5;"></div>
-          <div id="quiz-options"></div>
-          <div class="ss-quiz-explain" id="quiz-explain"></div>
-          <div style="margin-top:1rem;display:flex;gap:.75rem;">
-            <button class="ss-btn" id="quiz-next" onclick="nextQuestion()" style="display:none;">Next Question</button>
-            <button class="ss-btn ss-btn-secondary" id="quiz-restart" onclick="restartQuiz()" style="display:none;">Restart Quiz</button>
-          </div>
-          <div class="ss-quiz-score" id="quiz-score" style="display:none;"></div>
-        </div>
-      </div>
+ <!-- TAB 2: Misconceptions Quiz -->
+ <div id="tab-quiz" class="ss-tab-panel">
+ <div class="ss-card">
+ <h2 style="margin-top:0;font-size:1.3rem;">P-Value Misconceptions Quiz</h2>
+ <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1rem;">Test your understanding of statistical significance. 10 questions on common p-value myths and misinterpretations.</p>
+ <div class="ss-quiz-counter" id="quiz-counter">Question 1 of 10</div>
+ <div id="quiz-question" style="font-size:1.05rem;font-weight:500;margin-bottom:1rem;line-height:1.5;"></div>
+ <div id="quiz-options"></div>
+ <div class="ss-quiz-explain" id="quiz-explain"></div>
+ <div style="margin-top:1rem;display:flex;gap:.75rem;">
+ <button class="ss-btn" id="quiz-next" onclick="nextQuestion()" style="display:none;">Next Question</button>
+ <button class="ss-btn ss-btn-secondary" id="quiz-restart" onclick="restartQuiz()" style="display:none;">Restart Quiz</button>
+ </div>
+ <div class="ss-quiz-score" id="quiz-score" style="display:none;"></div>
+ </div>
+ </div>
 
-      <!-- TAB 3: Confidence Interval Visualizer -->
-      <div id="tab-ci" class="ss-tab-panel">
-        <div class="ss-card">
-          <h2 style="margin-top:0;font-size:1.3rem;">Confidence Interval Visualizer</h2>
-          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Enter your sample data and visualize confidence intervals at different levels. See how sample size and variance affect interval width.</p>
-          <div class="ss-grid">
-            <div class="ss-field">
-              <label for="ci-mean">Sample Mean</label>
-              <input type="number" id="ci-mean" value="52" step="0.1">
-            </div>
-            <div class="ss-field">
-              <label for="ci-sd">Sample Standard Deviation</label>
-              <input type="number" id="ci-sd" value="10" min="0.01" step="0.1">
-            </div>
-            <div class="ss-field">
-              <label for="ci-n">Sample Size</label>
-              <input type="number" id="ci-n" value="30" min="2" step="1">
-            </div>
-            <div class="ss-field">
-              <label for="ci-null">Null Hypothesis Value</label>
-              <input type="number" id="ci-null" value="50" step="0.1">
-            </div>
-          </div>
-          <button class="ss-btn" onclick="updateCI()">Visualize Intervals</button>
-        </div>
-        <div class="ss-chart-wrap">
-          <div class="ss-chart-title">Confidence Intervals at 90%, 95%, and 99%</div>
-          <svg id="ci-chart" viewBox="0 0 700 250" style="width:100%;height:auto;"></svg>
-        </div>
-        <div id="ci-results" class="ss-card" style="margin-top:1.5rem;">
-          <div class="ss-result-row"><span class="ss-result-label">90% CI</span><span class="ss-result-value" id="ci-r-90">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">95% CI</span><span class="ss-result-value" id="ci-r-95">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">99% CI</span><span class="ss-result-value" id="ci-r-99">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Standard Error</span><span class="ss-result-value" id="ci-r-se">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Margin of Error (95%)</span><span class="ss-result-value" id="ci-r-moe">--</span></div>
-        </div>
-        <div class="ss-info">Wider intervals mean more uncertainty. If the null hypothesis value (dashed line) falls outside the confidence interval, the result is significant at that level.</div>
-      </div>
+ <!-- TAB 3: Confidence Interval Visualizer -->
+ <div id="tab-ci" class="ss-tab-panel">
+ <div class="ss-card">
+ <h2 style="margin-top:0;font-size:1.3rem;">Confidence Interval Visualizer</h2>
+ <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Enter your sample data and visualize confidence intervals at different levels. See how sample size and variance affect interval width.</p>
+ <div class="ss-grid">
+ <div class="ss-field">
+ <label for="ci-mean">Sample Mean</label>
+ <input type="number" id="ci-mean" value="52" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="ci-sd">Sample Standard Deviation</label>
+ <input type="number" id="ci-sd" value="10" min="0.01" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="ci-n">Sample Size</label>
+ <input type="number" id="ci-n" value="30" min="2" step="1">
+ </div>
+ <div class="ss-field">
+ <label for="ci-null">Null Hypothesis Value</label>
+ <input type="number" id="ci-null" value="50" step="0.1">
+ </div>
+ </div>
+ <button class="ss-btn" onclick="updateCI()">Visualize Intervals</button>
+ </div>
+ <div class="ss-chart-wrap">
+ <div class="ss-chart-title">Confidence Intervals at 90%, 95%, and 99%</div>
+ <svg id="ci-chart" viewBox="0 0 700 250" style="width:100%;height:auto;"></svg>
+ </div>
+ <div id="ci-results" class="ss-card" style="margin-top:1.5rem;">
+ <div class="ss-result-row"><span class="ss-result-label">90% CI</span><span class="ss-result-value" id="ci-r-90">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">95% CI</span><span class="ss-result-value" id="ci-r-95">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">99% CI</span><span class="ss-result-value" id="ci-r-99">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Standard Error</span><span class="ss-result-value" id="ci-r-se">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Margin of Error (95%)</span><span class="ss-result-value" id="ci-r-moe">&middot;</span></div>
+ </div>
+ <div class="ss-info">Wider intervals mean more uncertainty. If the null hypothesis value (dashed line) falls outside the confidence interval, the result is significant at that level.</div>
+ </div>
 
-      <!-- TAB 4: Effect Size Calculator -->
-      <div id="tab-effect" class="ss-tab-panel">
-        <div class="ss-card">
-          <h2 style="margin-top:0;font-size:1.3rem;">Effect Size Calculator</h2>
-          <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Calculate Cohen's d (means), Cohen's h (proportions), and Cohen's w (chi-square) with magnitude interpretation.</p>
-          <div class="ss-tab-bar">
-            <button class="ss-tab active" id="es-tab-d" onclick="switchEffectTab('d')">Cohen's d</button>
-            <button class="ss-tab" id="es-tab-h" onclick="switchEffectTab('h')">Cohen's h</button>
-            <button class="ss-tab" id="es-tab-w" onclick="switchEffectTab('w')">Cohen's w</button>
-          </div>
+ <!-- TAB 4: Effect Size Calculator -->
+ <div id="tab-effect" class="ss-tab-panel">
+ <div class="ss-card">
+ <h2 style="margin-top:0;font-size:1.3rem;">Effect Size Calculator</h2>
+ <p style="color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:1.25rem;">Calculate Cohen's d (means), Cohen's h (proportions), and Cohen's w (chi-square) with magnitude interpretation.</p>
+ <div class="ss-tab-bar">
+ <button class="ss-tab active" id="es-tab-d" onclick="switchEffectTab('d')">Cohen's d</button>
+ <button class="ss-tab" id="es-tab-h" onclick="switchEffectTab('h')">Cohen's h</button>
+ <button class="ss-tab" id="es-tab-w" onclick="switchEffectTab('w')">Cohen's w</button>
+ </div>
 
-          <div id="es-panel-d">
-            <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Standardized mean difference between two groups.</p>
-            <div class="ss-grid">
-              <div class="ss-field">
-                <label for="es-d-m1">Group 1 Mean</label>
-                <input type="number" id="es-d-m1" value="50" step="0.1">
-              </div>
-              <div class="ss-field">
-                <label for="es-d-m2">Group 2 Mean</label>
-                <input type="number" id="es-d-m2" value="55" step="0.1">
-              </div>
-              <div class="ss-field">
-                <label for="es-d-sd1">Group 1 SD</label>
-                <input type="number" id="es-d-sd1" value="10" min="0.01" step="0.1">
-              </div>
-              <div class="ss-field">
-                <label for="es-d-sd2">Group 2 SD</label>
-                <input type="number" id="es-d-sd2" value="10" min="0.01" step="0.1">
-              </div>
-            </div>
-            <button class="ss-btn" onclick="calcCohenD()">Calculate Cohen's d</button>
-          </div>
+ <div id="es-panel-d">
+ <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Standardized mean difference between two groups.</p>
+ <div class="ss-grid">
+ <div class="ss-field">
+ <label for="es-d-m1">Group 1 Mean</label>
+ <input type="number" id="es-d-m1" value="50" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="es-d-m2">Group 2 Mean</label>
+ <input type="number" id="es-d-m2" value="55" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="es-d-sd1">Group 1 SD</label>
+ <input type="number" id="es-d-sd1" value="10" min="0.01" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="es-d-sd2">Group 2 SD</label>
+ <input type="number" id="es-d-sd2" value="10" min="0.01" step="0.1">
+ </div>
+ </div>
+ <button class="ss-btn" onclick="calcCohenD()">Calculate Cohen's d</button>
+ </div>
 
-          <div id="es-panel-h" style="display:none;">
-            <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Effect size for comparing two proportions (arcsine transformation).</p>
-            <div class="ss-grid">
-              <div class="ss-field">
-                <label for="es-h-p1">Proportion 1 (%)</label>
-                <input type="number" id="es-h-p1" value="5" min="0.1" max="99.9" step="0.1">
-              </div>
-              <div class="ss-field">
-                <label for="es-h-p2">Proportion 2 (%)</label>
-                <input type="number" id="es-h-p2" value="8" min="0.1" max="99.9" step="0.1">
-              </div>
-            </div>
-            <button class="ss-btn" onclick="calcCohenH()">Calculate Cohen's h</button>
-          </div>
+ <div id="es-panel-h" style="display:none;">
+ <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Effect size for comparing two proportions (arcsine transformation).</p>
+ <div class="ss-grid">
+ <div class="ss-field">
+ <label for="es-h-p1">Proportion 1 (%)</label>
+ <input type="number" id="es-h-p1" value="5" min="0.1" max="99.9" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="es-h-p2">Proportion 2 (%)</label>
+ <input type="number" id="es-h-p2" value="8" min="0.1" max="99.9" step="0.1">
+ </div>
+ </div>
+ <button class="ss-btn" onclick="calcCohenH()">Calculate Cohen's h</button>
+ </div>
 
-          <div id="es-panel-w" style="display:none;">
-            <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Effect size for chi-square tests of independence or goodness-of-fit.</p>
-            <div class="ss-grid">
-              <div class="ss-field">
-                <label for="es-w-chi2">Chi-Square Statistic</label>
-                <input type="number" id="es-w-chi2" value="12.5" min="0" step="0.1">
-              </div>
-              <div class="ss-field">
-                <label for="es-w-n">Total Sample Size</label>
-                <input type="number" id="es-w-n" value="200" min="1" step="1">
-              </div>
-            </div>
-            <button class="ss-btn" onclick="calcCohenW()">Calculate Cohen's w</button>
-          </div>
-        </div>
+ <div id="es-panel-w" style="display:none;">
+ <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-bottom:1rem;">Effect size for chi-square tests of independence or goodness-of-fit.</p>
+ <div class="ss-grid">
+ <div class="ss-field">
+ <label for="es-w-chi2">Chi-Square Statistic</label>
+ <input type="number" id="es-w-chi2" value="12.5" min="0" step="0.1">
+ </div>
+ <div class="ss-field">
+ <label for="es-w-n">Total Sample Size</label>
+ <input type="number" id="es-w-n" value="200" min="1" step="1">
+ </div>
+ </div>
+ <button class="ss-btn" onclick="calcCohenW()">Calculate Cohen's w</button>
+ </div>
+ </div>
 
-        <div id="es-results" class="ss-card" style="margin-top:1.5rem;">
-          <div class="ss-result-row"><span class="ss-result-label">Effect Size</span><span class="ss-result-value" id="es-r-val">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Magnitude</span><span class="ss-result-value" id="es-r-mag">--</span></div>
-          <div class="ss-result-row"><span class="ss-result-label">Interpretation</span><span class="ss-result-value" id="es-r-interp" style="font-size:.85rem;font-weight:500;">--</span></div>
-        </div>
-        <div class="ss-info">Cohen's d: 0.2 = small, 0.5 = medium, 0.8 = large. Cohen's h: same thresholds via arcsine transform. Cohen's w: 0.1 = small, 0.3 = medium, 0.5 = large.</div>
-      </div>
-    </section>
+ <div id="es-results" class="ss-card" style="margin-top:1.5rem;">
+ <div class="ss-result-row"><span class="ss-result-label">Effect Size</span><span class="ss-result-value" id="es-r-val">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Magnitude</span><span class="ss-result-value" id="es-r-mag">&middot;</span></div>
+ <div class="ss-result-row"><span class="ss-result-label">Interpretation</span><span class="ss-result-value" id="es-r-interp" style="font-size:.85rem;font-weight:500;">&middot;</span></div>
+ </div>
+ <div class="ss-info">Cohen's d: 0.2 = small, 0.5 = medium, 0.8 = large. Cohen's h: same thresholds via arcsine transform. Cohen's w: 0.1 = small, 0.3 = medium, 0.5 = large.</div>
+ </div>
+ </section>
 
-    <section class="explainer-section">
-      <h2>What Statistical Significance Really Means</h2>
-      <p>Statistical significance is one of the most important and most misunderstood concepts in data-driven decision making. At its core, statistical significance is a statement about the compatibility of observed data with a null hypothesis. When a result is "statistically significant at the 0.05 level," it means that if the null hypothesis were true, there would be less than a 5% probability of observing data as extreme as what was collected. That is the entire claim. It says nothing about the probability that the null hypothesis is true, nothing about the size of the effect, and nothing about whether the result matters in practice.</p>
-      <p>The concept was formalized in the early 20th century by Ronald Fisher, Jerzy Neyman, and Egon Pearson, though their frameworks were fundamentally different. Fisher viewed the p-value as a continuous measure of evidence against the null hypothesis, while Neyman and Pearson developed the hypothesis testing framework with fixed error rates (Type I and Type II errors). Modern practice awkwardly merges both approaches, using Fisher's p-values within Neyman-Pearson's decision framework, which creates confusion that persists to this day.</p>
+ <section class="explainer-section">
+ <h2>What Statistical Significance Really Means</h2>
+ <p>Statistical significance is one of the most important and most misunderstood concepts in data-driven decision making. statistical significance is a statement about the compatibility of observed data with a null hypothesis. When a result is "statistically significant at the 0.05 level," it means that if the null hypothesis were true, there would be less than a 5% probability of observing data as extreme as what was collected. That is the entire claim. It says nothing about the probability that the null hypothesis is true, nothing about the size of the effect, and nothing about whether the result matters in practice.</p>
+ <p>The concept was formalized in the early 20th century by Ronald Fisher, Jerzy Neyman, and Egon Pearson, though their frameworks were fundamentally different. Fisher viewed the p-value as a continuous measure of evidence against the null hypothesis, while Neyman and Pearson developed the hypothesis testing framework with fixed error rates (Type I and Type II errors). Modern practice awkwardly merges both approaches, using Fisher's p-values within Neyman-Pearson's decision framework, which creates confusion that persists to this day.</p>
 
-      <h2>The Anatomy of a P-Value</h2>
-      <p>A p-value is calculated in three steps. First, you define a null hypothesis, typically that there is no effect or no difference. Second, you compute a test statistic that summarizes how far your observed data deviate from what the null hypothesis predicts. Third, you calculate the probability of observing a test statistic at least as extreme as yours, assuming the null hypothesis is true. This probability is the p-value.</p>
-      <p>The p-value explorer above visualizes this process. The gray curve represents the null hypothesis distribution, which is the sampling distribution of the test statistic if there is truly no effect. The teal shaded region represents values more extreme than the critical value. When the observed test statistic falls in this region, the p-value is below alpha and the result is deemed statistically significant. The orange curve represents the alternative hypothesis, showing where the test statistic would likely fall if the true effect equals Cohen's d. The overlap between these curves determines statistical power.</p>
-      <p>Understanding this geometry is essential. When you increase the sample size, both distributions become narrower (lower standard error), which separates them further and increases power. When you increase the effect size, the alternative distribution shifts further from the null, again increasing separation. When you decrease alpha, the critical value moves outward, making significance harder to achieve but reducing false positives.</p>
+ <h2>The Anatomy of a P-Value</h2>
+ <p>A p-value is calculated in three steps. First, you define a null hypothesis, typically that there is no effect or no difference. Second, you compute a test statistic that summarizes how far your observed data deviate from what the null hypothesis predicts. Third, you calculate the probability of observing a test statistic at least as extreme as yours, assuming the null hypothesis is true. This probability is the p-value.</p>
+ <p>The p-value explorer above visualizes this process. The gray curve represents the null hypothesis distribution, which is the sampling distribution of the test statistic if there is truly no effect. The teal shaded region represents values more extreme than the critical value. When the observed test statistic falls in this region, the p-value is below alpha and the result is deemed statistically significant. The orange curve represents the alternative hypothesis, showing where the test statistic would likely fall if the true effect equals Cohen's d. The overlap between these curves determines statistical power.</p>
+ <p>Understanding this geometry is essential. When you increase the sample size, both distributions become narrower (lower standard error), which separates them further and increases power. When you increase the effect size, the alternative distribution shifts further from the null, again increasing separation. When you decrease alpha, the critical value moves outward, making significance harder to achieve but reducing false positives.</p>
 
-      <h2>Ten Things P-Values Do NOT Tell You</h2>
-      <p>The misconceptions quiz in this tool targets the ten most common misinterpretations of p-values, drawn from research by Goodman (2008), Greenland et al. (2016), and the American Statistical Association's 2016 statement on p-values. Here is a summary of what p-values do not mean:</p>
-      <p>First, the p-value is not the probability that the null hypothesis is true. This is the most pervasive error. The p-value is P(data | H0), not P(H0 | data). Converting from one to the other requires Bayes' theorem and a prior probability for H0, which the frequentist framework does not provide. Second, 1 minus the p-value is not the probability that the alternative hypothesis is true. Third, a p-value of 0.05 does not mean there is a 5% chance the result is a false positive. The false positive rate depends on the base rate of true effects and the power of the study, not just alpha.</p>
-      <p>Fourth, a non-significant p-value does not mean there is no effect. It means the data are compatible with the null hypothesis, but they may also be compatible with meaningful effects, especially if the study was underpowered. Fifth, a significant p-value does not mean the effect is large or important. Sixth, two studies with p = 0.04 and p = 0.06 do not provide meaningfully different evidence. Seventh, the p-value does not measure the reliability or replicability of a finding. Eighth, "highly significant" results (p = 0.001) are not necessarily more important than marginally significant ones (p = 0.04). Ninth, p-values from different studies are not directly comparable without accounting for power and effect sizes. Tenth, the p-value does not account for multiple comparisons, data dredging, or selective reporting unless explicitly adjusted.</p>
+ <h2>Ten Things P-Values Do NOT Tell You</h2>
+ <p>The misconceptions quiz in this tool targets the ten most common misinterpretations of p-values, drawn from research by Goodman (2008), Greenland et al. (2016), and the American Statistical Association's 2016 statement on p-values. Here is a summary of what p-values do not mean:</p>
+ <p>First, the p-value is not the probability that the null hypothesis is true. That's the most pervasive error. The p-value is P(data | H0), not P(H0 | data). Converting from one to the other requires Bayes' theorem and a prior probability for H0, which the frequentist framework does not provide. Second, 1 minus the p-value is not the probability that the alternative hypothesis is true. Third, a p-value of 0.05 does not mean there is a 5% chance the result is a false positive. The false positive rate depends on the base rate of true effects and the power of the study, not just alpha.</p>
+ <p>Fourth, a non-significant p-value does not mean there is no effect. It means the data are compatible with the null hypothesis, but they may also be compatible with meaningful effects, especially if the study was underpowered. Fifth, a significant p-value does not mean the effect is large or important. Sixth, two studies with p = 0.04 and p = 0.06 do not provide meaningfully different evidence. Seventh, the p-value does not measure the reliability or replicability of a finding. Eighth, "highly significant" results (p = 0.001) are not necessarily more important than marginally significant ones (p = 0.04). Ninth, p-values from different studies are not directly comparable without accounting for power and effect sizes. Tenth, the p-value does not account for multiple comparisons, data dredging, or selective reporting unless explicitly adjusted.</p>
 
-      <h2>Confidence Intervals: The Better Communicator</h2>
-      <p>Confidence intervals convey the same statistical information as p-values but in a more interpretable format. A 95% confidence interval provides a range of parameter values that are compatible with the observed data. If the interval excludes the null hypothesis value, the result is significant at the 0.05 level. But the interval also communicates the precision of the estimate and the range of plausible effect sizes, something a p-value alone cannot do.</p>
-      <p>The confidence interval visualizer in this tool shows how the interval width depends on sample size, variability, and confidence level. The relationship is governed by the formula: CI = mean plus or minus z * (SD / sqrt(n)). Doubling the sample size narrows the interval by a factor of sqrt(2), roughly 29%. Increasing from 95% to 99% confidence widens the interval by about 30% because the critical z-value increases from 1.96 to 2.576.</p>
-      <p>A common misinterpretation of confidence intervals mirrors the p-value confusion: a 95% CI does not mean there is a 95% probability the true parameter lies within the interval. It means that if you repeated the experiment many times, 95% of the constructed intervals would contain the true parameter. Any single interval either contains the true value or it does not. This frequentist interpretation is admittedly awkward, which is why Bayesian credible intervals, which do provide direct probability statements about parameters, are gaining popularity.</p>
+ <h2>Confidence Intervals, The Better Communicator</h2>
+ <p>Confidence intervals convey the same statistical information as p-values but in a more interpretable format. A 95% confidence interval provides a range of parameter values that are compatible with the observed data. If the interval excludes the null hypothesis value, the result is significant at the 0.05 level. But the interval also communicates the precision of the estimate and the range of plausible effect sizes, something a p-value alone cannot do.</p>
+ <p>The confidence interval visualizer in this tool shows how the interval width depends on sample size, variability, and confidence level. The relationship is governed by the formula: CI = mean plus or minus z * (SD / sqrt(n)). Doubling the sample size narrows the interval by a factor of sqrt(2), roughly 29%. Increasing from 95% to 99% confidence widens the interval by about 30% because the critical z-value increases from 1.96 to 2.576.</p>
+ <p>A common misinterpretation of confidence intervals mirrors the p-value confusion: a 95% CI does not mean there is a 95% probability the true parameter lies within the interval. It means that if you repeated the experiment many times, 95% of the constructed intervals would contain the true parameter. Any single interval either contains the true value or it does not. This frequentist interpretation is admittedly awkward, which is why Bayesian credible intervals, which do provide direct probability statements about parameters, are gaining popularity.</p>
 
-      <h2>Effect Sizes: The Missing Piece</h2>
-      <p>Effect sizes answer the question that p-values cannot: how large is the observed difference? Cohen's d, h, and w are standardized effect size measures that allow comparisons across different scales and contexts. Cohen's d divides the mean difference by the pooled standard deviation, yielding a scale-free measure. A Cohen's d of 0.5 means the two groups differ by half a standard deviation, regardless of whether you are measuring response time in milliseconds or revenue in dollars.</p>
-      <p>Cohen's h applies the arcsine transformation to proportions before computing the difference. This is necessary because the variance of a proportion depends on the proportion itself, so the same absolute difference (e.g., 3 percentage points) has different statistical properties at a 5% baseline versus a 50% baseline. Cohen's h normalizes this, making effects comparable across different baseline rates. In A/B testing, this is particularly valuable when comparing experiments across pages with very different conversion rates.</p>
-      <p>Cohen's w is the effect size for chi-square tests. It is defined as the square root of the chi-square statistic divided by the sample size: w = sqrt(chi-square / n). Like d and h, it has conventional thresholds: 0.1 (small), 0.3 (medium), and 0.5 (large). The effect size calculator in this tool computes all three measures and provides magnitude interpretations based on Cohen's 1988 benchmarks, while noting that these benchmarks are domain-dependent and should be calibrated to your specific field.</p>
+ <h2>Effect Sizes, The Missing Piece</h2>
+ <p>Effect sizes answer the question that p-values cannot: how large is the observed difference? Cohen's d, h, and w are standardized effect size measures that allow comparisons across different scales and contexts. Cohen's d divides the mean difference by the pooled standard deviation, yielding a scale-free measure. A Cohen's d of 0.5 means the two groups differ by half a standard deviation, regardless of whether you are measuring response time in milliseconds or revenue in dollars.</p>
+ <p>Cohen's h applies the arcsine transformation to proportions before computing the difference. That's necessary because the variance of a proportion depends on the proportion itself, so the same absolute difference (e.g., 3 percentage points) has different statistical properties at a 5% baseline versus a 50% baseline. Cohen's h normalizes this, making effects comparable across different baseline rates. In A/B testing, this is particularly valuable when comparing experiments across pages with very different conversion rates.</p>
+ <p>Cohen's w is the effect size for chi-square tests. It is defined as the square root of the chi-square statistic divided by the sample size: w = sqrt(chi-square / n). Like d and h, it has conventional thresholds: 0.1 (small), 0.3 (medium), and 0.5 (large). The effect size calculator in this tool computes all three measures and provides magnitude interpretations based on Cohen's 1988 benchmarks, while noting that these benchmarks are domain-dependent and should be calibrated to your specific field.</p>
 
-      <h2>Practical Recommendations for A/B Testers</h2>
-      <p>Report p-values alongside confidence intervals and effect sizes. Never make decisions based on p-values alone. Pre-register your hypothesis, sample size, and analysis plan before running the test. Use power analysis to ensure your test can detect the minimum effect size that matters to your business. Adjust for multiple comparisons when testing multiple metrics or variants. Consider Bayesian methods when you need direct probability statements about your hypotheses. And always remember that statistical significance is a necessary but insufficient condition for practical significance.</p>
-    </section>
+ <h2>Practical Recommendations for A/B Testers</h2>
+ <p>Report p-values alongside confidence intervals and effect sizes. Never make decisions based on p-values alone. Pre-register your hypothesis, sample size, and analysis plan before running the test. Use power analysis to ensure your test can detect the minimum effect size that matters to your business. Adjust for multiple comparisons when testing multiple metrics or variants. Consider Bayesian methods when you need direct probability statements about your hypotheses. And always remember that statistical significance is a necessary but insufficient condition for practical significance.</p>
+ </section>
 
-    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+ <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
 
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
+ <section class="faq-section">
+ <h2>Common questions</h2>
 
-      <details>
-        <summary>What does a p-value actually tell you?</summary>
-        <p>A p-value is the probability of observing data at least as extreme as the collected data, assuming the null hypothesis is true. It does NOT tell you the probability that the null hypothesis is true, nor the probability that your result occurred by chance. A p-value of 0.03 means that if there were truly no effect, you would see data this extreme only 3% of the time.</p>
-      </details>
+ <details>
+ <summary>What does a p-value actually tell you?</summary>
+ <p>A p-value is the probability of observing data at least as extreme as the collected data, assuming the null hypothesis is true. It does NOT tell you the probability that the null hypothesis is true, nor the probability that your result occurred by chance. A p-value of 0.03 means that if there were truly no effect, you would see data this extreme only 3% of the time.</p>
+ </details>
 
-      <details>
-        <summary>Is a p-value of 0.05 a reliable threshold for significance?</summary>
-        <p>The 0.05 threshold is a convention, not a law of nature. A p-value of 0.049 and 0.051 represent nearly identical evidence. Many fields now recommend reporting exact p-values with effect sizes and confidence intervals. Some journals require alpha of 0.005 for claims of new discoveries.</p>
-      </details>
+ <details>
+ <summary>Is a p-value of 0.05 a reliable threshold for significance?</summary>
+ <p>The 0.05 threshold is a convention, not a law of nature. A p-value of 0.049 and 0.051 represent nearly identical evidence. Many fields now recommend reporting exact p-values with effect sizes and confidence intervals. Some journals require alpha of 0.005 for claims of new discoveries.</p>
+ </details>
 
-      <details>
-        <summary>What is the difference between statistical significance and practical significance?</summary>
-        <p>Statistical significance means the observed effect is unlikely due to chance. Practical significance means the effect is large enough to matter. With a large enough sample, trivially small effects become statistically significant. Always pair p-values with effect size measures.</p>
-      </details>
+ <details>
+ <summary>What is the difference between statistical significance and practical significance?</summary>
+ <p>Statistical significance means the observed effect is unlikely due to chance. Practical significance means the effect is large enough to matter. With a large enough sample, trivially small effects become statistically significant. Always pair p-values with effect size measures.</p>
+ </details>
 
-      <details>
-        <summary>Why do researchers misinterpret p-values so often?</summary>
-        <p>P-value misinterpretation is widespread because the definition requires reasoning about the probability of data given a hypothesis, not the probability of a hypothesis given data (which is what most people want to know). Bayesian methods directly answer the question most people are actually asking.</p>
-      </details>
+ <details>
+ <summary>Why do researchers misinterpret p-values so often?</summary>
+ <p>P-value misinterpretation is widespread because the definition requires reasoning about the probability of data given a hypothesis, not the probability of a hypothesis given data (which is what most people want to know). Bayesian methods directly answer the question most people are actually asking.</p>
+ </details>
 
-      <details>
-        <summary>How do effect sizes like Cohen's d complement p-values?</summary>
-        <p>Effect sizes quantify how large an observed difference is, independent of sample size. Cohen's d of 0.5 means the groups differ by half a standard deviation. Unlike p-values, effect sizes do not shrink with more data. Reporting both gives a complete picture: the p-value addresses whether the effect is real, and the effect size addresses whether it matters.</p>
-      </details>
-    </section>
+ <details>
+ <summary>How do effect sizes like Cohen's d complement p-values?</summary>
+ <p>Effect sizes quantify how large an observed difference is, independent of sample size. Cohen's d of 0.5 means the groups differ by half a standard deviation. Unlike p-values, effect sizes do not shrink with more data. Reporting both gives a complete picture: the p-value addresses whether the effect is real, and the effect size addresses whether it matters.</p>
+ </details>
+ </section>
 
-    <section class="explainer-section">
-      <h3>Related A/B Testing Tools</h3>
-      <ul>
-        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Calculate statistical significance for your test results</li>
-        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Determine required sample size with power curves</li>
-        <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a> — Compute CIs for proportions and means</li>
-        <li><a href="/tools/chi-square-test.html">Chi-Square Test Calculator</a> — Test independence and goodness-of-fit</li>
-      </ul>
-    </section>
+ <section class="explainer-section">
+ <h3>Related A/B Testing Tools</h3>
+ <ul>
+ <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a>, Calculate statistical significance for your test results</li>
+ <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a>, Determine required sample size with power curves</li>
+ <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a>, Compute CIs for proportions and means</li>
+ <li><a href="/tools/chi-square-test.html">Chi-Square Test Calculator</a>, Test independence and goodness-of-fit</li>
+ </ul>
+ </section>
 
-    <section class="explainer-section">
-      <h3>About the Author</h3>
-      <p>Built by <strong><a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-statistical-significance-explained">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
-    </section>
-  </main>
+ <section class="explainer-section">
+ <h3>About the Author</h3>
+ <p>Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-statistical-significance-explained">Michael Lip</a>, Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+ </section>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
-        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=research-statistical-significance-explained">Zovo</a> &middot; 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=research-statistical-significance-explained">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-statistical-significance-explained">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-statistical-significance-explained">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-statistical-significance-explained" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-statistical-significance-explained" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
-  <script>
+ <script>
   (function(){
     /* ===== UTILITY FUNCTIONS ===== */
     function normCdf(x){if(x<-8)return 0;if(x>8)return 1;var t=1/(1+.2316419*Math.abs(x)),d=.3989422804014327,p=d*Math.exp(-x*x/2)*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.3302744))));return x>0?1-p:p;}
@@ -736,14 +675,14 @@
     calcCohenD();
   })();
   </script>
-  <script src="/assets/js/share.js"></script>
+ <script src="/assets/js/share.js"></script>
 <script src="/assets/js/pro-nudge.js"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
-<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</a></li>
-<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes — 20 Most Common Statistical Errors</a></li>
+<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</a></li>
+<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes, 20 Most Common Statistical Errors</a></li>
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/answers/how-long-to-run-ab-test.html" style="color:#3b82f6;text-decoration:none;">How Long Should I Run My A/B Test?</a></li>
 </ul>

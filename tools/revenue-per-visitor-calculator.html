@@ -166,73 +166,73 @@
 </head>
 <body>
 <nav>
-  <a href="/">abwex.com</a>
-  <a href="/tools/">All Tools</a>
+ <a href="/">abwex.com</a>
+ <a href="/tools/">All Tools</a>
 </nav>
 <main>
-  <h1>Compare Revenue Per Visitor Across A/B Test Variants</h1>
-  <p class="intro">Enter the visitors and total revenue for your control and variant, and this tool instantly computes revenue per visitor (RPV), the uplift, and projected gain at scale &mdash; the metric that matters when conversion rate and order value move in opposite directions.</p>
+ <h1>Compare Revenue Per Visitor Across A/B Test Variants</h1>
+ <p class="intro">Enter the visitors and total revenue for your control and variant, and this tool instantly computes revenue per visitor (RPV), the uplift, and projected gain at scale, the metric that matters when conversion rate and order value move in opposite directions.</p>
 
-  <section id="tool">
-    <div class="grid">
-      <div class="col control">
-        <h3>Control (A)</h3>
-        <label for="cVis">Visitors</label>
-        <input id="cVis" type="number" min="0" step="1" value="8200">
-        <label for="cRev">Total revenue ($)</label>
-        <input id="cRev" type="number" min="0" step="0.01" value="41000">
-        <label for="cOrd">Orders (optional)</label>
-        <input id="cOrd" type="number" min="0" step="1" value="640">
-      </div>
-      <div class="col variant">
-        <h3>Variant (B)</h3>
-        <label for="vVis">Visitors</label>
-        <input id="vVis" type="number" min="0" step="1" value="8150">
-        <label for="vRev">Total revenue ($)</label>
-        <input id="vRev" type="number" min="0" step="0.01" value="45200">
-        <label for="vOrd">Orders (optional)</label>
-        <input id="vOrd" type="number" min="0" step="1" value="655">
-      </div>
-    </div>
+ <section id="tool">
+ <div class="grid">
+ <div class="col control">
+ <h3>Control (A)</h3>
+ <label for="cVis">Visitors</label>
+ <input id="cVis" type="number" min="0" step="1" value="8200">
+ <label for="cRev">Total revenue ($)</label>
+ <input id="cRev" type="number" min="0" step="0.01" value="41000">
+ <label for="cOrd">Orders (optional)</label>
+ <input id="cOrd" type="number" min="0" step="1" value="640">
+ </div>
+ <div class="col variant">
+ <h3>Variant (B)</h3>
+ <label for="vVis">Visitors</label>
+ <input id="vVis" type="number" min="0" step="1" value="8150">
+ <label for="vRev">Total revenue ($)</label>
+ <input id="vRev" type="number" min="0" step="0.01" value="45200">
+ <label for="vOrd">Orders (optional)</label>
+ <input id="vOrd" type="number" min="0" step="1" value="655">
+ </div>
+ </div>
 
-    <div class="out">
-      <div class="stat"><div class="k">Control RPV</div><div class="v" id="oCrpv">$0.00</div></div>
-      <div class="stat"><div class="k">Variant RPV</div><div class="v" id="oVrpv">$0.00</div></div>
-      <div class="stat"><div class="k">RPV Uplift</div><div class="v" id="oUplift">0%</div></div>
-    </div>
-    <div class="out">
-      <div class="stat"><div class="k">Control AOV</div><div class="v" id="oCaov">$0.00</div></div>
-      <div class="stat"><div class="k">Variant AOV</div><div class="v" id="oVaov">$0.00</div></div>
-      <div class="stat"><div class="k">Extra $/10k visitors</div><div class="v" id="oProj">$0</div></div>
-    </div>
+ <div class="out">
+ <div class="stat"><div class="k">Control RPV</div><div class="v" id="oCrpv">$0.00</div></div>
+ <div class="stat"><div class="k">Variant RPV</div><div class="v" id="oVrpv">$0.00</div></div>
+ <div class="stat"><div class="k">RPV Uplift</div><div class="v" id="oUplift">0%</div></div>
+ </div>
+ <div class="out">
+ <div class="stat"><div class="k">Control AOV</div><div class="v" id="oCaov">$0.00</div></div>
+ <div class="stat"><div class="k">Variant AOV</div><div class="v" id="oVaov">$0.00</div></div>
+ <div class="stat"><div class="k">Extra $/10k visitors</div><div class="v" id="oProj">$0</div></div>
+ </div>
 
-    <div class="verdict" id="verdict">Enter your numbers to see the winner.</div>
-  </section>
+ <div class="verdict" id="verdict">Enter your numbers to see the winner.</div>
+ </section>
 
-  <h2>How this RPV calculator works</h2>
-  <div class="prose">
-    <p>Revenue per visitor collapses two levers &mdash; how often people buy and how much they spend &mdash; into a single number you can compare directly. The core formula is simple:</p>
-    <div class="formula">RPV = Total Revenue &divide; Total Visitors</div>
-    <p>The tool computes RPV separately for your control and variant, then expresses the difference as a relative uplift:</p>
-    <div class="formula">Uplift % = (RPV<sub>variant</sub> &minus; RPV<sub>control</sub>) &divide; RPV<sub>control</sub> &times; 100</div>
-    <p>Why use RPV instead of conversion rate? Because a variant can <em>lower</em> conversion rate yet still win on money. Suppose a variant pushes a premium upsell: fewer people convert, but average order value (AOV = revenue &divide; orders) climbs enough that each visitor is worth more. Conversion-rate tests miss that entirely; RPV captures it. The reverse trap is just as common &mdash; a "winning" conversion lift that quietly shrinks basket size and loses revenue.</p>
-    <p>The calculator also decomposes the result. It shows AOV for each arm so you can see <em>why</em> RPV moved &mdash; whether the gain came from more orders or bigger orders &mdash; using the identity <code>RPV = Conversion Rate &times; AOV</code>. Finally it projects the per-visitor difference onto a fixed traffic block (extra dollars per 10,000 visitors) so the abstract percentage becomes a concrete revenue figure you can take to a planning meeting.</p>
-    <p>One caution: RPV is a high-variance metric because a handful of large orders can swing the mean. Treat the uplift here as a point estimate of business impact, not proof of significance. Confirm the result holds with a proper significance test on adequate sample size before you ship the variant to all traffic.</p>
-  </div>
+ <h2>How this RPV calculator works</h2>
+ <div class="prose">
+ <p>Revenue per visitor collapses two levers, how often people buy and how much they spend, into a single number you can compare directly. The core formula is simple:</p>
+ <div class="formula">RPV = Total Revenue &divide; Total Visitors</div>
+ <p>The tool computes RPV separately for your control and variant, then expresses the difference as a relative uplift:</p>
+ <div class="formula">Uplift % = (RPV<sub>variant</sub> &minus; RPV<sub>control</sub>) &divide; RPV<sub>control</sub> &times; 100</div>
+ <p>Why use RPV instead of conversion rate? Because a variant can <em>lower</em> conversion rate yet still win on money. Suppose a variant pushes a premium upsell: fewer people convert, but average order value (AOV = revenue &divide; orders) climbs enough that each visitor is worth more. Conversion-rate tests miss that entirely; RPV captures it. The reverse trap is just as common, a "winning" conversion lift that quietly shrinks basket size and loses revenue.</p>
+ <p>The calculator also decomposes the result. It shows AOV for each arm so you can see <em>why</em> RPV moved, whether the gain came from more orders or bigger orders, using the identity <code>RPV = Conversion Rate &times; AOV</code>. Finally it projects the per-visitor difference onto a fixed traffic block (extra dollars per 10,000 visitors) so the abstract percentage becomes a concrete revenue figure you can take to a planning meeting.</p>
+ <p>One caution: RPV is a high-variance metric because a handful of large orders can swing the mean. Treat the uplift here as a point estimate of business impact, not proof of significance. Confirm the result holds with a proper significance test on adequate sample size before you ship the variant to all traffic.</p>
+ </div>
 
-  <h2>Related Tools</h2>
-  <section class="related">
-    <a href="/tools/conversion-rate-calculator">Conversion Rate Calculator</a>
-    <a href="/tools/funnel-conversion-calculator">Funnel Conversion Calculator</a>
-    <a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>
-  </section>
+ <h2>Related Tools</h2>
+ <section class="related">
+ <a href="/tools/conversion-rate-calculator">Conversion Rate Calculator</a>
+ <a href="/tools/funnel-conversion-calculator">Funnel Conversion Calculator</a>
+ <a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>
+ </section>
 </main>
 <footer>
-  <div>
-    <a href="/">Home</a>
-    <a href="/tools/">All Tools</a>
-  </div>
-  <p>&copy; 2026 abwex.com &mdash; built for A/B testers.</p>
+ <div>
+ <a href="/">Home</a>
+ <a href="/tools/">All Tools</a>
+ </div>
+ <p>&copy; 2026 abwex.com, built for A/B testers.</p>
 </footer>
 <script>
 (function () {
@@ -272,7 +272,7 @@
     var verdict = document.getElementById('verdict');
 
     if (cRPV <= 0) {
-      upliftEl.textContent = '—';
+      upliftEl.textContent = '&middot;';
       upliftEl.className = 'v';
       verdict.innerHTML = 'Enter control visitors and revenue to compute uplift.';
       set('oProj', '$0');
@@ -305,7 +305,7 @@
       if (Math.abs(crDelta) > 0.001 || Math.abs(aovDelta) > 0.001) {
         var crWord = crDelta >= 0 ? 'higher' : 'lower';
         var aovWord = aovDelta >= 0 ? 'higher' : 'lower';
-        driver = ' Driver: conversion rate ' + cCR.toFixed(2) + '% → ' + vCR.toFixed(2) + '% (' + crWord + '), AOV ' + money(cAOV) + ' → ' + money(vAOV) + ' (' + aovWord + ').';
+        driver = ' Driver: conversion rate ' + cCR.toFixed(2) + '% ' + vCR.toFixed(2) + '% (' + crWord + '), AOV ' + money(cAOV) + ' ' + money(vAOV) + ' (' + aovWord + ').';
         msg += '<br><span style="color:var(--muted);font-size:0.92rem">' + driver + '</span>';
       }
     }

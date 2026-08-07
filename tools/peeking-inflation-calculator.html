@@ -112,87 +112,87 @@
 </head>
 <body>
 <nav>
-  <a href="/">Home</a>
-  <a href="/tools/">Tools</a>
+ <a href="/">Home</a>
+ <a href="/tools/">Tools</a>
 </nav>
 <div class="wrap">
-  <h1>How much does peeking at your A/B test inflate false positives?</h1>
-  <p class="lede">Stop a test the moment it "hits significance" and you're not running one test at 5% &mdash; you're running many, and any one of them crossing <code>p&lt;0.05</code> ends the trial. This tool simulates that repeated-looks process to show the <strong>true</strong> type-I error rate and the corrected per-look threshold that pulls it back to 5%.</p>
+ <h1>How much does peeking at your A/B test inflate false positives?</h1>
+ <p class="lede">Stop a test the moment it "hits significance" and you're not running one test at 5%, you're running many, and any one of them crossing <code>p&lt;0.05</code> ends the trial. This tool simulates that repeated-looks process to show the true type-I error rate and the corrected per-look threshold that pulls it back to 5%.</p>
 
-  <section id="tool">
-    <div class="grid">
-      <div class="field">
-        <label for="looks">Number of interim looks <span class="hint">(N peeks)</span></label>
-        <div class="rangewrap">
-          <input type="range" id="looks" min="1" max="30" step="1" value="5">
-          <output id="looksOut">5</output>
-        </div>
-      </div>
-      <div class="field">
-        <label for="alpha">Per-look nominal &alpha; <span class="hint">(threshold each peek)</span></label>
-        <input type="number" id="alpha" min="0.0001" max="0.5" step="0.001" value="0.05">
-      </div>
-      <div class="field">
-        <label>Look spacing (information fraction)</label>
-        <div class="radios">
-          <label><input type="radio" name="spacing" value="equal" checked> Equally spaced</label>
-          <label><input type="radio" name="spacing" value="front"> Front-loaded</label>
-        </div>
-      </div>
-      <div class="field">
-        <label for="target">Target overall &alpha; <span class="hint">(for correction)</span></label>
-        <input type="number" id="target" min="0.001" max="0.5" step="0.005" value="0.05">
-      </div>
-    </div>
+ <section id="tool">
+ <div class="grid">
+ <div class="field">
+ <label for="looks">Number of interim looks <span class="hint">(N peeks)</span></label>
+ <div class="rangewrap">
+ <input type="range" id="looks" min="1" max="30" step="1" value="5">
+ <output id="looksOut">5</output>
+ </div>
+ </div>
+ <div class="field">
+ <label for="alpha">Per-look nominal &alpha; <span class="hint">(threshold each peek)</span></label>
+ <input type="number" id="alpha" min="0.0001" max="0.5" step="0.001" value="0.05">
+ </div>
+ <div class="field">
+ <label>Look spacing (information fraction)</label>
+ <div class="radios">
+ <label><input type="radio" name="spacing" value="equal" checked> Equally spaced</label>
+ <label><input type="radio" name="spacing" value="front"> Front-loaded</label>
+ </div>
+ </div>
+ <div class="field">
+ <label for="target">Target overall &alpha; <span class="hint">(for correction)</span></label>
+ <input type="number" id="target" min="0.001" max="0.5" step="0.005" value="0.05">
+ </div>
+ </div>
 
-    <div class="out">
-      <div class="card">
-        <div class="k">True cumulative type-I error</div>
-        <div class="v bad" id="cumV">&mdash;</div>
-        <div class="sub" id="cumSub">P(any of N looks crosses the boundary) under H&#8320;</div>
-        <div class="bar"><i id="cumBar" style="width:0%"></i></div>
-      </div>
-      <div class="card">
-        <div class="k">Corrected per-look &alpha; (Pocock-style)</div>
-        <div class="v good" id="corrV">&mdash;</div>
-        <div class="sub" id="corrSub">Threshold that restores your target overall rate</div>
-        <div class="bar"><i id="corrBar" style="width:0%"></i></div>
-      </div>
-    </div>
+ <div class="out">
+ <div class="card">
+ <div class="k">True cumulative type-I error</div>
+ <div class="v bad" id="cumV">, </div>
+ <div class="sub" id="cumSub">P(any of N looks crosses the boundary) under H&#8320;</div>
+ <div class="bar"><i id="cumBar" style="width:0%"></i></div>
+ </div>
+ <div class="card">
+ <div class="k">Corrected per-look &alpha; (Pocock-style)</div>
+ <div class="v good" id="corrV">, </div>
+ <div class="sub" id="corrSub">Threshold that restores your target overall rate</div>
+ <div class="bar"><i id="corrBar" style="width:0%"></i></div>
+ </div>
+ </div>
 
-    <div class="verdict" id="verdict">&hellip;</div>
+ <div class="verdict" id="verdict">&hellip;</div>
 
-    <table id="tbl">
-      <thead><tr><th>Look #</th><th>Cumulative &alpha; if you stop here</th><th>Inflation vs 0.05</th></tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <p class="note" id="method"></p>
-  </section>
+ <table id="tbl">
+ <thead><tr><th>Look #</th><th>Cumulative &alpha; if you stop here</th><th>Inflation vs 0.05</th></tr></thead>
+ <tbody id="tbody"></tbody>
+ </table>
+ <p class="note" id="method"></p>
+ </section>
 
-  <div class="prose">
-    <h2>What this actually computes</h2>
-    <p>The test statistic of a running A/B experiment behaves like a <strong>Brownian motion</strong> when plotted against the information fraction <code>t &isin; (0,1]</code>. At each look the standardized statistic is <code>Z(t) = B(t)/&radic;t</code>, where <code>B</code> is a standard Wiener process. Peeking means you check whether <code>|Z|</code> crosses the fixed critical value <code>c = &Phi;&#8315;&sup1;(1 &minus; &alpha;/2)</code> at each of the N looks; the trial stops (a "win") the first time it does. Because the increments of <code>B</code> are correlated across looks, the joint crossing probability has no simple product form &mdash; so this calculator runs a vectorized <strong>Monte Carlo</strong> of the Brownian bridge at the N information times, counting how often at least one look crosses. For equally spaced looks it cross-checks against the classic sequential-analysis benchmarks (Pocock 1977).</p>
-    <p>The headline number is the <em>cumulative type-I error</em>: the chance of declaring a false winner given the null is true. With one look it equals your nominal <code>&alpha;</code>. At five equally spaced looks a nominal 0.05 inflates to roughly <strong>0.14</strong>; at ten looks it climbs past <strong>0.19</strong>. That is the hidden tax of "just checking the dashboard."</p>
-    <p>The second output inverts the problem. Using a <strong>Pocock-style constant boundary</strong>, it binary-searches for the single per-look <code>&alpha;'</code> whose simulated cumulative error equals your target (default 5%). It also reports the crude <strong>Bonferroni</strong> bound <code>&alpha;/N</code>, which is always more conservative because it ignores the positive correlation between looks. Use the corrected threshold as a stopgap &mdash; but the honest fix is a real sequential design (O'Brien&ndash;Fleming spending, SPRT, or a Bayesian model with a proper stopping rule) rather than eyeballing a p-value.</p>
+ <div class="prose">
+ <h2>What this actually computes</h2>
+ <p>The test statistic of a running A/B experiment behaves like a Brownian motion when plotted against the information fraction <code>t &isin; (0,1]</code>. At each look the standardized statistic is <code>Z(t) = B(t)/&radic;t</code>, where <code>B</code> is a standard Wiener process. Peeking means you check whether <code>|Z|</code> crosses the fixed critical value <code>c = &Phi;&#8315;&sup1;(1 &minus; &alpha;/2)</code> at each of the N looks; the trial stops (a "win") the first time it does. Because the increments of <code>B</code> are correlated across looks, the joint crossing probability has no simple product form, so this calculator runs a vectorized Monte Carlo of the Brownian bridge at the N information times, counting how often at least one look crosses. For equally spaced looks it cross-checks against the classic sequential-analysis benchmarks (Pocock 1977).</p>
+ <p>The headline number is the <em>cumulative type-I error</em>: the chance of declaring a false winner given the null is true. With one look it equals your nominal <code>&alpha;</code>. At five equally spaced looks a nominal 0.05 inflates to roughly 0.14; at ten looks it climbs past 0.19. That is the hidden tax of "just checking the dashboard."</p>
+ <p>The second output inverts the problem. Using a Pocock-style constant boundary, it binary-searches for the single per-look <code>&alpha;'</code> whose simulated cumulative error equals your target (default 5%). It also reports the crude Bonferroni bound <code>&alpha;/N</code>, which is always more conservative because it ignores the positive correlation between looks. Use the corrected threshold as a stopgap, but the honest fix is a real sequential design (O'Brien&ndash;Fleming spending, SPRT, or a Bayesian model with a proper stopping rule) rather than eyeballing a p-value.</p>
 
-    <h2 class="related-h">Related Tools</h2>
-    <div class="related">
-      <ul>
-        <li><a href="/tools/ab-test-sample-size-calculator">A/B Test Sample-Size Calculator</a></li>
-        <li><a href="/tools/statistical-significance-calculator">Statistical Significance Calculator</a></li>
-        <li><a href="/tools/bayesian-ab-test-calculator">Bayesian A/B Test Calculator</a></li>
-      </ul>
-    </div>
-  </div>
+ <h2 class="related-h">Related Tools</h2>
+ <div class="related">
+ <ul>
+ <li><a href="/tools/ab-test-sample-size-calculator">A/B Test Sample-Size Calculator</a></li>
+ <li><a href="/tools/statistical-significance-calculator">Statistical Significance Calculator</a></li>
+ <li><a href="/tools/bayesian-ab-test-calculator">Bayesian A/B Test Calculator</a></li>
+ </ul>
+ </div>
+ </div>
 </div>
 
 <footer>
-  <div>
-    <a href="/">Home</a> &middot;
-    <a href="/tools/">All Tools</a> &middot;
-    <a href="/tools/statistical-significance-calculator">Significance Calculator</a>
-  </div>
-  <div style="margin-top:8px">&copy; 2026 abwex.com &middot; Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-peeking-inflation-calculator">Michael Lip</a></div>
+ <div>
+ <a href="/">Home</a> &middot;
+ <a href="/tools/">All Tools</a> &middot;
+ <a href="/tools/statistical-significance-calculator">Significance Calculator</a>
+ </div>
+ <div style="margin-top:8px">&copy; 2026 abwex.com &middot; Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-peeking-inflation-calculator">Michael Lip</a></div>
 </footer>
 
 <script>
@@ -338,9 +338,9 @@
     if(N===1){
       msg = "<strong>One look, no inflation.</strong> A single analysis at α="+alpha.toFixed(3)+" is exactly a "+pct(alpha)+" test. The problem only appears when you peek repeatedly.";
     } else if(res.rate < 0.075){
-      msg = "<strong>Mild inflation.</strong> Your true false-positive rate is "+pct(res.rate)+" — still fairly close to target. To be exact, use a per-look threshold of "+ca.toFixed(4)+".";
+      msg = "<strong>Mild inflation.</strong> Your true false-positive rate is "+pct(res.rate)+", still fairly close to target. To be exact, use a per-look threshold of "+ca.toFixed(4)+".";
     } else if(res.rate < 0.12){
-      msg = "<strong>Meaningful inflation.</strong> Peeking "+N+" times turns a "+pct(alpha)+" test into a "+pct(res.rate)+" one — roughly "+inflation.toFixed(1)+"× the advertised rate. Tighten each look to α'="+ca.toFixed(4)+" or adopt a sequential design.";
+      msg = "<strong>Meaningful inflation.</strong> Peeking "+N+" times turns a "+pct(alpha)+" test into a "+pct(res.rate)+" one, roughly "+inflation.toFixed(1)+"× the advertised rate. Tighten each look to α'="+ca.toFixed(4)+" or adopt a sequential design.";
     } else {
       msg = "<strong>Severe inflation.</strong> At "+N+" looks your real chance of a false winner is "+pct(res.rate)+" ("+inflation.toFixed(1)+"× nominal). Stopping on the first p&lt;0.05 here is essentially p-hacking. Restore 5% with α'="+ca.toFixed(4)+", or better, use O'Brien–Fleming spending.";
     }

@@ -83,72 +83,72 @@ p{margin:.8em 0}
 </head>
 <body>
 <nav>
-  <a href="/">abwex.com</a>
-  <a href="/tools/">All Tools</a>
+ <a href="/">abwex.com</a>
+ <a href="/tools/">All Tools</a>
 </nav>
 <main>
-  <h1>Compute Your Survey &amp; Conversion Margin of Error</h1>
-  <p class="intro">Estimate how far your observed proportion may stray from the true value. Built for A/B testers and analysts who need fast, defensible confidence intervals around a conversion rate.</p>
+ <h1>Compute Your Survey &amp; Conversion Margin of Error</h1>
+ <p class="intro">Estimate how far your observed proportion may stray from the true value. Built for A/B testers and analysts who need fast, defensible confidence intervals around a conversion rate.</p>
 
-  <section id="tool">
-    <div class="grid">
-      <div>
-        <label for="n">Sample size (n)</label>
-        <input id="n" type="number" min="1" step="1" value="1200">
-        <div class="hint">Number of visitors or respondents.</div>
-      </div>
-      <div>
-        <label for="p">Observed proportion / conversion (%)</label>
-        <input id="p" type="number" min="0" max="100" step="0.1" value="12">
-        <div class="hint">Use 50% for the most conservative (widest) estimate.</div>
-      </div>
-      <div>
-        <label for="conf">Confidence level</label>
-        <select id="conf">
-          <option value="1.6449">90%</option>
-          <option value="1.96" selected>95%</option>
-          <option value="2.5758">99%</option>
-        </select>
-        <div class="hint">Controls the z-score multiplier.</div>
-      </div>
-      <div>
-        <label for="pop">Population size (optional)</label>
-        <input id="pop" type="number" min="0" step="1" value="">
-        <div class="hint">Leave blank for an infinite / very large population.</div>
-      </div>
-    </div>
+ <section id="tool">
+ <div class="grid">
+ <div>
+ <label for="n">Sample size (n)</label>
+ <input id="n" type="number" min="1" step="1" value="1200">
+ <div class="hint">Number of visitors or respondents.</div>
+ </div>
+ <div>
+ <label for="p">Observed proportion / conversion (%)</label>
+ <input id="p" type="number" min="0" max="100" step="0.1" value="12">
+ <div class="hint">Use 50% for the most conservative (widest) estimate.</div>
+ </div>
+ <div>
+ <label for="conf">Confidence level</label>
+ <select id="conf">
+ <option value="1.6449">90%</option>
+ <option value="1.96" selected>95%</option>
+ <option value="2.5758">99%</option>
+ </select>
+ <div class="hint">Controls the z-score multiplier.</div>
+ </div>
+ <div>
+ <label for="pop">Population size (optional)</label>
+ <input id="pop" type="number" min="0" step="1" value="">
+ <div class="hint">Leave blank for an infinite / very large population.</div>
+ </div>
+ </div>
 
-    <div class="out" aria-live="polite">
-      <div class="big" id="moe">±0.00<span>%</span></div>
-      <div class="row"><span>Confidence interval</span><b class="ci" id="ci">–</b></div>
-      <div class="row"><span>Standard error</span><b id="se">–</b></div>
-      <div class="row"><span>Z-score multiplier</span><b id="z">–</b></div>
-      <div class="row"><span>Relative margin</span><b id="rel">–</b></div>
-      <div class="note" id="note"></div>
-    </div>
-  </section>
+ <div class="out" aria-live="polite">
+ <div class="big" id="moe">±0.00<span>%</span></div>
+ <div class="row"><span>Confidence interval</span><b class="ci" id="ci">–</b></div>
+ <div class="row"><span>Standard error</span><b id="se">–</b></div>
+ <div class="row"><span>Z-score multiplier</span><b id="z">–</b></div>
+ <div class="row"><span>Relative margin</span><b id="rel">–</b></div>
+ <div class="note" id="note"></div>
+ </div>
+ </section>
 
-  <section>
-    <h2>How the margin of error is calculated</h2>
-    <p>The margin of error (MOE) tells you the half-width of the band around a measured proportion that, on repeated sampling, would contain the true population value at your chosen confidence level. For a single proportion <code>p</code> drawn from a sample of size <code>n</code>, the calculator uses the normal (Wald) approximation:</p>
-    <div class="formula">MOE = z &times; &radic;( p &times; (1 − p) / n )</div>
-    <p>Here <code>z</code> is the critical value of the standard normal distribution: 1.6449 for 90%, 1.96 for 95%, and 2.5758 for 99% confidence. The quantity under the root is the <strong>standard error</strong> of the proportion. Because <code>p(1−p)</code> is maximised at p = 0.5, a 50% conversion rate produces the widest possible interval for any given sample size — which is why pollsters quote MOE at p = 0.5 when they want a worst-case figure.</p>
-    <p>When you supply a finite population, the tool applies the <strong>finite population correction</strong> (FPC), multiplying the standard error by <code>&radic;((N − n) / (N − 1))</code>. This shrinks the margin when your sample is a meaningful fraction of the whole population, since you have already measured a large share of it. With an infinite or blank population the FPC equals one and has no effect.</p>
-    <p>The reported confidence interval is simply <code>p ± MOE</code>, clamped to the 0–100% range. The <strong>relative margin</strong> divides MOE by <code>p</code>, which is often more useful in A/B testing: a ±1.2% absolute margin on a 2% conversion rate is a huge ±60% relative swing, signalling you need far more traffic before the result is trustworthy. Note that the Wald formula loses accuracy for very small samples or proportions near 0% or 100%; in those cases a Wilson or exact interval is preferable.</p>
-  </section>
+ <section>
+ <h2>How the margin of error is calculated</h2>
+ <p>The margin of error (MOE) tells you the half-width of the band around a measured proportion that, on repeated sampling, would contain the true population value at your chosen confidence level. For a single proportion <code>p</code> drawn from a sample of size <code>n</code>, the calculator uses the normal (Wald) approximation:</p>
+ <div class="formula">MOE = z &times; &radic;( p &times; (1 − p) / n )</div>
+ <p>Here <code>z</code> is the critical value of the standard normal distribution: 1.6449 for 90%, 1.96 for 95%, and 2.5758 for 99% confidence. The quantity under the root is the standard error of the proportion. Because <code>p(1−p)</code> is maximised at p = 0.5, a 50% conversion rate produces the widest possible interval for any given sample size, which is why pollsters quote MOE at p = 0.5 when they want a worst-case figure.</p>
+ <p>When you supply a finite population, the tool applies the finite population correction (FPC), multiplying the standard error by <code>&radic;((N − n) / (N − 1))</code>. This shrinks the margin when your sample is a meaningful fraction of the whole population, since you have already measured a large share of it. With an infinite or blank population the FPC equals one and has no effect.</p>
+ <p>The reported confidence interval is simply <code>p ± MOE</code>, clamped to the 0–100% range. The relative margin divides MOE by <code>p</code>, which is often more useful in A/B testing: a ±1.2% absolute margin on a 2% conversion rate is a huge ±60% relative swing, signalling you need far more traffic before the result is trustworthy. Note that the Wald formula loses accuracy for very small samples or proportions near 0% or 100%; in those cases a Wilson or exact interval is preferable.</p>
+ </section>
 
-  <section class="related">
-    <h2>Related Tools</h2>
-    <a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>
-    <a href="/tools/sample-size-calculator">Sample Size Calculator</a>
-    <a href="/tools/z-score-calculator">Z-Score Calculator</a>
-  </section>
+ <section class="related">
+ <h2>Related Tools</h2>
+ <a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>
+ <a href="/tools/sample-size-calculator">Sample Size Calculator</a>
+ <a href="/tools/z-score-calculator">Z-Score Calculator</a>
+ </section>
 </main>
 
 <footer>
-  <a href="/">Home</a>
-  <a href="/tools/">All Tools</a>
-  <div style="margin-top:8px">© 2026 abwex.com</div>
+ <a href="/">Home</a>
+ <a href="/tools/">All Tools</a>
+ <div style="margin-top:8px">© 2026 abwex.com</div>
 </footer>
 
 <script>
@@ -173,7 +173,7 @@ p{margin:.8em 0}
     var N=parseFloat(popEl.value);
 
     if(!(n>0) || isNaN(pPct) || pPct<0 || pPct>100){
-      moeEl.innerHTML='—';
+      moeEl.innerHTML='&middot;';
       ciEl.textContent='–'; seEl.textContent='–';
       zEl.textContent='–'; relEl.textContent='–';
       noteEl.textContent='Enter a valid sample size (>0) and proportion (0–100%).';
@@ -203,7 +203,7 @@ p{margin:.8em 0}
 
     var msgs=[];
     if(fpcApplied) msgs.push('Finite population correction applied (N='+N+').');
-    if(rel>30 && p>0) msgs.push('Relative margin is large — collect more data before trusting this rate.');
+    if(rel>30 && p>0) msgs.push('Relative margin is large, collect more data before trusting this rate.');
     if(p<0.05 || p>0.95) msgs.push('Proportion is near an extreme; Wald approximation is less reliable here.');
     if(n<30) msgs.push('Small sample (n<30): treat the interval with caution.');
     noteEl.textContent=msgs.join(' ');

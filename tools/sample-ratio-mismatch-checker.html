@@ -83,75 +83,75 @@ footer a{color:var(--accent);text-decoration:none;margin:0 10px}
 </head>
 <body>
 <nav>
-  <a href="/">abwex.com</a>
-  <a href="/tools/">All Tools</a>
+ <a href="/">abwex.com</a>
+ <a href="/tools/">All Tools</a>
 </nav>
 <div class="wrap">
 <h1>Check Your A/B Test for a Broken Traffic Split</h1>
 <p class="lede">Enter the visitors assigned to each variant and the split you expected. This SRM checker runs a chi-square goodness-of-fit test and tells you instantly whether your randomization is trustworthy.</p>
 
 <section id="tool">
-  <h2>SRM Checker</h2>
+ <h2>SRM Checker</h2>
 
-  <label for="split">Expected split <span class="hint">— how you configured the experiment</span></label>
-  <select id="split">
-    <option value="50,50" selected>50 / 50 (two equal variants)</option>
-    <option value="33.34,33.33,33.33">33 / 33 / 33 (three equal variants)</option>
-    <option value="25,25,25,25">25 / 25 / 25 / 25 (four equal variants)</option>
-    <option value="90,10">90 / 10 (ramp / canary)</option>
-    <option value="80,20">80 / 20</option>
-    <option value="custom">Custom weights (set per row)</option>
-  </select>
+ <label for="split">Expected split <span class="hint">, how you configured the experiment</span></label>
+ <select id="split">
+ <option value="50,50" selected>50 / 50 (two equal variants)</option>
+ <option value="33.34,33.33,33.33">33 / 33 / 33 (three equal variants)</option>
+ <option value="25,25,25,25">25 / 25 / 25 / 25 (four equal variants)</option>
+ <option value="90,10">90 / 10 (ramp / canary)</option>
+ <option value="80,20">80 / 20</option>
+ <option value="custom">Custom weights (set per row)</option>
+ </select>
 
-  <div class="grid" style="margin-top:14px">
-    <div>
-      <label for="alpha">Significance threshold (alpha)</label>
-      <select id="alpha">
-        <option value="0.01" selected>0.01 — recommended for SRM</option>
-        <option value="0.05">0.05</option>
-        <option value="0.001">0.001 — very strict</option>
-      </select>
-    </div>
-  </div>
+ <div class="grid" style="margin-top:14px">
+ <div>
+ <label for="alpha">Significance threshold (alpha)</label>
+ <select id="alpha">
+ <option value="0.01" selected>0.01, recommended for SRM</option>
+ <option value="0.05">0.05</option>
+ <option value="0.001">0.001, very strict</option>
+ </select>
+ </div>
+ </div>
 
-  <h2 style="font-size:1rem;margin-top:20px">Visitors per variant</h2>
-  <div id="rows">
-    <div class="variant-row">
-      <div><label>Variant A name</label><input type="text" class="vname" value="Control" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>
-      <div><label>Visitors</label><input type="number" class="vcount" value="50214" min="0" step="1"></div>
-      <div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="50" min="0" step="0.01" disabled></div>
-    </div>
-    <div class="variant-row">
-      <div><label>Variant B name</label><input type="text" class="vname" value="Treatment" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>
-      <div><label>Visitors</label><input type="number" class="vcount" value="49021" min="0" step="1"></div>
-      <div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="50" min="0" step="0.01" disabled></div>
-    </div>
-  </div>
-  <button id="addBtn" type="button">+ Add variant</button>
+ <h2 style="font-size:1rem;margin-top:20px">Visitors per variant</h2>
+ <div id="rows">
+ <div class="variant-row">
+ <div><label>Variant A name</label><input type="text" class="vname" value="Control" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>
+ <div><label>Visitors</label><input type="number" class="vcount" value="50214" min="0" step="1"></div>
+ <div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="50" min="0" step="0.01" disabled></div>
+ </div>
+ <div class="variant-row">
+ <div><label>Variant B name</label><input type="text" class="vname" value="Treatment" style="width:100%;padding:11px 12px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;font-size:1rem"></div>
+ <div><label>Visitors</label><input type="number" class="vcount" value="49021" min="0" step="1"></div>
+ <div><label>Weight <span class="hint">%</span></label><input type="number" class="vweight" value="50" min="0" step="0.01" disabled></div>
+ </div>
+ </div>
+ <button id="addBtn" type="button">+ Add variant</button>
 
-  <div id="out"></div>
+ <div id="out"></div>
 </section>
 
 <section class="prose">
-  <h2>How the SRM check works</h2>
-  <p>A <strong>sample ratio mismatch (SRM)</strong> happens when the share of users actually routed to each variant differs from the split you configured. Even a tiny deviation — say 51.5% vs 48.5% on a 50/50 test — can be statistically impossible by chance once your sample is large, and it usually signals a real bug: a redirect that drops one arm, bot filtering applied unevenly, a logging gap, or a leaky cookie. When that happens, the conversion numbers are no longer comparable and the whole experiment should be paused, not shipped.</p>
-  <p>This tool uses <strong>Pearson's chi-square goodness-of-fit test</strong>. For each variant it computes the expected count <code>E = N &times; w</code>, where <code>N</code> is total visitors and <code>w</code> is that variant's configured weight. It then sums the squared, normalized errors across all <code>k</code> variants:</p>
-  <p><code>&chi;&sup2; = &Sigma; (O&minus;E)&sup2; / E</code></p>
-  <p>where <code>O</code> is the observed visitor count. The statistic follows a chi-square distribution with <code>k&minus;1</code> degrees of freedom. The tool converts &chi;&sup2; to a <strong>p-value</strong> using the regularized upper incomplete gamma function, evaluated in pure JavaScript with a Lanczos gamma approximation and a series/continued-fraction expansion — no server call. If the p-value falls below your alpha (0.01 is the industry-standard SRM threshold, far stricter than the 0.05 used for the metric of interest), the split is flagged as mismatched.</p>
-  <p>The information you gain here that a plain percentage view hides: a 0.3-point imbalance is meaningless at 2,000 users but a five-alarm fire at 2,000,000. Chi-square scales the alarm to your sample size automatically, so you only act when the deviation genuinely exceeds randomization noise.</p>
+ <h2>How the SRM check works</h2>
+ <p>A sample ratio mismatch (SRM) happens when the share of users actually routed to each variant differs from the split you configured. Even a tiny deviation, say 51.5% vs 48.5% on a 50/50 test, can be statistically impossible by chance once your sample is large, and it usually signals a real bug: a redirect that drops one arm, bot filtering applied unevenly, a logging gap, or a leaky cookie. When that happens, the conversion numbers are no longer comparable and the whole experiment should be paused, not shipped.</p>
+ <p>This tool uses Pearson's chi-square goodness-of-fit test. For each variant it computes the expected count <code>E = N &times; w</code>, where <code>N</code> is total visitors and <code>w</code> is that variant's configured weight. It then sums the squared, normalized errors across all <code>k</code> variants:</p>
+ <p><code>&chi;&sup2; = &Sigma; (O&minus;E)&sup2; / E</code></p>
+ <p>where <code>O</code> is the observed visitor count. The statistic follows a chi-square distribution with <code>k&minus;1</code> degrees of freedom. The tool converts &chi;&sup2; to a p-value using the regularized upper incomplete gamma function, evaluated in pure JavaScript with a Lanczos gamma approximation and a series/continued-fraction expansion, no server call. If the p-value falls below your alpha (0.01 is the industry-standard SRM threshold, far stricter than the 0.05 used for the metric of interest), the split is flagged as mismatched.</p>
+ <p>The information you gain here that a plain percentage view hides: a 0.3-point imbalance is meaningless at 2,000 users but a five-alarm fire at 2,000,000. Chi-square scales the alarm to your sample size automatically, so you only act when the deviation genuinely exceeds randomization noise.</p>
 </section>
 
 <section class="related">
-  <h2>Related Tools</h2>
-  <a href="/tools/chi-square-test">Chi-Square Test Calculator</a>
-  <a href="/tools/sample-size-calculator">A/B Sample Size Calculator</a>
-  <a href="/tools/p-value-calculator">P-Value Calculator</a>
+ <h2>Related Tools</h2>
+ <a href="/tools/chi-square-test">Chi-Square Test Calculator</a>
+ <a href="/tools/sample-size-calculator">A/B Sample Size Calculator</a>
+ <a href="/tools/p-value-calculator">P-Value Calculator</a>
 </section>
 </div>
 
 <footer>
-  <div><a href="/">Home</a><a href="/tools/">All Tools</a></div>
-  <p>© 2026 abwex.com — built for honest experimentation.</p>
+ <div><a href="/">Home</a><a href="/tools/">All Tools</a></div>
+ <p>© 2026 abwex.com, built for honest experimentation.</p>
 </footer>
 
 <script>
@@ -255,9 +255,9 @@ footer a{color:var(--accent);text-decoration:none;margin:0 10px}
     var alpha=parseFloat(alphaSel.value);
 
     var v, cls;
-    if(p<alpha){ cls='bad'; v='⚠ SRM DETECTED — split is broken (p &lt; '+alpha+'). Do not trust the results.'; }
-    else if(p<alpha*5){ cls='warn'; v='Borderline — watch this test (p = '+p.toFixed(4)+', near threshold).'; }
-    else { cls='good'; v='✓ No SRM — traffic split looks healthy (p = '+p.toFixed(4)+').'; }
+    if(p<alpha){ cls='bad'; v='SRM DETECTED, split is broken (p &lt; '+alpha+'). Do not trust the results.'; }
+    else if(p<alpha*5){ cls='warn'; v='Borderline, watch this test (p = '+p.toFixed(4)+', near threshold).'; }
+    else { cls='good'; v='No SRM, traffic split looks healthy (p = '+p.toFixed(4)+').'; }
 
     var colors=['#4cc9f0','#f0883e','#3fb950','#bc6bff','#f85149','#ffd166'];
     var bar='<div class="bar">';

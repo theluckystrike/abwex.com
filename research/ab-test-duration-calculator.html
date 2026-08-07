@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A/B Test Duration Guide — How Long to Run Tests by Traffic Volume | ABWex</title>
-  <meta name="description" content="Reference table showing required A/B test duration for different traffic levels, conversion rates, and minimum detectable effects. Statistical formulas included.">
-  <link rel="canonical" href="https://abwex.com/research/ab-test-duration-calculator.html">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/research/ab-test-duration-calculator.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/ab-test-duration-calculator.html">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="A/B Test Duration Guide — How Long to Run Tests by Traffic Volume">
-  <meta property="og:description" content="Reference table showing required A/B test duration for different traffic levels, conversion rates, and minimum detectable effects. Statistical formulas included.">
-  <meta property="og:url" content="https://abwex.com/research/ab-test-duration-calculator.html">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="A/B Test Duration Guide — How Long to Run Tests by Traffic Volume">
-  <meta name="twitter:description" content="Reference table showing required A/B test duration for different traffic levels, conversion rates, and minimum detectable effects.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>A/B Test Duration Guide, How Long to Run Tests by Traffic Volume | ABWex</title>
+ <meta name="description" content="Reference table showing required A/B test duration for different traffic levels, conversion rates, and minimum detectable effects. Statistical formulas included.">
+ <link rel="canonical" href="https://abwex.com/research/ab-test-duration-calculator.html">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/research/ab-test-duration-calculator.html">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/research/ab-test-duration-calculator.html">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="A/B Test Duration Guide, How Long to Run Tests by Traffic Volume">
+ <meta property="og:description" content="Reference table showing required A/B test duration for different traffic levels, conversion rates, and minimum detectable effects. Statistical formulas included.">
+ <meta property="og:url" content="https://abwex.com/research/ab-test-duration-calculator.html">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="A/B Test Duration Guide, How Long to Run Tests by Traffic Volume">
+ <meta name="twitter:description" content="Reference table showing required A/B test duration for different traffic levels, conversion rates, and minimum detectable effects.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Dataset",
@@ -42,55 +42,8 @@
     }
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How long should I run an A/B test?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The duration depends on your daily traffic, baseline conversion rate, and the minimum effect size you want to detect. At 80% power and 95% confidence, a site with 1,000 daily visitors and a 5% conversion rate needs approximately 31 days to detect a 10% relative improvement. Always run for at least 7 days to cover a full business cycle regardless of sample size."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is the formula for A/B test sample size?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The standard formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2, where Z_alpha/2 = 1.96 for 95% confidence, Z_beta = 0.84 for 80% power, p1 is baseline conversion rate, and p2 is the expected new conversion rate. This gives the sample size per variant."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Why should I not stop an A/B test early?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Stopping early when you see a 'significant' result inflates your false positive rate dramatically — from the intended 5% to as high as 20-30%. This is called the peeking problem. The p-value is only valid at the pre-determined sample size. If you must monitor results continuously, use sequential testing methods like the SPRT or alpha-spending functions."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is minimum detectable effect (MDE) in A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "MDE is the smallest relative change in conversion rate that your test is designed to detect. A 10% MDE on a 5% baseline means you can detect a change from 5.0% to 5.5% (or 4.5%). Smaller MDEs require exponentially more traffic — halving the MDE roughly quadruples the required sample size."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How does traffic volume affect A/B test duration?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Traffic volume is inversely proportional to test duration. A site with 10,000 daily visitors can run the same test 10x faster than one with 1,000 daily visitors. The required total sample size stays the same — higher traffic simply fills it faster. At 500 visitors/day with a 3% conversion rate, detecting a 10% lift takes about 144 days."
-        }
-      }
-    ]
-  }
-  </script>
-  <style>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long should I run an A/B test?","acceptedAnswer":{"@type":"Answer","text":"The duration depends on your daily traffic, baseline conversion rate, and the minimum effect size you want to detect. At 80% power and 95% confidence, a site with 1,000 daily visitors and a 5% conversion rate needs approximately 31 days to detect a 10% relative improvement. Always run for at least 7 days to cover a full business cycle regardless of sample size."}},{"@type":"Question","name":"What is the formula for A/B test sample size?","acceptedAnswer":{"@type":"Answer","text":"The standard formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2, where Z_alpha/2 = 1.96 for 95% confidence, Z_beta = 0.84 for 80% power, p1 is baseline conversion rate, and p2 is the expected new conversion rate. This gives the sample size per variant."}},{"@type":"Question","name":"Why should I not stop an A/B test early?","acceptedAnswer":{"@type":"Answer","text":"Stopping early when you see a 'significant' result inflates your false positive rate dramatically, from the intended 5% to as high as 20-30%. This is called the peeking problem. The p-value is only valid at the pre-determined sample size. If you must monitor results continuously, use sequential testing methods like the SPRT or alpha-spending functions."}},{"@type":"Question","name":"What is minimum detectable effect (MDE) in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"MDE is the smallest relative change in conversion rate that your test is designed to detect. A 10% MDE on a 5% baseline means you can detect a change from 5.0% to 5.5% (or 4.5%). Smaller MDEs require exponentially more traffic, halving the MDE roughly quadruples the required sample size."}},{"@type":"Question","name":"How does traffic volume affect A/B test duration?","acceptedAnswer":{"@type":"Answer","text":"Traffic volume is inversely proportional to test duration. A site with 10,000 daily visitors can run the same test 10x faster than one with 1,000 daily visitors. The required total sample size stays the same, higher traffic simply fills it faster. At 500 visitors/day with a 3% conversion rate, detecting a 10% lift takes about 144 days."}}]}</script>
+ <style>
     .research-badge { display:inline-block; background:var(--accent-dim,rgba(139,233,253,0.1)); color:var(--accent,#8be9fd); padding:4px 12px; border-radius:var(--radius,8px); font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:1rem; }
     .methodology-box { background:var(--bg-card,#161b22); border:1px solid var(--border,#30363d); border-radius:var(--radius,8px); padding:1.25rem; margin:1.5rem 0; }
     .methodology-box h3 { font-size:0.8rem; text-transform:uppercase; color:var(--accent,#8be9fd); margin-bottom:0.75rem; }
@@ -107,208 +60,208 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://abwex.com/research/"},{"@type":"ListItem","position":3,"name":"A/B Test Duration Guide"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/about.html">About</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-duration-calculator" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/about.html">About</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-duration-calculator" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <section class="hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>A/B Test Duration Guide</span></nav>
-      <span class="research-badge">Original Research</span>
-      <h1>A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</h1>
-      <p>Pre-calculated test durations for 25 common traffic and conversion rate scenarios. All calculations use 80% statistical power and 95% confidence level with two-tailed tests.</p>
-      <p style="font-size:0.85rem;color:var(--text-muted);">By <a href="/about.html">Michael Lip</a> · Updated April 2026</p>
-    </section>
+ <main class="container">
+ <section class="hero">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/research/">Research</a> <span>/</span> <span>A/B Test Duration Guide</span></nav>
+ <span class="research-badge">Original Research</span>
+ <h1>A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</h1>
+ <p>Pre-calculated test durations for 25 common traffic and conversion rate scenarios. All calculations use 80% statistical power and 95% confidence level with two-tailed tests.</p>
+ <p style="font-size:0.85rem;color:var(--text-muted);">By <a href="/about.html">Michael Lip</a> · Updated April 2026</p>
+ </section>
 
-    <div class="methodology-box">
-      <h3>Methodology</h3>
-      <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">Sample sizes were computed using the standard two-proportion Z-test power formula: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / delta^2, where Z_alpha/2 = 1.96 (95% confidence), Z_beta = 0.84 (80% power), p1 = baseline conversion rate, p2 = p1 * (1 + MDE), and delta = p2 - p1. Duration = ceil(2 * n / daily_visitors). All results assume equal traffic split between control and variant, two-tailed test, and no multiple comparison adjustment.</p>
-    </div>
+ <div class="methodology-box">
+ <h3>Methodology</h3>
+ <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">Sample sizes were computed using the standard two-proportion Z-test power formula: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / delta^2, where Z_alpha/2 = 1.96 (95% confidence), Z_beta = 0.84 (80% power), p1 = baseline conversion rate, p2 = p1 * (1 + MDE), and delta = p2 - p1. Duration = ceil(2 * n / daily_visitors). All results assume equal traffic split between control and variant, two-tailed test, and no multiple comparison adjustment.</p>
+ </div>
 
-    <div class="formula-box">
-      <strong>Sample Size Formula (per variant):</strong><br><br>
-      n = (Z_alpha/2 + Z_beta)^2 * [p1(1-p1) + p2(1-p2)] / (p2 - p1)^2<br><br>
-      <strong>Where:</strong><br>
-      Z_alpha/2 = 1.96 (for alpha = 0.05, two-tailed)<br>
-      Z_beta = 0.84 (for power = 0.80)<br>
-      p1 = baseline conversion rate<br>
-      p2 = p1 * (1 + MDE)<br><br>
-      <strong>Duration:</strong> days = ceil(2 * n / daily_visitors)
-    </div>
+ <div class="formula-box">
+ Sample Size Formula (per variant):<br><br>
+ n = (Z_alpha/2 + Z_beta)^2 * [p1(1-p1) + p2(1-p2)] / (p2 - p1)^2<br><br>
+ Where:<br>
+ Z_alpha/2 = 1.96 (for alpha = 0.05, two-tailed)<br>
+ Z_beta = 0.84 (for power = 0.80)<br>
+ p1 = baseline conversion rate<br>
+ p2 = p1 * (1 + MDE)<br><br>
+ Duration: days = ceil(2 * n / daily_visitors)
+ </div>
 
-    <h2>Duration Table — 10% Minimum Detectable Effect</h2>
-    <div class="data-table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Daily Visitors</th>
-            <th>Baseline CR</th>
-            <th>MDE</th>
-            <th>Sample/Variant</th>
-            <th>Total Sample</th>
-            <th>Duration (Days)</th>
-            <th>Minimum Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>500</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>704</td><td>704 days</td></tr>
-          <tr><td>500</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>463</td><td>463 days</td></tr>
-          <tr><td>500</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>272</td><td>272 days</td></tr>
-          <tr><td>500</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>129</td><td>129 days</td></tr>
-          <tr><td>500</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>81</td><td>81 days</td></tr>
-          <tr><td>1,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>352</td><td>352 days</td></tr>
-          <tr><td>1,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>232</td><td>232 days</td></tr>
-          <tr><td>1,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>136</td><td>136 days</td></tr>
-          <tr><td>1,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>65</td><td>65 days</td></tr>
-          <tr><td>1,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>41</td><td>41 days</td></tr>
-          <tr><td>5,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>71</td><td>71 days</td></tr>
-          <tr><td>5,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>47</td><td>47 days</td></tr>
-          <tr><td>5,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>28</td><td>28 days</td></tr>
-          <tr><td>5,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>13</td><td>14 days*</td></tr>
-          <tr><td>5,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>9</td><td>14 days*</td></tr>
-          <tr><td>10,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>36</td><td>36 days</td></tr>
-          <tr><td>10,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>24</td><td>24 days</td></tr>
-          <tr><td>10,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>14</td><td>14 days</td></tr>
-          <tr><td>10,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>7</td><td>7 days</td></tr>
-          <tr><td>10,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>5</td><td>7 days*</td></tr>
-          <tr><td>50,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>8</td><td>8 days</td></tr>
-          <tr><td>50,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>5</td><td>7 days*</td></tr>
-          <tr><td>50,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>3</td><td>7 days*</td></tr>
-          <tr><td>50,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>2</td><td>7 days*</td></tr>
-          <tr><td>50,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>1</td><td>7 days*</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:0.8rem;color:var(--text-muted);">* Minimum 7-day duration enforced to capture day-of-week effects regardless of sample size.</p>
+ <h2>Duration Table, 10% Minimum Detectable Effect</h2>
+ <div class="data-table-wrap">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>Daily Visitors</th>
+ <th>Baseline CR</th>
+ <th>MDE</th>
+ <th>Sample/Variant</th>
+ <th>Total Sample</th>
+ <th>Duration (Days)</th>
+ <th>Minimum Duration</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td>500</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>704</td><td>704 days</td></tr>
+ <tr><td>500</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>463</td><td>463 days</td></tr>
+ <tr><td>500</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>272</td><td>272 days</td></tr>
+ <tr><td>500</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>129</td><td>129 days</td></tr>
+ <tr><td>500</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>81</td><td>81 days</td></tr>
+ <tr><td>1,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>352</td><td>352 days</td></tr>
+ <tr><td>1,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>232</td><td>232 days</td></tr>
+ <tr><td>1,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>136</td><td>136 days</td></tr>
+ <tr><td>1,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>65</td><td>65 days</td></tr>
+ <tr><td>1,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>41</td><td>41 days</td></tr>
+ <tr><td>5,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>71</td><td>71 days</td></tr>
+ <tr><td>5,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>47</td><td>47 days</td></tr>
+ <tr><td>5,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>28</td><td>28 days</td></tr>
+ <tr><td>5,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>13</td><td>14 days*</td></tr>
+ <tr><td>5,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>9</td><td>14 days*</td></tr>
+ <tr><td>10,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>36</td><td>36 days</td></tr>
+ <tr><td>10,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>24</td><td>24 days</td></tr>
+ <tr><td>10,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>14</td><td>14 days</td></tr>
+ <tr><td>10,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>7</td><td>7 days</td></tr>
+ <tr><td>10,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>5</td><td>7 days*</td></tr>
+ <tr><td>50,000</td><td>2%</td><td>10%</td><td>175,816</td><td>351,632</td><td>8</td><td>8 days</td></tr>
+ <tr><td>50,000</td><td>3%</td><td>10%</td><td>115,554</td><td>231,108</td><td>5</td><td>7 days*</td></tr>
+ <tr><td>50,000</td><td>5%</td><td>10%</td><td>67,778</td><td>135,556</td><td>3</td><td>7 days*</td></tr>
+ <tr><td>50,000</td><td>10%</td><td>10%</td><td>32,204</td><td>64,408</td><td>2</td><td>7 days*</td></tr>
+ <tr><td>50,000</td><td>15%</td><td>10%</td><td>20,244</td><td>40,488</td><td>1</td><td>7 days*</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p style="font-size:0.8rem;color:var(--text-muted);">* Minimum 7-day duration enforced to capture day-of-week effects regardless of sample size.</p>
 
-    <h2>Duration Table — 20% Minimum Detectable Effect</h2>
-    <div class="data-table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Daily Visitors</th>
-            <th>Baseline CR</th>
-            <th>MDE</th>
-            <th>Sample/Variant</th>
-            <th>Total Sample</th>
-            <th>Duration (Days)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>500</td><td>3%</td><td>20%</td><td>28,388</td><td>56,776</td><td>114</td></tr>
-          <tr><td>500</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>67</td></tr>
-          <tr><td>500</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>31</td></tr>
-          <tr><td>1,000</td><td>3%</td><td>20%</td><td>28,388</td><td>56,776</td><td>57</td></tr>
-          <tr><td>1,000</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>34</td></tr>
-          <tr><td>1,000</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>16</td></tr>
-          <tr><td>5,000</td><td>3%</td><td>20%</td><td>28,388</td><td>56,776</td><td>12</td></tr>
-          <tr><td>5,000</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>7</td></tr>
-          <tr><td>5,000</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>4</td></tr>
-          <tr><td>10,000</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>4</td></tr>
-          <tr><td>10,000</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>2</td></tr>
-        </tbody>
-      </table>
-    </div>
+ <h2>Duration Table, 20% Minimum Detectable Effect</h2>
+ <div class="data-table-wrap">
+ <table class="data-table">
+ <thead>
+ <tr>
+ <th>Daily Visitors</th>
+ <th>Baseline CR</th>
+ <th>MDE</th>
+ <th>Sample/Variant</th>
+ <th>Total Sample</th>
+ <th>Duration (Days)</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td>500</td><td>3%</td><td>20%</td><td>28,388</td><td>56,776</td><td>114</td></tr>
+ <tr><td>500</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>67</td></tr>
+ <tr><td>500</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>31</td></tr>
+ <tr><td>1,000</td><td>3%</td><td>20%</td><td>28,388</td><td>56,776</td><td>57</td></tr>
+ <tr><td>1,000</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>34</td></tr>
+ <tr><td>1,000</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>16</td></tr>
+ <tr><td>5,000</td><td>3%</td><td>20%</td><td>28,388</td><td>56,776</td><td>12</td></tr>
+ <tr><td>5,000</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>7</td></tr>
+ <tr><td>5,000</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>4</td></tr>
+ <tr><td>10,000</td><td>5%</td><td>20%</td><td>16,574</td><td>33,148</td><td>4</td></tr>
+ <tr><td>10,000</td><td>10%</td><td>20%</td><td>7,748</td><td>15,496</td><td>2</td></tr>
+ </tbody>
+ </table>
+ </div>
 
-    <div class="download-btns">
-      <button onclick="downloadData('json')">Download JSON</button>
-      <button onclick="downloadData('csv')">Download CSV</button>
-    </div>
+ <div class="download-btns">
+ <button onclick="downloadData('json')">Download JSON</button>
+ <button onclick="downloadData('csv')">Download CSV</button>
+ </div>
 
-    <section style="max-width:800px;margin:2rem auto;">
-      <h2>Key Insights</h2>
-      <p><strong>Low-traffic sites face a painful reality.</strong> A site with 500 daily visitors and a 2% conversion rate needs over 700 days to detect a 10% relative lift. At this traffic level, only large effects (20%+ MDE) are practically testable, which means testing major redesigns rather than copy tweaks.</p>
-      <p><strong>Conversion rate matters as much as traffic.</strong> Higher baseline conversion rates require fewer samples because there is less variance in the binomial distribution. A 15% CR site needs 3.4x fewer visitors per variant than a 3% CR site to detect the same relative effect.</p>
-      <p><strong>The 7-day minimum is non-negotiable.</strong> Even high-traffic sites that reach statistical sample size in 1-2 days must run for at least 7 days. User behavior varies systematically by day of week — Monday shoppers behave differently from Saturday shoppers. Running less than a full week introduces cyclical bias.</p>
-      <p><strong>Halving the MDE quadruples the sample.</strong> Moving from detecting a 20% lift to a 10% lift requires approximately 4x the sample size. This is the square relationship in the denominator of the sample size formula: (p2-p1)^2.</p>
-    </section>
+ <section style="max-width:800px;margin:2rem auto;">
+ <h2>Key Insights</h2>
+ <p>Low-traffic sites face a painful reality. A site with 500 daily visitors and a 2% conversion rate needs over 700 days to detect a 10% relative lift. At this traffic level, only large effects (20%+ MDE) are practically testable, which means testing major redesigns rather than copy tweaks.</p>
+ <p>Conversion rate matters as much as traffic. Higher baseline conversion rates require fewer samples because there is less variance in the binomial distribution. A 15% CR site needs 3.4x fewer visitors per variant than a 3% CR site to detect the same relative effect.</p>
+ <p>The 7-day minimum is non-negotiable. Even high-traffic sites that reach statistical sample size in 1-2 days must run for at least 7 days. User behavior varies systematically by day of week, Monday shoppers behave differently from Saturday shoppers. Running less than a full week introduces cyclical bias.</p>
+ <p>Halving the MDE quadruples the sample. Moving from detecting a 20% lift to a 10% lift requires approximately 4x the sample size. That's the square relationship in the denominator of the sample size formula: (p2-p1)^2.</p>
+ </section>
 
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
-      <details>
-        <summary>How long should I run an A/B test?</summary>
-        <p>The duration depends on your daily traffic, baseline conversion rate, and the minimum effect size you want to detect. At 80% power and 95% confidence, a site with 1,000 daily visitors and a 5% conversion rate needs approximately 136 days to detect a 10% relative improvement. Always run for at least 7 days to cover a full business cycle regardless of how quickly you reach sample size.</p>
-      </details>
-      <details>
-        <summary>What is the formula for A/B test sample size?</summary>
-        <p>The standard formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2. Here, Z_alpha/2 = 1.96 for 95% confidence, Z_beta = 0.84 for 80% power, p1 is your baseline conversion rate, and p2 is the expected conversion rate after the change. This gives the sample size per variant — multiply by 2 for total.</p>
-      </details>
-      <details>
-        <summary>Why should I not stop an A/B test early?</summary>
-        <p>Stopping early when you see a "significant" result inflates your false positive rate from the intended 5% to as high as 20-30%. This is the peeking problem. The p-value is only valid at the pre-determined sample size. If you need to monitor continuously, use sequential testing methods like SPRT or alpha-spending functions that adjust for multiple looks.</p>
-      </details>
-      <details>
-        <summary>What is minimum detectable effect (MDE) in A/B testing?</summary>
-        <p>MDE is the smallest relative change in conversion rate your test is designed to detect. A 10% MDE on a 5% baseline means detecting a change from 5.0% to 5.5%. Smaller MDEs require exponentially more traffic — halving the MDE roughly quadruples the required sample size due to the squared term in the denominator.</p>
-      </details>
-      <details>
-        <summary>How does traffic volume affect A/B test duration?</summary>
-        <p>Traffic volume is inversely proportional to test duration. A site with 10,000 daily visitors can run the same test 10x faster than one with 1,000 daily visitors. The required total sample size remains constant — higher traffic simply fills it faster. Use the tables above to find your specific scenario.</p>
-      </details>
-    </section>
-  </main>
+ <section class="faq-section">
+ <h2>Common questions</h2>
+ <details>
+ <summary>How long should I run an A/B test?</summary>
+ <p>The duration depends on your daily traffic, baseline conversion rate, and the minimum effect size you want to detect. At 80% power and 95% confidence, a site with 1,000 daily visitors and a 5% conversion rate needs approximately 136 days to detect a 10% relative improvement. Always run for at least 7 days to cover a full business cycle regardless of how quickly you reach sample size.</p>
+ </details>
+ <details>
+ <summary>What is the formula for A/B test sample size?</summary>
+ <p>The standard formula is: n = (Z_alpha/2 + Z_beta)^2 * (p1*(1-p1) + p2*(1-p2)) / (p2 - p1)^2. Here, Z_alpha/2 = 1.96 for 95% confidence, Z_beta = 0.84 for 80% power, p1 is your baseline conversion rate, and p2 is the expected conversion rate after the change. This gives the sample size per variant, multiply by 2 for total.</p>
+ </details>
+ <details>
+ <summary>Why should I not stop an A/B test early?</summary>
+ <p>Stopping early when you see a "significant" result inflates your false positive rate from the intended 5% to as high as 20-30%. That's the peeking problem. The p-value is only valid at the pre-determined sample size. If you need to monitor continuously, use sequential testing methods like SPRT or alpha-spending functions that adjust for multiple looks.</p>
+ </details>
+ <details>
+ <summary>What is minimum detectable effect (MDE) in A/B testing?</summary>
+ <p>MDE is the smallest relative change in conversion rate your test is designed to detect. A 10% MDE on a 5% baseline means detecting a change from 5.0% to 5.5%. Smaller MDEs require exponentially more traffic, halving the MDE roughly quadruples the required sample size due to the squared term in the denominator.</p>
+ </details>
+ <details>
+ <summary>How does traffic volume affect A/B test duration?</summary>
+ <p>Traffic volume is inversely proportional to test duration. A site with 10,000 daily visitors can run the same test 10x faster than one with 1,000 daily visitors. The required total sample size remains constant, higher traffic simply fills it faster. Use the tables above to find your specific scenario.</p>
+ </details>
+ </section>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever →</a>
-        <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=research-ab-test-duration-calculator">Zovo</a> · 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=research-ab-test-duration-calculator">Zovo</a> · 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-duration-calculator">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=research-ab-test-duration-calculator">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-ab-test-duration-calculator" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=research-ab-test-duration-calculator" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
 <script>
@@ -335,7 +288,7 @@ function downloadData(format) {
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
-<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes — 20 Most Common Statistical Errors</a></li>
+<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes, 20 Most Common Statistical Errors</a></li>
 <li><a href="/answers/how-long-to-run-ab-test.html" style="color:#3b82f6;text-decoration:none;">How Long Should I Run My A/B Test?</a></li>
 <li><a href="/answers/is-my-ab-test-significant.html" style="color:#3b82f6;text-decoration:none;">Is My A/B Test Statistically Significant?</a></li>
 </ul>

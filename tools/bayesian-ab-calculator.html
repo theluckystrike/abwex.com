@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bayesian A/B Test Calculator — Posterior Distributions &amp; Probability of Winning | ABWex</title>
-  <meta name="description" content="Free Bayesian A/B test calculator with posterior Beta distribution visualization. Compute probability of winning, expected loss, credible intervals, and risk analysis for your experiments.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/tools/bayesian-ab-calculator.html">
-  <link rel="alternate" type="application/atom+xml" title="ABWex — A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
-  <meta property="og:title" content="Bayesian A/B Test Calculator — Posterior Distributions &amp; Probability of Winning | ABWex">
-  <meta property="og:description" content="Free Bayesian A/B test calculator with posterior Beta distribution visualization. Compute probability of winning, expected loss, credible intervals, and risk analysis.">
-  <meta property="og:url" content="https://abwex.com/tools/bayesian-ab-calculator.html">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Bayesian A/B Test Calculator — Posterior Distributions">
-  <meta name="twitter:description" content="Free Bayesian A/B test calculator with posterior Beta distribution visualization. Probability of winning, expected loss, and credible intervals.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/bayesian-ab-calculator.html">
-  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/bayesian-ab-calculator.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Bayesian A/B Test Calculator, Posterior Distributions &amp; Probability of Winning | ABWex</title>
+ <meta name="description" content="Free Bayesian A/B test calculator with posterior Beta distribution visualization. Compute probability of winning, expected loss, credible intervals, and risk analysis for your experiments.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/tools/bayesian-ab-calculator.html">
+ <link rel="alternate" type="application/atom+xml" title="ABWex, A/B Test Statistical Significance Calculator (Frequentist &amp; Bayesian) Blog Feed" href="/blog/feed.xml">
+ <meta property="og:title" content="Bayesian A/B Test Calculator, Posterior Distributions &amp; Probability of Winning | ABWex">
+ <meta property="og:description" content="Free Bayesian A/B test calculator with posterior Beta distribution visualization. Compute probability of winning, expected loss, credible intervals, and risk analysis.">
+ <meta property="og:url" content="https://abwex.com/tools/bayesian-ab-calculator.html">
+ <meta property="og:type" content="website">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Bayesian A/B Test Calculator, Posterior Distributions">
+ <meta name="twitter:description" content="Free Bayesian A/B test calculator with posterior Beta distribution visualization. Probability of winning, expected loss, and credible intervals.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="alternate" hreflang="en" href="https://abwex.com/tools/bayesian-ab-calculator.html">
+ <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/bayesian-ab-calculator.html">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -43,84 +43,37 @@
     "browserRequirements": "Requires JavaScript"
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How does the Bayesian A/B test calculator compute probability of winning?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The calculator models each variant's conversion rate as a Beta distribution. For a variant with s conversions out of n visitors, the posterior is Beta(s+1, n-s+1) using a uniform prior. P(B beats A) is computed by numerical integration over the joint posterior, summing the probability mass where variant B's rate exceeds variant A's rate. This gives you a direct probability statement like 'there is a 94% chance B is better than A.'"
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is expected loss and how should I use it to make decisions?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Expected loss is the average conversion rate you sacrifice by choosing the wrong variant. If you choose B, expected loss = E[max(theta_A - theta_B, 0)]. It combines probability and magnitude into one metric. A common decision rule is to ship the variant whose expected loss is below a threshold (e.g., 0.01% or 0.001%). Expected loss below 0.0001 (0.01%) typically indicates a safe decision. This is more nuanced than probability of winning alone because it accounts for how much you could lose."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What are Bayesian credible intervals and how do they differ from confidence intervals?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A 95% Bayesian credible interval means there is a 95% probability the true conversion rate lies within the interval. This is the intuitive interpretation most people incorrectly attribute to frequentist confidence intervals. Confidence intervals say that 95% of intervals constructed this way would contain the true value, which is a statement about the procedure, not the parameter. With flat priors and large samples, both intervals are numerically similar but philosophically distinct."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How much data do I need for a Bayesian A/B test?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Bayesian methods can produce valid posterior distributions with any amount of data, but the posteriors will be wide and uncertain with small samples. A practical guideline is to run until the expected loss for the chosen variant drops below your decision threshold (e.g., 0.01%). For a 5% baseline with a 10% relative difference, this typically requires 5,000-15,000 visitors per variant. Bayesian methods are more flexible about stopping rules than frequentist tests, but stopping too early still risks making decisions based on noisy estimates."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What prior should I use for Bayesian A/B testing?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "This calculator uses Beta(1,1) — the uniform prior — which assigns equal probability to all conversion rates between 0% and 100%. This is a non-informative prior that lets the data speak for itself. For most A/B tests with hundreds or thousands of visitors, the choice of prior has minimal impact on results. If you have strong prior knowledge (e.g., historical conversion rate data), you could use a more informative prior like Beta(5,95) for a known ~5% rate, but this is rarely necessary with adequate sample sizes."
-        }
-      }
-    ]
-  }
-  </script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Bayesian A/B Calculator"}]}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the Bayesian A/B test calculator compute probability of winning?","acceptedAnswer":{"@type":"Answer","text":"The calculator models each variant's conversion rate as a Beta distribution. For a variant with s conversions out of n visitors, the posterior is Beta(s+1, n-s+1) using a uniform prior. P(B beats A) is computed by numerical integration over the joint posterior, summing the probability mass where variant B's rate exceeds variant A's rate. This gives you a direct probability statement like 'there is a 94% chance B is better than A.'"}},{"@type":"Question","name":"What is expected loss and how should I use it to make decisions?","acceptedAnswer":{"@type":"Answer","text":"Expected loss is the average conversion rate you sacrifice by choosing the wrong variant. If you choose B, expected loss = E[max(theta_A - theta_B, 0)]. It combines probability and magnitude into one metric. A common decision rule is to ship the variant whose expected loss is below a threshold (e.g., 0.01% or 0.001%). Expected loss below 0.0001 (0.01%) typically indicates a safe decision. This is more nuanced than probability of winning alone because it accounts for how much you could lose."}},{"@type":"Question","name":"What are Bayesian credible intervals and how do they differ from confidence intervals?","acceptedAnswer":{"@type":"Answer","text":"A 95% Bayesian credible interval means there is a 95% probability the true conversion rate lies within the interval. This is the intuitive interpretation most people incorrectly attribute to frequentist confidence intervals. Confidence intervals say that 95% of intervals constructed this way would contain the true value, which is a statement about the procedure, not the parameter. With flat priors and large samples, both intervals are numerically similar but philosophically distinct."}},{"@type":"Question","name":"How much data do I need for a Bayesian A/B test?","acceptedAnswer":{"@type":"Answer","text":"Bayesian methods can produce valid posterior distributions with any amount of data, but the posteriors will be wide and uncertain with small samples. A practical guideline is to run until the expected loss for the chosen variant drops below your decision threshold (e.g., 0.01%). For a 5% baseline with a 10% relative difference, this typically requires 5,000-15,000 visitors per variant. Bayesian methods are more flexible about stopping rules than frequentist tests, but stopping too early still risks making decisions based on noisy estimates."}},{"@type":"Question","name":"What prior should I use for Bayesian A/B testing?","acceptedAnswer":{"@type":"Answer","text":"This calculator uses Beta(1,1), the uniform prior, which assigns equal probability to all conversion rates between 0% and 100%. This is a non-informative prior that lets the data speak for itself. For most A/B tests with hundreds or thousands of visitors, the choice of prior has minimal impact on results. If you have strong prior knowledge (e.g., historical conversion rate data), you could use a more informative prior like Beta(5,95) for a known ~5% rate, but this is rarely necessary with adequate sample sizes."}}]}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},{"@type":"ListItem","position":3,"name":"Bayesian A/B Calculator"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/tools/">Tools</a>
-        <a href="/answers/">Answers</a>
-        <a href="/guides/">Guides</a>
-        <a href="/blog/">Blog</a>
-          <div class="nav-right">
-      <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-      <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools-bayesian-ab-calculator" class="nav-zovo">Zovo Tools</a>
-    </div>
-  </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools-bayesian-ab-calculator" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container">
-    <section class="hero">
-      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Bayesian A/B Calculator</span></nav>
-      <h1>Bayesian A/B Test <span>Calculator</span></h1>
-      <p>Enter your control and variant data to compute posterior distributions, probability of winning, expected loss, and credible intervals. Visualize overlapping Beta distributions in real time. All computation runs in your browser.</p>
-    </section>
+ <main class="container">
+ <section class="hero">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Bayesian A/B Calculator</span></nav>
+ <h1>Bayesian A/B Test <span>Calculator</span></h1>
+ <p>Enter your control and variant data to compute posterior distributions, probability of winning, expected loss, and credible intervals. Visualize overlapping Beta distributions in real time. All computation runs in your browser.</p>
+ </section>
 
-    <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
-      <style>
+ <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
+ <style>
         .bc-card{background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#333);border-radius:12px;padding:2rem;margin-bottom:1.5rem}
         .bc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
         @media(max-width:640px){.bc-grid{grid-template-columns:1fr}}
@@ -150,206 +103,206 @@
         .bc-risk-item .risk-value{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700}
       </style>
 
-      <div class="bc-card">
-        <h2 style="margin-top:0;font-size:1.3rem;">Enter Your A/B Test Data</h2>
-        <div class="bc-grid">
-          <div class="bc-variant">
-            <h3 style="color:#F97316;">Control (A)</h3>
-            <div class="bc-field">
-              <label for="bc-a-visitors">Visitors</label>
-              <input type="number" id="bc-a-visitors" value="5000" min="1">
-            </div>
-            <div class="bc-field">
-              <label for="bc-a-conversions">Conversions</label>
-              <input type="number" id="bc-a-conversions" value="250" min="0">
-            </div>
-            <div style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:.5rem;">Rate: <span id="bc-a-rate" style="font-family:'Space Mono',monospace;color:#F97316;">5.00%</span></div>
-          </div>
-          <div class="bc-variant">
-            <h3 style="color:#2DD4BF;">Variant (B)</h3>
-            <div class="bc-field">
-              <label for="bc-b-visitors">Visitors</label>
-              <input type="number" id="bc-b-visitors" value="5000" min="1">
-            </div>
-            <div class="bc-field">
-              <label for="bc-b-conversions">Conversions</label>
-              <input type="number" id="bc-b-conversions" value="290" min="0">
-            </div>
-            <div style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:.5rem;">Rate: <span id="bc-b-rate" style="font-family:'Space Mono',monospace;color:#2DD4BF;">5.80%</span></div>
-          </div>
-        </div>
-        <button class="bc-btn" onclick="runBayesCalc()">Analyze Results</button>
-      </div>
+ <div class="bc-card">
+ <h2 style="margin-top:0;font-size:1.3rem;">Enter Your A/B Test Data</h2>
+ <div class="bc-grid">
+ <div class="bc-variant">
+ <h3 style="color:#F97316;">Control (A)</h3>
+ <div class="bc-field">
+ <label for="bc-a-visitors">Visitors</label>
+ <input type="number" id="bc-a-visitors" value="5000" min="1">
+ </div>
+ <div class="bc-field">
+ <label for="bc-a-conversions">Conversions</label>
+ <input type="number" id="bc-a-conversions" value="250" min="0">
+ </div>
+ <div style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:.5rem;">Rate: <span id="bc-a-rate" style="font-family:'Space Mono',monospace;color:#F97316;">5.00%</span></div>
+ </div>
+ <div class="bc-variant">
+ <h3 style="color:#2DD4BF;">Variant (B)</h3>
+ <div class="bc-field">
+ <label for="bc-b-visitors">Visitors</label>
+ <input type="number" id="bc-b-visitors" value="5000" min="1">
+ </div>
+ <div class="bc-field">
+ <label for="bc-b-conversions">Conversions</label>
+ <input type="number" id="bc-b-conversions" value="290" min="0">
+ </div>
+ <div style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:.5rem;">Rate: <span id="bc-b-rate" style="font-family:'Space Mono',monospace;color:#2DD4BF;">5.80%</span></div>
+ </div>
+ </div>
+ <button class="bc-btn" onclick="runBayesCalc()">Analyze Results</button>
+ </div>
 
-      <div id="bc-results-panel" class="bc-results" style="display:none;">
-        <div class="bc-card">
-          <h3 style="margin-top:0;font-size:1.15rem;">Bayesian Analysis Results</h3>
-          <div class="bc-result-row"><span class="bc-result-label">P(B beats A)</span><span class="bc-result-value" id="bc-r-prob">—</span></div>
-          <div class="bc-result-row"><span class="bc-result-label">P(A beats B)</span><span class="bc-result-value" id="bc-r-prob-a">—</span></div>
-          <div class="bc-result-row"><span class="bc-result-label">Expected Loss (choosing B)</span><span class="bc-result-value" id="bc-r-loss-b">—</span></div>
-          <div class="bc-result-row"><span class="bc-result-label">Expected Loss (choosing A)</span><span class="bc-result-value" id="bc-r-loss-a">—</span></div>
-          <div class="bc-result-row"><span class="bc-result-label">Relative Uplift (B vs A)</span><span class="bc-result-value" id="bc-r-uplift">—</span></div>
-          <div class="bc-result-row"><span class="bc-result-label">Control 95% Credible Interval</span><span class="bc-result-value" id="bc-r-ci-a">—</span></div>
-          <div class="bc-result-row"><span class="bc-result-label">Variant 95% Credible Interval</span><span class="bc-result-value" id="bc-r-ci-b">—</span></div>
-        </div>
+ <div id="bc-results-panel" class="bc-results" style="display:none;">
+ <div class="bc-card">
+ <h3 style="margin-top:0;font-size:1.15rem;">Bayesian Analysis Results</h3>
+ <div class="bc-result-row"><span class="bc-result-label">P(B beats A)</span><span class="bc-result-value" id="bc-r-prob">&middot;</span></div>
+ <div class="bc-result-row"><span class="bc-result-label">P(A beats B)</span><span class="bc-result-value" id="bc-r-prob-a">&middot;</span></div>
+ <div class="bc-result-row"><span class="bc-result-label">Expected Loss (choosing B)</span><span class="bc-result-value" id="bc-r-loss-b">&middot;</span></div>
+ <div class="bc-result-row"><span class="bc-result-label">Expected Loss (choosing A)</span><span class="bc-result-value" id="bc-r-loss-a">&middot;</span></div>
+ <div class="bc-result-row"><span class="bc-result-label">Relative Uplift (B vs A)</span><span class="bc-result-value" id="bc-r-uplift">&middot;</span></div>
+ <div class="bc-result-row"><span class="bc-result-label">Control 95% Credible Interval</span><span class="bc-result-value" id="bc-r-ci-a">&middot;</span></div>
+ <div class="bc-result-row"><span class="bc-result-label">Variant 95% Credible Interval</span><span class="bc-result-value" id="bc-r-ci-b">&middot;</span></div>
+ </div>
 
-        <div id="bc-verdict-box" class="bc-verdict neutral"></div>
+ <div id="bc-verdict-box" class="bc-verdict neutral"></div>
 
-        <div class="bc-chart-wrap">
-          <div class="bc-chart-title">Posterior Beta Distributions</div>
-          <svg id="bc-posterior-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
-        </div>
+ <div class="bc-chart-wrap">
+ <div class="bc-chart-title">Posterior Beta Distributions</div>
+ <svg id="bc-posterior-chart" viewBox="0 0 700 320" style="width:100%;height:auto;"></svg>
+ </div>
 
-        <div class="bc-card" style="margin-top:1.5rem;">
-          <h3 style="margin-top:0;font-size:1.15rem;">Risk Analysis — Decision Thresholds</h3>
-          <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:0;">Expected loss at different risk tolerance levels. Green means safe to ship.</p>
-          <div class="bc-risk-grid">
-            <div class="bc-risk-item">
-              <div class="risk-label">Conservative (&lt;0.01%)</div>
-              <div class="risk-value" id="bc-risk-cons">—</div>
-            </div>
-            <div class="bc-risk-item">
-              <div class="risk-label">Moderate (&lt;0.05%)</div>
-              <div class="risk-value" id="bc-risk-mod">—</div>
-            </div>
-            <div class="bc-risk-item">
-              <div class="risk-label">Aggressive (&lt;0.1%)</div>
-              <div class="risk-value" id="bc-risk-agg">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+ <div class="bc-card" style="margin-top:1.5rem;">
+ <h3 style="margin-top:0;font-size:1.15rem;">Risk Analysis, Decision Thresholds</h3>
+ <p style="font-size:.85rem;color:var(--text-muted,#aaa);margin-top:0;">Expected loss at different risk tolerance levels. Green means safe to ship.</p>
+ <div class="bc-risk-grid">
+ <div class="bc-risk-item">
+ <div class="risk-label">Conservative (&lt;0.01%)</div>
+ <div class="risk-value" id="bc-risk-cons">&middot;</div>
+ </div>
+ <div class="bc-risk-item">
+ <div class="risk-label">Moderate (&lt;0.05%)</div>
+ <div class="risk-value" id="bc-risk-mod">&middot;</div>
+ </div>
+ <div class="bc-risk-item">
+ <div class="risk-label">Aggressive (&lt;0.1%)</div>
+ <div class="risk-value" id="bc-risk-agg">&middot;</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
 
-    <section class="explainer-section">
-      <h2>How the Bayesian A/B Test Calculator Works</h2>
-      <p>This calculator implements full Bayesian inference for comparing two conversion rates. Unlike frequentist methods that produce p-values, the Bayesian approach directly answers the question practitioners actually care about: what is the probability that variant B is better than variant A? The mathematics are grounded in the Beta-Binomial conjugate model, one of the most elegant applications of Bayesian statistics.</p>
-      <p>When you enter visitors and conversions for each variant, the calculator constructs posterior Beta distributions. For a variant with s conversions out of n visitors, the posterior is Beta(s + 1, n - s + 1), using the uniform prior Beta(1, 1). This prior assigns equal probability to all conversion rates between 0% and 100%, representing minimal prior knowledge. With even a few hundred observations, the prior has negligible influence on the posterior, so the choice of prior rarely matters in practice.</p>
-      <p>The posterior distribution encodes everything we know about the true conversion rate given the observed data. Its mean is (s + 1) / (n + 2), slightly different from the raw rate s/n due to the prior. The 95% credible interval spans from the 2.5th to the 97.5th percentile of the Beta distribution, computed using the inverse regularized incomplete Beta function. This interval has the intuitive interpretation that there is a 95% probability the true conversion rate falls within it.</p>
+ <section class="explainer-section">
+ <h2>How the Bayesian A/B Test Calculator Works</h2>
+ <p>This calculator implements full Bayesian inference for comparing two conversion rates. Unlike frequentist methods that produce p-values, the Bayesian approach directly answers the question practitioners actually care about: what is the probability that variant B is better than variant A? The mathematics are grounded in the Beta-Binomial conjugate model, one of the most elegant applications of Bayesian statistics.</p>
+ <p>When you enter visitors and conversions for each variant, the calculator constructs posterior Beta distributions. For a variant with s conversions out of n visitors, the posterior is Beta(s + 1, n - s + 1), using the uniform prior Beta(1, 1). This prior assigns equal probability to all conversion rates between 0% and 100%, representing minimal prior knowledge. With even a few hundred observations, the prior has negligible influence on the posterior, so the choice of prior rarely matters in practice.</p>
+ <p>The posterior distribution encodes everything we know about the true conversion rate given the observed data. Its mean is (s + 1) / (n + 2), slightly different from the raw rate s/n due to the prior. The 95% credible interval spans from the 2.5th to the 97.5th percentile of the Beta distribution, computed using the inverse regularized incomplete Beta function. This interval has the intuitive interpretation that there is a 95% probability the true conversion rate falls within it.</p>
 
-      <h2>Probability of Winning: The Core Output</h2>
-      <p>P(B beats A) is the probability that variant B's true conversion rate exceeds variant A's true conversion rate, computed as a double integral over the joint posterior distribution. Since the two variants are independent, the joint posterior factors into the product of the two marginal Beta posteriors. The calculator evaluates this integral using Monte Carlo simulation with 100,000 samples, providing results accurate to approximately 0.1%.</p>
-      <p>The probability of winning is the most intuitive output of Bayesian A/B testing. A result of P(B beats A) = 94% means exactly what it sounds like: given the data observed, there is a 94% chance that B has a higher true conversion rate than A. Compare this to a frequentist p-value of 0.06, which means "if A and B were identical, there is a 6% chance of seeing data this extreme or more." The Bayesian statement is a direct probability about the hypothesis, while the frequentist statement is a probability about the data conditional on a hypothesis.</p>
-      <p>A common decision threshold is P(B beats A) > 95%, analogous to the frequentist 5% significance level. However, this threshold is arbitrary. Some organizations use 90% for lower-stakes decisions or 99% for irreversible changes. The right threshold depends on the cost of being wrong relative to the cost of not acting — which is precisely what expected loss quantifies.</p>
+ <h2>Probability of Winning, The Core Output</h2>
+ <p>P(B beats A) is the probability that variant B's true conversion rate exceeds variant A's true conversion rate, computed as a double integral over the joint posterior distribution. Since the two variants are independent, the joint posterior factors into the product of the two marginal Beta posteriors. The calculator evaluates this integral using Monte Carlo simulation with 100,000 samples, providing results accurate to approximately 0.1%.</p>
+ <p>The probability of winning is the most intuitive output of Bayesian A/B testing. A result of P(B beats A) = 94% means exactly what it sounds like: given the data observed, there is a 94% chance that B has a higher true conversion rate than A. Compare this to a frequentist p-value of 0.06, which means "if A and B were identical, there is a 6% chance of seeing data this extreme or more." The Bayesian statement is a direct probability about the hypothesis, while the frequentist statement is a probability about the data conditional on a hypothesis.</p>
+ <p>A common decision threshold is P(B beats A) > 95%, analogous to the frequentist 5% significance level. However, this threshold is arbitrary. Some organizations use 90% for lower-stakes decisions or 99% for irreversible changes. The right threshold depends on the cost of being wrong relative to the cost of not acting, which is precisely what expected loss quantifies.</p>
 
-      <h2>Expected Loss: A Superior Decision Metric</h2>
-      <p>Expected loss (also called Bayesian risk or expected regret) is the average conversion rate you sacrifice by choosing the wrong variant. If you choose B, the expected loss is E[max(theta_A - theta_B, 0)] — the expected amount by which A outperforms B, averaged over all posterior scenarios where A is actually better. This metric elegantly combines the probability of being wrong with the magnitude of the mistake.</p>
-      <p>Consider two scenarios that illustrate why expected loss is superior to probability of winning alone. Scenario one: P(B beats A) = 92%, but B is only 0.01 percentage points better on average. The expected loss of choosing B is negligibly small because even if A is better, it is barely better. Scenario two: P(B beats A) = 70%, but B is 2 percentage points better on average. The expected loss of choosing B is moderate, but the potential upside is enormous. Expected loss captures both of these dynamics in a single number.</p>
-      <p>The standard decision rule is to ship the variant whose expected loss falls below a pre-defined threshold. Common thresholds are 0.01% (conservative), 0.05% (moderate), and 0.1% (aggressive). These thresholds should be calibrated to your business context. For a high-traffic e-commerce site where each 0.01% of conversion rate translates to significant revenue, a conservative threshold is appropriate. For an early-stage product where speed of iteration matters more than precision, an aggressive threshold makes sense.</p>
+ <h2>Expected Loss, A Superior Decision Metric</h2>
+ <p>Expected loss (also called Bayesian risk or expected regret) is the average conversion rate you sacrifice by choosing the wrong variant. If you choose B, the expected loss is E[max(theta_A - theta_B, 0)], the expected amount by which A outperforms B, averaged over all posterior scenarios where A is actually better. This metric elegantly combines the probability of being wrong with the magnitude of the mistake.</p>
+ <p>Consider two scenarios that illustrate why expected loss is superior to probability of winning alone. Scenario one: P(B beats A) = 92%, but B is only 0.01 percentage points better on average. The expected loss of choosing B is negligibly small because even if A is better, it is barely better. Scenario two: P(B beats A) = 70%, but B is 2 percentage points better on average. The expected loss of choosing B is moderate, but the potential upside is enormous. Expected loss captures both of these dynamics in a single number.</p>
+ <p>The standard decision rule is to ship the variant whose expected loss falls below a pre-defined threshold. Common thresholds are 0.01% (conservative), 0.05% (moderate), and 0.1% (aggressive). These thresholds should be calibrated to your business context. For a high-traffic e-commerce site where each 0.01% of conversion rate translates to significant revenue, a conservative threshold is appropriate. For an early-stage product where speed of iteration matters more than precision, an aggressive threshold makes sense.</p>
 
-      <h2>Posterior Distribution Visualization</h2>
-      <p>The overlapping posterior curves in the chart above provide a visual representation of uncertainty. Each curve shows the probability density of the true conversion rate for that variant. Where the curves overlap substantially, there is significant uncertainty about which variant is truly better. Where they are well-separated, the evidence is strong.</p>
-      <p>The height and width of each curve encode complementary information. A tall, narrow peak indicates high certainty about the conversion rate — this occurs with large sample sizes. A short, wide peak indicates substantial uncertainty — typical of small samples. As you collect more data, both peaks narrow and the overlap region shrinks, making the comparison more definitive.</p>
-      <p>The area under each curve where it extends beyond the other curve's peak is directly related to the probability of winning. If variant B's entire distribution lies to the right of variant A's, P(B beats A) is near 100%. If the distributions are identical, P(B beats A) is 50%. The visual intuition aligns perfectly with the mathematical calculation.</p>
+ <h2>Posterior Distribution Visualization</h2>
+ <p>The overlapping posterior curves in the chart above provide a visual representation of uncertainty. Each curve shows the probability density of the true conversion rate for that variant. Where the curves overlap substantially, there is significant uncertainty about which variant is truly better. Where they are well-separated, the evidence is strong.</p>
+ <p>The height and width of each curve encode complementary information. A tall, narrow peak indicates high certainty about the conversion rate, this occurs with large sample sizes. A short, wide peak indicates substantial uncertainty, typical of small samples. As you collect more data, both peaks narrow and the overlap region shrinks, making the comparison more definitive.</p>
+ <p>The area under each curve where it extends beyond the other curve's peak is directly related to the probability of winning. If variant B's entire distribution lies to the right of variant A's, P(B beats A) is near 100%. If the distributions are identical, P(B beats A) is 50%. The visual intuition aligns perfectly with the mathematical calculation.</p>
 
-      <h2>Credible Intervals and Their Interpretation</h2>
-      <p>The 95% credible interval for each variant's conversion rate is computed from the Beta posterior using the quantile function. Unlike frequentist confidence intervals, Bayesian credible intervals have a direct probabilistic interpretation: there is a 95% posterior probability that the true conversion rate falls within the stated range.</p>
-      <p>For decision-making, the credible interval on the difference (theta_B - theta_A) is often more useful than individual intervals. If the 95% credible interval for the difference excludes zero (e.g., [0.2%, 1.4%]), there is strong evidence that B outperforms A. If it includes zero (e.g., [-0.3%, 1.1%]), there is meaningful uncertainty about which variant is better. The calculator reports individual credible intervals for simplicity, but the probability of winning and expected loss already incorporate the joint uncertainty.</p>
+ <h2>Credible Intervals and Their Interpretation</h2>
+ <p>The 95% credible interval for each variant's conversion rate is computed from the Beta posterior using the quantile function. Unlike frequentist confidence intervals, Bayesian credible intervals have a direct probabilistic interpretation: there is a 95% posterior probability that the true conversion rate falls within the stated range.</p>
+ <p>For decision-making, the credible interval on the difference (theta_B - theta_A) is often more useful than individual intervals. If the 95% credible interval for the difference excludes zero (e.g., [0.2%, 1.4%]), there is strong evidence that B outperforms A. If it includes zero (e.g., [-0.3%, 1.1%]), there is meaningful uncertainty about which variant is better. The calculator reports individual credible intervals for simplicity, but the probability of winning and expected loss already incorporate the joint uncertainty.</p>
 
-      <h2>When to Use This Calculator vs. Frequentist Methods</h2>
-      <p>Use this Bayesian calculator when you want direct probability statements about which variant is better, when stakeholders need intuitive results they can act on immediately, when you want to quantify the business risk of choosing wrong, or when you need to make decisions before reaching a pre-specified sample size. The Bayesian framework naturally handles sequential analysis — you can check results at any time without inflating error rates, because the posterior is always a valid probability statement given the current data.</p>
-      <p>Prefer frequentist methods when you need strict control over false positive rates (as in regulated industries), when your organization has established frequentist protocols, or when results will be published in academic contexts that require traditional hypothesis testing. For most product experimentation, Bayesian methods provide more actionable insights with fewer statistical pitfalls.</p>
-    </section>
+ <h2>When to Use This Calculator vs. Frequentist Methods</h2>
+ <p>Use this Bayesian calculator when you want direct probability statements about which variant is better, when stakeholders need intuitive results they can act on immediately, when you want to quantify the business risk of choosing wrong, or when you need to make decisions before reaching a pre-specified sample size. The Bayesian framework naturally handles sequential analysis. You can check results at any time without inflating error rates, because the posterior is always a valid probability statement given the current data.</p>
+ <p>Prefer frequentist methods when you need strict control over false positive rates (as in regulated industries), when your organization has established frequentist protocols, or when results will be published in academic contexts that require traditional hypothesis testing. For most product experimentation, Bayesian methods provide more things you can act on with fewer statistical pitfalls.</p>
+ </section>
 
-    <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
+ <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>
 
-    <section class="faq-section">
-      <h2>Frequently Asked Questions</h2>
+ <section class="faq-section">
+ <h2>Common questions</h2>
 
-      <details>
-        <summary>How does the Bayesian calculator compute probability of winning?</summary>
-        <p>It models each variant as a Beta distribution — Beta(conversions+1, visitors-conversions+1) — using a uniform prior. P(B beats A) is computed via Monte Carlo simulation with 100,000 samples, comparing draws from each posterior. This gives you a direct probability like "94% chance B is better than A," which is far more intuitive than a p-value.</p>
-      </details>
+ <details>
+ <summary>How does the Bayesian calculator compute probability of winning?</summary>
+ <p>It models each variant as a Beta distribution, Beta(conversions+1, visitors-conversions+1), using a uniform prior. P(B beats A) is computed via Monte Carlo simulation with 100,000 samples, comparing draws from each posterior. This gives you a direct probability like "94% chance B is better than A," which is far more intuitive than a p-value.</p>
+ </details>
 
-      <details>
-        <summary>What is expected loss and how should I use it?</summary>
-        <p>Expected loss is the average conversion rate you would sacrifice by choosing the wrong variant. If you choose B, it is E[max(theta_A - theta_B, 0)]. A common rule: ship the variant whose expected loss is below 0.01% (conservative) or 0.05% (moderate). Expected loss is superior to probability of winning alone because it accounts for how much you could lose, not just the chance of being wrong.</p>
-      </details>
+ <details>
+ <summary>What is expected loss and how should I use it?</summary>
+ <p>Expected loss is the average conversion rate you would sacrifice by choosing the wrong variant. If you choose B, it is E[max(theta_A - theta_B, 0)]. A common rule: ship the variant whose expected loss is below 0.01% (conservative) or 0.05% (moderate). Expected loss is superior to probability of winning alone because it accounts for how much you could lose, not just the chance of being wrong.</p>
+ </details>
 
-      <details>
-        <summary>What are Bayesian credible intervals?</summary>
-        <p>A 95% credible interval means there is a 95% probability the true conversion rate lies within the interval. This is the interpretation most people mistakenly give to frequentist confidence intervals. The calculator computes these from the Beta posterior quantile function. As sample size grows, the interval narrows, reflecting increased certainty.</p>
-      </details>
+ <details>
+ <summary>What are Bayesian credible intervals?</summary>
+ <p>A 95% credible interval means there is a 95% probability the true conversion rate lies within the interval. That's the interpretation most people mistakenly give to frequentist confidence intervals. The calculator computes these from the Beta posterior quantile function. As sample size grows, the interval narrows, reflecting increased certainty.</p>
+ </details>
 
-      <details>
-        <summary>How much data do I need for a Bayesian A/B test?</summary>
-        <p>Bayesian posteriors are valid at any sample size, but small samples produce wide, uncertain distributions. In practice, run until expected loss drops below your threshold. For a 5% baseline with a 10% relative lift, this typically needs 5,000 to 15,000 visitors per variant. Unlike frequentist tests, you can check results at any time without inflating error rates.</p>
-      </details>
+ <details>
+ <summary>How much data do I need for a Bayesian A/B test?</summary>
+ <p>Bayesian posteriors are valid at any sample size, but small samples produce wide, uncertain distributions. In practice, run until expected loss drops below your threshold. For a 5% baseline with a 10% relative lift, this typically needs 5,000 to 15,000 visitors per variant. Unlike frequentist tests, you can check results at any time without inflating error rates.</p>
+ </details>
 
-      <details>
-        <summary>What prior does this calculator use?</summary>
-        <p>It uses Beta(1,1) — the uniform prior — which assigns equal probability to all conversion rates. With a few hundred observations, the prior has negligible impact. If you have strong historical data, an informative prior like Beta(5,95) for a ~5% rate is possible, but rarely necessary with adequate sample sizes.</p>
-      </details>
-    </section>
+ <details>
+ <summary>What prior does this calculator use?</summary>
+ <p>It uses Beta(1,1), the uniform prior, which assigns equal probability to all conversion rates. With a few hundred observations, the prior has negligible impact. If you have strong historical data, an informative prior like Beta(5,95) for a ~5% rate is possible, but rarely necessary with adequate sample sizes.</p>
+ </details>
+ </section>
 
-    <section class="explainer-section">
-      <h3>Related A/B Testing Tools</h3>
-      <ul>
-        <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a> — Deep dive into the Beta-Binomial method and theory</li>
-        <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a> — Determine sample size with power curves and Cohen's h</li>
-        <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a> — Quick sample size estimation for A/B tests</li>
-        <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a> — Frequentist significance testing for comparison</li>
-      </ul>
-    </section>
+ <section class="explainer-section">
+ <h3>Related A/B Testing Tools</h3>
+ <ul>
+ <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a>, Walkthrough into the Beta-Binomial method and theory</li>
+ <li><a href="/tools/power-analysis-calculator.html">Power Analysis Calculator</a>, Determine sample size with power curves and Cohen's h</li>
+ <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a>, Quick sample size estimation for A/B tests</li>
+ <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a>, Frequentist significance testing for comparison</li>
+ </ul>
+ </section>
 
-    <section class="explainer-section">
-      <h3>About the Author</h3>
-      <p>Built by <strong><a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools-bayesian-ab-calculator">Michael Lip</a></strong> — Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
-    </section>
-  </main>
+ <section class="explainer-section">
+ <h3>About the Author</h3>
+ <p>Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools-bayesian-ab-calculator">Michael Lip</a>, Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
+ </section>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
-        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-bayesian-ab-calculator">Zovo</a> &middot; 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-bayesian-ab-calculator">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools-bayesian-ab-calculator">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools-bayesian-ab-calculator">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools-bayesian-ab-calculator" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools-bayesian-ab-calculator" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
-  <script>
+ <script>
   (function(){
     // Seed-based PRNG for reproducible Monte Carlo
     function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
@@ -464,8 +417,8 @@
         var ac = parseInt(document.getElementById('bc-a-conversions').value) || 0;
         var bv = parseInt(document.getElementById('bc-b-visitors').value) || 0;
         var bc = parseInt(document.getElementById('bc-b-conversions').value) || 0;
-        document.getElementById('bc-a-rate').textContent = av > 0 ? (ac / av * 100).toFixed(2) + '%' : '—';
-        document.getElementById('bc-b-rate').textContent = bv > 0 ? (bc / bv * 100).toFixed(2) + '%' : '—';
+        document.getElementById('bc-a-rate').textContent = av > 0 ? (ac / av * 100).toFixed(2) + '%' : '&middot;';
+        document.getElementById('bc-b-rate').textContent = bv > 0 ? (bc / bv * 100).toFixed(2) + '%' : '&middot;';
       });
     });
 
@@ -538,10 +491,10 @@
       var vBox = document.getElementById('bc-verdict-box');
       if (bestLoss < 0.0001) {
         vBox.className = 'bc-verdict ship';
-        vBox.innerHTML = '<strong>Recommendation: Ship Variant ' + winner + '</strong><br>Expected loss of choosing ' + winner + ' is ' + formatPct(winner === 'B' ? elB : elA, 4) + ' — below the conservative 0.01% threshold. P(' + winner + ' wins) = ' + formatPct(winnerProb) + '. The evidence strongly supports this decision.';
+        vBox.innerHTML = '<strong>Recommendation: Ship Variant ' + winner + '</strong><br>Expected loss of choosing ' + winner + ' is ' + formatPct(winner === 'B' ? elB : elA, 4) + ', below the conservative 0.01% threshold. P(' + winner + ' wins) = ' + formatPct(winnerProb) + '. The evidence strongly supports this decision.';
       } else if (bestLoss < 0.0005) {
         vBox.className = 'bc-verdict ship';
-        vBox.innerHTML = '<strong>Recommendation: Variant ' + winner + ' looks promising</strong><br>Expected loss is ' + formatPct(winner === 'B' ? elB : elA, 4) + ' — below the moderate 0.05% threshold. P(' + winner + ' wins) = ' + formatPct(winnerProb) + '. Consider shipping if the cost of waiting outweighs the remaining uncertainty.';
+        vBox.innerHTML = '<strong>Recommendation: Variant ' + winner + ' looks promising</strong><br>Expected loss is ' + formatPct(winner === 'B' ? elB : elA, 4) + ', below the moderate 0.05% threshold. P(' + winner + ' wins) = ' + formatPct(winnerProb) + '. Consider shipping if the cost of waiting outweighs the remaining uncertainty.';
       } else if (bestLoss < 0.001) {
         vBox.className = 'bc-verdict wait';
         vBox.innerHTML = '<strong>Recommendation: Collect more data</strong><br>Expected loss is ' + formatPct(winner === 'B' ? elB : elA, 4) + '. P(' + winner + ' wins) = ' + formatPct(winnerProb) + '. The trend favors ' + winner + ', but the expected loss exceeds conservative thresholds. Continue running the test.';
@@ -644,9 +597,9 @@
 
       // Legend
       html += '<rect x="' + (ml + 10) + '" y="' + (mt + 5) + '" width="12" height="12" fill="#F97316" rx="2"/>';
-      html += '<text x="' + (ml + 27) + '" y="' + (mt + 15) + '" fill="#F97316" font-size="12" font-family="IBM Plex Sans,sans-serif">Control (A) — ' + (meanA * 100).toFixed(2) + '%</text>';
+      html += '<text x="' + (ml + 27) + '" y="' + (mt + 15) + '" fill="#F97316" font-size="12" font-family="IBM Plex Sans,sans-serif">Control (A), ' + (meanA * 100).toFixed(2) + '%</text>';
       html += '<rect x="' + (ml + 10) + '" y="' + (mt + 25) + '" width="12" height="12" fill="#2DD4BF" rx="2"/>';
-      html += '<text x="' + (ml + 27) + '" y="' + (mt + 35) + '" fill="#2DD4BF" font-size="12" font-family="IBM Plex Sans,sans-serif">Variant (B) — ' + (meanB * 100).toFixed(2) + '%</text>';
+      html += '<text x="' + (ml + 27) + '" y="' + (mt + 35) + '" fill="#2DD4BF" font-size="12" font-family="IBM Plex Sans,sans-serif">Variant (B), ' + (meanB * 100).toFixed(2) + '%</text>';
 
       svg.innerHTML = html;
     }
@@ -655,16 +608,16 @@
     runBayesCalc();
   })();
   </script>
-  <script src="/assets/js/share.js"></script>
+ <script src="/assets/js/share.js"></script>
 <script src="/assets/js/pro-nudge.js"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
-<li><a href="/tools/bayesian-ab-testing.html" style="color:#3b82f6;text-decoration:none;">Bayesian A/B Testing Guide — Beta-Binomial Method</a></li>
+<li><a href="/tools/bayesian-ab-testing.html" style="color:#3b82f6;text-decoration:none;">Bayesian A/B Testing Guide, Beta-Binomial Method</a></li>
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/blog/bayesian-vs-frequentist-ab-testing.html" style="color:#3b82f6;text-decoration:none;">Bayesian vs Frequentist A/B Testing: When to Use Which</a></li>
-<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</a></li>
+<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</a></li>
 </ul>
 </section>
 

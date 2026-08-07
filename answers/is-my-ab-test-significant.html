@@ -1,184 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Is My A/B Test Statistically Significant? | ABWex</title>
-  <meta name="description" content="Check if your A/B test results are statistically significant. Example: 1,000 visitors with 50 vs 65 conversions gives p=0.108 — not significant at alpha 0.05.">
-  <link rel="canonical" href="https://abwex.com/answers/is-my-ab-test-significant.html">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Is My A/B Test Statistically Significant?">
-  <meta property="og:description" content="1,000 visitors with 50 vs 65 conversions gives p=0.108 — not significant. Learn how to check.">
-  <meta property="og:url" content="https://abwex.com/answers/is-my-ab-test-significant.html">
-  <meta property="og:image" content="https://abwex.com/assets/og-image.png">
-  <meta property="og:site_name" content="Zovo Tools">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Is My A/B Test Statistically Significant?">
-  <meta name="twitter:description" content="1,000 visitors with 50 vs 65 conversions gives p=0.108 — not significant. Learn how to check.">
-  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/style.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is my A/B test statistically significant?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Enter your data to check. Example: 1,000 visitors with 50 conversions (5.0%) vs 1,000 with 65 conversions (6.5%) gives p=0.108 — NOT statistically significant at alpha=0.05. You need more data. A result is significant when p < 0.05, meaning the observed difference is unlikely to be due to chance."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What p-value makes an A/B test significant?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A p-value below 0.05 is the standard threshold for statistical significance. This means there is less than a 5% probability the observed difference occurred by random chance. Some teams use stricter thresholds like 0.01 for high-stakes decisions."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why is my A/B test not significant yet?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The most common reason is insufficient sample size. If the true effect is small (e.g., a 1 percentage point difference), you may need tens of thousands of visitors to detect it reliably. Use a sample size calculator before starting your test to know how long to run it."
-      }
-    }
-  ]
-}
-</script>
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Is My A/B Test Statistically Significant? | ABWex</title>
+ <meta name="description" content="Check if your A/B test results are statistically significant. Example: 1,000 visitors with 50 vs 65 conversions gives p=0.108, not significant at alpha 0.05.">
+ <link rel="canonical" href="https://abwex.com/answers/is-my-ab-test-significant.html">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="Is My A/B Test Statistically Significant?">
+ <meta property="og:description" content="1,000 visitors with 50 vs 65 conversions gives p=0.108, not significant. Learn how to check.">
+ <meta property="og:url" content="https://abwex.com/answers/is-my-ab-test-significant.html">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
+ <meta property="og:site_name" content="Zovo Tools">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Is My A/B Test Statistically Significant?">
+ <meta name="twitter:description" content="1,000 visitors with 50 vs 65 conversions gives p=0.108, not significant. Learn how to check.">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my A/B test statistically significant?","acceptedAnswer":{"@type":"Answer","text":"Enter your data to check. Example: 1,000 visitors with 50 conversions (5.0%) vs 1,000 with 65 conversions (6.5%) gives p=0.108, NOT statistically significant at alpha=0.05. You need more data. A result is significant when p < 0.05, meaning the observed difference is unlikely to be due to chance."}},{"@type":"Question","name":"What p-value makes an A/B test significant?","acceptedAnswer":{"@type":"Answer","text":"A p-value below 0.05 is the standard threshold for statistical significance. This means there is less than a 5% probability the observed difference occurred by random chance. Some teams use stricter thresholds like 0.01 for high-stakes decisions."}},{"@type":"Question","name":"Why is my A/B test not significant yet?","acceptedAnswer":{"@type":"Answer","text":"The most common reason is insufficient sample size. If the true effect is small (e.g., a 1 percentage point difference), you may need tens of thousands of visitors to detect it reliably. Use a sample size calculator before starting your test to know how long to run it."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Answers","item":"https://abwex.com/answers/"},{"@type":"ListItem","position":3,"name":"Is My Test Significant?"}]}</script>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="logo">AB<span>Wex</span></a>
-      <button class="mobile-toggle" aria-label="Menu">&#9776;</button>
-      <nav>
-        <a href="/">Calculator</a>
-        <a href="/about.html">About</a>
-        <a href="/blog/">Blog</a>
-        <div class="nav-right">
-          <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro &#10022;</a>
-          <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-is-my-ab-test-significant" class="nav-zovo">Zovo Tools</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/about.html">About</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-is-my-ab-test-significant" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
 
-  <main class="container" style="max-width:780px;margin:0 auto;padding:2rem 1.5rem;">
-    <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:0.9rem;">
-      <a href="/">Home</a> &rsaquo; <a href="/answers/">Answers</a> &rsaquo; <span>Is My Test Significant?</span>
-    </nav>
+ <main class="container" style="max-width:780px;margin:0 auto;padding:2rem 1.5rem;">
+ <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom:1.5rem;font-size:0.9rem;">
+ <a href="/">Home</a> &rsaquo; <a href="/answers/">Answers</a> &rsaquo; <span>Is My Test Significant?</span>
+ </nav>
 
-    <article>
-      <h1>Is My A/B Test Statistically Significant?</h1>
+ <article>
+ <h1>Is My A/B Test Statistically Significant?</h1>
 
-      <p><strong>Enter your data to check. Example: 1,000 visitors with 50 conversions (5.0%) vs 1,000 with 65 conversions (6.5%) gives p=0.108 -- NOT statistically significant at alpha=0.05. You need more data.</strong></p>
+ <p>Enter your data to check. Example: 1,000 visitors with 50 conversions (5.0%) vs 1,000 with 65 conversions (6.5%) gives p=0.108, NOT statistically significant at alpha=0.05. You need more data.</p>
 
-      <h2>How to Check Significance</h2>
-      <p>The two-proportion Z-test compares conversion rates between your control (A) and variant (B):</p>
-      <pre style="background:var(--bg-secondary,#1a1a2e);padding:1rem;border-radius:8px;overflow-x:auto;"><code>p_pool = (x1 + x2) / (n1 + n2)
+ <h2>How to Check Significance</h2>
+ <p>The two-proportion Z-test compares conversion rates between your control (A) and variant (B):</p>
+ <pre style="background:var(--bg-secondary,#1a1a2e);padding:1rem;border-radius:8px;overflow-x:auto;"><code>p_pool = (x1 + x2) / (n1 + n2)
 SE = sqrt(p_pool * (1 - p_pool) * (1/n1 + 1/n2))
 Z = (p2 - p1) / SE
 p-value = 2 * (1 - Phi(|Z|))</code></pre>
 
-      <h2>Worked Example</h2>
-      <p>Control: 1,000 visitors, 50 conversions (5.0%). Variant: 1,000 visitors, 65 conversions (6.5%).</p>
-      <ol>
-        <li>p_pool = (50 + 65) / (1000 + 1000) = 115 / 2000 = 0.0575</li>
-        <li>SE = sqrt(0.0575 * 0.9425 * (1/1000 + 1/1000)) = sqrt(0.0575 * 0.9425 * 0.002) = sqrt(0.00010838) = 0.01041</li>
-        <li>Z = (0.065 - 0.050) / 0.01041 = 0.015 / 0.01041 = 1.441</li>
-        <li>p-value = 2 * (1 - Phi(1.441)) = 2 * 0.0748 = 0.1496</li>
-      </ol>
-      <p>Since p = 0.150 > 0.05, this result is <strong>NOT statistically significant</strong>. The observed 30% relative lift could reasonably be due to random variation. You need to continue collecting data.</p>
+ <h2>Worked Example</h2>
+ <p>Control: 1,000 visitors, 50 conversions (5.0%). Variant: 1,000 visitors, 65 conversions (6.5%).</p>
+ <ol>
+ <li>p_pool = (50 + 65) / (1000 + 1000) = 115 / 2000 = 0.0575</li>
+ <li>SE = sqrt(0.0575 * 0.9425 * (1/1000 + 1/1000)) = sqrt(0.0575 * 0.9425 * 0.002) = sqrt(0.00010838) = 0.01041</li>
+ <li>Z = (0.065 - 0.050) / 0.01041 = 0.015 / 0.01041 = 1.441</li>
+ <li>p-value = 2 * (1 - Phi(1.441)) = 2 * 0.0748 = 0.1496</li>
+ </ol>
+ <p>Since p = 0.150 > 0.05, this result is NOT statistically significant. The observed 30% relative lift could reasonably be due to random variation. You need to continue collecting data.</p>
 
-      <h2>What the p-value Means</h2>
-      <p>The p-value is the probability of seeing a difference at least this large if there is actually no difference between variants. It is NOT the probability that your variant is better. Common thresholds:</p>
-      <ul>
-        <li><strong>p &lt; 0.05</strong> -- Significant (standard threshold)</li>
-        <li><strong>p &lt; 0.01</strong> -- Highly significant</li>
-        <li><strong>p &gt; 0.05</strong> -- Not significant; collect more data or accept no detectable difference</li>
-      </ul>
+ <h2>What the p-value Means</h2>
+ <p>The p-value is the probability of seeing a difference at least this large if there is actually no difference between variants. It is NOT the probability that your variant is better. Common thresholds:</p>
+ <ul>
+ <li><strong>p &lt; 0.05</strong>, Significant (standard threshold)</li>
+ <li><strong>p &lt; 0.01</strong>, Highly significant</li>
+ <li><strong>p &gt; 0.05</strong>, Not significant; collect more data or accept no detectable difference</li>
+ </ul>
 
-      <h2>Common Mistakes</h2>
-      <ul>
-        <li><strong>Peeking</strong>: Checking results repeatedly and stopping when you see significance inflates false positives from 5% to as high as 30%.</li>
-        <li><strong>Too small a sample</strong>: Use a <a href="/answers/ab-test-sample-size-calculator.html">sample size calculator</a> before starting.</li>
-        <li><strong>Confusing p-value with probability</strong>: p=0.03 does NOT mean 97% chance B is better. Use Bayesian analysis for that.</li>
-      </ul>
+ <h2>Common Mistakes</h2>
+ <ul>
+ <li><strong>Peeking</strong>: Checking results repeatedly and stopping when you see significance inflates false positives from 5% to as high as 30%.</li>
+ <li><strong>Too small a sample</strong>: Use a <a href="/answers/ab-test-sample-size-calculator.html">sample size calculator</a> before starting.</li>
+ <li><strong>Confusing p-value with probability</strong>: p=0.03 does NOT mean 97% chance B is better. Use Bayesian analysis for that.</li>
+ </ul>
 
-      <p>Use the <a href="/">ABWex calculator</a> to check your actual numbers instantly with both frequentist and Bayesian analysis.</p>
+ <p>Use the <a href="/">ABWex calculator</a> to check your actual numbers instantly with both frequentist and Bayesian analysis.</p>
 
-      <section class="related-links">
-        <h2>Related Questions</h2>
-        <div class="related-grid">
-          <a href="/answers/ab-test-sample-size-calculator.html" class="related-card">How many visitors do I need for an A/B test?</a>
-          <a href="/answers/how-long-to-run-ab-test.html" class="related-card">How long should I run my A/B test?</a>
-          <a href="/tools/p-value-calculator.html" class="related-card">P-value calculator tool</a>
-          <a href="/tools/bayesian-ab-testing.html" class="related-card">Bayesian A/B testing tool</a>
-        </div>
-      </section>
+ <section class="related-links">
+ <h2>Related Questions</h2>
+ <div class="related-grid">
+ <a href="/answers/ab-test-sample-size-calculator.html" class="related-card">How many visitors do I need for an A/B test?</a>
+ <a href="/answers/how-long-to-run-ab-test.html" class="related-card">How long should I run my A/B test?</a>
+ <a href="/tools/p-value-calculator.html" class="related-card">P-value calculator tool</a>
+ <a href="/tools/bayesian-ab-testing.html" class="related-card">Bayesian A/B testing tool</a>
+ </div>
+ </section>
 
-      <div class="last-updated"><time datetime="2026-04-11">Last updated: April 11, 2026</time></div>
-    </article>
-  </main>
+ <div class="last-updated"><time datetime="2026-04-11">Last updated: April 11, 2026</time></div>
+ </article>
+ </main>
 
 <footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">Zovo Tools</div>
-        <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
-        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime — $99 once, free forever &rarr;</a>
-        <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=answers-is-my-ab-test-significant">Zovo</a> &middot; 47/500 founding spots</div>
-    </div>
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=answers-is-my-ab-test-significant">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
 </footer>
 
 <nav class="zovo-network" aria-label="Zovo Tools Network">
-    <div class="zovo-network-inner">
-        <h3 class="zovo-network-title">Explore More Tools</h3>
-        <div class="zovo-network-links">
-            <a href="https://b2berp.com">B2BERP — Business Tools</a>
-            <a href="https://bugbountyreality.com">BugBountyReality — Security</a>
-            <a href="https://claudflow.com">ClaudFlow — Workflows</a>
-            <a href="https://claudkit.com">ClaudKit — API Tools</a>
-            <a href="https://dismissticket.com">DismissTicket — Support</a>
-            <a href="https://enhio.com">Enhio — Text Tools</a>
-            <a href="https://epochpilot.com">EpochPilot — Timestamps</a>
-            <a href="https://gen8x.com">Gen8X — Color Tools</a>
-            <a href="https://gpt0x.com">GPT0X — AI Models</a>
-            <a href="https://heytensor.com">HeyTensor — ML Tools</a>
-            <a href="https://ingredientcalculator.com">IngredientCalc — Recipes</a>
-            <a href="https://invokebot.com">InvokeBot — Webhooks</a>
-            <a href="https://kappafy.com">Kappafy — JSON</a>
-            <a href="https://kappakit.com">KappaKit — Dev Toolkit</a>
-            <a href="https://kickllm.com">KickLLM — LLM Costs</a>
-            <a href="https://krzen.com">Krzen — Image Tools</a>
-            <a href="https://lochbot.com">LochBot — Security</a>
-            <a href="https://lockml.com">LockML — ML Security</a>
-            <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-is-my-ab-test-significant">ML0X — ML Basics</a>
-            <a href="https://ml3x.com">ML3X — Matrix Math</a>
-            <a href="https://pictureeditor.net">PictureEditor — Image Editing</a>
-            <a href="https://recipetool.net">RecipeTool — Cooking</a>
-            <a href="https://viryd.com">Viryd — Dev Tools</a>
-        </div>
-    </div>
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=answers-is-my-ab-test-significant">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ </div>
+ </div>
 </nav>
 
 <div class="pow-strip">
-  <div class="pow-strip-inner">
-    <span class="pow-label">By the same builder:</span>
-    <a href="https://github.com/theluckystrike" rel="nofollow">GitHub — theluckystrike</a>
-    <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative — Grammar AI</a>
-    <a href="https://earlythunder.com" rel="nofollow">EarlyThunder — Dev Blog</a>
-    <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
-    <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-is-my-ab-test-significant" rel="nofollow">Zovo — AI Dev Tools</a>
-  </div>
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=answers-is-my-ab-test-significant" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
 </div>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
@@ -186,8 +155,8 @@ p-value = 2 * (1 - Phi(|Z|))</code></pre>
 <ul style="list-style:none;padding:0;display:grid;gap:8px;">
 <li><a href="/answers/ab-test-sample-size-calculator.html" style="color:#3b82f6;text-decoration:none;">How Many Visitors Do I Need for an A/B Test?</a></li>
 <li><a href="/answers/how-long-to-run-ab-test.html" style="color:#3b82f6;text-decoration:none;">How Long Should I Run My A/B Test?</a></li>
-<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide — How Long to Run Tests by Traffic Volume</a></li>
-<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes — 20 Most Common Statistical Errors</a></li>
+<li><a href="/research/ab-test-duration-calculator.html" style="color:#3b82f6;text-decoration:none;">A/B Test Duration Guide, How Long to Run Tests by Traffic Volume</a></li>
+<li><a href="/research/ab-test-mistakes.html" style="color:#3b82f6;text-decoration:none;">A/B Testing Mistakes, 20 Most Common Statistical Errors</a></li>
 </ul>
 </section>
 

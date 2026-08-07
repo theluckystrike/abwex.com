@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Z-Score Calculator — Standard Score & Probability Lookup | abwex.com</title>
-  <meta name="description" content="Interactive Z-Score calculator: compute z-score from raw score, probability from z, or inverse z from probability. Includes normal curve visualization, step-by-step, and z-table.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://abwex.com/tools/z-score-calculator">
-  <!-- JSON-LD FAQ -->
-  <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Z-Score Calculator, Standard Score & Probability Lookup | abwex.com</title>
+ <meta name="description" content="Interactive Z-Score calculator: compute z-score from raw score, probability from z, or inverse z from probability. Includes normal curve visualization, step-by-step, and z-table.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/tools/z-score-calculator">
+ <!-- JSON-LD FAQ -->
+ <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -40,7 +40,7 @@
     ]
   }
   </script>
-  <style>
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -265,31 +265,31 @@
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>⚡ <span>Z-Score</span> Calculator</h1>
-    <div class="subhead">Standard score &amp; probability lookup · abwex.com</div>
-  </header>
+ <header>
+ <h1> <span>Z-Score</span> Calculator</h1>
+ <div class="subhead">Standard score &amp; probability lookup · abwex.com</div>
+ </header>
 
-  <div class="card">
-    <div class="mode-tabs">
-      <button class="mode-btn active" data-mode="1">Mode 1: Raw → Z</button>
-      <button class="mode-btn" data-mode="2">Mode 2: Z → Probability</button>
-      <button class="mode-btn" data-mode="3">Mode 3: Probability → Z</button>
-    </div>
+ <div class="card">
+ <div class="mode-tabs">
+ <button class="mode-btn active" data-mode="1">Mode 1: Raw Z</button>
+ <button class="mode-btn" data-mode="2">Mode 2: Z Probability</button>
+ <button class="mode-btn" data-mode="3">Mode 3: Probability Z</button>
+ </div>
 
-    <!-- dynamic form -->
-    <div id="formContainer"></div>
+ <!-- dynamic form -->
+ <div id="formContainer"></div>
 
-    <!-- results + curve -->
-    <div id="resultsContainer" class="result-area" style="display: none;">
-      <div id="resultItems"></div>
-      <div class="canvas-wrapper">
-        <canvas id="normalCurve" width="500" height="250"></canvas>
-      </div>
-      <div id="stepDetail" class="step-detail"></div>
-      <div class="z-table-link" id="zTableToggle">📖 View Z-Table (reference)</div>
-      <div id="zTableContent" style="display: none; margin-top: 0.8rem; background: #0f172a; padding: 0.8rem; border-radius: 16px; max-height: 200px; overflow-y: auto; font-size: 0.8rem; border: 1px solid #2d3a52;">
-        <pre style="color: #cbd5e1; font-family: monospace;">z     | 0.00   0.01   0.02   0.03   0.04   0.05   0.06   0.07   0.08   0.09
+ <!-- results + curve -->
+ <div id="resultsContainer" class="result-area" style="display: none;">
+ <div id="resultItems"></div>
+ <div class="canvas-wrapper">
+ <canvas id="normalCurve" width="500" height="250"></canvas>
+ </div>
+ <div id="stepDetail" class="step-detail"></div>
+ <div class="z-table-link" id="zTableToggle"> View Z-Table (reference)</div>
+ <div id="zTableContent" style="display: none; margin-top: 0.8rem; background: #0f172a; padding: 0.8rem; border-radius: 16px; max-height: 200px; overflow-y: auto; font-size: 0.8rem; border: 1px solid #2d3a52;">
+ <pre style="color: #cbd5e1; font-family: monospace;">z     | 0.00   0.01   0.02   0.03   0.04   0.05   0.06   0.07   0.08   0.09
 0.0  | 0.5000 0.5040 0.5080 0.5120 0.5160 0.5199 0.5239 0.5279 0.5319 0.5359
 0.5  | 0.6915 0.6950 0.6985 0.7019 0.7054 0.7088 0.7123 0.7157 0.7190 0.7224
 1.0  | 0.8413 0.8438 0.8461 0.8485 0.8508 0.8531 0.8554 0.8577 0.8599 0.8621
@@ -298,11 +298,11 @@
 2.5  | 0.9938 0.9940 0.9941 0.9943 0.9945 0.9946 0.9948 0.9949 0.9951 0.9952
 3.0  | 0.9987 0.9987 0.9987 0.9988 0.9988 0.9989 0.9989 0.9989 0.9990 0.9990
         </pre>
-      </div>
-    </div>
-  </div>
+ </div>
+ </div>
+ </div>
 
-  <footer>© 2025 abwex.com</footer>
+ <footer>© 2025 abwex.com</footer>
 </div>
 
 <script>
@@ -428,7 +428,7 @@
         cumProb = p;
         percentile = p * 100;
         betweenProb = cdf(z) - cdf(-z);
-        stepText = `Inverse: p = ${p.toFixed(6)} → z ≈ ${z.toFixed(4)}`;
+        stepText = `Inverse: p = ${p.toFixed(6)} z ≈ ${z.toFixed(4)}`;
         lastResult = { z, cumProb, percentile, betweenProb, mode, stepText };
       }
 

@@ -1,46 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Statistical Power Visualizer — See How Power Changes | abwex.com</title>
-  <meta name="description" content="Interactive tool to visualize statistical power, Type I & Type II errors. Adjust effect size, sample size, alpha, and tail type in real time.">
-  <meta name="keywords" content="statistical power, effect size, sample size, alpha, Type I error, Type II error, visualization, abwex">
-  <link rel="canonical" href="https://abwex.com/tools/statistical-power-visualizer">
-  <!-- JSON-LD FAQ -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is statistical power?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Statistical power is the probability that a test correctly rejects a false null hypothesis (i.e., detects a true effect). It is calculated as 1 − β, where β is the Type II error rate."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is Type I error?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Type I error (α) is the probability of rejecting the null hypothesis when it is actually true — a false positive."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is Type II error?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Type II error (β) is the probability of failing to reject the null hypothesis when it is false — a false negative."
-        }
-      }
-    ]
-  }
-  </script>
-  <style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Statistical Power Visualizer, See How Power Changes | abwex.com</title>
+ <meta name="description" content="Interactive tool to visualize statistical power, Type I & Type II errors. Adjust effect size, sample size, alpha, and tail type in real time.">
+ <meta name="keywords" content="statistical power, effect size, sample size, alpha, Type I error, Type II error, visualization, abwex">
+ <link rel="canonical" href="https://abwex.com/tools/statistical-power-visualizer">
+ <!-- JSON-LD FAQ -->
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is statistical power?","acceptedAnswer":{"@type":"Answer","text":"Statistical power is the probability that a test correctly rejects a false null hypothesis (i.e., detects a true effect). It is calculated as 1 − β, where β is the Type II error rate."}},{"@type":"Question","name":"What is Type I error?","acceptedAnswer":{"@type":"Answer","text":"Type I error (α) is the probability of rejecting the null hypothesis when it is actually true, a false positive."}},{"@type":"Question","name":"What is Type II error?","acceptedAnswer":{"@type":"Answer","text":"Type II error (β) is the probability of failing to reject the null hypothesis when it is false, a false negative."}}]}</script>
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -272,65 +241,65 @@
 </head>
 <body>
 <div class="container">
-  <h1>⚡ Statistical Power Visualizer</h1>
-  <div class="subhead">See how power, Type I &amp; Type II errors change with effect size, sample size, alpha &amp; tails</div>
+ <h1> Statistical Power Visualizer</h1>
+ <div class="subhead">See how power, Type I &amp; Type II errors change with effect size, sample size, alpha &amp; tails</div>
 
-  <div class="tool-grid">
-    <!-- Controls -->
-    <div class="controls">
-      <div class="control-group">
-        <div class="control-label"><span>Effect size (d)</span><span id="effectDisplay">0.50</span></div>
-        <input type="range" id="effectSlider" min="0.01" max="2.0" step="0.01" value="0.50">
-      </div>
-      <div class="control-group">
-        <div class="control-label"><span>Sample size (n)</span><span id="sampleDisplay">100</span></div>
-        <input type="range" id="sampleSlider" min="10" max="10000" step="1" value="100">
-      </div>
-      <div class="control-group">
-        <div class="control-label"><span>Alpha (α)</span><span id="alphaDisplay">0.05</span></div>
-        <input type="range" id="alphaSlider" min="0.01" max="0.10" step="0.001" value="0.05">
-      </div>
-      <div class="control-group">
-        <div class="control-label"><span>Test type</span></div>
-        <div class="toggle-wrap" id="tailToggle">
-          <button class="toggle-btn active" data-tail="one">One-tailed</button>
-          <button class="toggle-btn" data-tail="two">Two-tailed</button>
-        </div>
-      </div>
+ <div class="tool-grid">
+ <!-- Controls -->
+ <div class="controls">
+ <div class="control-group">
+ <div class="control-label"><span>Effect size (d)</span><span id="effectDisplay">0.50</span></div>
+ <input type="range" id="effectSlider" min="0.01" max="2.0" step="0.01" value="0.50">
+ </div>
+ <div class="control-group">
+ <div class="control-label"><span>Sample size (n)</span><span id="sampleDisplay">100</span></div>
+ <input type="range" id="sampleSlider" min="10" max="10000" step="1" value="100">
+ </div>
+ <div class="control-group">
+ <div class="control-label"><span>Alpha (α)</span><span id="alphaDisplay">0.05</span></div>
+ <input type="range" id="alphaSlider" min="0.01" max="0.10" step="0.001" value="0.05">
+ </div>
+ <div class="control-group">
+ <div class="control-label"><span>Test type</span></div>
+ <div class="toggle-wrap" id="tailToggle">
+ <button class="toggle-btn active" data-tail="one">One-tailed</button>
+ <button class="toggle-btn" data-tail="two">Two-tailed</button>
+ </div>
+ </div>
 
-      <!-- Stats -->
-      <div class="stats-box">
-        <div class="stat-row"><span>🔵 Power (1−β)</span><span class="stat-value power" id="powerValue">0.516</span></div>
-        <div class="stat-row"><span>🟠 Beta (Type II error)</span><span class="stat-value beta" id="betaValue">0.484</span></div>
-        <div class="stat-row"><span>🔴 Alpha (Type I error)</span><span class="stat-value alpha" id="alphaStat">0.050</span></div>
-        <div class="stat-row"><span>🟣 n for 80% power</span><span class="stat-value sample" id="requiredN">193</span></div>
-      </div>
-      <div style="margin-top: 0.8rem; font-size: 0.8rem; color: #64748b; text-align: center;">⚡ Adjust sliders — distributions update instantly</div>
-    </div>
+ <!-- Stats -->
+ <div class="stats-box">
+ <div class="stat-row"><span> Power (1−β)</span><span class="stat-value power" id="powerValue">0.516</span></div>
+ <div class="stat-row"><span> Beta (Type II error)</span><span class="stat-value beta" id="betaValue">0.484</span></div>
+ <div class="stat-row"><span> Alpha (Type I error)</span><span class="stat-value alpha" id="alphaStat">0.050</span></div>
+ <div class="stat-row"><span> n for 80% power</span><span class="stat-value sample" id="requiredN">193</span></div>
+ </div>
+ <div style="margin-top: 0.8rem; font-size: 0.8rem; color: #64748b; text-align: center;"> Adjust sliders, distributions update instantly</div>
+ </div>
 
-    <!-- Canvas -->
-    <div class="canvas-wrap">
-      <canvas id="powerCanvas" width="800" height="450"></canvas>
-      <div class="legend">
-        <span class="legend-item"><span class="legend-color" style="background:#3b82f6;"></span> Null</span>
-        <span class="legend-item"><span class="legend-color" style="background:#22c55e;"></span> Alternative</span>
-        <span class="legend-item"><span class="legend-color" style="background:#ef4444;"></span> α (Type I)</span>
-        <span class="legend-item"><span class="legend-color" style="background:#f97316;"></span> β (Type II)</span>
-        <span class="legend-item"><span class="legend-color" style="background:#a78bfa;"></span> Power</span>
-        <span class="legend-item"><span style="border-left:3px solid #facc15; height:16px;"></span> Critical value</span>
-      </div>
-    </div>
-  </div>
+ <!-- Canvas -->
+ <div class="canvas-wrap">
+ <canvas id="powerCanvas" width="800" height="450"></canvas>
+ <div class="legend">
+ <span class="legend-item"><span class="legend-color" style="background:#3b82f6;"></span> Null</span>
+ <span class="legend-item"><span class="legend-color" style="background:#22c55e;"></span> Alternative</span>
+ <span class="legend-item"><span class="legend-color" style="background:#ef4444;"></span> α (Type I)</span>
+ <span class="legend-item"><span class="legend-color" style="background:#f97316;"></span> β (Type II)</span>
+ <span class="legend-item"><span class="legend-color" style="background:#a78bfa;"></span> Power</span>
+ <span class="legend-item"><span style="border-left:3px solid #facc15; height:16px;"></span> Critical value</span>
+ </div>
+ </div>
+ </div>
 
-  <!-- FAQ / explanation -->
-  <div class="faq-note">
-    <strong>📘 Type I error (α):</strong> Rejecting true null — false positive. &nbsp;|&nbsp; 
-    <strong>📙 Type II error (β):</strong> Failing to reject false null — false negative. &nbsp;|&nbsp; 
-    <strong>✅ Power (1−β):</strong> Probability of detecting a true effect. 
-    <span style="display:inline-block; margin-left: 0.5rem; color:#94a3b8;">(Shaded areas correspond to legend)</span>
-  </div>
+ <!-- FAQ / explanation -->
+ <div class="faq-note">
+ Type I error (α): Rejecting true null, false positive. &nbsp;|&nbsp; 
+ Type II error (β): Failing to reject false null, false negative. &nbsp;|&nbsp; 
+ Power (1−β): Probability of detecting a true effect. 
+ <span style="display:inline-block; margin-left: 0.5rem; color:#94a3b8;">(Shaded areas correspond to legend)</span>
+ </div>
 
-  <div class="footer">© 2025 abwex.com</div>
+ <div class="footer">© 2025 abwex.com</div>
 </div>
 
 <script>

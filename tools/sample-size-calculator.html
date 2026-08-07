@@ -81,97 +81,97 @@
 </head>
 <body>
 <nav>
-  <a href="/">Home</a>
-  <a href="/tools/">Tools</a>
+ <a href="/">Home</a>
+ <a href="/tools/">Tools</a>
 </nav>
 <main>
-  <h1>A/B Test Sample Size Calculator</h1>
-  <p class="muted">Find out how many visitors or respondents you need per variation before launching a test, so your result is statistically significant rather than random noise.</p>
+ <h1>A/B Test Sample Size Calculator</h1>
+ <p class="muted">Find out how many visitors or respondents you need per variation before launching a test, so your result is statistically significant rather than random noise.</p>
 
-  <section id="tool">
-    <div class="grid">
-      <div>
-        <label for="base">Baseline conversion rate (%)
-          <span class="hint">Your current rate for the control group</span></label>
-        <input id="base" type="number" value="5" min="0.01" max="99.99" step="0.1">
-      </div>
-      <div>
-        <label for="mde">Minimum detectable effect (%)
-          <span class="hint">Relative lift you want to detect</span></label>
-        <input id="mde" type="number" value="20" min="0.1" max="500" step="1">
-      </div>
-      <div>
-        <label for="conf">Confidence level
-          <span class="hint">1 − α (two-sided)</span></label>
-        <select id="conf">
-          <option value="0.90">90%</option>
-          <option value="0.95" selected>95%</option>
-          <option value="0.99">99%</option>
-        </select>
-      </div>
-      <div>
-        <label for="power">Statistical power
-          <span class="hint">1 − β</span></label>
-        <select id="power">
-          <option value="0.80" selected>80%</option>
-          <option value="0.85">85%</option>
-          <option value="0.90">90%</option>
-          <option value="0.95">95%</option>
-        </select>
-      </div>
-      <div>
-        <label for="traffic">Daily visitors per variation
-          <span class="hint">Optional — estimates test duration</span></label>
-        <input id="traffic" type="number" value="200" min="0" step="10">
-      </div>
-      <div>
-        <label for="vars">Number of variations
-          <span class="hint">Including control</span></label>
-        <input id="vars" type="number" value="2" min="2" max="20" step="1">
-      </div>
-    </div>
+ <section id="tool">
+ <div class="grid">
+ <div>
+ <label for="base">Baseline conversion rate (%)
+ <span class="hint">Your current rate for the control group</span></label>
+ <input id="base" type="number" value="5" min="0.01" max="99.99" step="0.1">
+ </div>
+ <div>
+ <label for="mde">Minimum detectable effect (%)
+ <span class="hint">Relative lift you want to detect</span></label>
+ <input id="mde" type="number" value="20" min="0.1" max="500" step="1">
+ </div>
+ <div>
+ <label for="conf">Confidence level
+ <span class="hint">1 − α (two-sided)</span></label>
+ <select id="conf">
+ <option value="0.90">90%</option>
+ <option value="0.95" selected>95%</option>
+ <option value="0.99">99%</option>
+ </select>
+ </div>
+ <div>
+ <label for="power">Statistical power
+ <span class="hint">1 − β</span></label>
+ <select id="power">
+ <option value="0.80" selected>80%</option>
+ <option value="0.85">85%</option>
+ <option value="0.90">90%</option>
+ <option value="0.95">95%</option>
+ </select>
+ </div>
+ <div>
+ <label for="traffic">Daily visitors per variation
+ <span class="hint">Optional, estimates test duration</span></label>
+ <input id="traffic" type="number" value="200" min="0" step="10">
+ </div>
+ <div>
+ <label for="vars">Number of variations
+ <span class="hint">Including control</span></label>
+ <input id="vars" type="number" value="2" min="2" max="20" step="1">
+ </div>
+ </div>
 
-    <div class="out">
-      <div class="big" id="perGroup">—<small>required sample size per variation</small></div>
-      <div class="row2">
-        <div class="stat"><b id="total">—</b><span>total across all variations</span></div>
-        <div class="stat"><b id="days">—</b><span>estimated test duration</span></div>
-        <div class="stat"><b id="targetRate">—</b><span>target rate to detect</span></div>
-      </div>
-    </div>
-  </section>
+ <div class="out">
+ <div class="big" id="perGroup">&middot;<small>required sample size per variation</small></div>
+ <div class="row2">
+ <div class="stat"><b id="total">&middot;</b><span>total across all variations</span></div>
+ <div class="stat"><b id="days">&middot;</b><span>estimated test duration</span></div>
+ <div class="stat"><b id="targetRate">&middot;</b><span>target rate to detect</span></div>
+ </div>
+ </div>
+ </section>
 
-  <h2>How the sample size is calculated</h2>
-  <p>This tool uses the standard two-proportion power formula for a two-sided test comparing a control rate
-  <code>p1</code> against a variant rate <code>p2</code>. The minimum detectable effect (MDE) is applied as a
-  relative change, so <code>p2 = p1 × (1 + MDE)</code>. For a baseline of 5% and a 20% MDE, the test is powered to
-  detect a move to 6%.</p>
-  <p class="formula">n = (Z<sub>1−α/2</sub>·√(2·p̄·(1−p̄)) + Z<sub>1−β</sub>·√(p1·(1−p1)+p2·(1−p2)))² / (p2 − p1)²</p>
-  <p>Here <code>p̄</code> is the pooled rate <code>(p1 + p2) / 2</code>, <code>Z<sub>1−α/2</sub></code> is the
-  critical value for your confidence level (1.96 at 95%), and <code>Z<sub>1−β</sub></code> is the critical value for
-  your chosen power (0.84 at 80%). The Z-scores are obtained from the inverse normal distribution using a rational
-  approximation, so any confidence or power setting is supported, not just preset values. The result <code>n</code> is
-  rounded up — you can never run a partial visitor.</p>
-  <p>Smaller effects and higher confidence both inflate the required sample dramatically, because <code>n</code> grows
-  with the inverse square of the effect size. Halving the MDE roughly quadruples the visitors you need. The duration
-  estimate simply divides the total required sample by your daily traffic, giving a planning figure in days. Treat
-  these numbers as a pre-test floor: stopping a test early the moment it looks significant inflates false positives, so
-  commit to the calculated sample before you peek at results. For surveys, read "conversion rate" as the proportion
-  picking a given answer and "per variation" as a single population sample.</p>
+ <h2>How the sample size is calculated</h2>
+ <p>This tool uses the standard two-proportion power formula for a two-sided test comparing a control rate
+ <code>p1</code> against a variant rate <code>p2</code>. The minimum detectable effect (MDE) is applied as a
+ relative change, so <code>p2 = p1 × (1 + MDE)</code>. For a baseline of 5% and a 20% MDE, the test is powered to
+ detect a move to 6%.</p>
+ <p class="formula">n = (Z<sub>1−α/2</sub>·√(2·p̄·(1−p̄)) + Z<sub>1−β</sub>·√(p1·(1−p1)+p2·(1−p2)))² / (p2 − p1)²</p>
+ <p>Here <code>p̄</code> is the pooled rate <code>(p1 + p2) / 2</code>, <code>Z<sub>1−α/2</sub></code> is the
+ critical value for your confidence level (1.96 at 95%), and <code>Z<sub>1−β</sub></code> is the critical value for
+ your chosen power (0.84 at 80%). The Z-scores are obtained from the inverse normal distribution using a rational
+ approximation, so any confidence or power setting is supported, not just preset values. The result <code>n</code> is
+ rounded up. You can never run a partial visitor.</p>
+ <p>Smaller effects and higher confidence both inflate the required sample dramatically, because <code>n</code> grows
+ with the inverse square of the effect size. Halving the MDE roughly quadruples the visitors you need. The duration
+ estimate simply divides the total required sample by your daily traffic, giving a planning figure in days. Treat
+ these numbers as a pre-test floor: stopping a test early the moment it looks significant inflates false positives, so
+ commit to the calculated sample before you peek at results. For surveys, read "conversion rate" as the proportion
+ picking a given answer and "per variation" as a single population sample.</p>
 
-  <h2>Related Tools</h2>
-  <ul class="rel">
-    <li><a href="/tools/p-value-calculator">P-Value Calculator</a> — test whether a finished experiment is significant</li>
-    <li><a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a> — put error bars on a measured rate</li>
-    <li><a href="/tools/chi-square-calculator">Chi-Square Calculator</a> — compare observed vs expected counts</li>
-  </ul>
+ <h2>Related Tools</h2>
+ <ul class="rel">
+ <li><a href="/tools/p-value-calculator">P-Value Calculator</a>, test whether a finished experiment is significant</li>
+ <li><a href="/tools/confidence-interval-calculator">Confidence Interval Calculator</a>, put error bars on a measured rate</li>
+ <li><a href="/tools/chi-square-calculator">Chi-Square Calculator</a>, compare observed vs expected counts</li>
+ </ul>
 </main>
 
 <footer>
-  <a href="/">Home</a>
-  <a href="/tools/">All Tools</a>
-  <a href="/tools/p-value-calculator">P-Value Calculator</a>
-  <div class="c">© 2026 abwex.com — statistics &amp; A/B testing tools.</div>
+ <a href="/">Home</a>
+ <a href="/tools/">All Tools</a>
+ <a href="/tools/p-value-calculator">P-Value Calculator</a>
+ <div class="c">© 2026 abwex.com, statistics &amp; A/B testing tools.</div>
 </footer>
 
 <script>
@@ -212,8 +212,8 @@
     var vars=parseInt(el.vars.value,10)||2;
 
     if(isNaN(p1)||p1<=0||p1>=1||isNaN(mde)||mde<=0){
-      perGroup.innerHTML='—<small>enter a valid baseline and effect</small>';
-      total.textContent='—'; days.textContent='—'; targetRate.textContent='—';
+      perGroup.innerHTML=', <small>enter a valid baseline and effect</small>';
+      total.textContent='&middot;'; days.textContent='&middot;'; targetRate.textContent='&middot;';
       return;
     }
     var p2=p1*(1+mde);
@@ -234,7 +234,7 @@
       d=Math.ceil(n/traffic);
       days.textContent=d+(d===1?' day':' days');
     } else {
-      days.textContent='—';
+      days.textContent='&middot;';
     }
   }
 

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Regression to the Mean Calculator · abwex</title>
-  <meta name="description" content="Interactive statistics tool that quantifies the regression‑to‑the‑mean effect. Compute predicted true score, regression amount, and trajectory over time.">
-  <meta name="keywords" content="regression to mean, Kelley's formula, reliability, z-score, true score, statistics, sports, twin study, heritability">
-  <link rel="canonical" href="https://abwex.com/tools/regression-to-mean-calculator">
-  <meta property="og:title" content="Regression to the Mean Calculator">
-  <meta property="og:description" content="Quantify regression effects: predicted true score, regression amount, trajectory chart. Sports, exams, medicine.">
-  <meta property="og:url" content="https://abwex.com/tools/regression-to-mean-calculator">
-  <meta name="theme-color" content="#0f0f1a">
-  <style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+ <title>Regression to the Mean Calculator · abwex</title>
+ <meta name="description" content="Interactive statistics tool that quantifies the regression‑to‑the‑mean effect. Compute predicted true score, regression amount, and trajectory over time.">
+ <meta name="keywords" content="regression to mean, Kelley's formula, reliability, z-score, true score, statistics, sports, twin study, heritability">
+ <link rel="canonical" href="https://abwex.com/tools/regression-to-mean-calculator">
+ <meta property="og:title" content="Regression to the Mean Calculator">
+ <meta property="og:description" content="Quantify regression effects: predicted true score, regression amount, trajectory chart. Sports, exams, medicine.">
+ <meta property="og:url" content="https://abwex.com/tools/regression-to-mean-calculator">
+ <meta name="theme-color" content="#0f0f1a">
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -256,68 +256,68 @@
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>↩️ Regression to the Mean</h1>
-    <p>Kelley’s formula · predicted true score · trajectory over time</p>
-  </header>
+ <header>
+ <h1>Regression to the Mean</h1>
+ <p>Kelley’s formula · predicted true score · trajectory over time</p>
+ </header>
 
-  <main>
-    <div class="card">
-      <div class="input-grid">
-        <div class="input-group"><label>Observed score (X)</label><input id="obsScore" type="number" step="any" value="130"></div>
-        <div class="input-group"><label>Population mean (μ)</label><input id="popMean" type="number" step="any" value="100"></div>
-        <div class="input-group"><label>Population SD (σ)</label><input id="popSd" type="number" step="any" value="15"></div>
-        <div class="input-group"><label>Reliability (r) 0–1</label><input id="reliability" type="number" step="0.01" min="0" max="1" value="0.70"></div>
-        <div class="input-group"><label>Time periods (t)</label><input id="timePeriods" type="number" step="1" min="0" max="20" value="5"></div>
-      </div>
-      <div class="action-row">
-        <button class="btn" id="computeBtn">⟳ Compute regression</button>
-        <span style="color:#9ca3cf; font-size:0.9rem;">r=0 (pure luck) · r=1 (no regression)</span>
-      </div>
+ <main>
+ <div class="card">
+ <div class="input-grid">
+ <div class="input-group"><label>Observed score (X)</label><input id="obsScore" type="number" step="any" value="130"></div>
+ <div class="input-group"><label>Population mean (μ)</label><input id="popMean" type="number" step="any" value="100"></div>
+ <div class="input-group"><label>Population SD (σ)</label><input id="popSd" type="number" step="any" value="15"></div>
+ <div class="input-group"><label>Reliability (r) 0–1</label><input id="reliability" type="number" step="0.01" min="0" max="1" value="0.70"></div>
+ <div class="input-group"><label>Time periods (t)</label><input id="timePeriods" type="number" step="1" min="0" max="20" value="5"></div>
+ </div>
+ <div class="action-row">
+ <button class="btn" id="computeBtn">⟳ Compute regression</button>
+ <span style="color:#9ca3cf; font-size:0.9rem;">r=0 (pure luck) · r=1 (no regression)</span>
+ </div>
 
-      <!-- results -->
-      <div class="results-panel" id="resultsPanel">
-        <div class="stat-row">
-          <span class="stat-item"><strong>z-score</strong> <span class="value" id="zScoreVal">2.00</span></span>
-          <span class="stat-item"><strong>Predicted true</strong> <span class="value" id="trueScoreVal">121.0</span></span>
-          <span class="stat-item"><strong>Regression amount</strong> <span class="value" id="regAmountVal">-9.0</span></span>
-          <span class="stat-item"><strong>% regression</strong> <span class="value" id="regPctVal">30%</span></span>
-        </div>
-        <div class="interpretation-box" id="interpretationBox">
-          <p><span class="badge">🧠 interpretation</span> <span id="interpText">30% of the extreme score is due to luck; 70% is real.</span></p>
-          <p id="warningMsg" style="color:#facc15;"></p>
-        </div>
-      </div>
+ <!-- results -->
+ <div class="results-panel" id="resultsPanel">
+ <div class="stat-row">
+ <span class="stat-item"><strong>z-score</strong> <span class="value" id="zScoreVal">2.00</span></span>
+ <span class="stat-item"><strong>Predicted true</strong> <span class="value" id="trueScoreVal">121.0</span></span>
+ <span class="stat-item"><strong>Regression amount</strong> <span class="value" id="regAmountVal">-9.0</span></span>
+ <span class="stat-item"><strong>% regression</strong> <span class="value" id="regPctVal">30%</span></span>
+ </div>
+ <div class="interpretation-box" id="interpretationBox">
+ <p><span class="badge"> interpretation</span> <span id="interpText">30% of the extreme score is due to luck; 70% is real.</span></p>
+ <p id="warningMsg" style="color:#facc15;"></p>
+ </div>
+ </div>
 
-      <!-- number line -->
-      <div class="number-line-wrap">
-        <canvas id="numberLineCanvas" height="70"></canvas>
-      </div>
+ <!-- number line -->
+ <div class="number-line-wrap">
+ <canvas id="numberLineCanvas" height="70"></canvas>
+ </div>
 
-      <!-- trajectory chart -->
-      <div class="chart-container">
-        <canvas id="trajectoryCanvas" height="200"></canvas>
-      </div>
+ <!-- trajectory chart -->
+ <div class="chart-container">
+ <canvas id="trajectoryCanvas" height="200"></canvas>
+ </div>
 
-      <!-- examples -->
-      <div class="example-grid">
-        <div class="example-card"><h4>⚾ Batting average</h4><p>First half .340, league μ=.260, r≈.50 → predicted true .300</p></div>
-        <div class="example-card"><h4>🏃 Marathon time</h4><p>Elite 210 min, μ=270, σ=30, r=.65 → predicted 249 min</p></div>
-        <div class="example-card"><h4>🧬 Twin study (heritability)</h4><p>Height: r≈.80, extreme 2σ → 80% real, 20% luck</p></div>
-        <div class="example-card"><h4>📘 Exam retake</h4><p>Score 145, μ=100, σ=15, r=.75 → predicted 133.8</p></div>
-      </div>
-    </div>
+ <!-- examples -->
+ <div class="example-grid">
+ <div class="example-card"><h4> Batting average</h4><p>First half.340, league μ=.260, r≈.50 predicted true.300</p></div>
+ <div class="example-card"><h4> Marathon time</h4><p>Elite 210 min, μ=270, σ=30, r=.65 predicted 249 min</p></div>
+ <div class="example-card"><h4> Twin study (heritability)</h4><p>Height: r≈.80, extreme 2σ 80% real, 20% luck</p></div>
+ <div class="example-card"><h4> Exam retake</h4><p>Score 145, μ=100, σ=15, r=.75 predicted 133.8</p></div>
+ </div>
+ </div>
 
-    <!-- FAQ + schema -->
-    <div class="card" style="padding:1.5rem;">
-      <h3 style="color:#a5b4fc; margin-bottom:1rem;">❓ Frequently asked</h3>
-      <div class="faq-item"><h4>What does reliability (r) mean?</h4><p>Correlation between pre‑ and post‑measurement (or true‑score proportion). r=0 means pure luck, r=1 means no regression.</p></div>
-      <div class="faq-item"><h4>How is predicted true score calculated?</h4><p>Kelley’s formula: <strong>r·X + (1‑r)·μ</strong>. It shrinks the observed score toward the mean.</p></div>
-      <div class="faq-item"><h4>Why does regression happen?</h4><p>Extreme scores contain more measurement error; upon retest, scores tend to move toward the population mean.</p></div>
-    </div>
-  </main>
+ <!-- FAQ + schema -->
+ <div class="card" style="padding:1.5rem;">
+ <h3 style="color:#a5b4fc; margin-bottom:1rem;"> Frequently asked</h3>
+ <div class="faq-item"><h4>What does reliability (r) mean?</h4><p>Correlation between pre‑ and post‑measurement (or true‑score proportion). r=0 means pure luck, r=1 means no regression.</p></div>
+ <div class="faq-item"><h4>How is predicted true score calculated?</h4><p>Kelley’s formula: r·X + (1‑r)·μ. It shrinks the observed score toward the mean.</p></div>
+ <div class="faq-item"><h4>Why does regression happen?</h4><p>Extreme scores contain more measurement error; upon retest, scores tend to move toward the population mean.</p></div>
+ </div>
+ </main>
 
-  <footer>© 2025 abwex.com</footer>
+ <footer>© 2025 abwex.com</footer>
 <div style="margin:20px auto;max-width:728px;text-align:center">
 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -371,13 +371,13 @@
       interpText.textContent = `${luckPct.toFixed(1)}% of the extreme score is due to luck; ${realPct.toFixed(1)}% is real.`;
 
       if (r === 0) {
-        warningMsg.textContent = '⚠️ r = 0 : observed score is pure luck, complete regression to mean.';
+        warningMsg.textContent = 'r = 0 : observed score is pure luck, complete regression to mean.';
       } else if (r === 1) {
-        warningMsg.textContent = '✅ r = 1 : no regression; observed score is perfectly reliable.';
+        warningMsg.textContent = 'r = 1 : no regression; observed score is perfectly reliable.';
       } else if (r < 0.3) {
-        warningMsg.textContent = '⚠️ Low reliability: most of the extreme score is luck.';
+        warningMsg.textContent = 'Low reliability: most of the extreme score is luck.';
       } else if (r > 0.85) {
-        warningMsg.textContent = '✔️ High reliability: little regression expected.';
+        warningMsg.textContent = 'High reliability: little regression expected.';
       } else {
         warningMsg.textContent = '';
       }
@@ -589,7 +589,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>

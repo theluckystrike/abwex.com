@@ -85,72 +85,72 @@ p{margin:.7em 0}
 </head>
 <body>
 <nav>
-  <a href="/">abwex.com</a>
-  <a href="/tools/">All Tools</a>
+ <a href="/">abwex.com</a>
+ <a href="/tools/">All Tools</a>
 </nav>
 <main>
 <h1>Adjust Alpha for Multiple A/B Test Comparisons</h1>
 <p class="intro">Running several variants against one control inflates your false-positive rate. This calculator applies the Bonferroni correction so each comparison stays honest about statistical significance.</p>
 
 <section id="tool">
-  <div class="grid">
-    <div>
-      <label for="alpha">Family-wise alpha (&alpha;)
-        <small>Overall false-positive rate you accept</small></label>
-      <input id="alpha" type="number" min="0.0001" max="0.5" step="0.001" value="0.05">
-    </div>
-    <div>
-      <label for="comps">Number of comparisons (m)
-        <small>How many variants / tests you check</small></label>
-      <input id="comps" type="number" min="1" max="1000" step="1" value="4">
-    </div>
-    <div>
-      <label for="pval">Observed p-value (optional)
-        <small>A single test's p-value to judge</small></label>
-      <input id="pval" type="number" min="0" max="1" step="0.0001" value="0.012">
-    </div>
-    <div>
-      <label for="conf">Reported as
-        <small>Output format for the threshold</small></label>
-      <select id="conf">
-        <option value="p" selected>Corrected p threshold</option>
-        <option value="c">Per-test confidence %</option>
-      </select>
-    </div>
-  </div>
+ <div class="grid">
+ <div>
+ <label for="alpha">Family-wise alpha (&alpha;)
+ <small>Overall false-positive rate you accept</small></label>
+ <input id="alpha" type="number" min="0.0001" max="0.5" step="0.001" value="0.05">
+ </div>
+ <div>
+ <label for="comps">Number of comparisons (m)
+ <small>How many variants / tests you check</small></label>
+ <input id="comps" type="number" min="1" max="1000" step="1" value="4">
+ </div>
+ <div>
+ <label for="pval">Observed p-value (optional)
+ <small>A single test's p-value to judge</small></label>
+ <input id="pval" type="number" min="0" max="1" step="0.0001" value="0.012">
+ </div>
+ <div>
+ <label for="conf">Reported as
+ <small>Output format for the threshold</small></label>
+ <select id="conf">
+ <option value="p" selected>Corrected p threshold</option>
+ <option value="c">Per-test confidence %</option>
+ </select>
+ </div>
+ </div>
 
-  <div class="out">
-    <div class="card">
-      <div class="k">Corrected alpha (&alpha;/m)</div>
-      <div class="v" id="oAlpha">0.0125</div>
-    </div>
-    <div class="card">
-      <div class="k">Per-test confidence</div>
-      <div class="v" id="oConf">98.75%</div>
-    </div>
-    <div class="card full">
-      <div class="k">Verdict for observed p</div>
-      <div class="v verdict" id="oVerdict">&mdash;</div>
-    </div>
-  </div>
+ <div class="out">
+ <div class="card">
+ <div class="k">Corrected alpha (&alpha;/m)</div>
+ <div class="v" id="oAlpha">0.0125</div>
+ </div>
+ <div class="card">
+ <div class="k">Per-test confidence</div>
+ <div class="v" id="oConf">98.75%</div>
+ </div>
+ <div class="card full">
+ <div class="k">Verdict for observed p</div>
+ <div class="v verdict" id="oVerdict">, </div>
+ </div>
+ </div>
 
-  <table class="tbl" id="tbl">
-    <thead><tr><th>m comparisons</th><th>Corrected threshold</th><th>Your p significant?</th></tr></thead>
-    <tbody></tbody>
-  </table>
+ <table class="tbl" id="tbl">
+ <thead><tr><th>m comparisons</th><th>Corrected threshold</th><th>Your p significant?</th></tr></thead>
+ <tbody></tbody>
+ </table>
 </section>
 
 <section>
 <h2>How the Bonferroni correction works</h2>
-<p>When you test multiple variants at once, the chance that <em>at least one</em> shows a false positive grows with each comparison. With <code>m</code> independent tests each at alpha &alpha;, the family-wise error rate is approximately <code>1 - (1 - &alpha;)^m</code> &mdash; for four variants at 0.05 that is already about 18.5%, not 5%.</p>
+<p>When you test multiple variants at once, the chance that <em>at least one</em> shows a false positive grows with each comparison. With <code>m</code> independent tests each at alpha &alpha;, the family-wise error rate is approximately <code>1 - (1 - &alpha;)^m</code>, for four variants at 0.05 that is already about 18.5%, not 5%.</p>
 
 <div class="formula">
-  &alpha;<sub>corrected</sub> = &alpha; / m &nbsp;&nbsp;&rArr;&nbsp;&nbsp; reject H&#8320; only when p &le; &alpha;/m
+ &alpha;<sub>corrected</sub> = &alpha; / m &nbsp;&nbsp;&rArr;&nbsp;&nbsp; reject H&#8320; only when p &le; &alpha;/m
 </div>
 
 <p>The Bonferroni method fixes this by dividing your target family-wise alpha by the number of comparisons. Each individual test must now clear a stricter bar. The tool computes that corrected threshold, converts it to a per-test confidence level (<code>1 - &alpha;/m</code>, shown as a percentage), and compares any p-value you enter against it. It also prints the exact family-wise error rate <code>1 - (1 - &alpha;/m)^m</code> after correction so you can confirm the control held near your original &alpha;.</p>
 
-<p>Bonferroni is the most conservative of the multiple-comparison adjustments, which is why it trades statistical power for tight control of false positives. If you are screening dozens of metrics and can tolerate some false discoveries, a false-discovery-rate approach (Benjamini&ndash;Hochberg) recovers more power. But for a handful of A/B variants where a wrong "winner" ships real product changes, Bonferroni's simplicity and guaranteed bound make it the safe default. The sweep table below shows how the threshold tightens as you add variants, so you can see exactly how much harder each new comparison makes it to declare a winner &mdash; a planning detail most calculators omit. Use it to right-size your test count before you launch, not after.</p>
+<p>Bonferroni is the most conservative of the multiple-comparison adjustments, which is why it trades statistical power for tight control of false positives. If you are screening dozens of metrics and can tolerate some false discoveries, a false-discovery-rate approach (Benjamini&ndash;Hochberg) recovers more power. But for a handful of A/B variants where a wrong "winner" ships real product changes, Bonferroni's simplicity and guaranteed bound make it the safe default. The sweep table below shows how the threshold tightens as you add variants, so you can see exactly how much harder each new comparison makes it to declare a winner, a planning detail most calculators omit. Use it to right-size your test count before you launch, not after.</p>
 </section>
 
 <section class="related">
@@ -162,8 +162,8 @@ p{margin:.7em 0}
 </main>
 
 <footer>
-  <div><a href="/">Home</a> &middot; <a href="/tools/">All Tools</a></div>
-  <p>&copy; 2026 abwex.com</p>
+ <div><a href="/">Home</a> &middot; <a href="/tools/">All Tools</a></div>
+ <p>&copy; 2026 abwex.com</p>
 </footer>
 
 <script>

@@ -71,86 +71,86 @@ p{margin:.7em 0}
 </head>
 <body>
 <nav>
-  <a href="/">Home</a>
-  <a href="/tools/">Tools</a>
+ <a href="/">Home</a>
+ <a href="/tools/">Tools</a>
 </nav>
 <div class="wrap">
 <h1>Confidence Interval Calculator for Means &amp; Proportions</h1>
-<p class="lead">Estimate the range your true value likely falls in. Enter sample data, choose a confidence level, and read the margin of error and interval — recomputed live as you type.</p>
+<p class="lead">Estimate the range your true value likely falls in. Enter sample data, choose a confidence level, and read the margin of error and interval, recomputed live as you type.</p>
 
 <section id="tool">
-  <div class="tabs">
-    <button class="tab on" data-mode="prop" id="tabProp">Proportion (A/B rate)</button>
-    <button class="tab" data-mode="mean" id="tabMean">Mean (continuous)</button>
-  </div>
+ <div class="tabs">
+ <button class="tab on" data-mode="prop" id="tabProp">Proportion (A/B rate)</button>
+ <button class="tab" data-mode="mean" id="tabMean">Mean (continuous)</button>
+ </div>
 
-  <div id="propPanel">
-    <div class="grid">
-      <div>
-        <label for="pSucc">Successes / conversions</label>
-        <input type="number" id="pSucc" value="118" min="0" step="1">
-      </div>
-      <div>
-        <label for="pTot">Sample size (n)</label>
-        <input type="number" id="pTot" value="1000" min="1" step="1">
-      </div>
-    </div>
-  </div>
+ <div id="propPanel">
+ <div class="grid">
+ <div>
+ <label for="pSucc">Successes / conversions</label>
+ <input type="number" id="pSucc" value="118" min="0" step="1">
+ </div>
+ <div>
+ <label for="pTot">Sample size (n)</label>
+ <input type="number" id="pTot" value="1000" min="1" step="1">
+ </div>
+ </div>
+ </div>
 
-  <div id="meanPanel" style="display:none">
-    <div class="grid">
-      <div>
-        <label for="mMean">Sample mean (x&#772;)</label>
-        <input type="number" id="mMean" value="52.4" step="any">
-      </div>
-      <div>
-        <label for="mSd">Sample std dev (s)</label>
-        <input type="number" id="mSd" value="11.8" step="any" min="0">
-      </div>
-      <div>
-        <label for="mN">Sample size (n)</label>
-        <input type="number" id="mN" value="60" min="2" step="1">
-      </div>
-    </div>
-  </div>
+ <div id="meanPanel" style="display:none">
+ <div class="grid">
+ <div>
+ <label for="mMean">Sample mean (x&#772;)</label>
+ <input type="number" id="mMean" value="52.4" step="any">
+ </div>
+ <div>
+ <label for="mSd">Sample std dev (s)</label>
+ <input type="number" id="mSd" value="11.8" step="any" min="0">
+ </div>
+ <div>
+ <label for="mN">Sample size (n)</label>
+ <input type="number" id="mN" value="60" min="2" step="1">
+ </div>
+ </div>
+ </div>
 
-  <div class="grid" style="margin-top:14px">
-    <div>
-      <label for="conf">Confidence level</label>
-      <select id="conf">
-        <option value="0.80">80%</option>
-        <option value="0.90">90%</option>
-        <option value="0.95" selected>95%</option>
-        <option value="0.98">98%</option>
-        <option value="0.99">99%</option>
-      </select>
-    </div>
-    <div>
-      <label for="custZ">…or custom level %</label>
-      <input type="number" id="custZ" placeholder="e.g. 97.5" step="any" min="50" max="99.99">
-    </div>
-  </div>
+ <div class="grid" style="margin-top:14px">
+ <div>
+ <label for="conf">Confidence level</label>
+ <select id="conf">
+ <option value="0.80">80%</option>
+ <option value="0.90">90%</option>
+ <option value="0.95" selected>95%</option>
+ <option value="0.98">98%</option>
+ <option value="0.99">99%</option>
+ </select>
+ </div>
+ <div>
+ <label for="custZ">…or custom level %</label>
+ <input type="number" id="custZ" placeholder="e.g. 97.5" step="any" min="50" max="99.99">
+ </div>
+ </div>
 
-  <div class="out" id="out"></div>
+ <div class="out" id="out"></div>
 </section>
 
 <h2>How the confidence interval is calculated</h2>
-<p>A confidence interval gives a plausible range for an unknown population value based on a single sample. The general shape is the same for every case: <code>estimate &plusmn; (critical value &times; standard error)</code>. The "critical value &times; standard error" piece is the <b>margin of error</b>.</p>
-<p>For a <b>proportion</b> (the rate you care about in A/B testing), the point estimate is p&#770; = successes / n. Its standard error is <code>SE = &radic;(p&#770;(1&minus;p&#770;) / n)</code>, and this calculator multiplies that by the z critical value for your chosen confidence level (z &asymp; 1.96 at 95%). So a conversion rate of 11.8% on 1,000 visitors gives a 95% interval of roughly 9.8% to 13.8%. Narrow intervals mean a precise estimate; wide ones mean you need more data before trusting a winner.</p>
-<p>For a <b>mean</b> of continuous data, the estimate is the sample average x&#772;, the standard error is <code>SE = s / &radic;n</code>, and the critical value comes from the Student <i>t</i> distribution with n&minus;1 degrees of freedom rather than z. The <i>t</i> value is larger than z for small samples, which correctly widens the interval to reflect the extra uncertainty of estimating the standard deviation from limited data. As n grows, <i>t</i> converges to z.</p>
-<p>The z and t critical values here are computed numerically — an inverse-normal approximation for z and an iterative inversion of the t CDF — so any confidence level from 50% to 99.99% works, not just the textbook presets. Use the custom field to match an exact alpha. Remember the standard caveat: a 95% interval means the procedure captures the true value 95% of the time across repeated samples, not that there is a 95% probability for this one interval.</p>
+<p>A confidence interval gives a plausible range for an unknown population value based on a single sample. The general shape is the same for every case: <code>estimate &plusmn; (critical value &times; standard error)</code>. The "critical value &times; standard error" piece is the margin of error.</p>
+<p>For a proportion (the rate you care about in A/B testing), the point estimate is p&#770; = successes / n. Its standard error is <code>SE = &radic;(p&#770;(1&minus;p&#770;) / n)</code>, and this calculator multiplies that by the z critical value for your chosen confidence level (z &asymp; 1.96 at 95%). So a conversion rate of 11.8% on 1,000 visitors gives a 95% interval of roughly 9.8% to 13.8%. Narrow intervals mean a precise estimate; wide ones mean you need more data before trusting a winner.</p>
+<p>For a mean of continuous data, the estimate is the sample average x&#772;, the standard error is <code>SE = s / &radic;n</code>, and the critical value comes from the Student <i>t</i> distribution with n&minus;1 degrees of freedom rather than z. The <i>t</i> value is larger than z for small samples, which correctly widens the interval to reflect the extra uncertainty of estimating the standard deviation from limited data. As n grows, <i>t</i> converges to z.</p>
+<p>The z and t critical values here are computed numerically, an inverse-normal approximation for z and an iterative inversion of the t CDF, so any confidence level from 50% to 99.99% works, not just the textbook presets. Use the custom field to match an exact alpha. Remember the standard caveat: a 95% interval means the procedure captures the true value 95% of the time across repeated samples, not that there is a 95% probability for this one interval.</p>
 
 <h2>Related Tools</h2>
 <p class="rel">
-  <a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a>
-  <a href="/tools/p-value-calculator">P-Value Calculator</a>
-  <a href="/tools/chi-square-calculator">Chi-Square Calculator</a>
+ <a href="/tools/ab-test-sample-size-calculator">A/B Test Sample Size Calculator</a>
+ <a href="/tools/p-value-calculator">P-Value Calculator</a>
+ <a href="/tools/chi-square-calculator">Chi-Square Calculator</a>
 </p>
 </div>
 
 <footer>
-  <div><a href="/">Home</a> <a href="/tools/">All Tools</a> <a href="/tools/p-value-calculator">P-Value</a></div>
-  <p>&copy; 2026 abwex.com — built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-confidence-interval-calculator">Michael Lip</a></p>
+ <div><a href="/">Home</a> <a href="/tools/">All Tools</a> <a href="/tools/p-value-calculator">P-Value</a></div>
+ <p>&copy; 2026 abwex.com, built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools-confidence-interval-calculator">Michael Lip</a></p>
 </footer>
 
 <script>

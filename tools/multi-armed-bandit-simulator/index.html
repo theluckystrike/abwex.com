@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bandit Simulator — Thompson Sampling</title>
-    <meta name="description" content="Interactive multi-armed bandit simulator using Thompson Sampling. Run simulations with 2-5 arms, visualize allocation over time and regret.">
-    <meta name="theme-color" content="#10b981">
-    <meta property="og:title" content="Multi-Armed Bandit Simulator">
-    <meta property="og:description" content="Thompson Sampling bandit simulator for exploring vs exploiting in A/B testing.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abwex.com/tools/multi-armed-bandit-simulator">
-    <link rel="canonical" href="https://abwex.com/tools/multi-armed-bandit-simulator">
-    <script type="application/ld+json">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Bandit Simulator, Thompson Sampling</title>
+ <meta name="description" content="Interactive multi-armed bandit simulator using Thompson Sampling. Run simulations with 2-5 arms, visualize allocation over time and regret.">
+ <meta name="theme-color" content="#10b981">
+ <meta property="og:title" content="Multi-Armed Bandit Simulator">
+ <meta property="og:description" content="Thompson Sampling bandit simulator for exploring vs exploiting in A/B testing.">
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://abwex.com/tools/multi-armed-bandit-simulator">
+ <link rel="canonical" href="https://abwex.com/tools/multi-armed-bandit-simulator">
+ <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -25,7 +25,7 @@
         }
     }
     </script>
-    <style>
+ <style>
         * {
             margin: 0;
             padding: 0;
@@ -267,101 +267,101 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Bandit Simulator</h1>
-            <p class="subtitle">Thompson Sampling for Multi-Armed Bandits</p>
-        </header>
+ <div class="container">
+ <header>
+ <h1>Bandit Simulator</h1>
+ <p class="subtitle">Thompson Sampling for Multi-Armed Bandits</p>
+ </header>
 
-        <div class="content">
-            <div class="panel">
-                <h2 style="margin-bottom: 25px; color: #10b981;">Configuration</h2>
+ <div class="content">
+ <div class="panel">
+ <h2 style="margin-bottom: 25px; color: #10b981;">Configuration</h2>
 
-                <div class="form-group">
-                    <label for="numArms">Number of Arms</label>
-                    <select id="numArms" onchange="updateArmConfig()">
-                        <option value="2">2 arms</option>
-                        <option value="3" selected>3 arms</option>
-                        <option value="4">4 arms</option>
-                        <option value="5">5 arms</option>
-                    </select>
-                </div>
+ <div class="form-group">
+ <label for="numArms">Number of Arms</label>
+ <select id="numArms" onchange="updateArmConfig()">
+ <option value="2">2 arms</option>
+ <option value="3" selected>3 arms</option>
+ <option value="4">4 arms</option>
+ <option value="5">5 arms</option>
+ </select>
+ </div>
 
-                <div id="armContainer"></div>
+ <div id="armContainer"></div>
 
-                <div class="form-group">
-                    <label for="simSteps">Simulation Steps</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="simSteps" min="100" max="100000" value="10000" step="100">
-                        <span class="input-unit">observations</span>
-                    </div>
-                </div>
+ <div class="form-group">
+ <label for="simSteps">Simulation Steps</label>
+ <div class="input-wrapper">
+ <input type="number" id="simSteps" min="100" max="100000" value="10000" step="100">
+ <span class="input-unit">observations</span>
+ </div>
+ </div>
 
-                <div class="form-group">
-                    <label for="speed">Animation Speed</label>
-                    <select id="speed">
-                        <option value="fast">Fast (100ms)</option>
-                        <option value="normal" selected>Normal (200ms)</option>
-                        <option value="slow">Slow (500ms)</option>
-                    </select>
-                </div>
+ <div class="form-group">
+ <label for="speed">Animation Speed</label>
+ <select id="speed">
+ <option value="fast">Fast (100ms)</option>
+ <option value="normal" selected>Normal (200ms)</option>
+ <option value="slow">Slow (500ms)</option>
+ </select>
+ </div>
 
-                <div class="control-buttons">
-                    <button onclick="runSimulation()">Run Simulation</button>
-                    <button onclick="stepSimulation()">Step</button>
-                </div>
+ <div class="control-buttons">
+ <button onclick="runSimulation()">Run Simulation</button>
+ <button onclick="stepSimulation()">Step</button>
+ </div>
 
-                <button onclick="resetSimulation()">Reset</button>
+ <button onclick="resetSimulation()">Reset</button>
 
-                <div class="step-info">
-                    <strong>Thompson Sampling:</strong> Maintains posterior distribution for each arm's success rate. Samples from each posterior and picks the arm with highest sample. Balances exploration and exploitation automatically.
-                </div>
-            </div>
+ <div class="step-info">
+ Thompson Sampling: Maintains posterior distribution for each arm's success rate. Samples from each posterior and picks the arm with highest sample. Balances exploration and exploitation automatically.
+ </div>
+ </div>
 
-            <div class="panel">
-                <h2 style="margin-bottom: 25px; color: #10b981;">Results</h2>
-                <div class="results">
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-label">Current Step</div>
-                            <div class="metric-value" id="stepCount">0</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Total Reward</div>
-                            <div class="metric-value" id="totalReward">0</div>
-                        </div>
-                    </div>
+ <div class="panel">
+ <h2 style="margin-bottom: 25px; color: #10b981;">Results</h2>
+ <div class="results">
+ <div class="metrics-grid">
+ <div class="metric-card">
+ <div class="metric-label">Current Step</div>
+ <div class="metric-value" id="stepCount">0</div>
+ </div>
+ <div class="metric-card">
+ <div class="metric-label">Total Reward</div>
+ <div class="metric-value" id="totalReward">0</div>
+ </div>
+ </div>
 
-                    <div id="armStats"></div>
-                </div>
-            </div>
-        </div>
+ <div id="armStats"></div>
+ </div>
+ </div>
+ </div>
 
-        <div class="panel chart-container">
-            <h2 style="margin-bottom: 25px; color: #10b981;">Arm Allocation Over Time</h2>
-            <canvas id="allocationChart"></canvas>
-        </div>
+ <div class="panel chart-container">
+ <h2 style="margin-bottom: 25px; color: #10b981;">Arm Allocation Over Time</h2>
+ <canvas id="allocationChart"></canvas>
+ </div>
 
-        <div class="panel chart-container">
-            <h2 style="margin-bottom: 25px; color: #10b981;">Cumulative Regret</h2>
-            <canvas id="regretChart"></canvas>
-        </div>
+ <div class="panel chart-container">
+ <h2 style="margin-bottom: 25px; color: #10b981;">Cumulative Regret</h2>
+ <canvas id="regretChart"></canvas>
+ </div>
 
-        <div class="panel chart-container">
-            <h2 style="margin-bottom: 25px; color: #10b981;">Posterior Distributions</h2>
-            <canvas id="posteriorChart"></canvas>
-        </div>
+ <div class="panel chart-container">
+ <h2 style="margin-bottom: 25px; color: #10b981;">Posterior Distributions</h2>
+ <canvas id="posteriorChart"></canvas>
+ </div>
 
-        <footer>
-            © 2026 abwex.com — A/B Testing & Statistics Tools
-        </footer>
+ <footer>
+ © 2026 abwex.com, A/B Testing & Statistics Tools
+ </footer>
 <div style="margin:20px auto;max-width:728px;text-align:center">
 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2241192243363112" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
-    </div>
+ </div>
 
-    <script>
+ <script>
         const COLORS = ['#10b981', '#06d6a0', '#34d399', '#6ee7b7', '#a7f3d0'];
         let simulation = {
             arms: [],
@@ -672,7 +672,7 @@
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">
 <p style="margin:0 0 6px;color:#94a3b8;font-size:0.85rem">Recommended by our team</p>
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
-<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers — perfect grammar in any language, instantly.</p>
+<p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
 </body>
 </html>
