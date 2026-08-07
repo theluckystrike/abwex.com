@@ -12,7 +12,11 @@
  <meta property="og:url" content="https://abwex.com/tools/t-test-calculator">
  <meta name="theme-color" content="#6366f1">
  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"T-Test Calculator, One-Sample, Two-Sample & Paired","url":"https://abwex.com/tools/t-test-calculator","applicationCategory":"Statistical Tool","operatingSystem":"All","browserRequirements":"JavaScript enabled","description":"Interactive t-test calculator with one-sample, independent two-sample (equal/Welch), and paired modes. Computes t-statistic, degrees of freedom, p-values, 95% CI, Cohen's d."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between equal variance and Welch’s t-test?","acceptedAnswer":{"@type":"Answer","text":"Equal variance (pooled) assumes both groups have the same standard deviation. Welch’s t-test does not assume equal variances and uses the Welch–Satterthwaite formula for degrees of freedom, which is more robust when variances differ."}},{"@type":"Question","name":"How do you interpret Cohen’s d?","acceptedAnswer":{"@type":"Answer","text":"Cohen’s d indicates effect size: small (d < 0.2), medium (d ≈ 0.5), large (d > 0.8). Values above 0.8 are considered large effects."}},{"@type":"Question","name":"Can I use the paired t-test for unequal sample sizes?","acceptedAnswer":{"@type":"Answer","text":"No, paired t-test requires the same number of observations in both columns (paired data). Missing values should be excluded pairwise."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools"},{"@type":"ListItem","position":3,"name":"T-Test Calculator","item":"https://abwex.com/tools/t-test-calculator"}]}]}</script>
- <style>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #0f0f1a;
@@ -86,8 +90,38 @@
     .note { font-size: 0.8rem; color: #7a7a9a; margin-top: 0.2rem; }
   </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2241192243363112" crossorigin="anonymous"></script>
+<style>
+/* site shell tokens, loaded after the page theme so the base palette matches */
+html, body { background: #0a0a0a !important; color: #e8e8e8 !important; }
+body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif !important; }
+h1, h2, h3, h4, .logo { font-family: 'Space Mono', monospace !important; }
+header .container, .site-footer { font-family: 'IBM Plex Sans', sans-serif !important; }
+body > .container > header h1, body > header:not(.header-inner) h1 { color: #e8e8e8; }
+a { color: #2DD4BF; }
+header nav a { color: #888; }
+header nav a:hover, header nav a.active { color: #e8e8e8; }
+.nav-pro { color: #0a0a0a !important; }
+</style>
 </head>
 <body>
+<header>
+  <div class="container header-inner">
+    <a href="/" class="logo">AB<span>Wex</span></a>
+    <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+    <nav>
+      <a href="/">Calculator</a>
+      <a href="/tools/" class="active">Tools</a>
+      <a href="/answers/">Answers</a>
+      <a href="/guides/">Guides</a>
+      <a href="/blog/">Blog</a>
+      <div class="nav-right">
+        <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro</a>
+        <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools" class="nav-zovo">Zovo Tools</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
 <div class="container">
  <header>
  <h1> T-Test Calculator <small>one‑sample · two‑sample · paired</small></h1>
@@ -387,5 +421,13 @@
 <a href="https://www.belikenative.com?ref=satellite" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;font-size:1.05rem;text-decoration:none">BeLikeNative.com</a>
 <p style="margin:6px 0 0;color:#cbd5e1;font-size:0.9rem">The #1 AI writing tool for freelancers, perfect grammar in any language, instantly.</p>
 </div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Zovo Tools</div>
+    <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+    <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever</a>
+    <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools">Zovo</a> &middot; 47/500 founding spots</div>
+  </div>
+</footer>
 </body>
 </html>
