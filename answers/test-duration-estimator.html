@@ -24,7 +24,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
  <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -564,7 +564,7 @@
 
       /* Table */
       var method=seqMethod;
-      var html='<table class="td-sig-table"><thead><tr><th>Look</th><th>Info Fraction</th><th>Sample/Variant</th><th>~Day</th><th>Critical z-value</th><th>Equivalent p-value</th></tr></thead><tbody>';
+      var html='<div class="table-scroll"><table class="td-sig-table"><thead><tr><th>Look</th><th>Info Fraction</th><th>Sample/Variant</th><th>~Day</th><th>Critical z-value</th><th>Equivalent p-value</th></tr></thead><tbody>';
       for(var i=0;i<boundaries.length;i++){
         var b=boundaries[i];
         var z=method==='obf'?b.obf:b.pocock;
@@ -578,7 +578,7 @@
         html+='<td>'+(pVal<0.0001?'< 0.0001':fmt(pVal,6))+'</td>';
         html+='</tr>';
       }
-      html+='</tbody></table>';
+      html+='</tbody></table></div>';
       document.getElementById('td-seq-table-wrap').innerHTML=html;
 
       /* Chart */
@@ -732,7 +732,7 @@
 
       /* Build progressive peeking table */
       var peekSteps=[1,2,3,5,7,10,15,20,30,50,75,100];
-      var html='<table class="td-sig-table"><thead><tr><th>Peeks</th><th>Actual FPR (upper bound)</th><th>Inflation</th><th>Bonferroni &alpha;</th><th>Sidak &alpha;</th></tr></thead><tbody>';
+      var html='<div class="table-scroll"><table class="td-sig-table"><thead><tr><th>Peeks</th><th>Actual FPR (upper bound)</th><th>Inflation</th><th>Bonferroni &alpha;</th><th>Sidak &alpha;</th></tr></thead><tbody>';
       for(var i=0;i<peekSteps.length;i++){
         var pk=peekSteps[i];
         if(pk>numPeeks*2&&pk>10)break;
@@ -750,7 +750,7 @@
         html+='<td>'+fmt(sid,6)+'</td>';
         html+='</tr>';
       }
-      html+='</tbody></table>';
+      html+='</tbody></table></div>';
       document.getElementById('td-peek-table-wrap').innerHTML=html;
     };
 
@@ -758,8 +758,8 @@
     calcDuration();
   })();
   </script>
- <script src="/assets/js/share.js"></script>
-<script src="/assets/js/pro-nudge.js"></script>
+ <script src="/assets/js/share.js?v=9b6bd739"></script>
+<script src="/assets/js/pro-nudge.js?v=178726c9"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>

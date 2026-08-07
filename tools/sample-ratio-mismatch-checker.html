@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
 <style>
 :root{
   --bg:#0d1117;--panel:#161b22;--panel2:#1c2430;--line:#2b3340;
@@ -307,7 +307,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       '<div class="stat"><span>Chi-square statistic</span><b>'+chi.toFixed(4)+'</b></div>'+
       '<div class="stat"><span>Degrees of freedom</span><b>'+df+'</b></div>'+
       '<div class="stat"><span>p-value</span><b>'+(p<1e-6?p.toExponential(3):p.toFixed(6))+'</b></div>'+
-      '<table><thead><tr><th>Variant</th><th>Observed</th><th>Expected</th><th>Share</th><th>Deviation</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>';
+      '<div class="table-scroll"><table><thead><tr><th>Variant</th><th>Observed</th><th>Expected</th><th>Share</th><th>Deviation</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
   }
 
   function bind(scope){

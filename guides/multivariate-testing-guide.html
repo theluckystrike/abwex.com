@@ -24,7 +24,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Multivariate Testing (MVT) Guide, Factorial Design Calculator","url":"https://abwex.com/guides/multivariate-testing-guide.html","description":"Complete guide to multivariate testing with interactive factorial combination explorer. Calculate total combinations, required traffic, test duration, and fractional factorial designs.","author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one"},"publisher":{"@type":"Organization","name":"ABWex","url":"https://abwex.com"},"datePublished":"2026-05-25","dateModified":"2026-05-25","mainEntityOfPage":"https://abwex.com/guides/multivariate-testing-guide.html"}</script>
  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is multivariate testing (MVT) and how does it differ from A/B testing?","acceptedAnswer":{"@type":"Answer","text":"Multivariate testing (MVT) tests multiple variables simultaneously on a single page, while A/B testing compares two versions of a page that differ in one element. In an MVT, you might test 3 headlines, 2 CTAs, and 2 images simultaneously, creating 12 combinations. MVT reveals not only which individual elements perform best but also how elements interact with each other (interaction effects). The trade-off is that MVT requires significantly more traffic because each combination needs sufficient data for statistical validity."}},{"@type":"Question","name":"How do I calculate the number of combinations in a multivariate test?","acceptedAnswer":{"@type":"Answer","text":"Multiply the number of variations for each variable. If you test 3 headlines, 2 CTAs, and 4 images, the total combinations are 3 x 2 x 4 = 24. Each combination is a unique version of the page that some visitors will see. The total required traffic is approximately (sample size per variation) x (number of combinations). With 24 combinations at 1,000 visitors per combination, you need 24,000 total visitors minimum."}},{"@type":"Question","name":"What is a fractional factorial design and when should I use it?","acceptedAnswer":{"@type":"Answer","text":"A fractional factorial design tests a strategically selected subset of all possible combinations instead of every combination (full factorial). For example, a half-fraction of a 2^4 (16 combination) design tests only 8 combinations while still estimating all main effects. Use fractional factorial when the full factorial requires more traffic than you have. The trade-off is that you cannot estimate all interaction effects, only main effects and possibly some two-way interactions. Fractional factorials assume higher-order interactions are negligible, which is true in most practical experimentation contexts."}},{"@type":"Question","name":"How much traffic do I need for a multivariate test?","acceptedAnswer":{"@type":"Answer","text":"Total traffic equals the number of combinations multiplied by the per-combination sample size. The per-combination sample size depends on your baseline conversion rate, minimum detectable effect, and desired power, the same factors as A/B testing. For a 5% baseline with a 20% relative MDE at 80% power, you need approximately 8,000 visitors per combination. A 24-combination MVT would therefore require 192,000 total visitors. If your daily traffic is 2,000 visitors, this test would take 96 days, likely too long to be practical."}},{"@type":"Question","name":"Can multivariate testing detect interaction effects between variables?","acceptedAnswer":{"@type":"Answer","text":"Yes, full factorial MVT designs can detect interaction effects, situations where the combined effect of two variables differs from the sum of their individual effects. For example, a bold headline might increase conversions by 5% alone, and a red CTA button might increase by 3% alone, but together they might increase by 12% (a positive interaction) or by only 4% (a negative interaction). Detecting interaction effects requires substantially more traffic because you need sufficient data in each combination cell. Fractional factorial designs sacrifice the ability to detect some interactions in exchange for reduced traffic requirements."}}]}</script>
  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://abwex.com/guides/"},{"@type":"ListItem","position":3,"name":"Multivariate Testing Guide"}]}</script>
@@ -454,7 +454,7 @@
       var showCombos = totalCombos <= 48;
       document.getElementById('mv-combo-count').textContent = showCombos ? '(' + totalCombos + ' combinations)' : '(' + totalCombos + ' combinations, showing first 48)';
       if (variables.length > 0) {
-        var tableHtml = '<table class="mv-combo-table"><thead><tr><th>#</th>';
+        var tableHtml = '<div class="table-scroll"><table class="mv-combo-table"><thead><tr><th>#</th>';
         for (var i = 0; i < variables.length; i++) tableHtml += '<th>' + variables[i].name + '</th>';
         tableHtml += '<th>Traffic Share</th></tr></thead><tbody>';
 
@@ -473,7 +473,7 @@
         if (totalCombos > 48) {
           tableHtml += '<tr><td colspan="' + (variables.length + 2) + '" style="text-align:center;color:var(--text-muted,#aaa);font-style:italic;">... and ' + (totalCombos - 48) + ' more combinations</td></tr>';
         }
-        tableHtml += '</tbody></table>';
+        tableHtml += '</tbody></table></div>';
         document.getElementById('mv-combo-table-wrap').innerHTML = tableHtml;
       }
 
@@ -531,8 +531,8 @@
     renderVarList();
   })();
   </script>
- <script src="/assets/js/share.js"></script>
-<script src="/assets/js/pro-nudge.js"></script>
+ <script src="/assets/js/share.js?v=9b6bd739"></script>
+<script src="/assets/js/pro-nudge.js?v=178726c9"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>

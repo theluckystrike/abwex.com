@@ -21,7 +21,7 @@
  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/sequential-testing-tool.html">
  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/sequential-testing-tool.html">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
  <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -654,7 +654,7 @@
   }
 
   function buildScheduleTable(boundaries, liveData, dailyVisitors, nMax, C){
-    var html='<table class="sq-sched"><thead><tr><th>Look</th><th>Day</th><th>Info. Fraction</th><th>Cumul. N/variant</th><th>Upper Boundary</th><th>Lower Boundary</th><th>&#945; Spent</th><th>Status</th></tr></thead><tbody>';
+    var html='<div class="table-scroll"><table class="sq-sched"><thead><tr><th>Look</th><th>Day</th><th>Info. Fraction</th><th>Cumul. N/variant</th><th>Upper Boundary</th><th>Lower Boundary</th><th>&#945; Spent</th><th>Status</th></tr></thead><tbody>';
     for(var k=0;k<boundaries.length;k++){
       var b=boundaries[k];
       var nAtLook=Math.round(b.t*nMax);
@@ -670,7 +670,7 @@
       }
       html+='<tr'+rowClass+'><td>'+(k+1)+'</td><td>'+b.day+'</td><td>'+b.t.toFixed(3)+'</td><td>'+nAtLook.toLocaleString()+'</td><td style="color:#2DD4BF;">+'+b.upper.toFixed(3)+'</td><td style="color:#ef4444;">'+b.lower.toFixed(3)+'</td><td>'+(b.pSpent*100).toFixed(3)+'%</td><td>'+status+'</td></tr>';
     }
-    html+='</tbody></table>';
+    html+='</tbody></table></div>';
     document.getElementById('sq-sched-wrap').innerHTML=html;
   }
 
@@ -682,8 +682,8 @@
   runSequential();
 })();
 </script>
-<script src="/assets/js/share.js"></script>
-<script src="/assets/js/pro-nudge.js"></script>
+<script src="/assets/js/share.js?v=9b6bd739"></script>
+<script src="/assets/js/pro-nudge.js?v=178726c9"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>

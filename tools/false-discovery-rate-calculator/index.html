@@ -15,7 +15,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
  <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
     {"@type":"WebPage","@id":"https://abwex.com/tools/false-discovery-rate-calculator/#webpage","url":"https://abwex.com/tools/false-discovery-rate-calculator/","name":"False discovery rate calculator for A/B tests","isPartOf":{"@id":"https://abwex.com/#website"}},
@@ -61,7 +61,13 @@
     table.data td.die { color: var(--text-dim); }
     table.data td.rawp { color: var(--text); }
     table.data.adj td:first-child { color: var(--text); }
-    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    /* The cell is the containing block for .sr below. Without this the absolutely
+       positioned span resolves against the initial containing block, escapes the
+       table's horizontal scroll container and drags the whole document sideways
+       on a narrow screen. */
+    table.data td { position: relative; }
+    .sr { position: absolute; left: 0; top: 0; width: 1px; height: 1px; padding: 0; margin: -1px;
+          overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
     .mut { color: var(--text-dim); font-size: 0.85rem; }
     .sel-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
     .chart-note { color: var(--text-dim); font-size: 0.8rem; margin-top: 10px; }

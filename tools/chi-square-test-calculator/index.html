@@ -44,7 +44,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -337,9 +337,9 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       if (p < 0.01) conclusion += 'Reject H₀ at 0.01 level (strong).';
       else if (p < 0.05) conclusion += 'Reject H₀ at 0.05 level.';
       else conclusion += 'Fail to reject H₀ at 0.05 level.';
-      let stepTable = `<div class="table-wrap"><table><tr><th>Category</th><th>O</th><th>E</th><th>(O-E)²/E</th></tr>`;
+      let stepTable = `<div class="table-wrap"><div class="table-scroll"><table><tr><th>Category</th><th>O</th><th>E</th><th>(O-E)²/E</th></tr>`;
       steps.forEach((s,i) => { stepTable += `<tr><td>${i+1}</td><td>${s.O}</td><td>${s.E}</td><td>${s.term}</td></tr>`; });
-      stepTable += `</table></div>`;
+      stepTable += `</table></div></div>`;
       const critHtml = `<div class="critical-table">α=0.05: <span class="indigo">${crit05v}</span> &nbsp; α=0.01: <span class="indigo">${crit01v}</span></div>`;
       gofResults.innerHTML = `
         <div class="stat-grid"><div class="stat-card"><div class="value">${chi2.toFixed(4)}</div><div class="label">χ²</div></div>
@@ -355,7 +355,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
     function renderIndepTable() {
       const r = parseInt(indepRows.value);
       const c = parseInt(indepCols.value);
-      let html = '<table><thead><tr><th>\\</th>';
+      let html = '<div class="table-scroll"><table><thead><tr><th>\\</th>';
       for (let j = 0; j < c; j++) html += `<th>Col${j+1}</th>`;
       html += '<th>Row total</th></tr></thead><tbody>';
       for (let i = 0; i < r; i++) {
@@ -368,7 +368,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       }
       html += '</tbody><tfoot><tr><th>Col total</th>';
       for (let j = 0; j < c; j++) html += `<td class="colTotal" id="colTotal${j}">&middot;</td>`;
-      html += `<td id="grandTotal">&middot;</td></tr></tfoot></table>`;
+      html += `<td id="grandTotal">&middot;</td></tr></tfoot></table></div>`;
       indepTableWrap.innerHTML = html;
     }
     function computeIndep() {
@@ -418,9 +418,9 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       if (p < 0.01) conclusion += 'Reject H₀ at 0.01.';
       else if (p < 0.05) conclusion += 'Reject H₀ at 0.05.';
       else conclusion += 'Fail to reject H₀ at 0.05.';
-      let stepTable = `<div class="table-wrap"><table><tr><th>Row</th><th>Col</th><th>O</th><th>E</th><th>(O-E)²/E</th></tr>`;
+      let stepTable = `<div class="table-wrap"><div class="table-scroll"><table><tr><th>Row</th><th>Col</th><th>O</th><th>E</th><th>(O-E)²/E</th></tr>`;
       steps.forEach(s => { stepTable += `<tr><td>${s.row+1}</td><td>${s.col+1}</td><td>${s.O}</td><td>${s.E}</td><td>${s.term}</td></tr>`; });
-      stepTable += `</table></div>`;
+      stepTable += `</table></div></div>`;
       const critHtml = `<div class="critical-table">α=0.05: <span class="indigo">${crit05v}</span> &nbsp; α=0.01: <span class="indigo">${crit01v}</span></div>`;
       indepResults.innerHTML = `
         <div class="stat-grid"><div class="stat-card"><div class="value">${chi2.toFixed(4)}</div><div class="label">χ²</div></div>

@@ -433,11 +433,29 @@ pre, code, samp, kbd {
   max-width: 100%;
 }
 
+/* Tables render as real tables and fill their container. Horizontal
+   containment lives on the .table-scroll wrapper, not on the table itself,
+   because display:block stops a table filling its box and leaves it huddled
+   to the left of any wide card. */
 table {
-  display: block;
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+.table-scroll {
   overflow-x: auto;
   max-width: 100%;
   -webkit-overflow-scrolling: touch;
+}
+
+/* A grid or flex child will not shrink below its min-content width unless told
+   to, which is how a bespoke two-column tool layout ends up 8px wider than a
+   phone. Let those children shrink on small screens. */
+@media (max-width: 720px) {
+  .content > *, .grid > *, .cols > *, .two-col > *, .panels > *, .columns > * {
+    min-width: 0;
+  }
 }
 
 /* Tool outputs and result containers */

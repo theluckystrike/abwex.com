@@ -21,7 +21,7 @@
  <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
  <link rel="alternate" hreflang="en" href="https://abwex.com/tools/chi-square-test-calculator.html">
  <link rel="alternate" hreflang="x-default" href="https://abwex.com/tools/chi-square-test-calculator.html">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
  <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -382,7 +382,7 @@
   function buildTable(){
     var r=getRows(), c=getCols();
     var wrap=document.getElementById('cq-table-wrap');
-    var html='<table class="cq-table"><thead><tr><th></th>';
+    var html='<div class="table-scroll"><table class="cq-table"><thead><tr><th></th>';
     for(var j=0;j<c;j++) html+='<th>Col '+(j+1)+'</th>';
     html+='<th>Row Total</th></tr></thead><tbody>';
     for(var i=0;i<r;i++){
@@ -396,7 +396,7 @@
     html+='<tr><th>Col Total</th>';
     for(var j=0;j<c;j++) html+='<td class="col-total" id="cq-col-'+j+'">&middot;</td>';
     html+='<td class="grand-total" id="cq-grand">&middot;</td></tr>';
-    html+='</tbody></table>';
+    html+='</tbody></table></div>';
     wrap.innerHTML=html;
     updateTotals();
     document.getElementById('cq-results-panel').style.display='none';
@@ -501,13 +501,13 @@
     document.getElementById('cq-a01').innerHTML=alphaLabel(chi2,crit01,'0.01');
 
     // Expected table
-    var expHtml='<table class="cq-exp-table"><thead><tr><th>Cell</th><th>Observed</th><th>Expected</th><th>Contribution to &chi;&sup2;</th></tr></thead><tbody>';
+    var expHtml='<div class="table-scroll"><table class="cq-exp-table"><thead><tr><th>Cell</th><th>Observed</th><th>Expected</th><th>Contribution to &chi;&sup2;</th></tr></thead><tbody>';
     for(var k=0;k<cells.length;k++){
       var cl=cells[k];
       var warn=cl.exp<5?' class="warn"':'';
       expHtml+='<tr><td>R'+(cl.i+1)+'C'+(cl.j+1)+'</td><td>'+cl.obs+'</td><td'+warn+'>'+cl.exp.toFixed(2)+(cl.exp<5?' &#9888;':'')+'</td><td>'+cl.contrib.toFixed(4)+'</td></tr>';
     }
-    expHtml+='</tbody></table>';
+    expHtml+='</tbody></table></div>';
     document.getElementById('cq-exp-wrap').innerHTML=expHtml;
 
     // Bar chart
@@ -578,8 +578,8 @@
   buildTable();
 })();
 </script>
-<script src="/assets/js/share.js"></script>
-<script src="/assets/js/pro-nudge.js"></script>
+<script src="/assets/js/share.js?v=9b6bd739"></script>
+<script src="/assets/js/pro-nudge.js?v=178726c9"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>

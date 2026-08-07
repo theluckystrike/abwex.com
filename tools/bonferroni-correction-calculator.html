@@ -37,7 +37,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
 <style>
 :root{
   --bg:#0e1116;--panel:#171c24;--panel2:#1f2630;--accent:#5b9dff;--accent2:#3ad29f;
@@ -164,10 +164,10 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
  </div>
  </div>
 
- <table class="tbl" id="tbl">
+ <div class="table-scroll"><table class="tbl" id="tbl">
  <thead><tr><th>m comparisons</th><th>Corrected threshold</th><th>Your p significant?</th></tr></thead>
  <tbody></tbody>
- </table>
+ </table></div>
 </section>
 
 <section>
@@ -230,11 +230,11 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
     if(!isNaN(p)&&p>=0&&p<=1){
       if(p<=corr){
         oVerdict.style.color='var(--accent2)';
-        oVerdict.innerHTML='Significant &mdash; p='+fmt(p)+' &le; '+fmt(corr)
+        oVerdict.innerHTML='Significant, p='+fmt(p)+' &le; '+fmt(corr)
           +' (FWER &asymp; '+fwer.toFixed(2)+'%)';
       }else{
         oVerdict.style.color='var(--warn)';
-        oVerdict.innerHTML='Not significant &mdash; p='+fmt(p)+' &gt; '+fmt(corr)
+        oVerdict.innerHTML='Not significant, p='+fmt(p)+' &gt; '+fmt(corr)
           +' (FWER &asymp; '+fwer.toFixed(2)+'%)';
       }
     }else{
@@ -251,7 +251,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
         hit = p<=th
           ? '<td class="sig">yes</td>'
           : '<td class="nsig">no</td>';
-      }else hit='<td class="nsig">&mdash;</td>';
+      }else hit='<td class="nsig">&middot;</td>';
       var mark = mm===m ? ' style="background:var(--panel)"' : '';
       rows+='<tr'+mark+'><td>'+mm+'</td><td>'+fmt(th)+'</td>'+hit+'</tr>';
     }

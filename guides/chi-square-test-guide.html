@@ -24,7 +24,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
 
  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Chi-Square Test Explained, Step-by-Step Calculator for A/B Testing","description":"Learn how the chi-square test works with an interactive step-by-step calculator. Covers goodness of fit, test of independence, effect size with Cramer's V, and real A/B testing examples.","author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one"},"publisher":{"@type":"Organization","name":"Zovo Tools","url":"https://zovo.one"},"datePublished":"2026-05-16","dateModified":"2026-05-16","mainEntityOfPage":"https://abwex.com/guides/chi-square-test-guide.html","image":"https://abwex.com/assets/og-image.png"}</script>
 
@@ -135,7 +135,7 @@
 
  <style>
     .guide-article { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-    .guide-article h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 2.2rem; font-weight: 600; line-height: 1.2; margin-bottom: 0.5rem; }
+    .guide-article h1 { font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 600; line-height: 1.2; margin-bottom: 0.5rem; }
     .guide-article .meta { color: #6b7280; font-size: 0.95rem; margin-bottom: 2.5rem; }
     .guide-article .meta a { color: #6b7280; text-decoration: underline; }
     .guide-article h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.55rem; font-weight: 600; margin-top: 2.8rem; margin-bottom: 0.8rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
@@ -378,14 +378,14 @@
 
  <p>Organize your data into a contingency table. Rows are variants, columns are outcomes. Use raw counts, not percentages.</p>
 
- <table class="compare-table">
+ <div class="table-scroll"><table class="compare-table">
  <thead><tr><th></th><th>Converted</th><th>Not Converted</th><th>Total</th></tr></thead>
  <tbody>
  <tr><td>Variant A</td><td>210</td><td>3,990</td><td>4,200</td></tr>
  <tr><td>Variant B</td><td>258</td><td>4,042</td><td>4,300</td></tr>
  <tr><td><strong>Total</strong></td><td><strong>468</strong></td><td><strong>8,032</strong></td><td><strong>8,500</strong></td></tr>
  </tbody>
- </table>
+ </table></div>
 
  <h3>Step 2, Calculate Expected Frequencies</h3>
 
@@ -409,7 +409,7 @@
 
  <p>For each cell, calculate (O - E)&sup2; / E and sum them:</p>
 
- <table class="compare-table">
+ <div class="table-scroll"><table class="compare-table">
  <thead><tr><th>Cell</th><th>Observed (O)</th><th>Expected (E)</th><th>O - E</th><th>(O - E)&sup2; / E</th></tr></thead>
  <tbody>
  <tr><td>A, Conv</td><td>210</td><td>231.25</td><td>-21.25</td><td>1.952</td></tr>
@@ -418,7 +418,7 @@
  <tr><td>B, No Conv</td><td>4,042</td><td>4,063.25</td><td>-21.25</td><td>0.111</td></tr>
  </tbody>
  <tfoot><tr><td colspan="4"><strong>Chi-Square Statistic (X&sup2;)</strong></td><td><strong>4.084</strong></td></tr></tfoot>
- </table>
+ </table></div>
 
  <h3>Step 4, Determine Degrees of Freedom</h3>
 
@@ -444,7 +444,7 @@
 
  <p>Choosing the right statistical test is just as important as running it correctly. Using the wrong test can lead to invalid conclusions. Here is how the chi-square test compares to the alternatives you will encounter in A/B testing.</p>
 
- <table class="compare-table">
+ <div class="table-scroll"><table class="compare-table">
  <thead>
  <tr><th>Test</th><th>Use When</th><th>Data Type</th><th>Example</th></tr>
  </thead>
@@ -480,7 +480,7 @@
  <td>Did the variant change the distribution of time-on-page?</td>
  </tr>
  </tbody>
- </table>
+ </table></div>
 
  <h3>Chi-Square vs Z-Test, They Are Equivalent for 2x2 Tables</h3>
 
@@ -544,7 +544,7 @@
 
  <h3>Interpreting Cramer's V</h3>
 
- <table class="compare-table">
+ <div class="table-scroll"><table class="compare-table">
  <thead><tr><th>Cramer's V</th><th>Effect Size</th><th>A/B Test Interpretation</th></tr></thead>
  <tbody>
  <tr><td>0.00 - 0.10</td><td>Small / negligible</td><td>The variant has a very minor effect on conversion. May not justify the cost of implementation.</td></tr>
@@ -552,7 +552,7 @@
  <tr><td>0.30 - 0.50</td><td>Large</td><td>A strong effect. Rare in typical A/B tests. Usually indicates a fundamental change in user experience.</td></tr>
  <tr><td>0.50+</td><td>Very large</td><td>Extremely strong association. Unusual in A/B testing. Double-check data quality before trusting.</td></tr>
  </tbody>
- </table>
+ </table></div>
 
  <p>In practice, most A/B test effects produce Cramer's V values below 0.10. That's normal. Even a 10% relative improvement in conversion rate (e.g., 5% to 5.5%) produces a tiny Cramer's V because the absolute difference in frequencies is small relative to the total sample. Cramer's V is most useful for comparing effect sizes across experiments or for deciding whether a statistically significant result is practically meaningful.</p>
 
@@ -569,14 +569,14 @@
 
  <p>Data collected over 14 days:</p>
 
- <table class="compare-table">
+ <div class="table-scroll"><table class="compare-table">
  <thead><tr><th></th><th>Upgraded</th><th>Did Not Upgrade</th><th>Total</th></tr></thead>
  <tbody>
  <tr><td>Variant A (no badge)</td><td>340</td><td>6,460</td><td>6,800</td></tr>
  <tr><td>Variant B (badge)</td><td>412</td><td>6,388</td><td>6,800</td></tr>
  <tr><td><strong>Total</strong></td><td><strong>752</strong></td><td><strong>12,848</strong></td><td><strong>13,600</strong></td></tr>
  </tbody>
- </table>
+ </table></div>
 
  <p>Variant A: 5.00% conversion. Variant B: 6.06% conversion. Relative improvement: +21.2%.</p>
 
@@ -947,7 +947,7 @@ function runChiSquare() {
   document.getElementById('step-list').innerHTML = stepsHTML;
 
   // Expected table
-  let etHTML = '<table class="expected-table"><thead><tr><th></th>';
+  let etHTML = '<div class="table-scroll"><table class="expected-table"><thead><tr><th></th>';
   for (let c = 0; c < cols; c++) etHTML += '<th>Col ' + (c+1) + '</th>';
   etHTML += '<th>Total</th></tr></thead><tbody>';
   for (let r = 0; r < rows; r++) {
@@ -962,7 +962,7 @@ function runChiSquare() {
   etHTML += '<tr><th>Total</th>';
   for (let c = 0; c < cols; c++) etHTML += '<td>' + colTotals[c].toLocaleString() + '</td>';
   etHTML += '<td><strong>' + grandTotal.toLocaleString() + '</strong></td></tr>';
-  etHTML += '</tbody></table>';
+  etHTML += '</tbody></table></div>';
   document.getElementById('expected-table-container').innerHTML = etHTML;
 
   // Bar chart
@@ -1019,8 +1019,8 @@ document.getElementById('num-rows').addEventListener('change', buildTable);
 document.getElementById('num-cols').addEventListener('change', buildTable);
 buildTable();
 </script>
-<script src="/assets/js/share.js"></script>
-<script src="/assets/js/pro-nudge.js"></script>
+<script src="/assets/js/share.js?v=9b6bd739"></script>
+<script src="/assets/js/pro-nudge.js?v=178726c9"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>

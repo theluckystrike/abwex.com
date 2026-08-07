@@ -90,6 +90,36 @@ verify_live() {
   return $fails
 }
 
+# Fetch every asset until it is 200, BEFORE anyone loads the HTML that needs it.
+# This is the purge-free fix for the cached-404 problem. Cloudflare caches
+# whatever it sees first for a URL, with max-age=14400. If a reader beats the
+# GitHub Pages propagation, the edge caches a 404 and the page is broken for
+# four hours. By pulling each asset ourselves until it answers 200, the first
+# thing the edge ever caches for that URL is a good response.
+warm_until_200() {
+  local deadline=$1 waited=0 pending
+  echo
+  echo "Warming the edge until every asset answers 200 (up to ${deadline}s)"
+  while :; do
+    pending=""
+    while IFS= read -r a; do
+      [ -z "$a" ] && continue
+      [ "$(code_of "${SITE}${a}")" = "200" ] || pending="${pending}${a}"$'\n'
+    done < <(collect_assets)
+    if [ -z "$pending" ]; then
+      grn "  all assets answer 200 after ${waited}s"
+      return 0
+    fi
+    if [ "$waited" -ge "$deadline" ]; then
+      red "  still not 200 after ${deadline}s:"
+      printf '%s' "$pending" | sed 's|^|    |'
+      return 1
+    fi
+    sleep "$POLL"; waited=$((waited+POLL))
+    printf '  %ss, still waiting on %s asset(s)\n' "$waited" "$(printf '%s' "$pending" | grep -c .)"
+  done
+}
+
 purge() {
   local token="${CLOUDFLARE_API_TOKEN:-}"
   if [ -z "$token" ]; then
@@ -106,10 +136,14 @@ purge() {
     grn "Cloudflare purge OK."
     return 0
   fi
-  ylw "Cloudflare purge FAILED. The token lacks the Zone.Cache Purge permission."
-  ylw "Either add that permission to the token, or purge these by hand at"
-  ylw "  https://dash.cloudflare.com -> abwex.com -> Caching -> Configuration -> Purge Custom URLs"
-  collect_assets | sed "s|^|  ${SITE}|"
+  ylw "Cloudflare purge unavailable, the token lacks Zone.Cache Purge."
+  ylw "Not a problem for this deploy. Purging is only needed when a URL has to serve"
+  ylw "different bytes than the edge already cached, and this repo avoids that:"
+  ylw "  - every same-origin js and css reference carries a content hash, so changed"
+  ylw "    bytes always arrive on a brand new URL that nothing has cached"
+  ylw "  - warm_until_200 above pulls each asset before any reader does, so the edge"
+  ylw "    never caches a 404 from the GitHub Pages propagation gap"
+  ylw "Add Zone.Cache Purge to the token only if you ever need to force-expire HTML."
   return 1
 }
 
@@ -130,17 +164,8 @@ if [ "${1:-}" = "--push" ]; then
   git push origin main || { red "push failed"; exit 1; }
   grn "Pushed $(git rev-parse --short HEAD)"
 
-  echo
-  echo "Waiting for the deploy to appear (up to ${MAX_WAIT}s)"
-  waited=0
-  target="$(collect_assets | head -1)"
-  while [ "$waited" -lt "$MAX_WAIT" ]; do
-    if verify_live >/dev/null 2>&1; then break; fi
-    sleep "$POLL"; waited=$((waited+POLL))
-    printf '  %ss\n' "$waited"
-  done
+  warm_until_200 "$MAX_WAIT" || true
   purge || true
-  sleep 5
 fi
 
 if verify_live; then

@@ -22,7 +22,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="/assets/style.css">
+ <link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"A/B Testing Mistakes, 20 Most Common Statistical Errors","description":"A curated dataset of 20 common A/B testing mistakes organized by category (statistical, design, analysis) with severity ratings, real-world examples, correct approaches, and references. Community engagement validated via StackExchange API on stats.stackexchange.com and stackoverflow.com.","url":"https://abwex.com/research/ab-test-mistakes.html","license":"https://creativecommons.org/licenses/by/4.0/","creator":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one"},"datePublished":"2026-04-11","dateModified":"2026-04-11","keywords":["A/B testing","statistical errors","peeking problem","multiple comparisons","sample size","false positive"],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://abwex.com/research/ab-test-mistakes.html"}}</script>
  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the most common A/B testing mistake?","acceptedAnswer":{"@type":"Answer","text":"The most common mistake is peeking at results and stopping the test early when a 'significant' result appears. This inflates the false positive rate from the intended 5% to as high as 30%. The p-value is only valid at the pre-determined sample size. If you must monitor results continuously, use sequential testing methods like SPRT (Sequential Probability Ratio Test) or alpha-spending functions that mathematically account for multiple looks."}},{"@type":"Question","name":"How does the multiple comparisons problem affect A/B tests?","acceptedAnswer":{"@type":"Answer","text":"Testing multiple metrics or variants without correction dramatically increases false positives. With 20 metrics at alpha=0.05, you expect 1 false positive by chance alone. The Bonferroni correction divides alpha by the number of comparisons (0.05/20 = 0.0025 per test). The less conservative Benjamini-Hochberg procedure controls the false discovery rate instead. Always pre-specify your primary metric before running the test."}},{"@type":"Question","name":"Why is it wrong to run an A/B test without calculating sample size first?","acceptedAnswer":{"@type":"Answer","text":"Without a pre-calculated sample size, you have no guarantee of statistical power, the probability of detecting a real effect. An underpowered test (e.g., 30% power) means you will miss 70% of real improvements, leading to the false conclusion that changes have no effect. The sample size formula requires specifying your baseline conversion rate, minimum detectable effect, significance level (alpha), and desired power (typically 80%)."}},{"@type":"Question","name":"What is Simpson's Paradox in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"Simpson's Paradox occurs when a trend that appears in segmented data reverses when the data is combined. In A/B testing, variant B might outperform A among both mobile and desktop users, yet A outperforms B in the aggregate, because mobile users (who convert less overall) were disproportionately assigned to B. This is why randomization must be checked and why segment-level analysis should complement aggregate results."}},{"@type":"Question","name":"How do I avoid the novelty effect in A/B testing?","acceptedAnswer":{"@type":"Answer","text":"The novelty effect causes inflated metrics for new designs simply because they are new and attract curiosity. To mitigate it: (1) Run tests for at least 2-4 weeks to let the effect wear off. (2) Segment results by new vs. returning users, new users are less affected by novelty. (3) Analyze the time series of daily conversion rates, if the variant's advantage decreases over time, novelty is likely a factor. (4) Consider running a holdback test after implementation."}}]}</script>
  <style>
@@ -78,7 +78,7 @@
  </div>
 
  <div class="data-table-wrap">
- <table class="data-table">
+ <div class="table-scroll"><table class="data-table">
  <thead>
  <tr>
  <th>#</th>
@@ -111,7 +111,7 @@
  <tr><td>19</td><td>Not validating tracking implementation</td><td><span class="cat-design">Design</span></td><td class="sev-high">High</td><td>A/A test shows 15% difference due to broken tracking</td><td>Run A/A test first to validate instrumentation and randomization</td></tr>
  <tr><td>20</td><td>Declaring no effect from underpowered test</td><td><span class="cat-stat">Statistical</span></td><td class="sev-high">High</td><td>"No significant difference" with 200 total conversions</td><td>Distinguish "no effect" from "unable to detect effect"; report CI</td></tr>
  </tbody>
- </table>
+ </table></div>
  </div>
 
  <div class="download-btns">
@@ -221,7 +221,7 @@ function downloadData(format) {
   a.click();
 }
 </script>
-<script src="/assets/js/share.js"></script>
+<script src="/assets/js/share.js?v=9b6bd739"></script>
 
 <section style="margin-top:48px;padding:24px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
 <h2 style="font-size:18px;margin-bottom:16px;">Related Tools</h2>
