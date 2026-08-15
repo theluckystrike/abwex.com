@@ -555,8 +555,13 @@ function calcMulti() {
   function initNav() {
     var toggle = document.querySelector('.mobile-toggle');
     var nav = document.querySelector('nav');
-    if (toggle && nav) {
-      toggle.addEventListener('click', function() { nav.classList.toggle('open'); });
+    if (toggle && nav && toggle.dataset.navWired !== '1') {
+      toggle.dataset.navWired = '1';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.addEventListener('click', function() {
+        var open = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     }
   }
 

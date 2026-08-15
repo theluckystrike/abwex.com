@@ -475,7 +475,12 @@
   /* Mobile nav toggle, matching the site pattern. */
   var mt = document.querySelector('.mobile-toggle');
   var nv = document.querySelector('header nav');
-  if (mt && nv) {
-    mt.addEventListener('click', function () { nv.classList.toggle('open'); });
+  if (mt && nv && mt.dataset.navWired !== '1') {
+    mt.dataset.navWired = '1';
+    mt.setAttribute('aria-expanded', 'false');
+    mt.addEventListener('click', function () {
+      var open = nv.classList.toggle('open');
+      mt.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
   }
 }());

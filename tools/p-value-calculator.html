@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css?v=b0f4c236">
+<link rel="stylesheet" href="/assets/style.css?v=67278759">
 <style>
 :root{--bg:#0d1117;--card:#161b22;--bd:#30363d;--fg:#e6edf3;--mut:#9da7b3;--acc:#58a6ff;--ok:#3fb950;--no:#f85149}
 *{box-sizing:border-box}
@@ -65,6 +65,12 @@ footer{border-top:1px solid var(--bd);padding:24px 20px;text-align:center;color:
 footer a{color:var(--acc);text-decoration:none;margin:0 8px}
 code{background:#0d1117;border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:14px}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
+
+
+/* This page carries its own inline nav rule, which overrode the shared mobile
+   collapse and left the menu sitting on top of the h1 on a phone. Collapse it here
+   too. The page ships .mobile-toggle and loads /assets/js/nav.js?v=45f62fb3, so the button works. */
+@media (max-width: 768px){nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;background:var(--bg,var(--panel,#0a0a0a));border-bottom:1px solid var(--border,var(--bd,var(--line,#2a2a2a)));padding:16px 20px;gap:12px;z-index:99}nav.open{display:flex}}
 </style>
 <style>
 /* site shell tokens, loaded after the page theme so the base palette matches */
@@ -244,5 +250,6 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
     <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools">Zovo</a> &middot; 47/500 founding spots</div>
   </div>
 </footer>
+<script defer src="/assets/js/nav.js?v=45f62fb3"></script>
 </body>
 </html>

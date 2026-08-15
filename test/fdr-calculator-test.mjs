@@ -1,5 +1,5 @@
 import fs from 'fs';
-const src = fs.readFileSync('/Users/mike/Desktop/abwex-repo/assets/js/fdr-calculator.js','utf8');
+const src = fs.readFileSync('/Users/mike/Desktop/sites/abwex-repo/assets/js/fdr-calculator.js','utf8');
 // Pull the pure math out of the IIFE and evaluate it standalone.
 const names = ['orderAsc','harmonic','bonf','holm','stepUp','bh','by','adjustAll','normCdf','invNorm'];
 let code = '';
