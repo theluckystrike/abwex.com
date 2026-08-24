@@ -103,30 +103,48 @@
     return { none: ps.slice(), bonferroni: bonf(ps), holm: holm(ps), bh: bh(ps), by: by(ps) };
   }
 
+  /* One line of the paste. Returns the rows it yielded and how many values it rejected,
+     so the caller stays a flat loop with no early exit. A p value is kept only when it is
+     finite and inside [0,1], which is what stops a negative or a stray word reaching the
+     adjusters at all. */
+  function parseLine(line, startIndex) {
+    var nums = line ? line.match(/-?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g) : null;
+    if (!line) { return { rows: [], dropped: 0, used: 0 }; }
+    if (!nums) { return { rows: [], dropped: 1, used: 0 }; }
+    var last = nums[nums.length - 1];
+    var head = line.slice(0, line.lastIndexOf(last));
+    var named = /[A-Za-z]/.test(head.replace(/\d[eE][+-]?\d/g, ' '));
+    if (named) { return namedRow(head, last, startIndex); }
+    return bareRow(nums, startIndex);
+  }
+
+  function keep(v) { return isFinite(v) && v >= 0 && v <= 1; }
+
+  function namedRow(head, last, startIndex) {
+    var v = parseFloat(last);
+    var nm = head.replace(/[,;=|]+ *$/, '').trim();
+    if (!keep(v)) { return { rows: [], dropped: 1, used: 1 }; }
+    return { rows: [{ name: nm || lab(startIndex), p: v }], dropped: 0, used: 1 };
+  }
+
+  function bareRow(nums, startIndex) {
+    var rows = [], dropped = 0, j, v;
+    for (j = 0; j < nums.length; j += 1) {
+      v = parseFloat(nums[j]);
+      if (keep(v)) { rows.push({ name: lab(startIndex + j), p: v }); } else { dropped += 1; }
+    }
+    return { rows: rows, dropped: dropped, used: nums.length };
+  }
+
   function parseInput(raw) {
     var lines = String(raw || '').split('\n');
-    var rows = [], dropped = 0, k = 0, i, j;
+    var rows = [], dropped = 0, k = 0, i;
     var limit = Math.min(lines.length, MAX_LINES);
     for (i = 0; i < limit; i += 1) {
-      var line = lines[i].trim();
-      if (!line) { continue; }
-      var nums = line.match(/-?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g);
-      if (!nums) { dropped += 1; continue; }
-      var last = nums[nums.length - 1];
-      var head = line.slice(0, line.lastIndexOf(last));
-      var named = /[A-Za-z]/.test(head.replace(/\d[eE][+-]?\d/g, ' '));
-      if (named) {
-        k += 1;
-        var pv = parseFloat(last);
-        var nm = head.replace(/[,;=|]+ *$/, '').trim();
-        if (isFinite(pv) && pv >= 0 && pv <= 1) { rows.push({ name: nm || lab(k - 1), p: pv }); } else { dropped += 1; }
-      } else {
-        for (j = 0; j < nums.length; j += 1) {
-          var v2 = parseFloat(nums[j]);
-          k += 1;
-          if (isFinite(v2) && v2 >= 0 && v2 <= 1) { rows.push({ name: lab(k - 1), p: v2 }); } else { dropped += 1; }
-        }
-      }
+      var got = parseLine(lines[i].trim(), k);
+      rows = rows.concat(got.rows);
+      dropped += got.dropped;
+      k += got.used;
     }
     var truncated = 0;
     if (rows.length > MAXM) { truncated = rows.length - MAXM; rows = rows.slice(0, MAXM); }
@@ -332,6 +350,42 @@
     return hit.length ? hit[0] : null;
   }
 
+  /* The true-null selector used to be labelled by the study's NOMINAL pi0, which is not
+     what any cell actually simulated. The generator sets m0 = round(m * pi0), so the label
+     and the cell disagreed in 9 of the 36 cells. At m 3 it was worse than a rounding gap:
+     pi0 0.8 and pi0 0.5 both resolve to m0 2, so the menu offered "80% true nulls" and
+     "50% true nulls" as two choices that are the same configuration, 2 of 3, differing only
+     by simulation noise. Label by the realised count and collapse the duplicates, so every
+     option in the menu is a distinct experiment and says what it really is. */
+  function piOptionsFor(m) {
+    var out = [], seen = {};
+    if (!SIM || !isFinite(m)) { return out; }
+    SIM.cells.forEach(function (c) {
+      if (c.m !== m || seen[c.m0]) { return; }
+      seen[c.m0] = 1;
+      out.push({ value: c.pi0, m0: c.m0 });
+    });
+    out.sort(function (a, b) { return b.m0 - a.m0; });
+    return out;
+  }
+  function refreshPiOptions() {
+    var sel = el('selPi'), mEl = el('selM');
+    if (!sel || !mEl || !SIM) { return; }
+    var m = parseFloat(mEl.value);
+    var opts = piOptionsFor(m);
+    if (!opts.length) { return; }
+    var keep = parseFloat(sel.value);
+    sel.innerHTML = '';
+    opts.forEach(function (o) {
+      var node = document.createElement('option');
+      node.value = o.value;
+      node.textContent = o.m0 + ' of ' + m + ' true nulls, ' + pct(o.m0 / m, 0);
+      sel.appendChild(node);
+    });
+    var match = opts.filter(function (o) { return o.value === keep; });
+    sel.value = match.length ? match[0].value : opts[0].value;
+  }
+
   function renderCell() {
     var c = currentCell(), box = el('cellout');
     if (!box) { return; }
@@ -358,6 +412,29 @@
     if (rep) { rep.innerHTML = ''; }
   }
 
+  /* Score one simulated run into the running tally for a single correction. Pulled out of
+     replicate so that function stays a flat loop. V is false discoveries, R is rejections,
+     S is true discoveries. */
+  function countRejections(adjusted, truth, m, alpha) {
+    var out = { V: 0, R: 0, S: 0 }, i;
+    for (i = 0; i < m; i += 1) {
+      if (adjusted[i] <= alpha) {
+        out.R += 1;
+        if (truth[i]) { out.S += 1; } else { out.V += 1; }
+      }
+    }
+    return out;
+  }
+
+  function tallyRun(bucket, adjusted, truth, c, alpha) {
+    if (!bucket || !adjusted || !truth) { return; }
+    if (!c || !isFinite(alpha)) { return; }
+    var n = countRejections(adjusted, truth, c.m, alpha);
+    if (n.V > 0) { bucket.fw += 1; }
+    bucket.fdr += n.R > 0 ? n.V / n.R : 0;
+    if (c.m1 > 0) { bucket.pow += n.S / c.m1; }
+  }
+
   function replicate() {
     var c = currentCell();
     if (!c) { return; }
@@ -372,15 +449,7 @@
     for (t = 0; t < n; t += 1) {
       var e = drawExperiment(nrm, c.m, c.rho, c.m1, mu);
       var adj = adjustAll(e.p);
-      SIM.corrections.forEach(function (k) {
-        var V = 0, R = 0, S = 0, i;
-        for (i = 0; i < c.m; i += 1) {
-          if (adj[k][i] <= alpha) { R += 1; if (e.truth[i]) { S += 1; } else { V += 1; } }
-        }
-        if (V > 0) { acc[k].fw += 1; }
-        acc[k].fdr += R > 0 ? V / R : 0;
-        if (c.m1 > 0) { acc[k].pow += S / c.m1; }
-      });
+      SIM.corrections.forEach(function (k) { tallyRun(acc[k], adj[k], e.truth, c, alpha); });
     }
     var h = '<p class="mut">Your browser just ran ' + n + ' experiments on the same recipe, seed ' + SIM.seed
       + '. A run this size wobbles, so read it as landing near the published cell rather than on it.</p>';
@@ -448,11 +517,10 @@
     fillSelect(el('selM'), ms2, function (v) { return v + ' metrics'; });
     fillSelect(el('selRho'), uniqSorted(SIM.cells.map(function (c) { return c.rho; })),
       function (v) { return v === 0 ? 'independent, rho 0' : 'rho ' + v; });
-    fillSelect(el('selPi'), uniqSorted(SIM.cells.map(function (c) { return c.pi0; })),
-      function (v) { return pct(v, 0) + ' true nulls'; });
     el('selM').value = ms2[ms2.length - 1];
     el('selRho').value = 0;
-    el('selPi').value = 1;
+    refreshPiOptions();
+    el('selM').addEventListener('change', refreshPiOptions);
     el('selM').addEventListener('change', renderCell);
     el('selRho').addEventListener('change', renderCell);
     el('selPi').addEventListener('change', renderCell);
