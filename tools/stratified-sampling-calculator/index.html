@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Stratified sampling calculator, proportional and Neyman allocation</title>
+ <meta name="description" content="Split a sample across strata by proportional or Neyman allocation, and see the variance each choice buys. Enter stratum sizes and spreads, get the per stratum sample size, the standard error, and the design effect against simple random sampling.">
+ <meta name="theme-color" content="#0a0a0a">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="Stratified sampling calculator, proportional and Neyman allocation">
+ <meta property="og:description" content="Per stratum sample sizes, the standard error each allocation buys, and the design effect against simple random sampling.">
+ <meta property="og:url" content="https://abwex.com/tools/stratified-sampling-calculator/">
+ <meta property="og:site_name" content="Zovo Tools">
+ <link rel="canonical" href="https://abwex.com/tools/stratified-sampling-calculator/">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css?v=67278759">
+ <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"WebPage","@id":"https://abwex.com/tools/stratified-sampling-calculator/#webpage","url":"https://abwex.com/tools/stratified-sampling-calculator/","name":"Stratified sampling calculator, proportional and Neyman allocation","isPartOf":{"@id":"https://abwex.com/#website"}},
+    {"@type":"BreadcrumbList","@id":"https://abwex.com/tools/stratified-sampling-calculator/#breadcrumb","itemListElement":[
+      {"@type":"ListItem","position":1,"name":"ABWex","item":"https://abwex.com/"},
+      {"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},
+      {"@type":"ListItem","position":3,"name":"Stratified sampling calculator"}]},
+    {"@type":"Article","@id":"https://abwex.com/tools/stratified-sampling-calculator/#article","headline":"Stratified sampling calculator, proportional and Neyman allocation","description":"Per stratum sample sizes under proportional and Neyman allocation, with the resulting standard error and the design effect against simple random sampling.","datePublished":"2026-08-24","dateModified":"2026-08-24","author":{"@id":"https://zovo.one/#michael-lip"},"mainEntityOfPage":{"@id":"https://abwex.com/tools/stratified-sampling-calculator/#webpage"}},
+    {"@type":"Person","@id":"https://zovo.one/#michael-lip","name":"Michael Lip","url":"https://zovo.one","description":"Independent calculator builder, operator of ABWex and the Zovo Tools network."}
+  ]}
+  </script>
+ <style>
+    .lede { color: var(--text-dim); font-size: 1.05rem; }
+    .byline { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-display); margin-bottom: 28px; }
+    .byline a { color: var(--text-dim); }
+    .crumb { color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-display); margin-bottom: 12px; }
+    main section { margin-bottom: 72px; }
+    main section.hero { margin-bottom: 0; }
+    main section:last-of-type { margin-bottom: 40px; }
+    main h2 { font-size: 1.5rem; margin-bottom: 18px; }
+    main h3 { font-size: 1.15rem; margin: 36px 0 10px; }
+    main p { margin-bottom: 20px; max-width: 66ch; }
+    main ul, main ol { max-width: 66ch; }
+    main li { margin-bottom: 8px; }
+    main p a, main li a { color: var(--text); text-decoration: underline;
+      text-decoration-color: var(--accent); text-decoration-thickness: 1px;
+      text-underline-offset: 3px; }
+    main p a:hover, main li a:hover { color: var(--accent); }
+    main p.byline a { color: var(--text-dim); text-decoration: none; }
+    code.formula { font-family: var(--font-display); font-size: 0.95em; color: var(--accent);
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
+      padding: 2px 7px; }
+    textarea { width: 100%; min-height: 130px; padding: 12px; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+      font-family: var(--font-display); font-size: 0.88rem; line-height: 1.7; resize: vertical; }
+    textarea:focus { outline: none; border-color: var(--accent); }
+    .calc-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 14px; }
+    .calc-row .input-field { max-width: 170px; }
+    .tbl-wrap { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.84rem; font-family: var(--font-display); }
+    table.data th { background: var(--bg); color: var(--accent); padding: 9px 12px; text-align: left;
+      border-bottom: 1px solid var(--border); white-space: nowrap; font-weight: 700; font-size: 0.75rem; }
+    table.data td { padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    table.data tbody tr:hover { background: var(--bg-hover); }
+    .mut { color: var(--text-dim); }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 18px 0; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+    .stat-label { color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; }
+    .faq-q { cursor: pointer; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .faq-a { display: none; padding: 0 0 14px; color: var(--text-dim); max-width: 66ch; }
+    .faq-item.open .faq-a { display: block; }
+    @media (max-width: 640px) {
+      main h2 { font-size: 1.3rem; }
+      main h3 { font-size: 1.05rem; margin-top: 30px; }
+      main p { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/" class="active">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tool-strat" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
+
+<main class="container">
+ <section class="hero">
+ <p class="crumb"><a href="/">ABWex</a> / <a href="/tools/">Tools</a> / Stratified sampling calculator</p>
+ <h1>Stratified sampling calculator</h1>
+ <p class="byline">By Michael Lip, <a href="https://zovo.one">Zovo Tools</a>. Updated 2026-08-24.</p>
+ <p class="lede">Splitting a sample across strata is easy. Knowing whether the split bought you anything is the part that gets skipped. This calculator returns both allocations and the variance each one actually delivers, so the gain is a number rather than a belief.</p>
+ </section>
+
+ <section>
+ <h2>Your strata</h2>
+ <p>One stratum per line. Give a name, the size of the stratum in the population, and its standard deviation, separated by commas. Add a fourth number, the stratum mean, and the design effect becomes exact rather than conservative.</p>
+ <div class="input-field">
+   <label for="strata">Name, population size, standard deviation, and optionally the mean</label>
+   <textarea id="strata">Mobile, 60000, 18, 42
+Desktop, 30000, 9, 61
+Tablet, 10000, 22, 48</textarea>
+ </div>
+ <div class="calc-row">
+   <div class="input-field"><label for="total">Total sample size</label><input type="number" id="total" value="1200" min="2" step="1"></div>
+   <div class="input-field"><label for="cost">Equal cost per unit</label><select id="cost"><option value="1">yes, use Neyman</option><option value="0">no, proportional only</option></select></div>
+   <button class="btn" id="clear" type="button">Clear</button>
+ </div>
+ <div id="out"></div>
+ </section>
+
+ <section>
+ <h2>The two allocations, and when each one wins</h2>
+ <p>Once you have decided how many units to sample in total, there are two standard ways to divide them between strata.</p>
+ <p>Proportional allocation gives each stratum a share of the sample equal to its share of the population.</p>
+ <p><code class="formula">n_h = n &middot; N_h / N</code></p>
+ <p>Neyman allocation weights by size and by spread together, so a stratum that is large or noisy gets more of the sample.</p>
+ <p><code class="formula">n_h = n &middot; (N_h &middot; S_h) / sum(N_h &middot; S_h)</code></p>
+ <p>Proportional is the safe default and needs no knowledge of the spreads. Neyman minimises the variance of the overall estimate for a fixed total sample, but only if your standard deviations are roughly right. If the strata all have similar spread, the two allocations converge and Neyman buys nothing. The calculator prints both, and prints the gap, so you can see which case you are in before choosing.</p>
+ </section>
+
+ <section>
+ <h2>The number that tells you whether it was worth it</h2>
+ <p>The design effect is the ratio of the variance you actually get to the variance a simple random sample of the same size would have given.</p>
+ <p><code class="formula">deff = Var(stratified) / Var(simple random)</code></p>
+ <p>Below one, stratification helped, and one divided by the design effect is the effective multiplier on your sample size. At 0.80 you are getting the precision of a simple random sample 25 percent larger. At 1.00 the strata told you nothing that random assignment would not have, and the extra operational work bought precisely nothing.</p>
+ <p>Most stratified sampling calculators do not show this number, and it is the only one that answers whether the exercise was worthwhile. Stratification pays when the thing you are measuring differs a lot between strata and relatively little inside them. If your strata are internally as varied as the population, there is no gain to find.</p>
+ <p>One detail worth stating because it trips people up. Compare proportional allocation against the within stratum variance alone and the design effect is exactly 1.000, every time, as an algebraic identity rather than a finding. The entire gain from stratifying lives in the differences between the stratum means, so a calculator that never asks for those means cannot tell you whether stratifying helped. That is why the mean is an input here, and why the output says plainly which of the two comparisons it just made.</p>
+ </section>
+
+ <section>
+ <h2>How this applies to an experiment rather than a survey</h2>
+ <p>The same arithmetic drives stratified randomisation in an online experiment, where it is usually called blocking or pre stratification. Assign users to variants within strata rather than across the whole population, and the between stratum variance stops contributing to the difference you are trying to measure.</p>
+ <p>The practical caveat is that the gain is bounded by how much of your metric's variance actually lives between strata. Splitting by device or country feels meaningful, but if conversion rate varies far more between individuals than between devices, the design effect will sit near one and the stratification is decoration. Run the numbers here before building the machinery.</p>
+ <p>For experiments the more reliable variance reduction technique is usually to use a pre period covariate instead, which is what <a href="/tools/cuped-variance-reduction-calculator">CUPED</a> does. The two are complementary rather than competing, and CUPED typically removes more variance because a user's own past behaviour predicts their future behaviour better than their device category does.</p>
+ </section>
+
+ <section>
+ <h2>How we know these numbers are right</h2>
+ <p>Every figure on this page is computed in your browser from the strata you enter. Nothing is typed into the copy by hand and nothing is sent to a server. The routines are MIT licensed at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>.</p>
+ <p>The variance of a stratified mean is the standard textbook expression, the sum over strata of the squared population weight times the stratum variance divided by its sample size. The comparison against simple random sampling uses the population variance implied by your strata, which is the within stratum variance plus the between stratum variance of the means. That decomposition is why stratification can only help when the stratum means differ.</p>
+ <p>The allocations are checked two ways in the output. Both columns are forced to sum to the total sample you asked for, and each stratum is capped at its own population size, because you cannot sample more units from a stratum than exist in it. Where that cap binds, the calculator says so instead of printing an impossible allocation.</p>
+ </section>
+
+ <section>
+ <h2>What has to be true for these numbers to hold</h2>
+ <ul>
+   <li>Every unit in the population belongs to exactly one stratum, and the strata together cover the whole population.</li>
+   <li>Sampling within each stratum is random and independent of the others.</li>
+   <li>The standard deviations you enter are for the measure you care about, not a general notion of how varied a group is. A different metric gives a different optimal allocation.</li>
+   <li>Neyman allocation assumes equal cost per unit across strata. If one stratum is much more expensive to reach, the optimal split shifts away from it and this calculator does not model that.</li>
+   <li>The variance formulas ignore the finite population correction, which matters once your sample is a large fraction of a stratum. With a sample above roughly five percent of a stratum, the true variance is smaller than shown here, so the figures are conservative.</li>
+ </ul>
+ </section>
+
+ <section>
+ <h2>Common questions</h2>
+ <div class="faq-item"><div class="faq-q">How many strata should I use?</div>
+ <div class="faq-a">Few enough that each still receives a usable sample. The gain from stratification comes from differences between stratum means, and adding strata that behave alike adds operational cost without reducing variance. If a stratum would receive fewer than about 30 units, fold it into a neighbour.</div></div>
+ <div class="faq-item"><div class="faq-q">What if I do not know the standard deviations?</div>
+ <div class="faq-a">Use proportional allocation, which needs only the stratum sizes. Neyman allocation built on guessed spreads can be worse than proportional, because a wrong guess moves sample away from the stratum that actually needed it. A pilot or historical data is the usual way to get the spreads.</div></div>
+ <div class="faq-item"><div class="faq-q">Why is my design effect above one?</div>
+ <div class="faq-a">That happens when the allocation is far from proportional and the spreads do not justify it, so sample has been moved to strata that did not need it. Check the proportional column. If proportional gives a design effect at or below one and your chosen allocation does not, the allocation is the problem rather than the stratification.</div></div>
+ <div class="faq-item"><div class="faq-q">Is this the same as quota sampling?</div>
+ <div class="faq-a">No. Stratified sampling selects randomly within each stratum, which keeps the estimate unbiased and lets you compute a standard error. Quota sampling fills a target count by whatever units are reachable, which is not random and does not support these formulas.</div></div>
+ </section>
+
+ <section>
+ <h2>Read this before you act on the output</h2>
+ <ul>
+   <li>Results are statistical estimates and not business or financial advice.</li>
+   <li>The output is only as good as the standard deviations you supplied, and a wrong spread moves sample to the wrong stratum.</li>
+   <li>A design effect below one is a precision gain, not evidence that your strata are the right ones.</li>
+   <li>Worked examples use the inputs printed on the page and will not match your own population.</li>
+   <li>For a high stakes design, have it reviewed by a qualified analyst.</li>
+ </ul>
+ <p class="mut">Related, <a href="/tools/sample-size-calculator.html">sample size calculator</a> for the total before you split it, and <a href="/tools/cuped-variance-reduction-calculator">CUPED variance reduction</a> for the covariate based alternative.</p>
+ </section>
+</main>
+
+ <footer class="site-footer">
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tool-strat">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
+ </footer>
+
+<script src="/assets/js/stratified.js?v=23301a1d" defer></script>
+<script defer src="/assets/js/nav.js?v=45f62fb3"></script>
+</body>
+</html>

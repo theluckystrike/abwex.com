@@ -100,4 +100,16 @@
 <url><loc>https://abwex.com/tools/cuped-variance-reduction-calculator</loc><lastmod>2026-07-09</lastmod></url>
 <url><loc>https://abwex.com/tools/delta-method-ratio-metric-ci-calculator</loc><lastmod>2026-07-09</lastmod></url>
 <url><loc>https://abwex.com/tools/peeking-inflation-calculator</loc><lastmod>2026-07-09</lastmod></url>
+  <url>
+    <loc>https://abwex.com/tools/pooled-standard-deviation-calculator/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abwex.com/tools/stratified-sampling-calculator/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

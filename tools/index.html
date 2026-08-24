@@ -65,38 +65,140 @@
  </section>
 
  <section class="explainer-section">
- <h2>Statistical Calculators</h2>
+ <h2>Plan the test</h2>
 
  <h3><a href="/tools/sample-size-calculator.html">A/B Test Sample Size Calculator</a></h3>
- <p>Calculate the exact number of visitors needed per variant before launching your A/B test. Enter your baseline conversion rate, minimum detectable effect, and desired power level. Includes common sample size tables, duration estimates, and guidance on choosing the right MDE for your business.</p>
+ <p>How many visitors each variant needs before you launch, from your baseline rate, the effect you want to detect and the power you want.</p>
+
+ <h3><a href="/tools/sample-size-calculator-proportions/">Sample Size Calculator for Proportions</a></h3>
+ <p>Sample size for a two proportion comparison, with the normal approximation stated and its small sample warning shown.</p>
+
+ <h3><a href="/tools/mde-calculator/">Minimum Detectable Effect Calculator</a></h3>
+ <p>The smallest lift a given sample can reliably detect. Run it before the test, not after, because a test that cannot see your effect will not find it.</p>
+
+ <h3><a href="/tools/power-analysis-calculator.html">Statistical Power Analysis Calculator</a></h3>
+ <p>Power for a planned comparison, and what happens to it when the sample or the effect changes.</p>
+
+ <h3><a href="/tools/statistical-power-visualizer.html">Statistical Power Visualizer</a></h3>
+ <p>The two distributions drawn side by side, so you can see where alpha, beta and the effect size actually sit.</p>
+
+ <h3><a href="/tools/experiment-duration-estimator/">Experiment Duration Estimator</a></h3>
+ <p>How long a test needs to run at your traffic, once the sample size is fixed.</p>
+
+ <h3><a href="/tools/mvt-duration-estimator.html">Multivariate Test Duration Estimator</a></h3>
+ <p>Duration for a multivariate design, where the cell count grows faster than most people expect.</p>
+
+ </section>
+
+ <section class="explainer-section">
+ <h2>Read the result</h2>
 
  <h3><a href="/tools/p-value-calculator.html">P-Value Calculator for A/B Tests</a></h3>
- <p>Compute p-values using the two-proportion Z-test and understand what they actually mean. Covers common significance thresholds (0.05, 0.01, 0.10), the five most common p-value misconceptions, and the difference between one-tailed and two-tailed tests.</p>
+ <p>Two proportion Z test, with the common misreadings of a p value spelled out next to the number.</p>
 
- <h3><a href="/tools/false-discovery-rate-calculator/">False Discovery Rate Calculator</a></h3>
- <p>Adjust a list of p-values with Benjamini Hochberg, Benjamini Yekutieli, Holm and Bonferroni side by side, and see which metrics survive each correction. Read this one if you track more than a single metric on an experiment. A first-party simulation of 36 parameter cells at 200,000 experiments each measured the cost, and ten independent metrics with no real effect on any of them still crowned a false winner 40.2% of the time.</p>
-
- <h3><a href="/tools/chi-square-test.html">Chi-Square Test Calculator</a></h3>
- <p>Apply the chi-square test of independence to A/B test data. Build contingency tables, compute degrees of freedom, and learn when to use chi-square versus the Z-test. Includes guidance on Yates' continuity correction and minimum sample size requirements.</p>
+ <h3><a href="/tools/conversion-rate-calculator.html">Conversion Rate Calculator with Confidence Intervals</a></h3>
+ <p>Rates and their intervals for each variant, so the comparison is a range rather than a point.</p>
 
  <h3><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a></h3>
- <p>Calculate confidence intervals for conversion rates using both the normal approximation and Wilson score method. Learn how to report A/B test results with confidence intervals and understand their relationship to statistical significance.</p>
+ <p>Intervals for a mean, a proportion and a difference, with the assumption behind each one stated.</p>
 
- <h2>Bayesian Methods</h2>
+ <h3><a href="/tools/confidence-interval-calculator-mean-proportion-difference.html">Confidence Interval, Mean and Proportion and Difference</a></h3>
+ <p>The three interval types in one place when you need to compare them directly.</p>
+
+ <h3><a href="/tools/t-test-calculator/">T-Test Calculator</a></h3>
+ <p>One sample, two sample and paired t tests, with the degrees of freedom shown rather than hidden.</p>
+
+ <h3><a href="/tools/pooled-standard-deviation-calculator/">Pooled Standard Deviation Calculator</a></h3>
+ <p>Pool two standard deviations, then read the Student and Welch tests it feeds. Shows the variance ratio so you can see whether pooling was ever justified.</p>
+
+ <h3><a href="/tools/z-score-calculator.html">Z-Score Calculator</a></h3>
+ <p>Standard score and the probability either side of it.</p>
+
+ <h3><a href="/tools/chi-square-test.html">Chi-Square Test Calculator for A/B Testing</a></h3>
+ <p>Chi square for a contingency table, with expected counts shown so you can check the approximation holds.</p>
+
+ <h3><a href="/tools/chi-square-test-calculator.html">Chi-Square Test Calculator</a></h3>
+ <p>The same test with a wider input form for larger tables.</p>
+
+ <h3><a href="/tools/effect-size-calculator.html">Effect Size Calculator</a></h3>
+ <p>Cohen's d, Hedges' g and Glass's delta, which is what a power calculation and a meta analysis actually consume.</p>
+
+ </section>
+
+ <section class="explainer-section">
+ <h2>Corrections and multiple metrics</h2>
+
+ <h3><a href="/tools/false-discovery-rate-calculator/">False Discovery Rate Calculator</a></h3>
+ <p>Benjamini Hochberg, Benjamini Yekutieli, Holm and Bonferroni side by side, with a first party simulation of what tracking several metrics costs. Ten independent metrics with no real effect still crowned a false winner 40.2% of the time.</p>
+
+ <h3><a href="/tools/bonferroni-correction-calculator.html">Bonferroni Correction Calculator</a></h3>
+ <p>The simplest correction, one multiplication, and the cost in power that comes with it.</p>
+
+ <h3><a href="/tools/peeking-inflation-calculator.html">Peeking Alpha Inflation Calculator</a></h3>
+ <p>What repeatedly checking a running test does to your real false positive rate. The answer is usually much worse than people assume.</p>
+
+ <h3><a href="/tools/sequential-test-calculator/">Sequential Testing Calculator, SPRT</a></h3>
+ <p>A test designed to be looked at repeatedly, which is the honest fix for peeking.</p>
+
+ <h3><a href="/tools/sequential-testing-tool.html">Sequential Testing Tool</a></h3>
+ <p>Boundaries and stopping rules for a sequential design.</p>
+
+ </section>
+
+ <section class="explainer-section">
+ <h2>Trust the data</h2>
+
+ <h3><a href="/tools/sample-ratio-mismatch-checker.html">Sample Ratio Mismatch Checker</a></h3>
+ <p>Whether your split arrived at the ratio you asked for. A failed SRM check invalidates the result no matter how good the p value looks.</p>
+
+ <h3><a href="/tools/margin-of-error-calculator.html">Margin of Error Calculator</a></h3>
+ <p>The plus or minus around a survey or test estimate at a given confidence level.</p>
+
+ <h3><a href="/tools/regression-to-mean-calculator/">Regression to the Mean Calculator</a></h3>
+ <p>How much of an extreme early result is likely to be noise that will fade on its own.</p>
+
+ <h3><a href="/tools/stratified-sampling-calculator/">Stratified Sampling Calculator</a></h3>
+ <p>Proportional and Neyman allocation across strata, and the design effect each buys. Shows whether stratifying actually reduced variance or just added work.</p>
+
+ <h3><a href="/tools/cuped-variance-reduction-calculator.html">CUPED Variance Reduction Calculator</a></h3>
+ <p>How much variance a pre period covariate removes, which is usually the cheapest way to shorten a test.</p>
+
+ <h3><a href="/tools/delta-method-ratio-metric-ci-calculator.html">Delta Method Ratio Metric CI Calculator</a></h3>
+ <p>Correct intervals for a ratio metric, where the naive interval is wrong because the denominator is random too.</p>
+
+ </section>
+
+ <section class="explainer-section">
+ <h2>Bayesian</h2>
+
+ <h3><a href="/tools/bayesian-ab-test-calculator/">Bayesian A/B Test Calculator</a></h3>
+ <p>Posterior distributions, probability that B beats A, and expected loss.</p>
+
+ <h3><a href="/tools/bayesian-ab-calculator.html">Bayesian A/B Calculator</a></h3>
+ <p>The Beta Binomial model with the prior stated explicitly rather than buried.</p>
 
  <h3><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing Guide</a></h3>
- <p>Full guide to Bayesian A/B testing using the Beta-Binomial conjugate prior model. Covers posterior probability calculation, expected loss as a decision metric, credible intervals, and when to choose Bayesian over frequentist methods.</p>
+ <p>What the Bayesian numbers mean and where they differ from the frequentist ones.</p>
+
+ <h3><a href="/tools/multi-armed-bandit-simulator/">Multi Armed Bandit Simulator</a></h3>
+ <p>Thompson sampling against a fixed split, simulated so you can see the regret rather than read about it.</p>
+
  </section>
 
  <section class="explainer-section">
- <h3>Main Calculator</h3>
- <p>Use the <a href="/">ABWex A/B Test Significance Calculator</a> for hands-on analysis with both frequentist and Bayesian modes, multi-variant comparison, revenue impact projections, and sample size planning, all in one tool.</p>
+ <h2>Money</h2>
+
+ <h3><a href="/tools/ab-test-roi-calculator.html">A/B Test ROI Calculator</a></h3>
+ <p>What a lift is worth once you account for the traffic it applies to.</p>
+
+ <h3><a href="/tools/revenue-per-visitor-calculator.html">Revenue Per Visitor Calculator</a></h3>
+ <p>RPV for each variant, which catches the case where conversion rate rose and revenue did not.</p>
+
+ <h3><a href="/tools/funnel-conversion-calculator.html">Funnel Conversion Calculator</a></h3>
+ <p>Drop off at every step, so you can see which stage the change actually moved.</p>
+
  </section>
 
- <section class="explainer-section">
- <h3>About the Author</h3>
- <p>Built by <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools">Michael Lip</a>, Solo developer with 10+ years experience. 140+ PRs merged into open source projects including Google Chrome and Axios. Creator of 20+ Chrome extensions and the Zovo developer tools collection.</p>
- </section>
  
  <div style="margin-bottom:1.5rem;">
  <h3><a href="/tools/bayesian-ab-calculator.html" style="color:var(--accent);text-decoration:none;">Bayesian A/B Test Calculator, Posterior Distributions &amp; Probability of Winning</a></h3>

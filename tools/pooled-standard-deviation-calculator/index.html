@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Pooled standard deviation calculator for two groups</title>
+ <meta name="description" content="Pool the standard deviations of two samples, then read the Welch and Student t tests they feed. Enter n, mean and SD per group, or paste raw values. Shows the pooled SD, Cohen's d, the confidence interval and which test the data supports.">
+ <meta name="theme-color" content="#0a0a0a">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="Pooled standard deviation calculator for two groups">
+ <meta property="og:description" content="Pooled SD, Cohen's d, Welch and Student t, computed in your browser from summary statistics or raw values.">
+ <meta property="og:url" content="https://abwex.com/tools/pooled-standard-deviation-calculator/">
+ <meta property="og:site_name" content="Zovo Tools">
+ <link rel="canonical" href="https://abwex.com/tools/pooled-standard-deviation-calculator/">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css?v=67278759">
+ <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"WebPage","@id":"https://abwex.com/tools/pooled-standard-deviation-calculator/#webpage","url":"https://abwex.com/tools/pooled-standard-deviation-calculator/","name":"Pooled standard deviation calculator for two groups","isPartOf":{"@id":"https://abwex.com/#website"}},
+    {"@type":"BreadcrumbList","@id":"https://abwex.com/tools/pooled-standard-deviation-calculator/#breadcrumb","itemListElement":[
+      {"@type":"ListItem","position":1,"name":"ABWex","item":"https://abwex.com/"},
+      {"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},
+      {"@type":"ListItem","position":3,"name":"Pooled standard deviation calculator"}]},
+    {"@type":"Article","@id":"https://abwex.com/tools/pooled-standard-deviation-calculator/#article","headline":"Pooled standard deviation calculator for two groups","description":"Pooled SD from summary statistics or raw values, with Cohen's d, Student and Welch t tests, and a stated rule for which test the data supports.","datePublished":"2026-08-24","dateModified":"2026-08-24","author":{"@id":"https://zovo.one/#michael-lip"},"mainEntityOfPage":{"@id":"https://abwex.com/tools/pooled-standard-deviation-calculator/#webpage"}},
+    {"@type":"Person","@id":"https://zovo.one/#michael-lip","name":"Michael Lip","url":"https://zovo.one","description":"Independent calculator builder, operator of ABWex and the Zovo Tools network."}
+  ]}
+  </script>
+ <style>
+    .lede { color: var(--text-dim); font-size: 1.05rem; }
+    .byline { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-display); margin-bottom: 28px; }
+    .byline a { color: var(--text-dim); }
+    .crumb { color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-display); margin-bottom: 12px; }
+    main section { margin-bottom: 72px; }
+    main section.hero { margin-bottom: 0; }
+    main section:last-of-type { margin-bottom: 40px; }
+    main h2 { font-size: 1.5rem; margin-bottom: 18px; }
+    main h3 { font-size: 1.15rem; margin: 36px 0 10px; }
+    main p { margin-bottom: 20px; max-width: 66ch; }
+    main ul, main ol { max-width: 66ch; }
+    main li { margin-bottom: 8px; }
+    main p a, main li a { color: var(--text); text-decoration: underline;
+      text-decoration-color: var(--accent); text-decoration-thickness: 1px;
+      text-underline-offset: 3px; }
+    main p a:hover, main li a:hover { color: var(--accent); }
+    main p.byline a { color: var(--text-dim); text-decoration: none; }
+    code.formula { font-family: var(--font-display); font-size: 0.95em; color: var(--accent);
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
+      padding: 2px 7px; }
+    textarea { width: 100%; min-height: 96px; padding: 12px; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+      font-family: var(--font-display); font-size: 0.88rem; line-height: 1.7; resize: vertical; }
+    textarea:focus { outline: none; border-color: var(--accent); }
+    .calc-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 14px; }
+    .calc-row .input-field { max-width: 150px; }
+    .tbl-wrap { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.84rem; font-family: var(--font-display); }
+    table.data th { background: var(--bg); color: var(--accent); padding: 9px 12px; text-align: left;
+      border-bottom: 1px solid var(--border); white-space: nowrap; font-weight: 700; font-size: 0.75rem; }
+    table.data td { padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    table.data tbody tr:hover { background: var(--bg-hover); }
+    .mut { color: var(--text-dim); }
+    .grp { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 18px 0; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+    .stat-label { color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; }
+    .faq-q { cursor: pointer; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .faq-a { display: none; padding: 0 0 14px; color: var(--text-dim); max-width: 66ch; }
+    .faq-item.open .faq-a { display: block; }
+    @media (max-width: 640px) {
+      main h2 { font-size: 1.3rem; }
+      main h3 { font-size: 1.05rem; margin-top: 30px; }
+      main p { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/" class="active">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tool-psd" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
+
+<main class="container">
+ <section class="hero">
+ <p class="crumb"><a href="/">ABWex</a> / <a href="/tools/">Tools</a> / Pooled standard deviation calculator</p>
+ <h1>Pooled standard deviation calculator</h1>
+ <p class="byline">By Michael Lip, <a href="https://zovo.one">Zovo Tools</a>. Updated 2026-08-24.</p>
+ <p class="lede">Pooling two standard deviations is one line of algebra, and most calculators stop there. The number is only useful because of what it feeds, so this one also runs the test it feeds and tells you when pooling is the wrong thing to do.</p>
+ </section>
+
+ <section>
+ <h2>Enter your two groups</h2>
+ <p>Give each group a size, a mean and a standard deviation. If you have the raw numbers instead, paste them and the summary statistics are computed for you.</p>
+ <div class="grp">
+   <div>
+     <h3>Group A</h3>
+     <div class="input-field"><label for="nA">Sample size, n</label><input type="number" id="nA" value="30" min="2" step="1"></div>
+     <div class="input-field"><label for="mA">Mean</label><input type="number" id="mA" value="12.4" step="any"></div>
+     <div class="input-field"><label for="sA">Standard deviation</label><input type="number" id="sA" value="3.1" min="0" step="any"></div>
+     <div class="input-field"><label for="rA">Or paste raw values</label><textarea id="rA" placeholder="12.1, 13.4, 11.8 ..."></textarea></div>
+   </div>
+   <div>
+     <h3>Group B</h3>
+     <div class="input-field"><label for="nB">Sample size, n</label><input type="number" id="nB" value="34" min="2" step="1"></div>
+     <div class="input-field"><label for="mB">Mean</label><input type="number" id="mB" value="14.1" step="any"></div>
+     <div class="input-field"><label for="sB">Standard deviation</label><input type="number" id="sB" value="4.6" min="0" step="any"></div>
+     <div class="input-field"><label for="rB">Or paste raw values</label><textarea id="rB" placeholder="14.9, 13.2, 15.5 ..."></textarea></div>
+   </div>
+ </div>
+ <div class="calc-row">
+   <div class="input-field"><label for="alpha">Alpha</label><input type="number" id="alpha" value="0.05" min="0.0001" max="0.5" step="0.001"></div>
+   <button class="btn btn-primary" id="fill" type="button">Fill an example</button>
+   <button class="btn" id="clear" type="button">Clear</button>
+ </div>
+ <div id="out"></div>
+ </section>
+
+ <section>
+ <h2>The formula, and the assumption hiding inside it</h2>
+ <p>The pooled standard deviation is the square root of a weighted average of the two sample variances, weighted by degrees of freedom.</p>
+ <p><code class="formula">s_p = sqrt( ( (n1 - 1) s1^2 + (n2 - 1) s2^2 ) / (n1 + n2 - 2) )</code></p>
+ <p>Read the weighting carefully, because it is where the assumption lives. Each variance is weighted by its own degrees of freedom, so the larger sample dominates the pooled figure. That is the right thing to do only if both groups are drawn from populations with the same variance. Pooling is not an averaging convenience. It is a claim that one number describes the spread of both groups.</p>
+ <p>When that claim is false, the pooled value sits between the two real spreads and describes neither. The calculator above reports the ratio of the two sample variances so you can see how strong the claim is before you rely on it.</p>
+ </section>
+
+ <section>
+ <h2>What the pooled value is actually for</h2>
+ <p>On its own the pooled standard deviation answers no question. It exists to feed three things, and the calculator returns all three rather than making you carry the number somewhere else.</p>
+ <div class="tbl-wrap">
+ <table class="data">
+   <thead><tr><th>Quantity</th><th>Formula</th><th>What it tells you</th></tr></thead>
+   <tbody>
+     <tr><td>Student t</td><td>(m1 - m2) / (s_p sqrt(1/n1 + 1/n2))</td><td>Whether the difference in means is larger than sampling noise, assuming equal variances</td></tr>
+     <tr><td>Cohen's d</td><td>(m1 - m2) / s_p</td><td>The size of the difference in standard deviations, which is what meta-analysis and power calculations consume</td></tr>
+     <tr><td>Confidence interval</td><td>(m1 - m2) +/- t s_p sqrt(1/n1 + 1/n2)</td><td>The range of differences the data is consistent with</td></tr>
+   </tbody>
+ </table>
+ </div>
+ <p>Cohen's d is the reason most people arrive at a pooled standard deviation without knowing it. The denominator of d is the pooled value, so a wrong pooling assumption propagates straight into a reported effect size.</p>
+ </section>
+
+ <section>
+ <h2>When not to pool, and what to do instead</h2>
+ <p>If the two variances are far apart, the Student t test built on a pooled standard deviation reports a confidence it has not earned. The fix is not to pool at all. Welch's t test uses each group's own variance and adjusts the degrees of freedom, and it does not require the equal variance assumption.</p>
+ <p>The calculator runs both tests every time and prints them side by side, because the honest comparison is the point. If they agree, the pooling assumption did no harm. If they disagree, the assumption is doing the work rather than the data, and Welch is the one to report.</p>
+ <p>A common rule of thumb is that pooling is safe when the larger sample standard deviation is less than twice the smaller one. That rule is a convenience rather than a theorem, so the calculator prints the actual ratio and lets you judge it. Welch is the safer default in almost every case, and the cost of using it when variances really are equal is very small.</p>
+ </section>
+
+ <section>
+ <h2>How we know these numbers are right</h2>
+ <p>Every value on this page is computed in your browser from the inputs shown above. Nothing is typed into the copy by hand and nothing is sent to a server.</p>
+ <p>The routines are the same ones the rest of this site runs on, published under the MIT licence at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>. The t distribution tail uses a regularised incomplete beta function evaluated by continued fraction, which is the standard approach and is the same method <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html">scipy.stats.ttest_ind</a> documents for the two sample case.</p>
+ <p>SciPy documents the equal variance switch explicitly. Its <code class="formula">equal_var</code> argument defaults to true, which performs the standard independent two sample test that assumes equal population variances, and setting it to false performs Welch's t test, which does not assume equal population variance. That is the same choice this page surfaces, and it is surfaced rather than decided for you.</p>
+ <p>The Welch degrees of freedom use the Welch Satterthwaite equation, which is what both SciPy and R's <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html">t.test</a> use. R's documentation states that if the variance equality option is true then the pooled variance is used to estimate the variance, and otherwise the Welch approximation to the degrees of freedom is used.</p>
+ </section>
+
+ <section>
+ <h2>What has to be true for these numbers to hold</h2>
+ <ul>
+   <li>The two samples are independent. Paired or repeated measurements on the same units need a paired test instead, and pooling across them understates the noise.</li>
+   <li>Each sample is drawn at random from its population, and each observation counts once.</li>
+   <li>The sampling distribution of each mean is approximately normal. With small samples that requires the underlying data to be roughly normal, and with larger samples the central limit theorem does most of the work.</li>
+   <li>For the pooled figure specifically, the two population variances are equal. The calculator reports the observed variance ratio so you can see how well that holds.</li>
+   <li>A standard deviation entered as a population value rather than a sample value will bias the pooled result. This page expects sample standard deviations, with the n minus 1 denominator.</li>
+ </ul>
+ </section>
+
+ <section>
+ <h2>Common questions</h2>
+ <div class="faq-item"><div class="faq-q">Is the pooled standard deviation just the average of the two?</div>
+ <div class="faq-a">No, and treating it as one is the most common error. It is the square root of a weighted average of the two variances, not of the two standard deviations, and the weights are degrees of freedom rather than sample sizes. Squaring first, weighting, then taking the root gives a different answer from averaging the two standard deviations directly, and the gap grows as the two spreads diverge.</div></div>
+ <div class="faq-item"><div class="faq-q">Why is the denominator n1 plus n2 minus 2?</div>
+ <div class="faq-a">Each sample spends one degree of freedom estimating its own mean, so two are spent in total. Dividing by the remaining degrees of freedom is what makes the pooled variance an unbiased estimator of the common population variance.</div></div>
+ <div class="faq-item"><div class="faq-q">Can I pool more than two groups?</div>
+ <div class="faq-a">Yes, the same weighting extends to any number of groups, with a denominator of the total sample size minus the number of groups. That quantity is the root mean square error in an analysis of variance. This calculator handles the two group case, which is what a t test and Cohen's d need.</div></div>
+ <div class="faq-item"><div class="faq-q">Which test should I report if the two disagree?</div>
+ <div class="faq-a">Welch. It answers the same question without requiring the equal variance assumption, and when the variances really are equal it gives almost the same answer as the pooled test. If the two disagree, the disagreement is being produced by an assumption rather than by your data.</div></div>
+ </section>
+
+ <section>
+ <h2>Read this before you act on the output</h2>
+ <ul>
+   <li>Results are statistical estimates and not business or financial advice.</li>
+   <li>A statistically significant result is not the same as a difference that is worth acting on.</li>
+   <li>A p value is the probability of seeing data this extreme if the null hypothesis is true, it is not the probability that one group is better.</li>
+   <li>Worked examples use the inputs printed on the page and will not match your own data.</li>
+   <li>For a high stakes decision, have the design and the result reviewed by a qualified analyst.</li>
+ </ul>
+ <p class="mut">Related, <a href="/tools/false-discovery-rate-calculator/">false discovery rate calculator</a> for when you are comparing more than one metric at a time, and the <a href="/tools/t-test-calculator.html">t test calculator</a> for the single comparison case.</p>
+ </section>
+</main>
+
+ <footer class="site-footer">
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tool-psd">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
+ </footer>
+
+<script src="/assets/js/pooled-sd.js?v=3aebdab1" defer></script>
+<script defer src="/assets/js/nav.js?v=45f62fb3"></script>
+</body>
+</html>
