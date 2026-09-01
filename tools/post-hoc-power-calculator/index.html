@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Post hoc power calculator, observed power and what it can tell you</title>
+ <meta name="description" content="Compute the post hoc power of a finished A/B test from visitors and conversions, see the p value it restates, and read the confidence interval that answers the question observed power cannot. With a 10,000 replicate study of how noisy observed power really is.">
+ <meta name="theme-color" content="#0a0a0a">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="Post hoc power calculator, observed power and what it can tell you">
+ <meta property="og:description" content="Observed power from a finished test, the p value it restates, and the confidence interval that answers the real question.">
+ <meta property="og:url" content="https://abwex.com/tools/post-hoc-power-calculator/">
+ <meta property="og:site_name" content="Zovo Tools">
+ <link rel="canonical" href="https://abwex.com/tools/post-hoc-power-calculator/">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css?v=67278759">
+ <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"WebPage","@id":"https://abwex.com/tools/post-hoc-power-calculator/#webpage","url":"https://abwex.com/tools/post-hoc-power-calculator/","name":"Post hoc power calculator, observed power and what it can tell you","isPartOf":{"@id":"https://abwex.com/#website"}},
+    {"@type":"BreadcrumbList","@id":"https://abwex.com/tools/post-hoc-power-calculator/#breadcrumb","itemListElement":[
+      {"@type":"ListItem","position":1,"name":"ABWex","item":"https://abwex.com/"},
+      {"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},
+      {"@type":"ListItem","position":3,"name":"Post hoc power calculator"}]},
+    {"@type":"Article","@id":"https://abwex.com/tools/post-hoc-power-calculator/#article","headline":"Post hoc power calculator, observed power and what it can tell you","description":"Observed power computed from a finished two proportion test, the p value identity behind it, and a 10,000 replicate simulation of how noisy observed power is even when true power is known.","datePublished":"2026-09-01","dateModified":"2026-09-01","author":{"@id":"https://zovo.one/#michael-lip"},"mainEntityOfPage":{"@id":"https://abwex.com/tools/post-hoc-power-calculator/#webpage"}},
+    {"@type":"Dataset","@id":"https://abwex.com/tools/post-hoc-power-calculator/#dataset","name":"Observed power distribution under known true power, simulation study","description":"10,000 replicate two proportion A/B tests per cell at four true power levels, 0.20, 0.50, 0.80 and 0.95, recording the distribution of post hoc power computed from each replicate's own observed rates. Seeded and reproducible.","creator":{"@id":"https://zovo.one/#michael-lip"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://raw.githubusercontent.com/theluckystrike/abwex.com/main/datasets/posthoc_power_simulation.json"}},
+    {"@type":"Person","@id":"https://zovo.one/#michael-lip","name":"Michael Lip","url":"https://zovo.one","description":"Independent calculator builder, operator of ABWex and the Zovo Tools network."}
+  ]}
+  </script>
+ <style>
+    .lede { color: var(--text-dim); font-size: 1.05rem; }
+    .byline { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-display); margin-bottom: 28px; }
+    .byline a { color: var(--text-dim); }
+    .crumb { color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-display); margin-bottom: 12px; }
+    main section { margin-bottom: 72px; }
+    main section.hero { margin-bottom: 0; }
+    main section:last-of-type { margin-bottom: 40px; }
+    main h2 { font-size: 1.5rem; margin-bottom: 18px; }
+    main h3 { font-size: 1.15rem; margin: 36px 0 10px; }
+    main p { margin-bottom: 20px; max-width: 66ch; }
+    main ul, main ol { max-width: 66ch; }
+    main li { margin-bottom: 8px; }
+    main p a, main li a { color: var(--text); text-decoration: underline;
+      text-decoration-color: var(--accent); text-decoration-thickness: 1px;
+      text-underline-offset: 3px; }
+    main p a:hover, main li a:hover { color: var(--accent); }
+    main p.byline a { color: var(--text-dim); text-decoration: none; }
+    code.formula { font-family: var(--font-display); font-size: 0.95em; color: var(--accent);
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
+      padding: 2px 7px; }
+    .calc-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 14px; }
+    .calc-row .input-field { max-width: 170px; }
+    .tbl-wrap { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.84rem; font-family: var(--font-display); }
+    table.data caption { text-align: left; color: var(--text-dim); font-size: 0.78rem;
+      font-family: var(--font-body); padding-bottom: 8px; caption-side: top; }
+    table.data th { background: var(--bg); color: var(--accent); padding: 9px 12px; text-align: left;
+      border-bottom: 1px solid var(--border); white-space: nowrap; font-weight: 700; font-size: 0.75rem; }
+    table.data td { padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    table.data tbody tr:hover { background: var(--bg-hover); }
+    .mut { color: var(--text-dim); }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 18px 0; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+    .stat-label { color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; }
+    .faq-q { cursor: pointer; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .faq-a { display: none; padding: 0 0 14px; color: var(--text-dim); max-width: 66ch; }
+    .faq-item.open .faq-a { display: block; }
+    @media (max-width: 640px) {
+      main h2 { font-size: 1.3rem; }
+      main h3 { font-size: 1.05rem; margin-top: 30px; }
+      main p { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/" class="active">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tool-posthoc" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
+
+<main class="container">
+ <div class="crumb"><a href="/">ABWex</a> / <a href="/tools/">Tools</a> / Post hoc power calculator</div>
+
+ <section class="hero" style="text-align:left;padding:24px 0 8px;">
+ <h1>Post hoc power <span>calculator</span></h1>
+ </section>
+
+ <p class="byline">By Michael Lip, <a href="https://zovo.one">Zovo Tools</a>. Updated 2026-09-01.</p>
+
+ <p class="lede">Enter the visitors and conversions from a finished test and this returns its observed power, the number reviewers ask for after a null result. It also shows the p value that number secretly restates, and the confidence interval that answers the question people actually mean to ask. Everything runs in your browser and nothing is uploaded.</p>
+
+ <section>
+ <h2>Your test result</h2>
+ <div class="calc-row">
+   <div class="input-field"><label for="na">Visitors A</label><input type="number" id="na" value="1000" min="1" step="1"></div>
+   <div class="input-field"><label for="ca">Conversions A</label><input type="number" id="ca" value="100" min="0" step="1"></div>
+   <div class="input-field"><label for="nb">Visitors B</label><input type="number" id="nb" value="1000" min="1" step="1"></div>
+   <div class="input-field"><label for="cb">Conversions B</label><input type="number" id="cb" value="120" min="0" step="1"></div>
+   <div class="input-field"><label for="alpha">Alpha</label><input type="number" id="alpha" value="0.05" min="0.0001" max="0.5" step="0.001"></div>
+ </div>
+ <div id="out"><div class="stat-grid"><div class="stat-card"><div class="stat-value sig-red">0.2981</div><div class="stat-label">observed power at the observed effect</div></div><div class="stat-card"><div class="stat-value">0.1529</div><div class="stat-label">two sided p value</div></div><div class="stat-card"><div class="stat-value">1.4293</div><div class="stat-label">z statistic, pooled</div></div><div class="stat-card"><div class="stat-value">-0.74 to 4.74 pp</div><div class="stat-label">95% CI for the difference</div></div></div><div class="tbl-wrap"><table class="data"><thead><tr><th>Arm</th><th>Visitors</th><th>Conversions</th><th>Rate</th></tr></thead><tbody><tr><td>A</td><td>1000</td><td>100</td><td>10.00%</td></tr><tr><td>B</td><td>1000</td><td>120</td><td>12.00%</td></tr></tbody></table></div><p>Observed power 0.2981 is another way of writing p = 0.1529. The two numbers are locked together by the formula on this page, so the power figure adds nothing the p value did not already say. Low observed power here does not show the test was underpowered, it restates that the result was not significant. To judge the design, read the confidence interval against the smallest lift that would matter to you.</p></div>
+ <p class="mut">The worked example above, 100 of 1,000 against 120 of 1,000, is a 20 percent relative lift that still comes out not significant. Its observed power of 0.2981 was checked against statsmodels, which returns the same value to machine precision for the pooled formula this page uses.</p>
+ </section>
+
+ <section>
+ <h2>The shortcut, straight from the p value</h2>
+ <p>You do not need the raw counts to compute observed power, which is the first hint that something is off with the request. For a two sided z test the p value alone fixes it.</p>
+ <div class="calc-row">
+   <div class="input-field"><label for="pin">Two sided p value</label><input type="number" id="pin" value="0.05" min="0.00001" max="0.99999" step="0.001"></div>
+   <div class="input-field"><label for="palpha">Alpha</label><input type="number" id="palpha" value="0.05" min="0.0001" max="0.5" step="0.001"></div>
+ </div>
+ <div id="pout"><p>A two sided p value of 0.0500 at alpha 0.050 always converts to an observed power of 0.5000, whatever the sample size, the metric or the platform. No data beyond the p value went into that number, which is the whole problem with it.</p></div>
+ <div class="tbl-wrap"><table class="data">
+ <thead><tr><th>Two sided p value</th><th>Observed power at alpha 0.05</th></tr></thead>
+ <tbody>
+ <tr><td>0.001</td><td>0.9083</td></tr>
+ <tr><td>0.01</td><td>0.7310</td></tr>
+ <tr><td>0.02</td><td>0.6430</td></tr>
+ <tr><td>0.03</td><td>0.5832</td></tr>
+ <tr><td>0.05</td><td>0.5000</td></tr>
+ <tr><td>0.10</td><td>0.3765</td></tr>
+ <tr><td>0.20</td><td>0.2493</td></tr>
+ <tr><td>0.30</td><td>0.1792</td></tr>
+ <tr><td>0.50</td><td>0.1035</td></tr>
+ <tr><td>0.80</td><td>0.0574</td></tr>
+ </tbody></table></div>
+ <p>A test that lands exactly at p equal to alpha always reports an observed power of one half, and every nonsignificant result reports less. Hoenig and Heisey worked through this identity in The American Statistician in 2001, in a paper titled The Abuse of Power, and it is the reason a request to compute observed power after a null result cannot produce new information. Goodman and Berlin made the same argument for clinical trials in the Annals of Internal Medicine in 1994.</p>
+ </section>
+
+ <section>
+ <h2>What this calculator computes</h2>
+ <p>Post hoc power, also sold as observed, achieved or retrospective power, is the power the test would have had if the true difference between arms were exactly the difference you happened to observe. For a two proportion z test with observed rates p1 and p2 and arm sizes n1 and n2, the calculator evaluates</p>
+ <p><code class="formula">power = &Phi;((|p1 &minus; p2| &minus; z<sub>&alpha;/2</sub>&middot;SE&#8320;) / SE&#8321;) + &Phi;((&minus;|p1 &minus; p2| &minus; z<sub>&alpha;/2</sub>&middot;SE&#8320;) / SE&#8321;)</code></p>
+ <p>where SE&#8320; pools the two arms under the null hypothesis and SE&#8321; keeps them separate under the alternative.</p>
+ <p><code class="formula">SE&#8320; = &radic;(p&#772;(1 &minus; p&#772;)(1/n1 + 1/n2))</code></p>
+ <p><code class="formula">SE&#8321; = &radic;(p1(1 &minus; p1)/n1 + p2(1 &minus; p2)/n2)</code></p>
+ <p>The second term in the power formula is the chance of rejecting on the wrong side. It only matters at tiny effects, but keeping it makes the formula exact under the normal approximation rather than nearly exact.</p>
+ <p>The same arithmetic read in the other direction is what the p value converter above does. Observed power is a monotone function of the p value and of nothing else, which is why the two widgets on this page always agree.</p>
+ </section>
+
+ <section>
+ <h2>How noisy observed power is, measured</h2>
+ <p>The identity says observed power adds nothing beyond the p value. A separate question is how far it strays from the true power of the design, and that we measured rather than argued. We fixed a real design, a 10 percent baseline against a 12 percent treatment at alpha 0.05, set the arm size to hit each target power exactly, then simulated 10,000 complete replicate experiments per cell and computed observed power from each replicate's own data.</p>
+ <div class="stat-grid">
+ <div class="stat-card"><div class="stat-value sig-red">0.21 to 0.99</div><div class="stat-label">middle 90% of observed power when true power is 0.80</div></div>
+ <div class="stat-card"><div class="stat-value sig-red">29%</div><div class="stat-label">replicates landing within 0.10 of the true 0.80</div></div>
+ <div class="stat-card"><div class="stat-value">0.5000</div><div class="stat-label">observed power at p = 0.05, always</div></div>
+ <div class="stat-card"><div class="stat-value">10,000</div><div class="stat-label">replicates per cell, seed 20260901</div></div>
+ </div>
+ <div class="tbl-wrap"><table class="data">
+ <caption>Observed power across 10,000 replicates per cell. Two proportion test, 10% vs 12%, alpha 0.05. The share significant column recovering the true power is the check that the simulation is honest.</caption>
+ <thead><tr><th>n per arm</th><th>True power</th><th>5th pct</th><th>Median</th><th>95th pct</th><th>Within 0.10 of truth</th><th>Share significant</th></tr></thead>
+ <tbody>
+ <tr><td>609</td><td>0.20</td><td>0.051</td><td>0.200</td><td>0.789</td><td>33.9%</td><td>19.7%</td></tr>
+ <tr><td>1,881</td><td>0.50</td><td>0.069</td><td>0.500</td><td>0.953</td><td>19.5%</td><td>49.9%</td></tr>
+ <tr><td>3,841</td><td>0.80</td><td>0.205</td><td>0.799</td><td>0.994</td><td>28.7%</td><td>79.3%</td></tr>
+ <tr><td>6,358</td><td>0.95</td><td>0.501</td><td>0.950</td><td>0.999</td><td>72.6%</td><td>95.0%</td></tr>
+ </tbody></table></div>
+ <p>Read the 0.80 row. The design genuinely had an 80 percent chance of detecting the true 2 point lift, yet a single run of it reports an observed power anywhere from 0.21 to 0.99 nine times out of ten, and lands within 0.10 of the truth under a third of the time. The median tracks the truth, but you only ever get one draw, and the draw is wild. A number this noisy cannot audit your design after the fact, which is the practical half of the case against it, the identity above being the theoretical half.</p>
+ <p>At true power 0.50 the spread is worst, the middle 90 percent of reported values covering nearly the whole unit interval. Observed power is least informative exactly where a test is most likely to have produced an ambiguous result, which is when people reach for it.</p>
+ </section>
+
+ <section>
+ <h2>What to do instead of quoting observed power</h2>
+ <p>The question behind a request for post hoc power is usually, did this test have a fair chance of finding an effect worth acting on. Two tools answer that and neither is observed power.</p>
+ <p>First, the confidence interval you already have. The worked example at the top spans a 0.74 point drop to a 4.74 point gain. If lifts below 2 points would not have been worth shipping anyway, the interval failing to exclude them is the finding, stated in effect units rather than laundered through a power number. A wide interval that still contains every effect you care about says the test was uninformative. A tight interval hugging zero says the effect is small, which is an answer, not a failure.</p>
+ <p>Second, design stage power at a minimally interesting effect you choose before seeing data. That is a legitimate calculation, and it is the one our <a href="/tools/power-analysis-calculator.html">power analysis calculator</a> performs, with the required sample size falling out of it. The <a href="/tools/mde-calculator/">MDE calculator</a> inverts it, telling you the smallest lift a sample you already have could reliably detect. For the same worked design as our simulation, 10 percent against 12 percent at alpha 0.05, the sample needed for 80 percent power is 3,841 per arm, which both that page and the table above agree on.</p>
+ <p>If the vocabulary here is new, the <a href="/tools/statistical-power-visualizer">statistical power visualizer</a> draws the two error regions and lets you drag the pieces, and the <a href="/tools/confidence-interval-calculator.html">confidence interval calculator</a> handles the interval arithmetic for rates and means beyond the two arm case.</p>
+ </section>
+
+ <section>
+ <h2>How we know these numbers are right</h2>
+ <p>Every figure this page displays is computed in your browser from what you type, by MIT licensed code at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>. Nothing is typed into the copy by hand. The static numbers above come from the committed dataset, and the calculator recomputes live values with the same formula.</p>
+ <p>The formula was cross checked against statsmodels power_proportions_2indep on three reference cases before this page was written, agreeing to machine precision, differences on the order of 1e-16. Type any row into the calculator and compare.</p>
+ <div class="tbl-wrap"><table class="data">
+ <caption>Reference cases, alpha 0.05, equal arms, both implementations agree to 4 decimals.</caption>
+ <thead><tr><th>Rate A</th><th>Rate B</th><th>n per arm</th><th>Observed power</th></tr></thead>
+ <tbody>
+ <tr><td>10%</td><td>12%</td><td>1,000</td><td>0.2981</td></tr>
+ <tr><td>10%</td><td>12%</td><td>200</td><td>0.0978</td></tr>
+ <tr><td>10%</td><td>10.5%</td><td>5,000</td><td>0.1307</td></tr>
+ </tbody></table></div>
+ <p>The simulation study is seeded and reproducible. The generator script and its output are committed at <a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/build_posthoc_power_simulation.py">datasets/build_posthoc_power_simulation.py</a> and <a href="https://github.com/theluckystrike/abwex.com/blob/main/datasets/posthoc_power_simulation.json">datasets/posthoc_power_simulation.json</a>. The built in check is the last table column, the share of replicates reaching significance recovers each cell's true power to within half a point.</p>
+ </section>
+
+ <section>
+ <h2>What has to be true for these numbers to hold</h2>
+ <ul>
+   <li>Each visitor is counted once, converts at most once, and lands in exactly one arm. Repeat visitors or shared sessions between arms break the independence the z test assumes.</li>
+   <li>Counts are large enough for the normal approximation, as a working rule at least ten conversions and ten non conversions in each arm. Below that, exact methods behave better.</li>
+   <li>The test ran to its planned size. If you peeked and stopped early, the p value is already biased, and observed power inherits every problem the p value has.</li>
+   <li>Alpha here is two sided. A one sided convention changes both the p value and the power at a given z.</li>
+   <li>The simulation table is for the specific design stated above it. Other baselines and lifts change the numbers, though not the shape of the story.</li>
+ </ul>
+ </section>
+
+ <section>
+ <h2>Common questions</h2>
+ <div class="faq-item"><div class="faq-q">A reviewer asked for post hoc power. What do I send?</div>
+ <div class="faq-a">Send the confidence interval for the effect, plus a design stage power calculation at the smallest effect worth caring about in your setting, stated before the data. That pair answers what the reviewer wants to know, whether the study could have found something worth finding. If the venue insists on the observed power number itself, this page computes it, and the Hoenig and Heisey citation beside it explains what it does and does not mean.</div></div>
+ <div class="faq-item"><div class="faq-q">My test was significant. Is high observed power good news?</div>
+ <div class="faq-a">It is the same news restated. Any significant result reports observed power above one half, because both are functions of the same z statistic. High observed power after significance neither strengthens the finding nor protects it from being a false positive, and a significant result from a genuinely underpowered design overstates the true effect on average, which is the winner's curse.</div></div>
+ <div class="faq-item"><div class="faq-q">Is observed power ever above one half for a null result?</div>
+ <div class="faq-a">Not at the conventional two sided alpha of 0.05 with the observed effect plugged in. Power one half sits exactly at p equal to alpha, and every larger p maps below it. If a report shows a null result with observed power 0.80, either the power was computed at some other effect size than the observed one, which is a design calculation wearing the wrong name, or something is wrong.</div></div>
+ <div class="faq-item"><div class="faq-q">Why does this page still offer the calculator, given all this?</div>
+ <div class="faq-a">Because the number gets requested whether or not it should, and computing it correctly beside its interpretation beats computing it wrongly somewhere else. The pooled formula here matches statsmodels to machine precision, so at minimum the number you are asked for arrives right, with its limits attached.</div></div>
+ <div class="faq-item"><div class="faq-q">Does this work for revenue or other non binary metrics?</div>
+ <div class="faq-a">No. This page is for conversion style yes or no outcomes compared between two arms. Continuous metrics need the t test machinery, where the same critique of observed power applies through the noncentral t distribution rather than the normal.</div></div>
+ </section>
+
+ <section>
+ <h2>Read this before you act on the output</h2>
+ <ul>
+   <li>Results are statistical estimates and not business or financial advice.</li>
+   <li>Observed power cannot rescue or condemn a finished test. Decisions should rest on the effect estimate and its interval.</li>
+   <li>The normal approximation degrades with tiny arms or rates near 0 or 100 percent, and the calculator says so rather than printing a number there.</li>
+   <li>Worked examples use the inputs printed on the page and will not match your own test.</li>
+   <li>For a decision with real stakes, have the analysis reviewed by a qualified statistician.</li>
+ </ul>
+ <p class="mut">Related, <a href="/tools/power-analysis-calculator.html">power analysis calculator</a> for the version of this question that has an answer, and the <a href="/tools/false-discovery-rate-calculator/">false discovery rate calculator</a> for what happens to significant results when you test many metrics at once.</p>
+ </section>
+</main>
+
+ <footer class="site-footer">
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">&copy; 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tool-posthoc">Zovo</a> &middot; 47/500 founding spots</div>
+ </div>
+ </footer>
+
+<script src="/assets/js/posthoc-power.js?v=cb32df10" defer></script>
+<script defer src="/assets/js/nav.js?v=45f62fb3"></script>
+</body>
+</html>

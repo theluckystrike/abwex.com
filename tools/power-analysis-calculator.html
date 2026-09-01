@@ -241,6 +241,7 @@
  <p>For significance level, 0.05 is the industry default. Use 0.01 for high-stakes tests where false positives are costly (pricing changes, core product modifications). Use 0.10 for exploratory tests where you are willing to accept more false positives in exchange for detecting smaller effects with less traffic.</p>
  <p>For power, 0.80 is standard. Use 0.90 when the cost of missing a real effect is high, for example, when testing a change that took months to develop and cannot easily be re-tested. Use 0.70 only for early-stage screening tests where you plan to follow up with a confirmatory test.</p>
  <p>For MDE, think for business impact. Calculate the smallest improvement that would justify shipping the change, accounting for implementation cost, maintenance burden, and opportunity cost. If a 2% relative lift in conversion rate translates to $500/month in additional revenue but the implementation costs $10,000, the break-even point is 20 months, probably not worth it. Set your MDE at the threshold where the economics become clearly favorable.</p>
+ <p>All of this belongs before the test runs. If someone asks you to compute power after a test has finished, from the effect the test happened to observe, that is a different number with well known problems, see the <a href="/tools/post-hoc-power-calculator/">post hoc power calculator</a> for what observed power can and cannot tell you.</p>
  </section>
 
  <div class="last-updated"><time datetime="2026-05-25">Last updated: May 25, 2026</time></div>

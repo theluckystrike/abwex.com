@@ -1,0 +1,114 @@
+{
+ "seed": 20260901,
+ "generator": "build_posthoc_power_simulation.py",
+ "date": "2026-09-01",
+ "alpha": 0.05,
+ "baseline_p1": 0.1,
+ "treatment_p2": 0.12,
+ "reps_per_cell": 10000,
+ "method": "two-proportion z-test, pooled variance under H0, unpooled under H1",
+ "cells": [
+  {
+   "n_per_arm": 609,
+   "true_power": 0.2001,
+   "reps": 10000,
+   "observed_power": {
+    "p05": 0.051,
+    "p25": 0.0872,
+    "p50": 0.1996,
+    "p75": 0.4291,
+    "p95": 0.7888,
+    "mean": 0.2866
+   },
+   "share_within_0.10_of_true": 0.3386,
+   "share_significant": 0.1967
+  },
+  {
+   "n_per_arm": 1881,
+   "true_power": 0.5002,
+   "reps": 10000,
+   "observed_power": {
+    "p05": 0.0693,
+    "p25": 0.2419,
+    "p50": 0.4997,
+    "p75": 0.7517,
+    "p95": 0.9527,
+    "mean": 0.5019
+   },
+   "share_within_0.10_of_true": 0.1952,
+   "share_significant": 0.4993
+  },
+  {
+   "n_per_arm": 3841,
+   "true_power": 0.8,
+   "reps": 10000,
+   "observed_power": {
+    "p05": 0.2052,
+    "p25": 0.5595,
+    "p50": 0.7994,
+    "p75": 0.936,
+    "p95": 0.9939,
+    "mean": 0.7218
+   },
+   "share_within_0.10_of_true": 0.2875,
+   "share_significant": 0.793
+  },
+  {
+   "n_per_arm": 6358,
+   "true_power": 0.95,
+   "reps": 10000,
+   "observed_power": {
+    "p05": 0.5006,
+    "p25": 0.8322,
+    "p50": 0.9497,
+    "p75": 0.9895,
+    "p95": 0.9995,
+    "mean": 0.8771
+   },
+   "share_within_0.10_of_true": 0.726,
+   "share_significant": 0.9501
+  }
+ ],
+ "p_value_to_observed_power": [
+  {
+   "p_value": 0.001,
+   "observed_power": 0.9083
+  },
+  {
+   "p_value": 0.01,
+   "observed_power": 0.731
+  },
+  {
+   "p_value": 0.02,
+   "observed_power": 0.643
+  },
+  {
+   "p_value": 0.03,
+   "observed_power": 0.5832
+  },
+  {
+   "p_value": 0.05,
+   "observed_power": 0.5
+  },
+  {
+   "p_value": 0.1,
+   "observed_power": 0.3765
+  },
+  {
+   "p_value": 0.2,
+   "observed_power": 0.2493
+  },
+  {
+   "p_value": 0.3,
+   "observed_power": 0.1792
+  },
+  {
+   "p_value": 0.5,
+   "observed_power": 0.1035
+  },
+  {
+   "p_value": 0.8,
+   "observed_power": 0.0574
+  }
+ ]
+}
