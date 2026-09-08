@@ -1,0 +1,252 @@
+{
+  "method": "exact rational complete enumeration, probability ordering, fixed margins",
+  "scipy_version": "1.13.1",
+  "fixtures": [
+    {
+      "name": "2x3_sparse",
+      "table": [
+        [
+          1,
+          4,
+          0
+        ],
+        [
+          3,
+          0,
+          2
+        ]
+      ],
+      "row_margins": [
+        5,
+        5
+      ],
+      "column_margins": [
+        4,
+        4,
+        2
+      ],
+      "total": 10,
+      "feasible_tables": 13,
+      "extreme_tables": 6,
+      "observed_probability": 0.015873015873015872,
+      "observed_probability_fraction": "1/63",
+      "p_value": 0.07936507936507936,
+      "p_value_fraction": "5/63",
+      "scipy_pmf_sum_p_value": 0.07936507936507924,
+      "probability_mass_sum_exact": "1"
+    },
+    {
+      "name": "2x3_moderate",
+      "table": [
+        [
+          8,
+          2,
+          1
+        ],
+        [
+          1,
+          5,
+          4
+        ]
+      ],
+      "row_margins": [
+        11,
+        10
+      ],
+      "column_margins": [
+        9,
+        7,
+        5
+      ],
+      "total": 21,
+      "feasible_tables": 44,
+      "extreme_tables": 19,
+      "observed_probability": 0.0026792093355560848,
+      "observed_probability_fraction": "45/16796",
+      "p_value": 0.01583710407239819,
+      "p_value_fraction": "7/442",
+      "scipy_pmf_sum_p_value": 0.015837104072398096,
+      "probability_mass_sum_exact": "1"
+    },
+    {
+      "name": "2x3_balanced",
+      "table": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      "row_margins": [
+        6,
+        6
+      ],
+      "column_margins": [
+        4,
+        4,
+        4
+      ],
+      "total": 12,
+      "feasible_tables": 19,
+      "extreme_tables": 19,
+      "observed_probability": 0.23376623376623376,
+      "observed_probability_fraction": "18/77",
+      "p_value": 1.0,
+      "p_value_fraction": "1",
+      "scipy_pmf_sum_p_value": 0.9999999999999973,
+      "probability_mass_sum_exact": "1"
+    },
+    {
+      "name": "3x3_diagonal",
+      "table": [
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3
+        ]
+      ],
+      "row_margins": [
+        3,
+        3,
+        3
+      ],
+      "column_margins": [
+        3,
+        3,
+        3
+      ],
+      "total": 9,
+      "feasible_tables": 55,
+      "extreme_tables": 6,
+      "observed_probability": 0.0005952380952380953,
+      "observed_probability_fraction": "1/1680",
+      "p_value": 0.0035714285714285713,
+      "p_value_fraction": "1/280",
+      "scipy_pmf_sum_p_value": 0.0035714285714285744,
+      "probability_mass_sum_exact": "1"
+    },
+    {
+      "name": "3x3_mixed",
+      "table": [
+        [
+          2,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          1
+        ],
+        [
+          1,
+          0,
+          2
+        ]
+      ],
+      "row_margins": [
+        3,
+        3,
+        3
+      ],
+      "column_margins": [
+        3,
+        3,
+        3
+      ],
+      "total": 9,
+      "feasible_tables": 55,
+      "extreme_tables": 36,
+      "observed_probability": 0.01607142857142857,
+      "observed_probability_fraction": "9/560",
+      "p_value": 0.29285714285714287,
+      "p_value_fraction": "41/140",
+      "scipy_pmf_sum_p_value": 0.2928571428571432,
+      "probability_mass_sum_exact": "1"
+    },
+    {
+      "name": "3x3_asymmetric",
+      "table": [
+        [
+          4,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "row_margins": [
+        5,
+        4,
+        3
+      ],
+      "column_margins": [
+        5,
+        4,
+        3
+      ],
+      "total": 12,
+      "feasible_tables": 95,
+      "extreme_tables": 56,
+      "observed_probability": 0.006493506493506494,
+      "observed_probability_fraction": "1/154",
+      "p_value": 0.170995670995671,
+      "p_value_fraction": "79/462",
+      "scipy_pmf_sum_p_value": 0.1709956709956706,
+      "probability_mass_sum_exact": "1"
+    },
+    {
+      "name": "2x2_compatibility",
+      "table": [
+        [
+          1,
+          9
+        ],
+        [
+          11,
+          3
+        ]
+      ],
+      "row_margins": [
+        10,
+        14
+      ],
+      "column_margins": [
+        12,
+        12
+      ],
+      "total": 24,
+      "feasible_tables": 11,
+      "extreme_tables": 4,
+      "observed_probability": 0.0013460761879122358,
+      "observed_probability_fraction": "10/7429",
+      "p_value": 0.0027594561852200836,
+      "p_value_fraction": "41/14858",
+      "scipy_pmf_sum_p_value": 0.0027594561852201235,
+      "probability_mass_sum_exact": "1"
+    }
+  ]
+}

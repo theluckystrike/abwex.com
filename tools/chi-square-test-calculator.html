@@ -78,7 +78,7 @@
  <section class="hero">
  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>Chi-Square Test Calculator</span></nav>
  <h1>Chi-Square Test <span>Calculator</span></h1>
- <p>Enter observed frequencies in the table below. The calculator computes expected frequencies, the chi-square statistic, degrees of freedom, and exact p-value. Adjust the table size from 2&times;2 to 5&times;5. All computation runs in your browser. No data is sent anywhere.</p>
+ <p>Enter observed frequencies in the table below. The calculator computes expected frequencies, the chi-square statistic, degrees of freedom, and approximate p-value. Adjust the table size from 2&times;2 to 5&times;5. All computation runs in your browser. No data is sent anywhere.</p>
  </section>
 
  <section class="tool-section" style="max-width:960px;margin:0 auto 2rem;">
@@ -210,6 +210,8 @@
  <h2>When the Chi-Square Approximation Fails</h2>
  <p>The chi-square distribution is an approximation that becomes accurate when expected frequencies are not too small. The standard rule of thumb is that all expected cell frequencies should be 5 or greater. When this condition is violated, the chi-square p-value is unreliable, typically anticonservative, meaning it reports more significance than truly exists. This calculator flags cells with expected frequency below 5 in orange to alert you to this issue.</p>
  <p>When you have a 2&times;2 table with small expected frequencies, consider applying Yates' continuity correction, using Fisher's exact test, or collecting more data before running the test. For larger tables, collapsing categories with small counts is often appropriate. The key insight is that the chi-square test requires adequate data in every cell, not just in total. A large N does not protect against small expected frequencies in sparse cells.</p>
+
+ <p>For an inspectable fixed-margin exact calculation, use the <a href="/tools/fisher-freeman-halton-calculator/">Fisher–Freeman–Halton calculator</a>. It displays the contributing probability tail, verifies complete enumeration and withholds an exact result when the browser computation limit is reached.</p>
 
  <h2>Chi-Square Test vs. Z-Test for A/B Tests</h2>
  <p>For a standard A/B test comparing two conversion rates, both the two-proportion Z-test and the chi-square test of independence give identical results. The chi-square statistic equals the Z-statistic squared: &chi;&sup2; = Z&sup2;. The p-values are identical. The Z-test is more commonly reported because it supports directional (one-tailed) hypotheses and more directly expresses the difference between proportions. Use the chi-square test when you have more than two variants, when your outcome variable has more than two categories, or when comparing distributions across multiple groups simultaneously.</p>
