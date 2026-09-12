@@ -170,14 +170,15 @@
   }
   function compareRationalToDecimal(numeratorText,denominatorText,decimalText){
     const raw=String(decimalText===undefined?'':decimalText).trim();
-    const match=raw.match(/^\+?(\d+)(?:\.(\d*))?(?:[eE]([+-]?\d+))?$/);
+    const match=raw.match(/^\+?(?:(\d+)(?:\.(\d*))?|\.(\d+))(?:[eE]([+-]?\d+))?$/);
     if(!match||raw.length>64) return null;
-    const fraction=match[2]||'',exponent=Number(match[3]||0)-fraction.length;
+    const integer=match[1]||'0',fraction=match[2]===undefined?(match[3]||''):match[2];
+    const exponent=Number(match[4]||0)-fraction.length;
     if(!Number.isSafeInteger(exponent)||Math.abs(exponent)>1000) return null;
     let numerator,denominator,decimalInteger;
     try{
       numerator=BigInt(numeratorText);denominator=BigInt(denominatorText);
-      decimalInteger=BigInt((match[1]+fraction).replace(/^0+(?=\d)/,'')||'0');
+      decimalInteger=BigInt((integer+fraction).replace(/^0+(?=\d)/,'')||'0');
     }catch(error){return null;}
     if(numerator<0n||denominator<=0n||decimalInteger<0n) return null;
     const power=10n**BigInt(Math.abs(exponent));
