@@ -33,11 +33,14 @@
     if(rows.some(x=>!x)||cols.some(x=>!x))
       return invalid('Every row and column needs a positive margin; no categories were removed.');
     const caps=prepareCaps(options);
-    return caps.status==='invalid'?caps:{R,C,N,rows,cols,caps};
+    return caps.status==='invalid'?caps:{R,C,N,rows,cols,caps,alphaText:options.alphaText};
   }
   function initialize(input,p){
     const {R,C,N,rows,cols,caps}=p,fact=[1n],logFact=[0];
     for(let i=1;i<=N;i++){fact[i]=fact[i-1]*BigInt(i);logFact[i]=logFact[i-1]+Math.log(i);}
+    const rowFactorials=rows.reduce((v,x)=>v*fact[x],1n);
+    const columnFactorials=cols.reduce((v,x)=>v*fact[x],1n);
+    const referenceDenominator=fact[N]/rowFactorials;
     const constant=rows.reduce((s,x)=>s+logFact[x],0)+cols.reduce((s,x)=>s+logFact[x],0)-logFact[N];
     let observedDenominator=1n,observedLog=0,chiSquare=0;
     for(const row of input) for(const x of row){observedDenominator*=fact[x];observedLog+=logFact[x];}
@@ -46,26 +49,41 @@
     const base={method:'Fixed-margins exact enumeration; probability ordering with exact factorial-product ties',
       total:N,rowMargins:rows,columnMargins:cols,observedProbability:Math.exp(constant-observedLog),
       expected,chiSquare,df:(R-1)*(C-1),chiSquarePValue:chiSquareSurvival(chiSquare,(R-1)*(C-1)),limits:caps};
-    return {...p,base,fact,logFact,constant,observedDenominator,rr:rows.slice(),cc:cols.slice(),
+    return {...p,base,fact,logFact,constant,observedDenominator,columnFactorials,referenceDenominator,
+      referenceWeight:0n,tailWeight:0n,rr:rows.slice(),cc:cols.slice(),
       cells:Array(R*C).fill(0),stack:[],pos:0,nodes:0,tableCount:0,tailCount:0,
       mass:0,massComp:0,tailMass:0,tailComp:0,tailExamples:[]};
   }
   function validProbabilities(s){
     return Number.isFinite(s.mass)&&Math.abs(s.mass-1)<=1e-10&&
       Number.isFinite(s.tailMass)&&s.tailMass>=0&&s.tailMass<=1+1e-10&&
-      Number.isFinite(s.base.observedProbability)&&s.base.observedProbability>0&&s.base.observedProbability<=1+1e-10;
+      Number.isFinite(s.base.observedProbability)&&s.base.observedProbability>0&&s.base.observedProbability<=1+1e-10&&
+      s.referenceWeight===s.referenceDenominator&&s.tailWeight>=0n&&s.tailWeight<=s.referenceDenominator;
   }
   function finish(s,complete,reason){
     const out={...s.base,status:complete?'complete':'incomplete',complete,nodeCount:s.nodes,
       tableCount:s.tableCount,tailCount:s.tailCount,massSum:s.mass,tailExamples:s.tailExamples,
-      examplesDescription:'First at most 12 included tables in deterministic lexicographic enumeration; not the full tail.'};
+      examplesDescription:'Up to 12 included tables in deterministic lexicographic enumeration; this is the full tail only when tailCount is 12 or fewer.'};
     if(!complete){out.error=reason+' No exact p-value is reported because enumeration is incomplete.';return out;}
     const valid=validProbabilities(s);
     if(!valid){
       out.status='numerical-error';out.complete=false;out.enumerationComplete=true;
       out.error='Enumeration finished, but the probability-mass or numeric-range check failed. No p-value is reported.';
-    }else out.pValue=Math.min(1,s.tailMass);
+    }else{
+      const divisor=gcdBigInt(s.tailWeight,s.referenceDenominator);
+      out.pValueNumerator=(s.tailWeight/divisor).toString();out.pValueDenominator=(s.referenceDenominator/divisor).toString();
+      out.pValue=s.tailWeight===s.referenceDenominator?1:Number(s.tailWeight)/Number(s.referenceDenominator);
+      const comparison=compareRationalToDecimal(out.pValueNumerator,out.pValueDenominator,s.alphaText);
+      if(comparison!==null){out.alphaComparison=comparison;out.exactDecision=comparison<0?'association':'insufficient';}
+    }
     return out;
+  }
+  function gcdBigInt(a,b){
+    let left=a<0n?-a:a,right=b<0n?-b:b;
+    for(let i=0;i<1024&&right!==0n;i++){
+      const remainder=left%right;left=right;right=remainder;
+    }
+    return left||1n;
   }
   function addProbability(s,value,tail){
     const key=tail?'tailMass':'mass',comp=tail?'tailComp':'massComp';
@@ -75,10 +93,13 @@
     s.tableCount++;
     let denominator=1n,logDenominator=0;
     for(const x of s.cells){denominator*=s.fact[x];logDenominator+=s.logFact[x];}
+    if(s.columnFactorials%denominator!==0n){s.referenceWeight=-1n;return;}
+    const weight=s.columnFactorials/denominator;
+    s.referenceWeight+=weight;
     const probability=Math.exp(s.constant-logDenominator);addProbability(s,probability,false);
     // All probabilities have the same numerator; a greater denominator means a lower probability.
     if(denominator>=s.observedDenominator){
-      s.tailCount++;addProbability(s,probability,true);
+      s.tailCount++;s.tailWeight+=weight;addProbability(s,probability,true);
       if(s.tailExamples.length<12) s.tailExamples.push({
         table:Array.from({length:s.R},(_,i)=>s.cells.slice(i*s.C,(i+1)*s.C)),
         probability,tie:denominator===s.observedDenominator});
@@ -147,11 +168,28 @@
     const scale=Math.exp(a*Math.log(x)-x-halfIntegerLogGamma(a));
     return x<a+1?gammaSeries(a,x,scale):gammaFraction(a,x,scale);
   }
+  function compareRationalToDecimal(numeratorText,denominatorText,decimalText){
+    const raw=String(decimalText===undefined?'':decimalText).trim();
+    const match=raw.match(/^\+?(\d+)(?:\.(\d*))?(?:[eE]([+-]?\d+))?$/);
+    if(!match||raw.length>64) return null;
+    const fraction=match[2]||'',exponent=Number(match[3]||0)-fraction.length;
+    if(!Number.isSafeInteger(exponent)||Math.abs(exponent)>1000) return null;
+    let numerator,denominator,decimalInteger;
+    try{
+      numerator=BigInt(numeratorText);denominator=BigInt(denominatorText);
+      decimalInteger=BigInt((match[1]+fraction).replace(/^0+(?=\d)/,'')||'0');
+    }catch(error){return null;}
+    if(numerator<0n||denominator<=0n||decimalInteger<0n) return null;
+    const power=10n**BigInt(Math.abs(exponent));
+    const left=exponent<0?numerator*power:numerator;
+    const right=exponent<0?denominator*decimalInteger:denominator*decimalInteger*power;
+    return left<right?-1:left>right?1:0;
+  }
   function calculate(input,options){
     const prepared=prepare(input,options||{});
     return prepared.status==='invalid'?prepared:enumerate(initialize(input,prepared));
   }
-  const api={calculate,chiSquareSurvival,limits:LIMITS};
+  const api={calculate,chiSquareSurvival,compareRationalToDecimal,limits:LIMITS};
   if(typeof module==='object'&&module.exports) module.exports=api;
   else globalThis.FFH=api;
 }

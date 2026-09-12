@@ -106,14 +106,15 @@
     byId('completion').textContent = complete ? 'Enumeration completed. All feasible tables were included in the reference distribution.' : numericalError ? 'Enumeration finished, but numerical verification failed. No exact p-value is available. ' + (result.error || '') : 'Exact calculation not completed. ' + (result.error || result.status || 'The calculation stopped before completion.') + ' No exact p-value is available.';
     byId('status').textContent = complete ? 'Exact calculation completed. Results and audit are ready.' : numericalError ? 'Enumeration finished, but numerical verification failed. No exact result is available.' : 'Calculation stopped without an exact result. See the explanation and R command below.';
   }
-  function renderSummary(result, alpha, complete, numericalError) {
+  function renderSummary(result, alphaText, complete, numericalError) {
     renderCompletionStatus(result, complete, numericalError);
     if (complete) {
       stat('Two-sided exact p-value',probability(result.pValue));
       stat('Observed-table probability',probability(result.observedProbability));
       stat('Feasible tables enumerated',fmt(result.tableCount));
       stat('Tables included in the tail',fmt(result.tailCount));
-      byId('interpretation').textContent = result.pValue < alpha ? 'At α = ' + fmt(alpha) + ', the exact test supports an association between group and outcome. It does not identify a winning variant or a significant individual cell.' : 'At α = ' + fmt(alpha) + ', the exact test does not provide sufficient evidence of an association. This does not establish independence or equivalence.';
+      const association=result.exactDecision==='association';
+      byId('interpretation').textContent = association ? 'At α = ' + alphaText + ', the exact test supports an association between group and outcome because p < α. It does not identify a winning variant or a significant individual cell.' : 'At α = ' + alphaText + ', the exact test does not provide sufficient evidence of an association because p is not below α. This does not establish independence or equivalence.';
     } else {
       stat('Exact p-value',numericalError ? 'Withheld' : 'Not computed');
       byId('interpretation').textContent = numericalError ? 'Enumeration finished, but its numerical checks failed. The exact p-value is withheld. Expected-count diagnostics remain available; use the R command for an independent calculation.' : 'Partial probability sums are not reported as an exact p-value. The expected-count diagnostics remain available. Use the R command for an independent calculation.';
@@ -122,7 +123,7 @@
   function comparisonRows(table, result, complete, numericalError, approx) {
     return [[table.length === 2 && table[0].length === 2 ? 'Fisher exact, two-sided' : 'Fisher–Freeman–Halton exact',complete?probability(result.pValue):(numericalError?'Withheld':'Not computed'),complete?'Completed enumeration':(numericalError?'Enumeration finished; numerical verification failed':'Incomplete')],['Pearson chi-square',approx===null?'Not available':probability(approx),'Approximation; no continuity correction']];
   }
-  function renderComparison(table, result, alpha, complete, numericalError, approx) {
+  function renderComparison(table, result, complete, numericalError, approx) {
     const method = el('div',undefined,'table-scroll'); method.tabIndex=0; method.setAttribute('role','region'); method.setAttribute('aria-label','Method comparison');
     const comparison = el('table'); comparison.append(el('caption','Exact and approximate methods'));
     const head=el('thead'), hr=el('tr'); ['Method','p-value','Status'].forEach(label => { const th=el('th',label);th.scope='col';hr.append(th); });head.append(hr);comparison.append(head);
@@ -131,7 +132,7 @@
     comparison.append(body);method.append(comparison);byId('comparison').append(method);
     if (Number.isFinite(result.chiSquare)) byId('comparison').append(el('p','Pearson χ² = ' + fmt(result.chiSquare) + '; degrees of freedom = ' + fmt(result.df) + '.'));
     if (complete && approx !== null) {
-      byId('comparison').append(el('p','Absolute p-value difference: ' + fmt(Math.abs(result.pValue-approx)) + '. ' + ((result.pValue<alpha)!==(approx<alpha) ? 'The methods fall on different sides of α. Do not choose a method because its result is more favorable.' : 'The methods fall on the same side of α; this does not verify their assumptions.')));
+      byId('comparison').append(el('p','Absolute p-value difference: ' + fmt(Math.abs(result.pValue-approx)) + '. Pearson is an approximation; this calculator does not use it for the exact-test decision.'));
     }
   }
   function renderDiagnostics(expected) {
@@ -139,7 +140,7 @@
     const values=expected.flat(), small=values.filter(v=>v<5).length, tiny=values.filter(v=>v<1).length;
     byId('diagnostics').textContent='Minimum expected count: ' + fmt(Math.min(...values)) + '. ' + small + '/' + values.length + ' cells (' + fmt(100*small/values.length) + '%) below 5; ' + tiny + ' below 1.';
   }
-  function renderAudit(table, result, alpha, complete, numericalError, total) {
+  function renderAudit(table, result, alpha, alphaText, complete, numericalError, total) {
     if (complete) {
       byId('audit').append(el('p','Probability ordering includes tables no more probable than the observed table, including ties. Total probability mass across the complete reference set: ' + fmt(result.massSum) + '.'));
       if (result.method) byId('audit').append(el('p', result.method + '.'));
@@ -147,25 +148,25 @@
       const tailExamples=Array.isArray(result.tailExamples)?result.tailExamples:[];
       tailExamples.forEach((item,i)=>{const div=el('div',undefined,'tail-item');div.append(el('p','Tail example '+(i+1)+' · probability '+probability(item.probability)+(item.tie?' · ties the observed probability':'')),el('pre',item.table.map(row=>row.join('\t')).join('\n')));byId('tail-examples').append(div);});
       if (!tailExamples.length) byId('tail-examples').append(el('p','No tail examples were returned by the engine.'));
-      certificate={formatVersion:1,calculator:'ABWex Fisher–Freeman–Halton',calculatorRelease:'2026-09-08.1',route:'https://abwex.com/tools/fisher-freeman-halton-calculator/',generatedAt:new Date().toISOString(),observed:table,margins:total,alpha,method:'Fixed-margin conditional exact test; probability ordering including ties',result};
+      certificate={formatVersion:1,calculator:'ABWex Fisher–Freeman–Halton',calculatorRelease:'2026-09-12.1',route:'https://abwex.com/tools/fisher-freeman-halton-calculator/',generatedAt:new Date().toISOString(),observed:table,margins:total,alpha,alphaText,decisionRule:'association only when exact rational p < entered decimal alpha',method:'Fixed-margin conditional exact test; probability ordering including ties',result};
       byId('certificate').hidden=false;
     } else {
       byId('audit').append(el('p',numericalError ? 'Enumeration finished, but numerical verification failed. No verified exact certificate is available. Enumerated tables: '+fmt(result.tableCount)+'.' : 'Enumeration is incomplete; there is no completed exact certificate. Tables visited before stopping: '+fmt(result.tableCount)+'.'));
       certificate=null;byId('certificate').hidden=true;
     }
   }
-  function renderResult(table, result, alpha) {
+  function renderResult(table, result, alpha, alphaText) {
     byId('results').hidden = false;
     ['metrics','comparison','audit','tail-examples'].forEach(id => byId(id).replaceChildren());
     const numericalError = result.status === 'numerical-error';
-    const complete = !numericalError && result.complete === true && Number.isFinite(result.pValue);
+    const complete = !numericalError && result.complete === true && Number.isFinite(result.pValue) && (result.exactDecision==='association'||result.exactDecision==='insufficient');
     const approx = Number.isFinite(result.chiSquarePValue) ? result.chiSquarePValue : Number.isFinite(result.chiSquareP) ? result.chiSquareP : null;
     const total = margins(table);
     const expected = Array.isArray(result.expected) ? result.expected : table.map((row,i) => row.map((_,j) => total.rows[i]*total.cols[j]/total.total));
-    renderSummary(result, alpha, complete, numericalError);
-    renderComparison(table, result, alpha, complete, numericalError, approx);
+    renderSummary(result, alphaText, complete, numericalError);
+    renderComparison(table, result, complete, numericalError, approx);
     renderDiagnostics(expected);
-    renderAudit(table, result, alpha, complete, numericalError, total);
+    renderAudit(table, result, alpha, alphaText, complete, numericalError, total);
   }
   counts.addEventListener('input',()=>{invalidate('Counts changed. Run the test to calculate new results.');preview(false);});
   byId('alpha').addEventListener('input',()=>{invalidate('Threshold changed. Run the test to update the interpretation.');byId('alpha').removeAttribute('aria-invalid');});
@@ -175,16 +176,16 @@
   byId('ffh-form').addEventListener('submit',event=>{
     event.preventDefault();invalidate('Validating counts.');
     const table=preview(true);if(!table){byId('status').textContent='Fix the counts table before running the test.';counts.focus();return;}
-    const alpha=Number(byId('alpha').value);
-    if(!byId('alpha').value.trim()||!Number.isFinite(alpha)||alpha<=0||alpha>=1){byId('alpha').setAttribute('aria-invalid','true');byId('input-error').textContent='Enter a decision threshold strictly between 0 and 1.';byId('status').textContent='Fix the decision threshold before running the test.';byId('alpha').focus();return;}
+    const alphaText=byId('alpha').value.trim(),alpha=Number(alphaText);
+    if(!alphaText||alphaText.length>64||!Number.isFinite(alpha)||alpha<=0||alpha>=1){byId('alpha').setAttribute('aria-invalid','true');byId('input-error').textContent='Enter a decision threshold strictly between 0 and 1.';byId('status').textContent='Fix the decision threshold before running the test.';byId('alpha').focus();return;}
     const current=runId;byId('run').disabled=true;byId('cancel').hidden=false;byId('status').textContent='Enumerating tables with these fixed margins. You can cancel while the calculation runs.';
-    function finish(result){if(current!==runId)return;stop();renderResult(table,result,alpha);}
+    function finish(result){if(current!==runId)return;stop();renderResult(table,result,alpha,alphaText);}
     try {
       worker=new Worker(new URL('./ffh-worker.js',scriptUrl));
       worker.onmessage=event=>{if(event.data.runId===current)finish(event.data.result);};
       worker.onerror=()=>finish({complete:false,status:'error',error:'The calculation worker could not run. Reload the page or use the R command.'});
       timeout=setTimeout(()=>finish({complete:false,status:'limit',error:'The browser time limit of 20 seconds was reached.'}),20000);
-      worker.postMessage({runId:current,table});
+      worker.postMessage({runId:current,table,alphaText});
     } catch(error){finish({complete:false,status:'error',error:error.message});}
   });
   byId('certificate').addEventListener('click',()=>{
