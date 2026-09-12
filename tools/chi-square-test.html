@@ -143,6 +143,8 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
 <p>With a 2×2 table there is 1 degree of freedom. The resulting χ² value is converted to a p-value using the chi-square distribution. Because df = 1, the p-value equals the two-tailed normal tail probability of √χ², so this calculator uses an accurate error-function approximation rather than a lookup table. A small p-value (below your chosen α) means the observed gap between the two conversion rates is unlikely to be random noise, so you reject the null hypothesis of "no difference."</p>
 <p>That's mathematically equivalent to a two-proportion z-test without continuity correction, which is why the same data drives confidence intervals and sample-size planning. Always confirm each variant has at least a handful of expected conversions; with very small samples the chi-square approximation degrades and an exact (Fisher) test is preferable. Enter your real numbers above to see the verdict update live as you type.</p>
 
+<p>For sparse counts, the <a href="/tools/fisher-freeman-halton-calculator/">Fisher–Freeman–Halton exact calculator</a> shows the fixed-margin probability tail and compares its result with the chi-square approximation. It also supports small tables beyond two by two.</p>
+
 <h2>Related Tools</h2>
 <p class="related">
 <a href="/tools/ab-test-sample-size">A/B Test Sample Size Calculator</a>
