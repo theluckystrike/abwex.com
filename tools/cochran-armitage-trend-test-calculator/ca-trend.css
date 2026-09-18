@@ -54,7 +54,12 @@
 .ca thead tr:first-child th:first-child,
 .ca td:first-child { text-align: left; }
 .ca th[colspan] { text-align: center; }
+.ca tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.03); }
 .ca tbody tr:last-child td { border-bottom: none; }
+.ca td.is-na { color: var(--text-dim); text-align: center; font-size: 0.85em; }
+@media (max-width: 768px) {
+  .ca th, .ca td { padding: 8px 9px; font-size: 0.82rem; }
+}
 .ca .ca-fixtures td:nth-child(1),
 .ca .ca-fixtures td:nth-child(2),
 .ca .ca-fixtures td:nth-child(3) { white-space: normal; }

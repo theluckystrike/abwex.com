@@ -11,9 +11,11 @@
  <meta property="og:title" content="Cochran Armitage trend test calculator">
  <meta property="og:description" content="Free Cochran-Armitage trend test calculator: asymptotic, conditional and exact p values, plus an exact false positive study. Runs in your browser.">
  <meta property="og:url" content="https://abwex.com/tools/cochran-armitage-trend-test-calculator/">
+ <meta property="og:image" content="https://abwex.com/assets/og-image.png">
  <meta property="og:type" content="website">
  <meta property="og:site_name" content="ABWex">
  <meta name="twitter:card" content="summary">
+ <meta name="twitter:image" content="https://abwex.com/assets/og-image.png">
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
@@ -91,7 +93,7 @@
  <h2 id="what-h">What the tool computes</h2>
  <p>A plain chi-square test of independence ignores the order of the arms, and so does the <a href="https://abwex.com/tools/fisher-freeman-halton-calculator/">Fisher-Freeman-Halton exact test</a>. The trend test uses the order. It modifies the Pearson chi-squared test to incorporate a suspected ordering in the effects of the ordered groups (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>).</p>
  <p>From your inputs the script computes the conversion rate per group and the pooled rate, the Armitage trend statistic T, its variance with N in the denominator, the Z statistic, the chi-square statistic on one degree of freedom and the two sided p value at alpha 0.05.</p>
- <p>It also computes the same statistic with the conditional variance, which is larger, and an exact conditional p value computed by dynamic programming over all tables with the same group sizes and the same total conversions, together with the mid p value.</p>
+ <p>It also computes the same statistic with the conditional variance, which is larger. That form matches statsmodels. Alongside the asymptotic values you get an exact conditional p value, computed by dynamic programming over all tables with the same group sizes and total conversions, plus the mid p value.</p>
  <p>All of it runs in your browser. Nothing is uploaded and no request leaves the page.</p>
 
  <h3>How the statistic works</h3>
@@ -122,7 +124,8 @@
  <section class="explainer-section" aria-labelledby="method-h">
  <h2 id="method-h">Where these numbers come from</h2>
  <p>Every number on the page is computed by the page script from the reader's inputs, or read from one of the two datasets published with the page.</p>
- <p>The exact size study was computed by exact enumeration with a dynamic programme over the groups, not by simulation, and it was checked against brute force enumeration of every outcome before the dataset was written. The worked examples were cross checked against statsmodels Table.test_ordinal_association; that library adds 0.5 to every cell of a table containing a zero by default, and the comparison was run with shift_zeros=False to match the textbook variance used here. R wasn't available on the build machine, so the page makes no claim of an R cross check.</p>
+ <p>The exact size study was computed by exact enumeration with a dynamic programme over the groups, not by simulation, and it was checked against brute force enumeration of every outcome before the dataset was written.</p>
+ <p>The worked examples were cross checked against statsmodels Table.test_ordinal_association. That library adds 0.5 to every cell of a table containing a zero by default, so the comparison ran with shift_zeros=False to match the textbook variance used here. R wasn't available on the build machine, so the page makes no claim of an R cross check.</p>
 <p>The two datasets and the MIT license file are published alongside the page: <a href="/datasets/ca_trend_size.json">ca_trend_size.json</a> (the 72-cell exact size study), <a href="/datasets/ca_trend_fixtures.json">ca_trend_fixtures.json</a> (the worked-example fixtures), and <a href="https://github.com/theluckystrike/abwex.com/blob/main/LICENSE">LICENSE</a>.</p>
  <p>The calculator code is open source at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>, MIT licensed, and you can read and rerun every routine behind a published number.</p>
  </section>
@@ -136,7 +139,7 @@
  <li>A p value isn't the probability that the null hypothesis is true, and it isn't the probability that a variant is better.</li>
  <li>When conversions are sparse, the asymptotic p value can be unreliable, and the exact conditional p value is the safer read.</li>
  </ul>
- <p>The trend test has higher power than the chi-squared test when the suspected trend is correct, but the ability to detect unsuspected trends is sacrificed (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>). If you need a test that ignores order, use the <a href="https://abwex.com/tools/chi-square-test-calculator.html">chi-square test calculator</a> or the <a href="https://abwex.com/tools/fisher-freeman-halton-calculator/">Fisher-Freeman-Halton exact test</a>.</p>
+ <p>The trend test has higher power than the chi-squared test when the suspected trend is correct, but the ability to detect unsuspected trends is sacrificed (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>). If you need a test that ignores order, use the <a href="https://abwex.com/tools/chi-square-test.html">chi-square test calculator</a> or the <a href="https://abwex.com/tools/fisher-freeman-halton-calculator/">Fisher-Freeman-Halton exact test</a>.</p>
  </section>
 
  <section class="explainer-section" aria-labelledby="dis-h">
@@ -158,7 +161,8 @@
  <details>
  <summary>Which p value should I report?</summary>
  <p>Report the test, the alpha, and that the p value is two sided. With large counts and no sparsity the asymptotic p values from the two variance forms are close. With sparse conversions, prefer the exact conditional p value, or the mid p value if you want a less conservative exact figure.</p>
- <p>The exact mid p-value is defined as the exact p-value minus half the exact point probability, and it is smaller and less conservative than the non-adjusted exact p-value (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute</a>). SAS PROC FREQ computes the two-sided p-value as the sum of the one-sided p-value and the corresponding area in the opposite tail of the distribution of the statistic, equidistant from the expected value (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute</a>). This page uses the point-probability-half definition for its mid p values, not SAS's tail-sum convention, so small differences between this page's mid p output and SAS PROC FREQ are expected by design.</p>
+ <p>The exact mid p-value is defined as the exact p-value minus half the exact point probability, and it is smaller and less conservative than the non-adjusted exact p-value (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute</a>).</p>
+ <p>SAS PROC FREQ computes the two-sided p-value as the sum of the one-sided p-value and the corresponding area in the opposite tail of the distribution of the statistic, equidistant from the expected value (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute</a>). This page uses the point-probability-half definition for its mid p values, not SAS's tail-sum convention, so small differences between this page's mid p output and SAS PROC FREQ are expected by design.</p>
  </details>
  <details>
  <summary>Do the scores change the answer?</summary>

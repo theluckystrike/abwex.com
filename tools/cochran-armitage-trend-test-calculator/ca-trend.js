@@ -377,6 +377,7 @@ function table(headers, rows, label, opts) {
   rows.forEach(function (r) {
     const row = el('tr');
     r.forEach(function (c) {
+      if (c === null || (typeof c === 'number' && !Number.isFinite(c))) { row.appendChild(el('td', { 'class': 'is-na' }, '—')); return; }
       if (c instanceof Node) { const td = el('td'); td.appendChild(c); row.appendChild(td); } else row.appendChild(el('td', null, String(c)));
     });
     tb.appendChild(row);
@@ -474,10 +475,16 @@ function renderNearest(node, study, groups, a) {
   node.appendChild(el('p', null, 'The nearest cell of the exact study is ' + cell.k + ' groups, ' + cell.n_per_group +
     ' visitors per group and true rate ' + cell.p + '. It isn\'t your exact design. At nominal two sided alpha ' + study.alpha + ', each version of the test rejects a true null with the probability below.'));
   node.appendChild(table(['Version of the test', 'Probability'], [
-    ['Asymptotic N form', cell.size_asym_n], ['Asymptotic conditional form', cell.size_asym_n1],
-    ['Exact conditional test', cell.size_exact], ['Mid p test', cell.size_midp],
-    ['No test defined at all, because no one or everyone converted', cell.p_undefined]
+    ['Asymptotic N form', fmtCell(cell.size_asym_n, 4)], ['Asymptotic conditional form', fmtCell(cell.size_asym_n1, 4)],
+    ['Exact conditional test', fmtCell(cell.size_exact, 4)], ['Mid p test', fmtCell(cell.size_midp, 4)],
+    ['No test defined at all, because no one or everyone converted', fmtCell(cell.p_undefined, 4)]
   ], 'Nearest cell of the exact study'));
+}
+// Study cells hold fractions like 0.0499999; four decimals is plenty and six read as noise.
+// Non-finite entries (the no-test-defined case) render as an em dash, not a stray 0.
+function fmtCell(v, d) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n.toFixed(d) : null;
 }
 
 // The group count picker is the homepage's .tab-bar: one .tab-btn per k, the active one filled.
@@ -494,7 +501,7 @@ function studyTabs(bar, onPick, ks) {
 function renderStudy(holder, study, k) {
   if (!study || !study.grid || !Array.isArray(study.cells)) { holder.textContent = 'The exact study data did not load.'; return; }
   const rows = study.cells.slice(0, MAX_STUDY_CELLS).filter(function (c) { return c.k === k; }).map(function (c) {
-    return [c.n_per_group, c.p, c.size_asym_n, c.size_asym_n1, c.size_exact, c.size_midp, c.p_undefined];
+    return [c.n_per_group, c.p, fmtCell(c.size_asym_n, 4), fmtCell(c.size_asym_n1, 4), fmtCell(c.size_exact, 4), fmtCell(c.size_midp, 4), fmtCell(c.p_undefined, 4)];
   });
   holder.textContent = '';
   const groups = [{ t: 'Visitors per group', rs: 2 }, { t: 'True rate', rs: 2 }, { t: 'Rejection rate of a true null at alpha ' + study.alpha, cs: 4 }, { t: 'No test defined', rs: 2 }];
@@ -510,7 +517,7 @@ function renderFixtures(holder, fixtures, load) {
       const name = f.id.replace(/_/g, ' ');
       const b = el('button', { type: 'button', 'class': 'btn btn-secondary btn-sm', 'data-fixture': String(i), 'aria-label': 'Load ' + name }, name);
       b.addEventListener('click', function () { load(f); });
-      return [b, f.n.join(', '), f.x.join(', '), f.p_asymptotic_n, f.p_asymptotic_n1, f.statsmodels_pvalue, f.p_exact_conditional, f.p_midp, f.tables_enumerated];
+      return [b, f.n.join(', '), f.x.join(', '), fmtCell(f.p_asymptotic_n, 6), fmtCell(f.p_asymptotic_n1, 6), fmtCell(f.statsmodels_pvalue, 6), fmtCell(f.p_exact_conditional, 6), fmtCell(f.p_midp, 6), fmtCell(f.tables_enumerated, 0)];
     }), 'Worked examples', { cls: 'ca-fixtures', groups: groups }));
   if (fixtures.check) holder.appendChild(el('p', { 'class': 'ca-caption' }, 'Cross check against ' + fixtures.check.reference + ', maximum absolute difference ' + fixtures.check.max_abs_diff + '. ' + (fixtures.check.note || '')));
 }
@@ -552,7 +559,8 @@ const REVEAL_BOTTOM_GAP = 120;
 // node is always an element: run() returns the error line or the first rendered result.
 function reveal(node) {
   const top = node.getBoundingClientRect().top;
-  if (top >= 0 && top <= window.innerHeight - REVEAL_BOTTOM_GAP) return false;
+  const header = 88; // sticky nav height; results hidden under it read as "nothing happened"
+  if (top >= header && top <= window.innerHeight - REVEAL_BOTTOM_GAP) return false;
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   node.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   return true;
