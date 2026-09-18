@@ -5,14 +5,14 @@
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Cochran Armitage trend test calculator | ABWex</title>
- <meta name="description" content="A free Cochran-Armitage trend test calculator with asymptotic, conditional and exact p values, plus a published exact false positive study. All math runs in your browser.">
+ <meta name="description" content="Free Cochran-Armitage trend test calculator: asymptotic, conditional and exact p values, plus an exact false positive study. Runs in your browser.">
  <meta name="robots" content="index, follow">
  <link rel="canonical" href="https://abwex.com/tools/cochran-armitage-trend-test-calculator/">
  <meta property="og:title" content="Cochran Armitage trend test calculator">
- <meta property="og:description" content="A free Cochran-Armitage trend test calculator with asymptotic, conditional and exact p values, plus a published exact false positive study. All math runs in your browser.">
+ <meta property="og:description" content="Free Cochran-Armitage trend test calculator: asymptotic, conditional and exact p values, plus an exact false positive study. Runs in your browser.">
  <meta property="og:url" content="https://abwex.com/tools/cochran-armitage-trend-test-calculator/">
  <meta property="og:type" content="website">
- <meta property="og:site_name" content="Zovo Tools">
+ <meta property="og:site_name" content="ABWex">
  <meta name="twitter:card" content="summary">
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,16 +89,20 @@
 
  <section class="explainer-section" aria-labelledby="what-h">
  <h2 id="what-h">What the tool computes</h2>
- <p>A plain chi-square test of independence ignores the order of the arms, and so does the <a href="https://abwex.com/tools/fisher-freeman-halton-calculator/">Fisher-Freeman-Halton exact test</a>. The trend test uses the order. The test modifies the Pearson chi-squared test to incorporate a suspected ordering in the effects of the ordered groups (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia, Cochran-Armitage test for trend</a>).</p>
+ <p>A plain chi-square test of independence ignores the order of the arms, and so does the <a href="https://abwex.com/tools/fisher-freeman-halton-calculator/">Fisher-Freeman-Halton exact test</a>. The trend test uses the order. It modifies the Pearson chi-squared test to incorporate a suspected ordering in the effects of the ordered groups (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>).</p>
  <p>From your inputs the script computes the conversion rate per group and the pooled rate, the Armitage trend statistic T, its variance with N in the denominator, the Z statistic, the chi-square statistic on one degree of freedom and the two sided p value at alpha 0.05.</p>
  <p>It also computes the same statistic with the conditional variance, which is larger, and an exact conditional p value computed by dynamic programming over all tables with the same group sizes and the same total conversions, together with the mid p value.</p>
  <p>All of it runs in your browser. Nothing is uploaded and no request leaves the page.</p>
- <p>The statistic is a weighted sum over the ordered groups, T equals the sum over groups of the score times the difference between the observed and expected counts in the first category (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>). Under the null hypothesis, the standardized statistic follows a large-sample standard normal distribution (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>).</p>
- <p>If a linear trend in the frequencies is suspected, the weights t = (0,1,2) should be used, and these weights are also often used when the frequencies are suspected to change monotonically even when the trend is not necessarily linear (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>).</p>
- <p>When the sample size is not large, asymptotic results might not be valid, and the asymptotic p-values may differ, perhaps substantially, from the exact p-values (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute, PROC FREQ exact statistics documentation</a>). The exact study below quantifies that for realistic designs.</p>
+
+ <h3>How the statistic works</h3>
+ <p>T is a weighted sum over the ordered groups. It equals the sum over groups of the score times the difference between the observed and expected counts in the first category (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>). Under the null hypothesis, the standardized statistic follows a large-sample standard normal distribution.</p>
+ <p>If a linear trend in the frequencies is suspected, the weights t = (0,1,2) should be used. These weights are also often used when the frequencies are suspected to change monotonically even when the trend is not necessarily linear (<a href="https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend">Wikipedia</a>).</p>
+
+ <h3>Compared with other implementations</h3>
+ <p>When the sample size is not large, asymptotic results might not be valid, and the asymptotic p-values may differ, perhaps substantially, from the exact p-values (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute</a>). The exact study below quantifies that for realistic designs.</p>
  <p>SAS PROC FREQ computes exact p-values for the Cochran-Armitage test for trend for two-way tables, based on exact conditional inference for contingency tables (<a href="https://support.sas.com/documentation/cdl/en/procstat/67528/HTML/default/procstat_freq_details98.htm">SAS Institute</a>).</p>
- <p>The two common asymptotic forms differ by a factor of N over N minus one. Royston's ptrend statistic uses N in the formula, while the score statistic uses N minus 1 (<a href="https://www.stata.com/support/faqs/statistics/test-for-trend/">StataCorp, test for trend FAQ</a>).</p>
- <p>R's prop.trend.test performs a chi-squared test for trend in proportions, and by default the score is chosen as the group numbers (<a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.trend.test.html">R manual, prop.trend.test</a>). Its signature is <code>prop.trend.test(x, n, score = seq_along(x))</code>, where x is the number of events, n the number of trials, and score the group score (<a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.trend.test.html">R manual</a>).</p>
+ <p>The two common asymptotic forms differ by a factor of N over N minus one. Royston's ptrend statistic uses N in the formula, while the score statistic uses N minus 1 (<a href="https://www.stata.com/support/faqs/statistics/test-for-trend/">StataCorp</a>).</p>
+ <p>R's prop.trend.test performs a chi-squared test for trend in proportions, and by default the score is chosen as the group numbers (<a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.trend.test.html">R manual</a>). Its signature is <code>prop.trend.test(x, n, score = seq_along(x))</code>, where x is the number of events, n the number of trials, and score the group score.</p>
  </section>
 
  <section class="explainer-section" aria-labelledby="size-h">
@@ -138,8 +142,6 @@
  <h2 id="dis-h">Disclaimers</h2>
  <ul>
  <li>Results are statistical estimates and not business or financial advice.</li>
- <li>The trend test assumes independent observations, each visitor counted once and randomly assigned to one group.</li>
- <li>A p value is the probability of seeing data this extreme if the null hypothesis is true, it is not the probability that the variant is better.</li>
  <li>A statistically significant trend is not the same as a lift that is worth shipping.</li>
  <li>The worked examples are synthetic tables that illustrate the calculation, not observed customer data.</li>
  </ul>

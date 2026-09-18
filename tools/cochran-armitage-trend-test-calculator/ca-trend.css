@@ -58,6 +58,10 @@
 .ca .ca-fixtures td:nth-child(1),
 .ca .ca-fixtures td:nth-child(2),
 .ca .ca-fixtures td:nth-child(3) { white-space: normal; }
+/* The Visitors and Conversions columns repeat values like "100, 100, 100, 100, 100" on a
+   narrow card; wrapping them at 34ch keeps rows even instead of one tall cell per row. */
+.ca .ca-fixtures td:nth-child(2),
+.ca .ca-fixtures td:nth-child(3) { max-width: 34ch; min-width: 15ch; }
 
 /* Result list inside the site's .result-box. The global overflow rule sets word-break
    break-all on .result-box, which splits label words mid word, so the list opts out. */
