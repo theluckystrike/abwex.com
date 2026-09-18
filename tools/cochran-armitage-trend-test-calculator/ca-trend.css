@@ -1,0 +1,72 @@
+/* Cochran-Armitage trend test page. /assets/style.css does the work; this file only fills the
+   gaps it leaves for this page: a text input, tables, a result list and reading rhythm.
+   Every color, font family, length and spacing value below already appears in /assets/style.css
+   (checked by css_audit.py). Keywords such as text-align or white-space are not design values. */
+
+/* Reading sections. The homepage uses .explainer-section without a rule of its own, so its
+   paragraphs sit at 0px apart. These rules give that class the site's reading rhythm, taken
+   from .article (p 16px, list indent 24px, li 8px, code) and .hero (40px). */
+.ca .explainer-section { padding-top: 40px; }
+.ca .explainer-section h2 { margin-bottom: 16px; }
+.ca .explainer-section p,
+.ca .explainer-section ul { margin-bottom: 16px; }
+.ca .explainer-section ul { padding-left: 24px; }
+.ca .explainer-section li { margin-bottom: 8px; }
+.ca .explainer-section code { font-family: var(--font-display); background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+.ca .faq-section details p + p { margin-top: 16px; }
+.ca .last-updated p + p { margin-top: 16px; }
+
+/* Visually hidden heading that keeps the outline h1, h2, h3 without a visible label. */
+.ca .ca-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Calculator. Rows are the site's .input-group; this adds the text input the site stylesheet
+   does not cover, with the exact declarations of its number input rule. */
+.ca .ca-row + .ca-row { border-top: 1px solid var(--border); padding-top: 16px; }
+.ca .ca-row input[type="text"] {
+  width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text); font-family: var(--font-body); font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+/* The rule above outranks the site's input:focus, so the focus border is restated here. */
+.ca .ca-row input[type="text"]:focus { outline: none; border-color: var(--accent); }
+.ca .ca-note { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 12px; }
+.ca .ca-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.ca .ca-actions .btn[aria-disabled="true"],
+.ca .ca-actions .btn[aria-disabled="true"]:hover { color: var(--text-dim); border-color: var(--border); cursor: default; }
+.ca #ca-error:not(:empty) { margin-top: 16px; }
+.ca #ca-out:not(:empty) { margin-top: 20px; }
+.ca .ca-verdict,
+.ca #ca-nearest p { margin-top: 16px; }
+.ca .ca-caption { color: var(--text-dim); font-size: 0.85rem; }
+/* The sticky header is 66px tall; anything scrolled to, by the script or an anchor, clears it. */
+.ca section,
+.ca #ca-error,
+.ca #ca-out > * { scroll-margin-top: 80px; }
+.ca #ca-out:focus { outline: none; }
+
+/* Tables. The homepage has none, so these reuse the card border and form label values. */
+.ca .table-scroll { margin: 16px 0; border: 1px solid var(--border); border-radius: 6px; }
+@media (min-width: 769px) { .ca table { font-size: 0.9rem; } }
+.ca th,
+.ca td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.ca th { font-family: var(--font-display); font-size: 0.8rem; font-weight: 400; color: var(--text-dim); white-space: normal; vertical-align: bottom; }
+.ca td { font-family: var(--font-display); }
+.ca thead tr:first-child th:first-child,
+.ca td:first-child { text-align: left; }
+.ca th[colspan] { text-align: center; }
+.ca tbody tr:last-child td { border-bottom: none; }
+.ca .ca-fixtures td:nth-child(1),
+.ca .ca-fixtures td:nth-child(2),
+.ca .ca-fixtures td:nth-child(3) { white-space: normal; }
+
+/* Result list inside the site's .result-box. The global overflow rule sets word-break
+   break-all on .result-box, which splits label words mid word, so the list opts out. */
+.ca .ca-detail { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; word-break: normal; }
+.ca .ca-detail dt { color: var(--text-dim); }
+.ca .ca-detail dd { text-align: right; }
+.ca .ca-detail .ca-wide { grid-column: 1 / -1; text-align: left; }
+
+@media (max-width: 640px) {
+  .ca .ca-detail { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .ca .ca-detail dd { text-align: left; margin-bottom: 8px; }
+}
