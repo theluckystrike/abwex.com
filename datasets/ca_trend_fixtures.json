@@ -1,0 +1,197 @@
+{
+ "id": "ca_trend_fixtures",
+ "title": "Cochran-Armitage trend test worked examples on synthetic tables",
+ "kind": "synthetic illustration tables, computed, not observed data",
+ "check": {
+  "reference": "statsmodels Table.test_ordinal_association",
+  "max_abs_diff": 0.0,
+  "tolerance": 1e-10,
+  "note": "R was not available on the build machine, the N form is the textbook Armitage variance. statsmodels Table is built with shift_zeros=False, its default adds 0.5 to every cell of a table containing a zero"
+ },
+ "environment": {
+  "python": "3.9.6",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "statsmodels": "0.14.6"
+ },
+ "generator": "datasets/verify_ca_against_statsmodels.py",
+ "fixtures": [
+  {
+   "id": "three_arms_equal",
+   "n": [
+    200,
+    200,
+    200
+   ],
+   "x": [
+    6,
+    10,
+    17
+   ],
+   "scores": [
+    0,
+    1,
+    2
+   ],
+   "rates": [
+    0.03,
+    0.05,
+    0.085
+   ],
+   "z_armitage_n": 2.41249,
+   "chi2_armitage_n": 5.820106,
+   "p_asymptotic_n": 0.015844,
+   "z_conditional_n1": 2.410478,
+   "p_asymptotic_n1": 0.015932,
+   "statsmodels_zscore": 2.410478,
+   "statsmodels_pvalue": 0.015932,
+   "p_exact_conditional": 0.020583,
+   "p_midp": 0.015814,
+   "tables_enumerated": 595
+  },
+  {
+   "id": "four_arms_sparse",
+   "n": [
+    50,
+    50,
+    50,
+    50
+   ],
+   "x": [
+    1,
+    2,
+    4,
+    6
+   ],
+   "scores": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "rates": [
+    0.02,
+    0.04,
+    0.08,
+    0.12
+   ],
+   "z_armitage_n": 2.180652,
+   "chi2_armitage_n": 4.755245,
+   "p_asymptotic_n": 0.029209,
+   "z_conditional_n1": 2.175194,
+   "p_asymptotic_n1": 0.029616,
+   "statsmodels_zscore": 2.175194,
+   "statsmodels_pvalue": 0.029616,
+   "p_exact_conditional": 0.039001,
+   "p_midp": 0.029283,
+   "tables_enumerated": 560
+  },
+  {
+   "id": "three_arms_very_sparse",
+   "n": [
+    30,
+    30,
+    30
+   ],
+   "x": [
+    0,
+    1,
+    4
+   ],
+   "scores": [
+    0,
+    1,
+    2
+   ],
+   "rates": [
+    0.0,
+    0.033333,
+    0.133333
+   ],
+   "z_armitage_n": 2.254407,
+   "chi2_armitage_n": 5.082353,
+   "p_asymptotic_n": 0.024171,
+   "z_conditional_n1": 2.241848,
+   "p_asymptotic_n1": 0.024971,
+   "statsmodels_zscore": 2.241848,
+   "statsmodels_pvalue": 0.024971,
+   "p_exact_conditional": 0.043899,
+   "p_midp": 0.025192,
+   "tables_enumerated": 21
+  },
+  {
+   "id": "five_arms_flat_then_rise",
+   "n": [
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "x": [
+    3,
+    3,
+    4,
+    5,
+    8
+   ],
+   "scores": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "rates": [
+    0.03,
+    0.03,
+    0.04,
+    0.05,
+    0.08
+   ],
+   "z_armitage_n": 1.811457,
+   "chi2_armitage_n": 3.281378,
+   "p_asymptotic_n": 0.07007,
+   "z_conditional_n1": 1.809645,
+   "p_asymptotic_n1": 0.070351,
+   "statsmodels_zscore": 1.809645,
+   "statsmodels_pvalue": 0.070351,
+   "p_exact_conditional": 0.082577,
+   "p_midp": 0.070711,
+   "tables_enumerated": 17550
+  },
+  {
+   "id": "three_arms_unequal",
+   "n": [
+    120,
+    80,
+    60
+   ],
+   "x": [
+    3,
+    4,
+    6
+   ],
+   "scores": [
+    0,
+    1,
+    2
+   ],
+   "rates": [
+    0.025,
+    0.05,
+    0.1
+   ],
+   "z_armitage_n": 2.135744,
+   "chi2_armitage_n": 4.561404,
+   "p_asymptotic_n": 0.0327,
+   "z_conditional_n1": 2.131633,
+   "p_asymptotic_n1": 0.033037,
+   "statsmodels_zscore": 2.131633,
+   "statsmodels_pvalue": 0.033037,
+   "p_exact_conditional": 0.048219,
+   "p_midp": 0.033441,
+   "tables_enumerated": 105
+  }
+ ]
+}
