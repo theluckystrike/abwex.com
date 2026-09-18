@@ -30,6 +30,7 @@
 /* The rule above outranks the site's input:focus, so the focus border is restated here. */
 .ca .ca-row input[type="text"]:focus { outline: none; border-color: var(--accent); }
 .ca .ca-note { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 12px; }
+.ca .ca-row-hint, .ca form p { color: var(--text-mid, var(--text)); font-size: 0.9rem; }
 .ca .ca-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .ca .ca-actions .btn[aria-disabled="true"],
 .ca .ca-actions .btn[aria-disabled="true"]:hover { color: var(--text-dim); border-color: var(--border); cursor: default; }
@@ -60,6 +61,7 @@
 @media (max-width: 768px) {
   .ca th, .ca td { padding: 8px 9px; font-size: 0.82rem; }
 }
+.ca .ca-fixtures thead th { padding-top: 12px; padding-bottom: 12px; }
 .ca .ca-fixtures td:nth-child(1),
 .ca .ca-fixtures td:nth-child(2),
 .ca .ca-fixtures td:nth-child(3) { white-space: normal; }
