@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>McNemar test calculator | ABWex</title>
+ <meta name="description" content="Free McNemar test calculator for paired yes/no data: asymptotic, continuity corrected, exact conditional and mid-p values from one paired 2x2 table.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/tools/mcnemar-test-calculator/">
+ <meta property="og:title" content="McNemar test calculator">
+ <meta property="og:description" content="Free McNemar test calculator for paired yes/no data: asymptotic, continuity corrected, exact conditional and mid-p values from one paired 2x2 table.">
+ <meta property="og:url" content="https://abwex.com/tools/mcnemar-test-calculator/">
+ <meta property="og:type" content="website">
+ <meta property="og:site_name" content="ABWex">
+ <meta name="twitter:card" content="summary">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css?v=67278759">
+ <style>
+/* McNemar test page. /assets/style.css does the work. These rules fill the gaps for this
+   page: a text input, the result cards, one table and the reading rhythm. The colors, fonts
+   and spacing values are the variables and values of /assets/style.css. */
+.mn .explainer-section { padding-top: 40px; }
+.mn .explainer-section h2 { margin-bottom: 16px; }
+.mn .explainer-section h3 { margin: 24px 0 8px; font-size: 1.05rem; }
+.mn .explainer-section p,
+.mn .explainer-section ul { margin-bottom: 16px; }
+.mn .explainer-section ul { padding-left: 24px; }
+.mn .explainer-section li { margin-bottom: 8px; }
+.mn .explainer-section code { font-family: var(--font-display); background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; overflow-wrap: anywhere; }
+.mn .explainer-section a,
+.mn .last-updated a { overflow-wrap: anywhere; }
+.mn .last-updated { padding-top: 40px; }
+.mn .last-updated p + p { margin-top: 16px; }
+.mn .mn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Calculator. The site stylesheet covers number inputs only, so the text input gets the
+   same declarations here. A text input lets the script see and reject each wrong character. */
+.mn label { font-size: 0.9rem; }
+.mn .input-group { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 769px) { .mn .input-group { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.mn .input-field input[type="text"] {
+  width: 100%; min-height: 44px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text); font-family: var(--font-body); font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.mn .input-field input[type="text"]:focus { outline: none; border-color: var(--accent); }
+.mn .input-field input[aria-invalid="true"] { border-color: var(--red); }
+.mn .mn-note { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 12px; }
+.mn .mn-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mn .btn { min-height: 44px; font-size: 0.95rem; }
+.mn .btn[disabled] { opacity: 0.5; cursor: default; }
+.mn #mn-error:not(:empty) { margin-top: 16px; }
+.mn #mn-error p + p { margin-top: 8px; }
+.mn #mn-out:not(:empty) { margin-top: 20px; }
+.mn #mn-out:focus { outline: none; }
+.mn #mn-out p { margin-bottom: 12px; }
+.mn .mn-notice { border: 1px solid var(--border); border-radius: 6px; padding: 16px; background: var(--bg-card); }
+.mn .stat-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+.mn .stat-card { background: var(--bg-card); }
+.mn .stat-value { font-size: 1.35rem; overflow-wrap: anywhere; }
+.mn .stat-label { font-size: 0.95rem; color: var(--text); }
+.mn .mn-stat-note { font-size: 0.9rem; color: var(--text-dim); margin-top: 4px; }
+.mn section,
+.mn #mn-form,
+.mn #mn-error,
+.mn #mn-out { scroll-margin-top: 80px; }
+
+/* Reference table. It sits in the site's .table-scroll container, so a narrow screen scrolls
+   the table and not the page. */
+.mn .table-scroll { margin: 16px 0; border: 1px solid var(--border); border-radius: 6px; }
+.mn table { font-size: 0.9rem; min-width: 640px; }
+.mn th,
+.mn td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: right; vertical-align: top; }
+.mn thead th { font-family: var(--font-display); font-size: 0.9rem; font-weight: 400; color: var(--text-dim); vertical-align: bottom; }
+.mn tbody th { font-weight: 400; text-align: left; min-width: 180px; }
+.mn td { font-family: var(--font-display); white-space: nowrap; }
+.mn td.mn-left,
+.mn thead th:first-child,
+.mn thead th:nth-child(2) { text-align: left; }
+.mn td.mn-left { font-family: var(--font-body); white-space: normal; }
+.mn tbody tr:last-child td,
+.mn tbody tr:nth-last-child(2) th { border-bottom: none; }
+.mn tbody .btn { margin-top: 8px; }
+
+/* The shared rule for this strip gives 11.2 px text. This page sets 12 px, so that no text
+   outside header, nav and footer is smaller than 12 px. The strip keeps the same rows. */
+.pow-strip .pow-label,
+.pow-strip .pow-strip-inner a { font-size: 0.75rem; }
+ </style>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"McNemar test calculator","url":"https://abwex.com/tools/mcnemar-test-calculator/","author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one/about/michael-lip","description":"Builds and maintains the open source ABWex calculator project, MIT licensed at github.com/theluckystrike/abwex.com."},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ABWex","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"McNemar test calculator","item":"https://abwex.com/tools/mcnemar-test-calculator/"}]},"mainEntity":{"@type":"WebApplication","name":"McNemar test calculator","applicationCategory":"StatisticalApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one/about/michael-lip"}},"datePublished":"2026-10-10","dateModified":"2026-10-10"}</script>
+</head>
+<body>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/" class="active">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank" rel="noopener">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
+
+ <main class="container mn">
+ <section class="hero">
+ <h1>McNemar <span>test</span> calculator</h1>
+ <p>Enter the four counts of a paired 2x2 table. The McNemar test compares two yes/no results that come from the same subjects or from matched pairs. You get four two-sided p values side by side.</p>
+ </section>
+
+ <section id="calculator" aria-labelledby="tool-h">
+ <h2 id="tool-h" class="mn-sr">Calculator</h2>
+ <form id="mn-form" novalidate>
+ <div class="card" role="group" aria-labelledby="mn-cells-h">
+ <h3 id="mn-cells-h">Paired 2x2 table</h3>
+ <noscript><p class="mn-note">This calculator runs on JavaScript, which is turned off in this browser. The explanations and the reference table below do not need it.</p></noscript>
+ <p class="mn-note" id="mn-hint">A and B are the two results of each pair, for example before and after. Count each pair one time. Enter whole numbers from 0 to 1,000,000,000.</p>
+ <div class="input-group">
+ <div class="input-field"><label for="mn-a">Both yes (a)</label><input id="mn-a" type="text" inputmode="numeric" spellcheck="false" aria-describedby="mn-hint"></div>
+ <div class="input-field"><label for="mn-b">Only A yes (b)</label><input id="mn-b" type="text" inputmode="numeric" spellcheck="false" aria-describedby="mn-hint"></div>
+ <div class="input-field"><label for="mn-c">Only B yes (c)</label><input id="mn-c" type="text" inputmode="numeric" spellcheck="false" aria-describedby="mn-hint"></div>
+ <div class="input-field"><label for="mn-d">Both no (d)</label><input id="mn-d" type="text" inputmode="numeric" spellcheck="false" aria-describedby="mn-hint"></div>
+ </div>
+ <div class="mn-actions">
+ <button type="submit" id="mn-calc" class="btn btn-primary" disabled>Calculate</button>
+ <button type="button" id="mn-example" class="btn btn-secondary mn-load" data-example="t1" disabled>Load the paper example</button>
+ <button type="button" id="mn-clear" class="btn btn-secondary" disabled>Clear</button>
+ </div>
+ </div>
+ </form>
+ <div id="mn-error" class="sig-red" role="alert"></div>
+ <p id="mn-status" class="mn-sr" role="status"></p>
+ <div id="mn-out" tabindex="-1"></div>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="what-h">
+ <h2 id="what-h">What the test uses</h2>
+ <p>A paired design gives two yes/no results for each pair. The pairs fall into four cells: both yes (a), only A yes (b), only B yes (c) and both no (d). The cells b and c hold the discordant pairs, where the two results disagree.</p>
+ <p>The test asks whether the probability of yes is the same for A and for B. Only the discordant pairs enter the calculation. If the null hypothesis is true and the number of discordant pairs is given, the count b follows a binomial distribution with b + c trials and probability 1/2 (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3716987/">Fagerland, Lydersen and Laake 2013</a>).</p>
+ <p>The cells a and d do not change a p value on this page. The page uses them only for the total and for the two shares of yes. If you know only b and c, enter 0 for a and d.</p>
+ <p>Counts from separate groups that are not paired need a different test. Use the <a href="/tools/chi-square-test-calculator.html">chi-square test calculator</a> or the <a href="/tools/fisher-freeman-halton-calculator/">Fisher-Freeman-Halton calculator</a> for such a table. For a paired difference of two means, use the paired mode of the <a href="/tools/t-test-calculator/">t-test calculator</a>.</p>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="formula-h">
+ <h2 id="formula-h">The four p values</h2>
+ <p>The formulas are equations (1) to (6) of Fagerland, Lydersen and Laake 2013, with b for the paper's n12 and c for n21. In each formula X is a binomial count with b + c trials and probability 1/2.</p>
+
+ <h3>Asymptotic</h3>
+ <p>Chi-square = (b &minus; c)&sup2; / (b + c), with 1 degree of freedom. The p value is the upper tail of the chi-square distribution. The page calculates it as erfc(sqrt(chi-square / 2)).</p>
+
+ <h3>Asymptotic with continuity correction</h3>
+ <p>Chi-square = (|b &minus; c| &minus; 1)&sup2; / (b + c), with 1 degree of freedom. The paper attributes this version to Edwards. When b = c the formula gives 1 / (b + c), which is not 0, so this p value is below 1 for such a table.</p>
+
+ <h3>Exact conditional</h3>
+ <p>The one-sided p value is P(X &le; min(b, c)). The two-sided p value is 2 &times; P(X &le; min(b, c)), and not more than 1. When b = c the p value is 1.</p>
+
+ <h3>Mid-p</h3>
+ <p>Mid-p = exact two-sided p value &minus; P(X = b), which is equation (5). When b = c the paper replaces it with equation (6): mid-p = 1 &minus; 0.5 &times; P(X = b).</p>
+
+ <h3>A table with no discordant pair</h3>
+ <p>When b + c = 0 the two chi-square formulas divide by 0. The paper states that the two asymptotic tests have no defined value for such a table. The page shows a message and no p value.</p>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="paper-h">
+ <h2 id="paper-h">What the paper concludes</h2>
+ <p>This page gives no advice of its own on which p value to report. The sentences below are quotations from the abstract, the discussion and the conclusions of Fagerland, Lydersen and Laake 2013. The paper compared the type I error rates and the power of the tests.</p>
+ <ul>
+ <li>&quot;The exact conditional test and the asymptotic test with continuity correction did not perform well for any of the considered scenarios.&quot;</li>
+ <li>&quot;Even though the mid-p test does not guarantee preservation of the significance level, it did not violate the nominal level in any of the 9595 scenarios considered in this article.&quot;</li>
+ <li>&quot;The largest type I error rate of the asymptotic McNemar test we observed in this study was 5.37% with a 5% nominal level.&quot;</li>
+ <li>&quot;The most powerful test is the McNemar asymptotic test (without CC), which we recommend if small but frequent violations of the nominal level is acceptable.&quot;</li>
+ </ul>
+ <p>The paper also evaluates an exact unconditional test. This page does not calculate that test.</p>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="ref-h">
+ <h2 id="ref-h">Reference examples</h2>
+ <p>The table below has three published examples. For the two tables of the paper, the row &quot;Paper, Table 6&quot; is copied from the paper, and the row &quot;This page&quot; is the result of the page script, rounded to 4 decimals. The R documentation gives the counts of its example and prints no result number, so that row is marked as calculated here.</p>
+ <div class="table-scroll" role="region" aria-labelledby="ref-h" tabindex="0">
+ <table>
+ <thead>
+ <tr><th scope="col">Published table</th><th scope="col">Row</th><th scope="col">Asymptotic</th><th scope="col">With continuity correction</th><th scope="col">Exact conditional</th><th scope="col">Mid-p</th></tr>
+ </thead>
+ <tbody>
+ <tr><th scope="row" rowspan="2">Fagerland et al. 2013, Table 1. a = 1, b = 1, c = 7, d = 12<br><button type="button" class="btn btn-secondary mn-load" data-example="t1" disabled>Load table</button></th><td class="mn-left">Paper, Table 6</td><td>0.0339</td><td>0.0771</td><td>0.0703</td><td>0.0391</td></tr>
+ <tr><td class="mn-left">This page</td><td>0.0339</td><td>0.0771</td><td>0.0703</td><td>0.0391</td></tr>
+ <tr><th scope="row" rowspan="2">Fagerland et al. 2013, Table 2. a = 59, b = 6, c = 16, d = 80<br><button type="button" class="btn btn-secondary mn-load" data-example="t2" disabled>Load table</button></th><td class="mn-left">Paper, Table 6</td><td>0.0330</td><td>0.0550</td><td>0.0525</td><td>0.0347</td></tr>
+ <tr><td class="mn-left">This page</td><td>0.0330</td><td>0.0550</td><td>0.0525</td><td>0.0347</td></tr>
+ <tr><th scope="row" rowspan="2">R documentation of mcnemar.test, example from Agresti (1990), p. 350. a = 794, b = 150, c = 86, d = 570<br><button type="button" class="btn btn-secondary mn-load" data-example="r" disabled>Load table</button></th><td class="mn-left">R documentation</td><td class="mn-left" colspan="4">The R page prints no p value.</td></tr>
+ <tr><td class="mn-left">This page, calculated here</td><td>3.099e-5</td><td>4.115e-5</td><td>3.716e-5</td><td>2.893e-5</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p>Table 1 of the paper is airway hyper-responsiveness in 21 children before and after stem cell transplantation, from a study by Bentur et al. Table 2 is complete response in 161 myeloma patients before and after consolidation therapy, from a study by Cavo et al. In the two tables A is the result before and B is the result after.</p>
+ <p>The R example is approval of the President's performance in office in two surveys, one month apart, for a random sample of 1600 voting-age Americans. R fills a matrix by columns, so the call <code>matrix(c(794, 86, 150, 570), nrow = 2)</code> puts 150 voters in the cell &quot;approve in the first survey, disapprove in the second&quot; and 86 voters in the opposite cell. Here A is the first survey and B is the second. The chi-square statistics for this table, calculated here, are 17.3559 without the correction and 16.8178 with it. The R page has this comment on the result: &quot;significant change (in fact, drop) in approval ratings&quot;.</p>
+ <p>The calculator shows a p value of 0.1 or more with four decimals, and a smaller p value with four significant digits. It shows a p value that is smaller than 1e-300 as &quot;below 1e-300&quot;.</p>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="soft-h">
+ <h2 id="soft-h">The same tests in R, statsmodels and SciPy</h2>
+ <p>In R, <code>mcnemar.test(x, y = NULL, correct = TRUE)</code> applies the continuity correction by default. The documentation describes <code>correct</code> as &quot;a logical indicating whether to apply continuity correction when computing the test statistic&quot;. Set <code>correct = FALSE</code> for the test without the correction (<a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/mcnemar.test.html">R manual</a>).</p>
+ <p>The R function applies the correction only when b and c are different. The condition in its source code is <code>any(x - t(x) != 0)</code> (<a href="https://raw.githubusercontent.com/wch/r-source/trunk/src/library/stats/R/mcnemar.test.R">R source code, mcnemar.test.R</a>). For a table with b = c and b + c above 0, the statistic in R is then 0 and the p value in R is 1. On this page the corrected statistic for such a table is 1 / (b + c), as the formula above gives.</p>
+ <p>In statsmodels, <code>mcnemar(table, exact=True, correction=True)</code> uses the binomial distribution when <code>exact</code> is True. With <code>exact=False</code> it uses the chi-square distribution, and <code>correction</code> switches the continuity correction on or off. The documented parameters are table, exact and correction. The documentation lists no mid-p option (<a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.contingency_tables.mcnemar.html">statsmodels</a>).</p>
+ <p>In SciPy, <code>binomtest(k, n, p=0.5, alternative='two-sided')</code> is a test that the probability of success is p (<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html">SciPy</a>). For the exact conditional test, k is min(b, c) and n is b + c.</p>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="method-h">
+ <h2 id="method-h">Where these numbers come from</h2>
+ <p>Each p value in the calculator is the output of the page script for the counts that you enter. The script is in the source of this page.</p>
+ <p>The published values in the reference table are copied from Table 6 of the paper. Each value that a source does not print is marked as calculated here.</p>
+ <p>On 2026-10-10 the four p values of the page script were compared with SciPy 1.13.1 and statsmodels 0.14.6 for 40 tables: the three reference tables, 21 more tables with fixed counts (five of them with b = c) and 16 tables with random counts. The asymptotic, corrected and exact values were compared with the statsmodels function <code>mcnemar</code> and with the chi-square and binomial functions of SciPy. The mid-p values were compared with a calculation from the binomial functions of SciPy, because the statsmodels function has no documented mid-p option. For each of the 160 p values the relative difference was below 1e-12.</p>
+ <p>Sources, all read on 2026-10-10:</p>
+ <ul>
+ <li>Fagerland MW, Lydersen S, Laake P. The McNemar test for binary matched-pairs data: mid-p and asymptotic are better than exact conditional. BMC Medical Research Methodology. 2013;13:91. Open access under the Creative Commons Attribution License. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3716987/">PMC3716987</a>.</li>
+ <li>R documentation: <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/mcnemar.test.html">mcnemar.test</a> and <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/matrix.html">matrix</a>.</li>
+ <li>R source code: <a href="https://raw.githubusercontent.com/wch/r-source/trunk/src/library/stats/R/mcnemar.test.R">mcnemar.test.R</a> in wch/r-source, the read-only GitHub mirror of the R source code.</li>
+ <li>statsmodels documentation: <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.contingency_tables.mcnemar.html">statsmodels.stats.contingency_tables.mcnemar</a>.</li>
+ <li>SciPy documentation: <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html">scipy.stats.binomtest</a>.</li>
+ </ul>
+ <p>The code of the site is open source at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a> under the MIT license.</p>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="limits-h">
+ <h2 id="limits-h">Assumptions and limits</h2>
+ <ul>
+ <li>The data must be paired: the same subjects measured two times, or matched pairs. Each pair is counted one time.</li>
+ <li>All four p values are two-sided.</li>
+ <li>Each cell must be a whole number from 0 to 1,000,000,000.</li>
+ </ul>
+ </section>
+
+ <section class="explainer-section" aria-labelledby="dis-h">
+ <h2 id="dis-h">Disclaimers</h2>
+ <ul>
+ <li>Results are statistical estimates and not medical, business or financial advice.</li>
+ <li>The three reference examples are published tables, and each one names its source. The page has no synthetic example and no data of this site.</li>
+ </ul>
+ </section>
+
+ <div class="last-updated">
+ <p>By Michael Lip, builder and maintainer of ABWex, open source at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>. <a href="https://zovo.one">Profile</a>.</p>
+ <p>ABWex is a free A/B test statistics calculator from Zovo Tools. The calculation runs in your browser in JavaScript. The page does not send the counts that you enter to a server. Published 2026-10-10.</p>
+ </div>
+
+  <!-- Internal Content Discovery -->
+ <section class="content-discovery" style="max-width:960px;margin:3rem auto;padding:0 1rem;">
+ <style>
+        .content-discovery h2 { text-align:center; margin-bottom:2rem; }
+        .content-discovery .disc-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem; margin-bottom:2.5rem; }
+        .content-discovery .disc-group h3 { font-size:1.1rem; margin-bottom:0.75rem; color:var(--accent, #14B8A6); border-bottom:1px solid var(--border, #333); padding-bottom:0.5rem; }
+        .content-discovery .disc-group ul { list-style:none; padding:0; margin:0; }
+        .content-discovery .disc-group li { margin-bottom:0.4rem; }
+        .content-discovery .disc-group a { color:var(--text, #e0e0e0); text-decoration:none; font-size:0.9rem; }
+        .content-discovery .disc-group a:hover { color:var(--accent, #14B8A6); text-decoration:underline; }
+      </style>
+ <h2>Explore ABWex</h2>
+ <div class="disc-grid">
+ <div class="disc-group">
+ <h3>Testing Tools</h3>
+ <ul>
+ <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a></li>
+ <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a></li>
+ <li><a href="/tools/chi-square-test.html">Chi-Square Test</a></li>
+ <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a></li>
+ <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Answers</h3>
+ <ul>
+ <li><a href="/answers/ab-test-sample-size-calculator.html">A/B Test Sample Size Calculator</a></li>
+ <li><a href="/answers/is-my-ab-test-significant.html">Is My A/B Test Significant?</a></li>
+ <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Research</h3>
+ <ul>
+ <li><a href="/research/ab-test-duration-calculator.html">A/B Test Duration Calculator</a></li>
+ <li><a href="/research/ab-test-mistakes.html">A/B Test Mistakes</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Guides</h3>
+ <ul>
+ <li><a href="/guides/chi-square-test-guide.html">Chi-Square Test Explained</a></li>
+ </ul>
+ </div>
+ </div>
+ </section>
+ </main>
+
+<footer class="site-footer">
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once, free forever </a>
+ <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools">Zovo</a> · 47/500 founding spots</div>
+ </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ <a href="https://tg.zovo.one/">Tiny Telegram Tools, Telegram Bots</a>
+ </div>
+ </div>
+</nav>
+
+<div class="pow-strip">
+ <div class="pow-strip-inner">
+ <span class="pow-label">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools" rel="nofollow">Zovo, AI Dev Tools</a>
+ </div>
+</div>
+
+<script>
+/* ABWex McNemar test calculator. MIT licensed, github.com/theluckystrike/abwex.com.
+   The script reads the four counts and writes the result. It makes no network request.
+   Formulas: Fagerland, Lydersen, Laake 2013, BMC Med Res Methodol 13:91, equations (1) to (6).
+   Each loop has a fixed upper limit. No recursion. */
+(function () {
+  "use strict";
+  var MAX_CELL = 1000000000;
+  var P_FLOOR = 1e-300;
+  var MAX_TERMS = 1000000;
+  var HALF_LN_2PI = 0.5 * Math.log(2 * Math.PI);
+  var FIELDS = [
+    { id: "mn-a", label: "Both yes (a)" },
+    { id: "mn-b", label: "Only A yes (b)" },
+    { id: "mn-c", label: "Only B yes (c)" },
+    { id: "mn-d", label: "Both no (d)" }
+  ];
+  var EXAMPLES = { t1: [1, 1, 7, 12], t2: [59, 6, 16, 80], r: [794, 150, 86, 570] };
+
+  // ----- mathematics -----
+
+  // erf(x) for 0 <= x < 2.5: a series of positive terms, so no cancellation.
+  function erfSeries(x) {
+    var x2 = x * x;
+    var term = x;
+    var sum = x;
+    var n;
+    for (n = 1; n <= 200; n += 1) {
+      term = term * 2 * x2 / (2 * n + 1);
+      sum += term;
+      if (term < sum * 1e-17) { break; }
+    }
+    return 2 / Math.sqrt(Math.PI) * Math.exp(-x2) * sum;
+  }
+
+  // erfc(x) for x >= 2.5: continued fraction, evaluated from the tail.
+  function erfcFraction(x) {
+    var f = x;
+    var k;
+    for (k = 200; k >= 1; k -= 1) { f = x + (k / 2) / f; }
+    return Math.exp(-x * x) / (Math.sqrt(Math.PI) * f);
+  }
+
+  function erfc(x) {
+    if (typeof x !== "number" || !(x >= 0)) { return 1; }
+    return x < 2.5 ? 1 - erfSeries(x) : erfcFraction(x);
+  }
+
+  // Upper tail of the chi-square distribution with 1 degree of freedom.
+  function chiSquareTail(x) {
+    if (typeof x !== "number" || !(x > 0)) { return 1; }
+    return Math.min(1, erfc(Math.sqrt(x / 2)));
+  }
+
+  // ln(n!) - ln(sqrt(2 pi n) (n/e)^n), the error of the Stirling formula (Loader 2000).
+  function stirlingError(n) {
+    var s = 0;
+    var i;
+    var n2 = n * n;
+    if (n <= 15) {
+      for (i = 2; i <= n; i += 1) { s += Math.log(i); }
+      return s - (n + 0.5) * Math.log(n) + n - HALF_LN_2PI;
+    }
+    return (1 / 12 - (1 / 360 - (1 / 1260 - (1 / 1680 - (1 / 1188) / n2) / n2) / n2) / n2) / n;
+  }
+
+  // x ln(x / m) + m - x, accurate when x is near m (Loader 2000).
+  function deviance(x, m) {
+    var v = (x - m) / (x + m);
+    var s = (x - m) * v;
+    var ej = 2 * x * v;
+    var s1;
+    var j;
+    if (Math.abs(x - m) < 0.1 * (x + m)) {
+      v = v * v;
+      for (j = 1; j <= 1000; j += 1) {
+        ej *= v;
+        s1 = s + ej / (2 * j + 1);
+        if (s1 === s) { return s1; }
+        s = s1;
+      }
+    }
+    return x * Math.log(x / m) + m - x;
+  }
+
+  // Natural logarithm of P(X = k), X binomial(n, 1/2), for whole 0 <= k <= n and n >= 1.
+  function logPointProbability(k, n) {
+    var core;
+    if (k === 0 || k === n) { return -n * Math.LN2; }
+    core = stirlingError(n) - stirlingError(k) - stirlingError(n - k)
+      - deviance(k, n / 2) - deviance(n - k, n / 2);
+    return core + 0.5 * Math.log(n / (2 * Math.PI * k * (n - k)));
+  }
+
+  // Sum of P(X = j) / P(X = k) for j = 0 to k. Returns -1 if the sum does not converge.
+  function tailRatioSum(k, n) {
+    var term = 1;
+    var sum = 1;
+    var j = k;
+    var steps = 0;
+    while (j >= 1 && steps < MAX_TERMS) {
+      term *= j / (n - j + 1);
+      sum += term;
+      j -= 1;
+      steps += 1;
+      if (term < sum * 1e-17) { return sum; }
+    }
+    return j === 0 ? sum : -1;
+  }
+
+  // The four tests. b and c are whole numbers from 0 to MAX_CELL with b + c >= 1.
+  function mcnemar(b, c) {
+    var n = b + c;
+    var k = Math.min(b, c);
+    var diff = Math.abs(b - c);
+    var logPoint = logPointProbability(k, n);
+    var ratio = tailRatioSum(k, n);
+    var out = { n: n, converged: ratio > 0 };
+    out.chi2 = diff * diff / n;
+    out.chi2cc = (diff - 1) * (diff - 1) / n;
+    out.pAsym = chiSquareTail(out.chi2);
+    out.pCc = chiSquareTail(out.chi2cc);
+    if (b === c) {
+      out.pExact = 1;
+      out.pMid = 1 - 0.5 * Math.exp(logPoint);
+    } else {
+      out.pExact = Math.min(1, Math.exp(Math.LN2 + logPoint + Math.log(ratio)));
+      out.pMid = Math.min(1, Math.exp(logPoint + Math.log(2 * ratio - 1)));
+    }
+    return out;
+  }
+
+  // ----- text -----
+
+  function formatP(p) {
+    if (typeof p !== "number" || !(p >= 0) || p > 1) { return "not available"; }
+    if (p < P_FLOOR) { return "below 1e-300"; }
+    if (p >= 0.1) { return p.toFixed(4); }
+    if (p >= 0.0001) { return p.toFixed(3 - Math.floor(Math.log10(p))); }
+    return p.toExponential(3);
+  }
+
+  function formatCount(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function formatShare(part, total) {
+    return formatCount(part) + " of " + formatCount(total) + " pairs (" + (100 * part / total).toFixed(1) + "%)";
+  }
+
+  // Reads one count. Digits only: a sign, a point, a comma, a space or an exponent is refused.
+  function parseCount(raw) {
+    var s = String(raw).replace(/^\s+|\s+$/g, "");
+    if (s === "") { return { state: "empty" }; }
+    if (/^[-−]/.test(s)) { return { state: "minus" }; }
+    if (!/^[0-9]+$/.test(s)) { return { state: "format" }; }
+    s = s.replace(/^0+(?=[0-9])/, "");
+    if (s.length > 10 || Number(s) > MAX_CELL) { return { state: "large" }; }
+    return { state: "ok", value: Number(s) };
+  }
+
+  function problemText(label, state) {
+    if (state === "empty") { return label + " is empty. Enter a whole number, 0 or more."; }
+    if (state === "minus") { return label + " has a minus sign. Enter a whole number, 0 or more."; }
+    if (state === "large") { return label + " is above the limit of 1,000,000,000."; }
+    return label + " is not a whole number in digits. Use digits only, for example 1500. Do not use a point, a comma, a space or an exponent.";
+  }
+
+  // ----- page -----
+
+  var form = document.getElementById("mn-form");
+  var errorBox = document.getElementById("mn-error");
+  var outBox = document.getElementById("mn-out");
+  var statusBox = document.getElementById("mn-status");
+  var inputs = [];
+  var i;
+  for (i = 0; i < FIELDS.length; i += 1) { inputs.push(document.getElementById(FIELDS[i].id)); }
+  if (!form || !errorBox || !outBox || !statusBox || inputs.indexOf(null) !== -1) { return; }
+
+  function node(tag, className, text) {
+    var el = document.createElement(tag);
+    if (className) { el.className = className; }
+    if (text) { el.textContent = text; }
+    return el;
+  }
+
+  function empty(el) {
+    var guard = 0;
+    while (el.firstChild && guard < 1000) { el.removeChild(el.firstChild); guard += 1; }
+  }
+
+  function statCard(value, label, note) {
+    var card = node("div", "stat-card");
+    card.appendChild(node("div", "stat-value", value));
+    card.appendChild(node("div", "stat-label", label));
+    card.appendChild(node("div", "mn-stat-note", note));
+    return card;
+  }
+
+  function showResult(a, b, c, d) {
+    var r = mcnemar(b, c);
+    var total = a + b + c + d;
+    var k = Math.min(b, c);
+    var grid = node("div", "stat-grid");
+    empty(outBox);
+    if (!r.converged) {
+      outBox.appendChild(node("p", "mn-notice", "The exact sum did not finish for these counts. The page shows no p value."));
+      return;
+    }
+    outBox.appendChild(node("p", "", "Discordant pairs: b + c = " + formatCount(b) + " + " + formatCount(c) + " = " + formatCount(r.n) + ". Pairs in total: " + formatCount(total) + "."));
+    outBox.appendChild(node("p", "", "A yes in " + formatShare(a + b, total) + ". B yes in " + formatShare(a + c, total) + "."));
+    grid.appendChild(statCard(formatP(r.pAsym), "Asymptotic", "chi-square " + r.chi2.toFixed(4) + ", 1 degree of freedom"));
+    grid.appendChild(statCard(formatP(r.pCc), "Asymptotic with continuity correction", "chi-square " + r.chi2cc.toFixed(4) + ", 1 degree of freedom"));
+    grid.appendChild(statCard(formatP(r.pExact), "Exact conditional", "2 × P(X ≤ " + formatCount(k) + "), not more than 1"));
+    grid.appendChild(statCard(formatP(r.pMid), "Mid-p", b === c ? "1 − 0.5 × P(X = " + formatCount(k) + ")" : "exact p − P(X = " + formatCount(k) + ")"));
+    outBox.appendChild(grid);
+    outBox.appendChild(node("p", "mn-note", "The four p values are two-sided. X is binomial with " + formatCount(r.n) + " trials and probability 1/2."));
+  }
+
+  function showNoTest(a, d) {
+    empty(outBox);
+    outBox.appendChild(node("p", "mn-notice", "b + c = 0. The table has no discordant pair, so the McNemar test is not defined for it. The page shows no p value. Pairs in total: " + formatCount(a + d) + "."));
+  }
+
+  // strict = true after Calculate: an empty field is a problem. strict = false while the
+  // reader types and after the Back button: an empty field only removes the result.
+  function update(strict) {
+    var values = [];
+    var problems = [];
+    var incomplete = false;
+    var firstBad = null;
+    var parsed;
+    var j;
+    for (j = 0; j < FIELDS.length; j += 1) {
+      parsed = parseCount(inputs[j].value);
+      values.push(parsed.value);
+      if (parsed.state === "ok") {
+        inputs[j].removeAttribute("aria-invalid");
+      } else if (parsed.state === "empty" && !strict) {
+        incomplete = true;
+        inputs[j].removeAttribute("aria-invalid");
+      } else {
+        problems.push(problemText(FIELDS[j].label, parsed.state));
+        inputs[j].setAttribute("aria-invalid", "true");
+        firstBad = firstBad || inputs[j];
+      }
+    }
+    empty(errorBox);
+    statusBox.textContent = "";
+    if (problems.length > 0) {
+      empty(outBox);
+      for (j = 0; j < problems.length; j += 1) { errorBox.appendChild(node("p", "", problems[j])); }
+      return firstBad;
+    }
+    if (incomplete) { empty(outBox); return null; }
+    if (values[1] + values[2] === 0) { showNoTest(values[0], values[3]); return null; }
+    showResult(values[0], values[1], values[2], values[3]);
+    statusBox.textContent = "Result updated.";
+    return null;
+  }
+
+  function loadExample(key) {
+    var cells = EXAMPLES[key];
+    var j;
+    if (!cells) { return; }
+    for (j = 0; j < inputs.length; j += 1) { inputs[j].value = String(cells[j]); }
+    update(true);
+    form.scrollIntoView({ block: "start" });
+  }
+
+  function clearAll() {
+    var j;
+    for (j = 0; j < inputs.length; j += 1) { inputs[j].value = ""; }
+    update(false);
+    inputs[0].focus();
+  }
+
+  form.addEventListener("submit", function (event) {
+    var bad;
+    event.preventDefault();
+    bad = update(true);
+    if (bad) { bad.focus(); }
+  });
+  form.addEventListener("input", function () { update(false); });
+  document.getElementById("mn-clear").addEventListener("click", clearAll);
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    var button = target && target.closest ? target.closest(".mn-load") : null;
+    if (button) { loadExample(button.getAttribute("data-example")); }
+  });
+  // After the Back button the browser can restore the page or the field values.
+  // The result is calculated again from the fields, so the two always agree.
+  window.addEventListener("pageshow", function () { update(false); });
+
+  var buttons = document.querySelectorAll("#mn-form button, .mn-load");
+  for (i = 0; i < buttons.length && i < 20; i += 1) { buttons[i].disabled = false; }
+  update(false);
+}());
+</script>
+<script defer src="/assets/js/nav.js?v=45f62fb3"></script>
+</body>
+</html>
