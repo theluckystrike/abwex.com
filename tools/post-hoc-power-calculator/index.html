@@ -23,9 +23,10 @@
       {"@type":"ListItem","position":1,"name":"ABWex","item":"https://abwex.com/"},
       {"@type":"ListItem","position":2,"name":"Tools","item":"https://abwex.com/tools/"},
       {"@type":"ListItem","position":3,"name":"Post hoc power calculator"}]},
-    {"@type":"Article","@id":"https://abwex.com/tools/post-hoc-power-calculator/#article","headline":"Post hoc power calculator, observed power and what it can tell you","description":"Observed power computed from a finished two proportion test, the p value identity behind it, and a 10,000 replicate simulation of how noisy observed power is even when true power is known.","datePublished":"2026-09-01","dateModified":"2026-09-01","author":{"@id":"https://zovo.one/#michael-lip"},"mainEntityOfPage":{"@id":"https://abwex.com/tools/post-hoc-power-calculator/#webpage"}},
-    {"@type":"Dataset","@id":"https://abwex.com/tools/post-hoc-power-calculator/#dataset","name":"Observed power distribution under known true power, simulation study","description":"10,000 replicate two proportion A/B tests per cell at four true power levels, 0.20, 0.50, 0.80 and 0.95, recording the distribution of post hoc power computed from each replicate's own observed rates. Seeded and reproducible.","creator":{"@id":"https://zovo.one/#michael-lip"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://raw.githubusercontent.com/theluckystrike/abwex.com/main/datasets/posthoc_power_simulation.json"}},
-    {"@type":"Person","@id":"https://zovo.one/#michael-lip","name":"Michael Lip","url":"https://zovo.one","description":"Independent calculator builder, operator of ABWex and the Zovo Tools network."}
+{"@type":"Article","@id":"https://abwex.com/tools/post-hoc-power-calculator/#article","headline":"Post hoc power calculator, observed power and what it can tell you","description":"Post hoc power starts from the visitors and conversions of a finished test and returns observed power. It restates the p value behind that number and adds the confidence interval people usually want. A 10,000-replicate simulation on this page puts the middle 90% of observed power at 0.21 to 0.99 when true power is 0.80.","datePublished":"2026-09-01","dateModified":"2026-10-28","author":{"@id":"https://zovo.one/#michael-lip"},"mainEntityOfPage":{"@id":"https://abwex.com/tools/post-hoc-power-calculator/#webpage"}},
+{"@type":"Dataset","@id":"https://abwex.com/tools/post-hoc-power-calculator/#dataset","name":"How noisy observed power is, measured","description":"We fixed a real design, a 10 percent baseline against a 12 percent treatment at alpha 0.05, set the arm size to hit each target power exactly, then simulated 10,000 complete replicate experiments per cell and computed observed power from each replicate's own data.","creator":{"@id":"https://zovo.one/#michael-lip"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://raw.githubusercontent.com/theluckystrike/abwex.com/main/datasets/posthoc_power_simulation.json"}},
+    {"@type":"Person","@id":"https://zovo.one/#michael-lip","name":"Michael Lip","url":"https://zovo.one"},
+    {"@type":"WebSite","@id":"https://abwex.com/#website","url":"https://abwex.com/","name":"ABWex"}
   ]}
   </script>
  <style>
@@ -100,7 +101,13 @@
  <h1>Post hoc power <span>calculator</span></h1>
  </section>
 
- <p class="byline">By Michael Lip, <a href="https://zovo.one">Zovo Tools</a>. Updated 2026-09-01.</p>
+ <p class="byline">By Michael Lip, <a href="https://zovo.one">Zovo Tools</a>. Updated 2026-10-28.</p>
+
+ <div class="page-answer" style="border-left:3px solid var(--accent,#14B8A6);background:rgba(20,184,166,.07);padding:14px 18px;margin:18px 0 26px;border-radius:0 6px 6px 0">
+ <p style="margin:0 0 8px"><strong>Short answer.</strong> Post hoc power starts from the visitors and conversions of a finished test and returns observed power. It restates the p value behind that number and adds the confidence interval people usually want. A 10,000-replicate simulation on this page puts the middle 90% of observed power at 0.21 to 0.99 when true power is 0.80.</p>
+ <p class="updated" style="margin:0;font-size:.8rem;color:var(--text-dim,#9ca3af)">Updated 2026-10-28</p>
+ </div>
+
 
  <p class="lede">Enter the visitors and conversions from a finished test and this returns its observed power, the number reviewers ask for after a null result. It also shows the p value that number secretly restates, and the confidence interval that answers the question people actually mean to ask. Everything runs in your browser and nothing is uploaded.</p>
 
