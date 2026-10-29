@@ -219,6 +219,15 @@ a { color: #2DD4BF; }
 header nav a { color: #888; }
 header nav a:hover, header nav a.active { color: #e8e8e8; }
 .nav-pro { color: #0a0a0a !important; }
+@media print {
+  /* Print: this page's own dark skin (hard-coded and inline colours, and the !important
+     body rule above) overrides the shared print palette in /assets/style.css, so its
+     text printed light. Dark text on white paper; links in the shared accent. */
+  html, body { background: #fff !important; color: #111 !important; }
+  body * { color: #111 !important; -webkit-text-fill-color: currentColor !important; }
+  body *:not(:empty), input, select, textarea { background: transparent !important; }
+  a, a * { color: #0b5f55 !important; }
+}
 </style>
 </head>
 <body>
