@@ -275,6 +275,8 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
   body * { color: #111 !important; -webkit-text-fill-color: currentColor !important; }
   body *:not(:empty), input, select, textarea { background: transparent !important; }
   a, a * { color: #0b5f55 !important; }
+  /* charts: no dark canvas fill on paper; the script redraws their labels dark while printing */
+  canvas { background: transparent !important; }
 }
 </style>
 </head>
@@ -426,7 +428,18 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       drawTrajectory(mu, X, r, t);
     }
 
+    // Print: the chart labels are light (drawn for the dark page) and print faint on white paper.
+    // While printing, both charts are redrawn with dark labels; after printing, with the screen colours.
+    let printLabels = false, lastNumberLine = null, lastTrajectory = null;
+    function redrawForPrint(on) {
+      if (printLabels === on) return;
+      printLabels = on;
+      if (lastNumberLine) drawNumberLine(...lastNumberLine);
+      if (lastTrajectory) drawTrajectory(...lastTrajectory);
+    }
+
     function drawNumberLine(mu, X, predicted, sigma) {
+      lastNumberLine = [mu, X, predicted, sigma];
       const ctx = numCanvas.getContext('2d');
       const w = numCanvas.clientWidth || 600;
       const h = 70;
@@ -461,17 +474,18 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
         ctx.fillStyle = p.color;
         ctx.arc(x, h/2, 6, 0, 2*Math.PI);
         ctx.fill();
-        ctx.fillStyle = '#d0d8ff';
+        ctx.fillStyle = printLabels ? '#111' : '#d0d8ff';
         ctx.font = '11px system-ui';
         ctx.textAlign = 'center';
         ctx.fillText(p.label, x, h/2 - 14);
-        ctx.fillStyle = '#b0b8e0';
+        ctx.fillStyle = printLabels ? '#111' : '#b0b8e0';
         ctx.font = '10px system-ui';
         ctx.fillText(p.val.toFixed(1), x, h/2 + 20);
       });
     }
 
     function drawTrajectory(mu, X, r, tMax) {
+      lastTrajectory = [mu, X, r, tMax];
       const ctx = trajCanvas.getContext('2d');
       const rect = trajCanvas.parentElement.getBoundingClientRect();
       const w = Math.min(rect.width - 20, 800);
@@ -509,7 +523,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       }
 
       // axis labels
-      ctx.fillStyle = '#8a90b8';
+      ctx.fillStyle = printLabels ? '#111' : '#8a90b8';
       ctx.font = '10px system-ui';
       ctx.textAlign = 'center';
       for (let t = 0; t <= maxT; t+= (maxT>5?2:1)) {
@@ -527,7 +541,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       const meanY = yScale(mu);
       ctx.beginPath(); ctx.moveTo(pad.left, meanY); ctx.lineTo(w-pad.right, meanY); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#9ca3af';
+      ctx.fillStyle = printLabels ? '#111' : '#9ca3af';
       ctx.textAlign = 'left';
       ctx.font = '10px system-ui';
       ctx.fillText('μ', w-pad.right-10, meanY-4);
@@ -553,7 +567,7 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
         ctx.fill();
       }
       // label first and last
-      ctx.fillStyle = '#f0f0ff';
+      ctx.fillStyle = printLabels ? '#111' : '#f0f0ff';
       ctx.font = '10px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText('X₀='+X.toFixed(1), xScale(0)-10, yScale(scores[0])-12);
@@ -567,6 +581,10 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
     // also recompute on enter
     document.querySelectorAll('input').forEach(inp => inp.addEventListener('change', computeAll));
     window.addEventListener('resize', () => { computeAll(); });
+    window.addEventListener('beforeprint', () => redrawForPrint(true));
+    window.addEventListener('afterprint', () => redrawForPrint(false));
+    const printQuery = window.matchMedia ? window.matchMedia('print') : null;
+    if (printQuery && printQuery.addEventListener) printQuery.addEventListener('change', (e) => redrawForPrint(e.matches));
   })();
 </script>
 

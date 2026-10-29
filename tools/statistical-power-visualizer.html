@@ -261,6 +261,8 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
   body * { color: #111 !important; -webkit-text-fill-color: currentColor !important; }
   body *:not(:empty), input, select, textarea { background: transparent !important; }
   a, a * { color: #0b5f55 !important; }
+  /* chart: no dark canvas fill on paper; the script redraws its labels dark while printing */
+  canvas { background: transparent !important; }
 }
 </style>
 </head>
@@ -485,8 +487,18 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       return Math.max(4, Math.round(nGuess));
     }
 
+    // Print: the chart labels are light (drawn for the dark page) and print faint on white paper.
+    // While printing, the chart is redrawn with dark labels; after printing, with the screen colours.
+    let printLabels = false, lastChart = null;
+    function redrawForPrint(on) {
+      if (printLabels === on) return;
+      printLabels = on;
+      if (lastChart) drawChart(...lastChart);
+    }
+
     // Drawing
     function drawChart(effect, n, alpha, tailType) {
+      lastChart = [effect, n, alpha, tailType];
       const W = canvas.width, H = canvas.height;
       ctx.clearRect(0, 0, W, H);
 
@@ -627,15 +639,15 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       ctx.lineTo(critX, baseY);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#facc15';
+      ctx.fillStyle = printLabels ? '#713f12' : '#facc15';
       ctx.font = 'bold 11px system-ui';
       ctx.fillText('critical', critX - 30, 20);
 
       // Labels
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = printLabels ? '#111' : '#94a3b8';
       ctx.font = '12px system-ui';
       ctx.fillText('Null', 20, 30);
-      ctx.fillStyle = '#22c55e';
+      ctx.fillStyle = printLabels ? '#14532d' : '#22c55e';
       ctx.fillText('Alternative', 60, 30);
     }
 
@@ -664,6 +676,10 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       // keep aspect ratio
     }
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('beforeprint', () => redrawForPrint(true));
+    window.addEventListener('afterprint', () => redrawForPrint(false));
+    const printQuery = window.matchMedia ? window.matchMedia('print') : null;
+    if (printQuery && printQuery.addEventListener) printQuery.addEventListener('change', (e) => redrawForPrint(e.matches));
   })();
 </script>
 <footer class="site-footer">

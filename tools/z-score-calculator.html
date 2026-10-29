@@ -285,6 +285,8 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
   body * { color: #111 !important; -webkit-text-fill-color: currentColor !important; }
   body *:not(:empty), input, select, textarea { background: transparent !important; }
   a, a * { color: #0b5f55 !important; }
+  /* chart: no dark canvas fill on paper; the script redraws its labels dark while printing */
+  canvas { background: transparent !important; }
 }
 </style>
 </head>
@@ -498,8 +500,18 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       drawCurve(z, cumProb);
     }
 
+    // Print: the chart labels are light (drawn for the dark page) and print faint on white paper.
+    // While printing, the chart is redrawn with dark labels; after printing, with the screen colours.
+    let printLabels = false, lastCurve = null;
+    function redrawForPrint(on) {
+      if (printLabels === on) return;
+      printLabels = on;
+      if (lastCurve) drawCurve(...lastCurve);
+    }
+
     // ----- draw normal curve with shading -----
     function drawCurve(z, cumProb) {
+      lastCurve = [z, cumProb];
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
       const padding = 30;
@@ -555,13 +567,13 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
         ctx.strokeStyle = '#fbbf24';
         ctx.lineWidth = 2;
         ctx.stroke();
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = printLabels ? '#451a03' : '#fbbf24';
         ctx.font = '12px monospace';
         ctx.fillText('z=' + z.toFixed(2), toX(z) - 20, toY(0) + 18);
       }
 
       // labels
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = printLabels ? '#111' : '#94a3b8';
       ctx.font = '11px monospace';
       ctx.fillText('-4', toX(-4), toY(0) + 18);
       ctx.fillText('0', toX(0) - 4, toY(0) + 18);
@@ -588,6 +600,10 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
     }, 50);
 
     // re-compute on enter? we rely on button.
+    window.addEventListener('beforeprint', () => redrawForPrint(true));
+    window.addEventListener('afterprint', () => redrawForPrint(false));
+    const printQuery = window.matchMedia ? window.matchMedia('print') : null;
+    if (printQuery && printQuery.addEventListener) printQuery.addEventListener('change', (e) => redrawForPrint(e.matches));
   })();
 </script>
 <footer class="site-footer">

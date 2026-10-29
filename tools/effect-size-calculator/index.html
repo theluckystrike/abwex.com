@@ -281,6 +281,8 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
   body * { color: #111 !important; -webkit-text-fill-color: currentColor !important; }
   body *:not(:empty), input, select, textarea { background: transparent !important; }
   a, a * { color: #0b5f55 !important; }
+  /* chart: no dark canvas fill on paper; the script redraws its labels dark while printing */
+  canvas { background: transparent !important; }
 }
 </style>
 </head>
@@ -482,7 +484,17 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       return 0.5 * (1.0 + sign * y);
     }
 
+    // Print: the chart labels are light (drawn for the dark page) and print faint on white paper.
+    // While printing, the chart is redrawn with dark labels; after printing, with the screen colours.
+    let printLabels = false, lastCurves = null;
+    function redrawForPrint(on) {
+      if (printLabels === on) return;
+      printLabels = on;
+      if (lastCurves) drawCurves(...lastCurves);
+    }
+
     function drawCurves(m1, s1, m2, s2, d, cles) {
+      lastCurves = [m1, s1, m2, s2, d, cles];
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
@@ -587,12 +599,12 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
       ctx.fill();
 
       // Labels
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = printLabels ? '#111' : '#94a3b8';
       ctx.font = '11px system-ui, sans-serif';
       ctx.fillText('Group 1', 10, 20);
-      ctx.fillStyle = '#f472b6';
+      ctx.fillStyle = printLabels ? '#831843' : '#f472b6';
       ctx.fillText('Group 2', w - 80, 20);
-      ctx.fillStyle = '#64748b';
+      ctx.fillStyle = printLabels ? '#111' : '#64748b';
       ctx.font = '10px system-ui, sans-serif';
       const meanPos1 = xPos(m1);
       const meanPos2 = xPos(m2);
@@ -611,6 +623,10 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
     const inputs = [mean1, sd1, n1, mean2, sd2, n2];
     inputs.forEach(inp => inp.addEventListener('change', computeEffectSizes));
     // but button is main
+    window.addEventListener('beforeprint', () => redrawForPrint(true));
+    window.addEventListener('afterprint', () => redrawForPrint(false));
+    const printQuery = window.matchMedia ? window.matchMedia('print') : null;
+    if (printQuery && printQuery.addEventListener) printQuery.addEventListener('change', (e) => redrawForPrint(e.matches));
   })();
 </script>
 <div style="margin:30px auto;max-width:728px;text-align:center;padding:18px 24px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #334155;border-radius:10px">

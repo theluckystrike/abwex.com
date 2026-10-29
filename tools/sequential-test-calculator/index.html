@@ -499,8 +499,21 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
             }
             ctx.stroke();
 
+            // a copy of the chart without its labels, so that printing can repaint only the labels
+            sprtChartNoLabels = document.createElement('canvas');
+            sprtChartNoLabels.width = canvas.width;
+            sprtChartNoLabels.height = canvas.height;
+            sprtChartNoLabels.getContext('2d').drawImage(canvas, 0, 0);
+            drawSPRTLabels(ctx, canvas, padding);
+        }
+
+        // Print: the print CSS inverts this canvas for paper, which leaves the axis titles and the
+        // green "Accept H0" legend text faint. While printing, those labels are repainted in white
+        // (black after the inversion) over the unchanged chart; after printing, in the screen colours.
+        let sprtChartNoLabels = null, sprtPrintLabels = false;
+        function drawSPRTLabels(ctx, canvas, padding) {
             // Labels
-            ctx.fillStyle = '#a0aec0';
+            ctx.fillStyle = sprtPrintLabels ? '#fff' : '#a0aec0';
             ctx.font = '12px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('Number of Observations', canvas.width / 2, canvas.height - 10);
@@ -521,7 +534,22 @@ header nav a:hover, header nav a.active { color: #e8e8e8; }
 
             ctx.fillStyle = 'rgba(100, 150, 50, 0.8)';
             ctx.fillRect(padding + 10, padding + 35, 15, 15);
+            if (sprtPrintLabels) ctx.fillStyle = '#fff';
             ctx.fillText('Accept H0 (Not Sig)', padding + 30, padding + 47);
+        }
+        function sprtRedrawForPrint(on) {
+            if (sprtPrintLabels === on || !sprtChartNoLabels) return;
+            sprtPrintLabels = on;
+            const canvas = document.getElementById('sprtChart');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(sprtChartNoLabels, 0, 0);
+            drawSPRTLabels(ctx, canvas, 50);
+        }
+        window.addEventListener('beforeprint', () => sprtRedrawForPrint(true));
+        window.addEventListener('afterprint', () => sprtRedrawForPrint(false));
+        if (window.matchMedia && window.matchMedia('print').addEventListener) {
+            window.matchMedia('print').addEventListener('change', (e) => sprtRedrawForPrint(e.matches));
         }
 
         calculateSPRT();
