@@ -572,3 +572,18 @@ main,
   .author-photo{width:124px;height:124px}
   .author-links{justify-content:center}
 }
+
+/* Print. Paper is white and Chrome drops background colours by default, so the
+   light-on-dark text printed faint (#e8e8e8 came out about #949494, 3.03:1), and
+   the sticky header printed over the content at the current scroll position.
+   Dark text on white, the header back in the page flow, and filled accent
+   buttons outlined so their dark labels stay readable with backgrounds on. */
+@media print {
+  :root {
+    --bg: #fff; --bg-card: #fff; --bg-hover: #fff; --bg-input: #fff; --border: #bbb;
+    --text: #111; --text-dim: #333; --text-muted: #444; --accent: #0b5f55; --accent-dim: #0b5f55;
+  }
+  body { background: #fff; color: #111; }
+  header { position: static !important; background: #fff; backdrop-filter: none; }
+  .btn-primary, .tab-btn.active, .nav-pro { background: #fff; border: 1px solid var(--accent); }
+}
