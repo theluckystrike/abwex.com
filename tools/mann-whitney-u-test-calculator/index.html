@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Mann-Whitney U test calculator | ABWex</title>
+ <meta name="description" content="Free Mann-Whitney U test calculator for two independent samples: midranks, rank sums, U, exact and asymptotic p values, and a worked SciPy example.">
+ <meta name="robots" content="index, follow">
+ <link rel="canonical" href="https://abwex.com/tools/mann-whitney-u-test-calculator/">
+ <meta property="og:title" content="Mann-Whitney U test calculator">
+ <meta property="og:description" content="Free Mann-Whitney U test calculator for two independent samples: midranks, rank sums, U, exact and asymptotic p values, and a worked SciPy example.">
+ <meta property="og:url" content="https://abwex.com/tools/mann-whitney-u-test-calculator/">
+ <meta property="og:type" content="website">
+ <meta property="og:site_name" content="ABWex">
+ <meta name="twitter:card" content="summary">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/assets/style.css?v=67278759">
+ <style>
+/* Mann-Whitney U test page. /assets/style.css does the work. These rules fill the gaps for
+   this page: two text areas, the result cards, one check table and the reading rhythm. The
+   colors, fonts and spacing values are the variables and values of /assets/style.css. */
+.mn .explainer-section { padding-top: 40px; }
+.mn .explainer-section h2 { margin-bottom: 16px; }
+.mn .explainer-section h3 { margin: 24px 0 8px; font-size: 1.05rem; }
+.mn .explainer-section p,
+.mn .explainer-section ul { margin-bottom: 16px; }
+.mn .explainer-section ul { padding-left: 24px; }
+.mn .explainer-section li { margin-bottom: 8px; }
+.mn .explainer-section code { font-family: var(--font-display); background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; overflow-wrap: anywhere; }
+.mn .explainer-section a,
+.mn .last-updated a { overflow-wrap: anywhere; }
+.mn .last-updated { padding-top: 40px; }
+.mn .last-updated p + p { margin-top: 16px; }
+.mn .mn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Calculator. The site stylesheet covers number inputs only, so the text area gets the
+   same declarations here. A text area accepts pasted lists in any separator format. */
+.mn textarea {
+  width: 100%;
+  min-height: 88px;
+  background: var(--bg-input, #1a1a2e);
+  border: 1px solid var(--border, rgba(255,255,255,0.1));
+  border-radius: 6px;
+  color: var(--text, #e0e0e0);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  resize: vertical;
+}
+.mn textarea:focus { outline: 2px solid var(--accent, #14B8A6); outline-offset: 1px; }
+.mn textarea[aria-invalid="true"] { border-color: var(--red, #EF4444); }
+.mn .input-label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.92rem; }
+.mn .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
+.mn .result-card { background: var(--bg-card); border: 1px solid var(--border, rgba(255,255,255,0.1)); border-radius: 8px; padding: 14px 16px; }
+.mn .result-card .rv { font-family: var(--font-display); font-size: 1.35rem; margin: 4px 0 2px; overflow-wrap: anywhere; }
+.mn .result-card .rl { font-size: 0.875rem; color: var(--text-dim, #9ca3af); }
+.mn .mn-note { font-size: 0.88rem; color: var(--text-dim, #9ca3af); margin-bottom: 12px; }
+.mn .mn-notice { background: rgba(239,68,68,.08); border-left: 3px solid var(--red, #EF4444); padding: 10px 14px; border-radius: 0 6px 6px 0; }
+.mn .check-table { width: 100%; border-collapse: collapse; margin: 12px 0 4px; font-size: 0.9rem; }
+.mn .check-table th, .mn .check-table td { border: 1px solid var(--border, rgba(255,255,255,0.1)); padding: 8px 10px; text-align: left; overflow-wrap: anywhere; }
+.mn .check-table th { background: var(--bg-card); font-weight: 600; }
+.mn .table-wrap { overflow-x: auto; }
+@media (max-width: 640px) { .mn .check-table { font-size: 0.875rem; } }
+.mn .mn-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.pow-strip .pow-label, .pow-strip .pow-strip-inner a { font-size: 0.75rem; }
+ </style>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Mann-Whitney U test calculator","url":"https://abwex.com/tools/mann-whitney-u-test-calculator/","author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one/about/michael-lip"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ABWex","item":"https://abwex.com/"},{"@type":"ListItem","position":2,"name":"Mann-Whitney U test calculator","item":"https://abwex.com/tools/mann-whitney-u-test-calculator/"}]},"mainEntity":{"@type":"WebApplication","name":"Mann-Whitney U test calculator","applicationCategory":"StatisticalApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Michael Lip","url":"https://zovo.one/about/michael-lip"}},"datePublished":"2026-10-29","dateModified":"2026-10-29"}</script>
+</head>
+<body>
+ <header>
+ <div class="container header-inner">
+ <a href="/" class="logo">AB<span>Wex</span></a>
+ <button class="mobile-toggle" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+ <nav>
+ <a href="/">Calculator</a>
+ <a href="/tools/" class="active">Tools</a>
+ <a href="/answers/">Answers</a>
+ <a href="/guides/">Guides</a>
+ <a href="/blog/">Blog</a>
+ <div class="nav-right">
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=nav-link" class="nav-pro" target="_blank" rel="noopener">Go Pro </a>
+ <a href="https://zovo.one/tools?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools" class="nav-zovo">Zovo Tools</a>
+ </div>
+ </nav>
+ </div>
+ </header>
+
+ <main class="container mn">
+ <section class="hero">
+ <h1>Mann-Whitney <span>U test</span> calculator</h1>
+ <p>Paste two lists of raw numbers from two independent groups, for example order value or time on page. The Mann-Whitney U test compares the ranks. You get the U statistic, exact and asymptotic p values, the tie-corrected normal approximation, and the rank-biserial effect size.</p>
+ </section>
+
+ <div class="page-answer" style="border-left:3px solid var(--accent,#14B8A6);background:rgba(20,184,166,.07);padding:14px 18px;margin:18px 0 26px;border-radius:0 6px 6px 0">
+ <p style="margin:0 0 8px"><strong>Short answer.</strong> Enter two independent samples of raw values. The calculator returns U1, U2, the midranks, the rank sums, the exact two-sided p value when there are no ties and each sample has at most 49 values, the asymptotic p value with and without the continuity correction, and the rank-biserial correlation. On the SciPy documentation example the page gives U1 = 17, U2 = 3 and the exact p value 0.1111111111111111, as the SciPy v1.18.0 manual prints. The table below shows each value.</p>
+ <p class="updated" style="margin:0;font-size:.875rem;color:var(--text-dim,#9ca3af)">Updated 2026-10-29</p>
+ </div>
+
+ <section id="calculator" aria-labelledby="tool-h">
+ <h2 id="tool-h" class="mn-sr">Calculator</h2>
+ <form id="mwu-form" novalidate>
+ <div class="card" role="group" aria-labelledby="mwu-groups-h">
+ <h3 id="mwu-groups-h">Two independent samples</h3>
+ <noscript><p class="mn-note">This calculator runs on JavaScript, which is turned off in this browser. The explanations and the check table below do not need it.</p></noscript>
+ <p class="mn-note" id="mwu-hint">Each sample needs at least 1 value. Separate the values with spaces, commas, semicolons or line breaks. Enter whole or decimal numbers from -1000000000 to 1000000000. Do not write thousands separators: 1,250 is read as the two values 1 and 250. Paste one group per box.</p>
+ <div class="input-group">
+ <div class="input-field"><label class="input-label" for="mwu-a">Sample A</label><textarea id="mwu-a" spellcheck="false" aria-describedby="mwu-hint" placeholder="19, 22, 16, 29, 24"></textarea></div>
+ <div class="input-field"><label class="input-label" for="mwu-b">Sample B</label><textarea id="mwu-b" spellcheck="false" aria-describedby="mwu-hint" placeholder="20, 11, 17, 12"></textarea></div>
+ </div>
+ <div class="mn-actions">
+ <button type="submit" id="mwu-calc" class="btn btn-primary" disabled>Calculate</button>
+ <button type="button" id="mwu-example" class="btn btn-secondary mwu-load" data-example="scipy" disabled>Load the SciPy example</button>
+ <button type="button" id="mwu-ties" class="btn btn-secondary mwu-load" data-example="ties" disabled>Load a ties example</button>
+ <button type="button" id="mwu-clear" class="btn btn-secondary" disabled>Clear</button>
+ </div>
+ </div>
+ </form>
+ <div id="mwu-error" class="sig-red" role="alert"></div>
+ <p id="mwu-status" class="mn-sr" role="status"></p>
+ <div id="mwu-out" aria-live="polite"></div>
+ </section>
+
+ <section class="explainer-section" id="check-example">
+ <h2>The SciPy documentation example</h2>
+ <p>The example data come from the SciPy manual for <code>scipy.stats.mannwhitneyu</code>: the ages at which nine randomly sampled young adults, five males and four females, were diagnosed with type II diabetes. SciPy takes the example from Rosie Shier, "Statistics: 2.3 The Mann-Whitney U Test", Mathematics Learning Support Centre, 2004. The table shows what this page calculates and what the SciPy v1.18.0 manual prints. The two asymptotic p values agree to 12 decimal places. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html" rel="noopener">SciPy manual, scipy.stats.mannwhitneyu</a>.</p>
+ <div class="table-wrap">
+ <table class="check-table">
+ <caption class="mn-sr">Page output versus SciPy for the documentation example</caption>
+ <thead><tr><th scope="col">Quantity</th><th scope="col">This page</th><th scope="col">SciPy v1.18.0 manual</th></tr></thead>
+ <tbody>
+ <tr><td>U1 (males)</td><td>17</td><td>17.0</td></tr>
+ <tr><td>U2 (females)</td><td>3</td><td>3.0</td></tr>
+ <tr><td>p, exact two-sided</td><td>0.1111111111111111</td><td>0.1111111111111111</td></tr>
+ <tr><td>p, asymptotic with continuity correction</td><td>0.11134688653314062</td><td>0.11134688653314041</td></tr>
+ <tr><td>p, asymptotic without continuity correction</td><td>0.08641073297370006</td><td>0.0864107329737</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p>With n = 5 and n = 4 there are 126 ways to split 9 ranks into groups of 5 and 4. The ranks of the males are 3, 5, 7, 8 and 9. Their rank sum is 3 + 5 + 7 + 8 + 9 = 32, so U1 = 32 − 5·6/2 = 17. The two-sided exact p value counts the splits with U ≤ 3 or U ≥ 17: 14 of 126, which is 1/9.</p>
+ </section>
+
+ <section class="explainer-section" id="ties">
+ <h2>Ties and what SciPy does</h2>
+ <ul>
+ <li>Equal values inside or between the samples get the average (mid) rank. The U statistic uses these mid ranks.</li>
+ <li>With ties present, this page does not calculate the exact p value. This page computes the exact p value only when no value occurs more than once in the two samples together and each sample has at most 49 values. With ties, it shows only the tie-corrected asymptotic p values and says so.</li>
+ <li>SciPy does not do the same thing in all modes. The SciPy manual says that <code>method="exact"</code> makes "No correction" for ties, and that <code>mannwhitneyu</code> "will not raise errors or warnings if there are ties". SciPy <code>method="auto"</code> "chooses 'exact' when the size of one of the samples is less than or equal to 8 and there are no ties; chooses 'asymptotic' otherwise." This page uses the tie-corrected variance n1·n2/12 · ((n + 1) − Σ(t³ − t)/(n(n − 1))), where t is the size of each group of equal values.</li>
+ <li>R-devel <code>wilcox.test</code> uses a different rule: "an exact p-value is computed if the samples contain less than 50 finite values". With ties, R-devel does "exact inference" with "the conditional/permutation distribution". This page does not do that permutation calculation. With ties, it shows only the asymptotic p values. <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html" rel="noopener">R manual, wilcox.test</a>.</li>
+ </ul>
+ </section>
+
+ <section class="explainer-section" id="effect">
+ <h2>Effect size, the rank-biserial correlation</h2>
+ <p>Alongside the p value the page reports the rank-biserial correlation r = 1 − 2U2/(n1·n2), which runs from −1 (every value in B is larger) to +1 (every value in A is larger). For the SciPy example r = 1 − 2·3/20 = 0.7. A p value measures the evidence against the null hypothesis that the two samples come from the same distribution; the rank-biserial tells you how strongly one group dominates. Fay and Proschan (2010) discuss the stochastic ordering and the Mann-Whitney functional views of the WMW test in "Wilcoxon-Mann-Whitney or t-test? On assumptions for hypothesis tests and multiple interpretations of decision rules", Statistics Surveys 4:1–39. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2857732/" rel="noopener">Fay and Proschan 2010</a>.</p>
+ <p>The calculator prints the midranks of each sample with every result, so you can verify the rank assignment by hand before you trust the p values.</p>
+ </section>
+
+ <section class="explainer-section" id="proportion">
+ <h2>Another view, the probability of a larger value</h2>
+ <p>Divide U1 by n1·n2 and you get an estimate of p = P(A &gt; B) + 0.5·P(A = B): the probability that a random value from sample A is larger than a random value from sample B, with half of the ties counted. The statsmodels manual defines this p for <code>rank_compare_2indep</code>, and its result object has methods for confidence intervals. For the SciPy example, U1/(n1·n2) = 17/20 = 0.85. <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.nonparametric.rank_compare_2indep.html" rel="noopener">statsmodels manual, rank_compare_2indep</a>.</p>
+ </section>
+
+ <section class="explainer-section" id="when">
+ <h2>Mann-Whitney U or the two-sample t test?</h2>
+ <p>The SciPy manual says: "When the means of samples from the populations are normally distributed, consider <code>scipy.stats.ttest_ind</code>." statsmodels states that the Mann-Whitney U test assumes equal variance or equal distribution under the null hypothesis. The chi-square test is not an alternative here: it works on category counts, not on raw values. For paired values of the same subjects, the SciPy manual names <code>scipy.stats.wilcoxon</code>.</p>
+ </section>
+
+ <section class="explainer-section" id="limits">
+ <h2>Limits and accuracy</h2>
+ <ul>
+ <li>The page calculates the exact p value with dynamic programming over all splits of the ranks. It shows the exact p value only when each sample has at most 49 values and no value occurs more than once. The two-sided exact p value is 2 × P(U ≥ max(U1, U2)), with a maximum of 1.</li>
+ <li>The asymptotic p values use the tie-corrected standard deviation and the normal distribution, with and without the 0.5 continuity correction. With the correction, z = (max(U1, U2) − n1·n2/2 − 0.5)/σ, and the page uses z = 0 when this value is below 0. The SciPy manual gives the same form: z = (U − mn − d)/se.</li>
+ <li>Values from −1,000,000,000 to 1,000,000,000 are accepted, with up to 10,000 values per sample. The exact p value is limited to 49 values per sample because the exact counting method stores (n1 + 1)(n1·n2 + 1) counts, so its memory grows quickly with the sample sizes. The calculation runs in your browser and makes no network request.</li>
+ <li>The page rounds the rank sums, the U values, the rank-biserial r and U1/(n1·n2) to 12 significant digits. It shows the p values without rounding.</li>
+ </ul>
+ </section>
+
+ <section class="explainer-section">
+ <h2>Disclaimers</h2>
+ <ul>
+ <li>Results are statistical estimates and not medical, business or financial advice.</li>
+ <li>The reference example is the published SciPy documentation example, and it names its source. The "Load a ties example" button loads 8 made-up values that only show how the page handles ties. The page has no data of this site.</li>
+ </ul>
+ </section>
+
+ <div class="last-updated">
+ <p>By Michael Lip, builder and maintainer of ABWex, open source at <a href="https://github.com/theluckystrike/abwex.com">github.com/theluckystrike/abwex.com</a>. <a href="https://zovo.one">Profile</a>.</p>
+ <p>ABWex is a free A/B test statistics calculator from Zovo Tools. The calculation runs in your browser in JavaScript. The page does not send the numbers that you enter to a server. Published 2026-10-29.</p>
+ </div>
+
+  <!-- Internal Content Discovery -->
+ <section class="content-discovery" style="max-width:960px;margin:3rem auto;padding:0 1rem;">
+ <style>
+        .content-discovery h2 { text-align:center; margin-bottom:2rem; }
+        .content-discovery .disc-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem; margin-bottom:2.5rem; }
+        .content-discovery .disc-group h3 { font-size:1.1rem; margin-bottom:0.75rem; color:var(--accent, #14B8A6); border-bottom:1px solid var(--border, #333); padding-bottom:0.5rem; }
+        .content-discovery .disc-group ul { list-style:none; padding:0; margin:0; }
+        .content-discovery .disc-group li { margin-bottom:0.4rem; }
+        .content-discovery .disc-group a { color:var(--text, #e0e0e0); text-decoration:none; font-size:0.9rem; }
+        .content-discovery .disc-group a:hover { color:var(--accent, #14B8A6); text-decoration:underline; }
+      </style>
+ <h2>Explore ABWex</h2>
+ <div class="disc-grid">
+ <div class="disc-group">
+ <h3>Testing Tools</h3>
+ <ul>
+ <li><a href="/tools/sample-size-calculator.html">Sample Size Calculator</a></li>
+ <li><a href="/tools/p-value-calculator.html">P-Value Calculator</a></li>
+ <li><a href="/tools/chi-square-test.html">Chi-Square Test</a></li>
+ <li><a href="/tools/confidence-interval-calculator.html">Confidence Interval Calculator</a></li>
+ <li><a href="/tools/bayesian-ab-testing.html">Bayesian A/B Testing</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Answers</h3>
+ <ul>
+ <li><a href="/answers/ab-test-sample-size-calculator.html">A/B Test Sample Size Calculator</a></li>
+ <li><a href="/answers/is-my-ab-test-significant.html">Is My A/B Test Significant?</a></li>
+ <li><a href="/answers/how-long-to-run-ab-test.html">How Long to Run an A/B Test</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Research</h3>
+ <ul>
+ <li><a href="/research/ab-test-duration-calculator.html">A/B Test Duration Calculator</a></li>
+ <li><a href="/research/ab-test-mistakes.html">A/B Test Mistakes</a></li>
+ </ul>
+ </div>
+ <div class="disc-group">
+ <h3>Guides</h3>
+ <ul>
+ <li><a href="/guides/chi-square-test-guide.html">Chi-Square Test Explained</a></li>
+ </ul>
+ </div>
+ </div>
+ </section>
+ </main>
+<footer class="site-footer">
+ <div class="footer-inner">
+ <div class="footer-brand">Zovo Tools</div>
+ <div class="footer-tagline">Free developer tools by a solo dev. No tracking.</div>
+ <a href="https://zovo.one/pricing?utm_source=abwex&amp;utm_medium=satellite&amp;utm_campaign=footer-link" class="footer-cta">Zovo Lifetime, $99 once</a>
+ <div class="footer-copy">© 2026 <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=footer&amp;utm_campaign=tools">Zovo</a></div>
+ </div>
+</footer>
+
+<nav class="zovo-network" aria-label="Zovo Tools Network">
+ <div class="zovo-network-inner">
+ <h3 class="zovo-network-title">Explore More Tools</h3>
+ <div class="zovo-network-links">
+ <a href="https://b2berp.com">B2BERP, Business Tools</a>
+ <a href="https://bugbountyreality.com">BugBountyReality, Security</a>
+ <a href="https://claudflow.com">ClaudFlow, Workflows</a>
+ <a href="https://claudkit.com">ClaudKit, API Tools</a>
+ <a href="https://dismissticket.com">DismissTicket, Support</a>
+ <a href="https://enhio.com">Enhio, Text Tools</a>
+ <a href="https://epochpilot.com">EpochPilot, Timestamps</a>
+ <a href="https://gen8x.com">Gen8X, Color Tools</a>
+ <a href="https://gpt0x.com">GPT0X, AI Models</a>
+ <a href="https://heytensor.com">HeyTensor, ML Tools</a>
+ <a href="https://ingredientcalculator.com">IngredientCalc, Recipes</a>
+ <a href="https://invokebot.com">InvokeBot, Webhooks</a>
+ <a href="https://kappafy.com">Kappafy, JSON</a>
+ <a href="https://kappakit.com">KappaKit, Dev Toolkit</a>
+ <a href="https://kickllm.com">KickLLM, LLM Costs</a>
+ <a href="https://krzen.com">Krzen, Image Tools</a>
+ <a href="https://lochbot.com">LochBot, Security</a>
+ <a href="https://lockml.com">LockML, ML Security</a>
+ <a href="https://ml0x.com?utm_source=abwex&amp;utm_medium=nav&amp;utm_campaign=tools">ML0X, ML Basics</a>
+ <a href="https://ml3x.com">ML3X, Matrix Math</a>
+ <a href="https://pictureeditor.net">PictureEditor, Image Editing</a>
+ <a href="https://recipetool.net">RecipeTool, Cooking</a>
+ <a href="https://viryd.com">Viryd, Dev Tools</a>
+ <a href="https://tg.zovo.one/">Tiny Telegram Tools, Telegram Bots</a>
+ </div>
+ </div>
+</nav>
+
+<div class="pow-strip">
+ <div class="pow-strip-inner">
+ <span class="pow-label" style="font-size:0.75rem">By the same builder:</span>
+ <a href="https://github.com/theluckystrike" rel="nofollow" style="font-size:0.75rem">GitHub, theluckystrike</a>
+ <a href="https://www.belikenative.com" rel="nofollow" style="font-size:0.75rem">BeLikeNative, Grammar AI</a>
+ <a href="https://earlythunder.com" rel="nofollow" style="font-size:0.75rem">EarlyThunder, Dev Blog</a>
+ <a href="https://bugbountyreality.com" rel="nofollow" style="font-size:0.75rem">Bug Bounty Reality</a>
+ <a href="https://zovo.one/lifetime?utm_source=abwex&amp;utm_medium=inline&amp;utm_campaign=tools" rel="nofollow" style="font-size:0.75rem">Zovo, AI Dev Tools</a>
+ </div>
+</div>
+
+<script>
+/* ABWex Mann-Whitney U test calculator. MIT licensed, github.com/theluckystrike/abwex.com.
+   The script reads two samples of raw values and writes the result. It makes no network request.
+   Exact p: dynamic programming over the rank-sum distribution (no ties).
+   Asymptotic p: tie-corrected normal approximation, with and without the 0.5 continuity
+   correction, with the same formula as scipy.stats.mannwhitneyu(method="asymptotic").
+   Each loop has a fixed upper limit. No recursion. */
+(function () {
+  "use strict";
+  var MAX_ABS = 1000000000;
+  var MAX_VALUES = 10000;
+  var EXACT_MAX_N = 49;
+  var FIELDS = [
+    { id: "mwu-a", label: "Sample A" },
+    { id: "mwu-b", label: "Sample B" }
+  ];
+  var EXAMPLES = {
+    scipy: ["19, 22, 16, 29, 24", "20, 11, 17, 12"],
+    ties: ["5, 7, 7, 10", "4, 6, 7, 12"]
+  };
+
+  var form = document.getElementById("mwu-form");
+  var outBox = document.getElementById("mwu-out");
+  var errorBox = document.getElementById("mwu-error");
+  var statusBox = document.getElementById("mwu-status");
+  var inputs = [];
+  var i;
+  for (i = 0; i < FIELDS.length; i += 1) { inputs.push(document.getElementById(FIELDS[i].id)); }
+
+  function node(tag, className, text) {
+    var el = document.createElement(tag);
+    if (className) { el.className = className; }
+    if (text !== undefined && text !== null) { el.textContent = text; }
+    return el;
+  }
+  function empty(el) { while (el.firstChild) { el.removeChild(el.firstChild); } }
+
+  // Parse one pasted sample into an array of numbers. Returns {values, problem}.
+  function parseSample(text) {
+    var parts = text.trim().split(/[\s,;]+/).filter(function (p) { return p !== ""; });
+    var values = [];
+    var j;
+    if (parts.length === 0) { return { values: [], problem: "empty" }; }
+    if (parts.length > MAX_VALUES) { return { values: null, problem: "too many values. The limit is " + MAX_VALUES + " per sample." }; }
+    for (j = 0; j < parts.length; j += 1) {
+      var raw = parts[j];
+      var num = Number(raw);
+      if (!/^([+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?)$/.test(raw.trim()) || !isFinite(num)) { return { values: null, problem: "the value \"" + (raw.length > 20 ? raw.slice(0, 20) + "…" : raw) + "\" is not a number." }; }
+      if (Math.abs(num) > MAX_ABS) { return { values: null, problem: "the value " + (raw.length > 20 ? raw.slice(0, 20) + "…" : raw) + " is outside the range -1,000,000,000 to 1,000,000,000." }; }
+      values.push(num);
+    }
+    return { values: values, problem: null };
+  }
+
+  function problemText(label, state) {
+    if (state === "empty") { return label + " is empty. Each sample needs at least 1 value."; }
+    return label + ": " + state;
+  }
+
+  // ----- mathematics -----
+
+  // Mid ranks of the pooled sample (average ranks for ties).
+  function midRanks(values) {
+    var n = values.length;
+    var order = values.map(function (v, idx) { return idx; });
+    order.sort(function (x, y) { return values[x] - values[y]; });
+    var ranks = new Array(n);
+    var k = 0;
+    while (k < n) {
+      var m = k;
+      while (m + 1 < n && values[order[m + 1]] === values[order[k]]) { m += 1; }
+      var avg = (k + m) / 2 + 1;
+      var j;
+      for (j = k; j <= m; j += 1) { ranks[order[j]] = avg; }
+      k = m + 1;
+    }
+    return ranks;
+  }
+
+  // Normal upper-tail two-sided p from z, via erfc.
+  function erfSeries(x) {
+    var x2 = x * x;
+    var term = x;
+    var sum = x;
+    var n;
+    for (n = 1; n <= 200; n += 1) {
+      term = term * 2 * x2 / (2 * n + 1);
+      sum += term;
+      if (term < sum * 1e-17) { break; }
+    }
+    return 2 / Math.sqrt(Math.PI) * Math.exp(-x2) * sum;
+  }
+  function erfcFraction(x) {
+    var f = x;
+    var k;
+    for (k = 200; k >= 1; k -= 1) { f = x + (k / 2) / f; }
+    return Math.exp(-x * x) / (Math.sqrt(Math.PI) * f);
+  }
+  function erfc(x) {
+    if (typeof x !== "number" || !(x >= 0)) { return 1; }
+    return x < 2.5 ? 1 - erfSeries(x) : erfcFraction(x);
+  }
+  function twoSidedNormalP(z) {
+    return Math.min(1, erfc(Math.abs(z) / Math.SQRT2));
+  }
+
+  // Exact two-sided p, no ties. dp[a][u] counts the orders of the sorted pooled values
+  // that place a values of sample A so far with the partial U1 equal to u.
+  function exactTwoSidedP(u1, n1, n2) {
+    var n = n1 + n2, maxU = n1 * n2, dp = [], a, k, u, b;
+    for (a = 0; a <= n1; a += 1) { dp.push(new Float64Array(maxU + 1)); }
+    dp[0][0] = 1;
+    for (k = 0; k < n; k += 1) {
+      for (a = Math.min(k, n1 - 1); a >= 0; a -= 1) {
+        b = k - a;
+        if (b > n2) { continue; }
+        for (u = maxU - b; u >= 0; u -= 1) { if (dp[a][u] > 0) { dp[a + 1][u + b] += dp[a][u]; } }
+      }
+    }
+    var big = Math.max(u1, maxU - u1), tail = 0, all = 0;
+    for (u = 0; u <= maxU; u += 1) { all += dp[n1][u]; if (u >= big - 1e-9) { tail += dp[n1][u]; } }
+    return Math.min(1, 2 * tail / all);
+  }
+
+  function fmt(x) {
+    return String(Number(x.toPrecision(12)));
+  }
+
+  function showResult(a, b) {
+    empty(outBox);
+    var n1 = a.length, n2 = b.length, n = n1 + n2;
+    var pooled = a.concat(b);
+    var ranks = midRanks(pooled);
+    var r1 = 0, j;
+    for (j = 0; j < n1; j += 1) { r1 += ranks[j]; }
+    var u1 = r1 - n1 * (n1 + 1) / 2;
+    var u2 = n1 * n2 - u1;
+    var mu = n1 * n2 / 2;
+
+    // tie correction
+    var counts = {};
+    for (j = 0; j < n; j += 1) {
+      var key = pooled[j];
+      counts[key] = (counts[key] || 0) + 1;
+    }
+    var ties = [], hasTies = false;
+    var keys = Object.keys(counts);
+    for (j = 0; j < keys.length; j += 1) {
+      var t = counts[keys[j]];
+      if (t > 1) { ties.push(t); hasTies = true; }
+    }
+    var tieTerm = 0;
+    for (j = 0; j < ties.length; j += 1) { tieTerm += ties[j] * ties[j] * ties[j] - ties[j]; }
+    var sigma2 = n1 * n2 / 12 * ((n + 1) - tieTerm / (n * (n - 1)));
+    var sigma = Math.sqrt(sigma2);
+
+    var grid = node("div", "result-grid");
+    function card(label, value) {
+      var c = node("div", "result-card");
+      c.appendChild(node("div", "rl", label));
+      c.appendChild(node("div", "rv", value));
+      grid.appendChild(c);
+    }
+    card("Rank sum R1 (sample A)", fmt(r1));
+    card("Rank sum R2 (sample B)", fmt(n * (n + 1) / 2 - r1));
+    card("Reported U = U1 (statistic of sample A, as SciPy reports it)", fmt(u1));
+    card("U1 (sample A)", fmt(u1));
+    card("U2 (sample B)", fmt(u2));
+    card("Rank-biserial r", fmt(1 - 2 * u2 / (n1 * n2)));
+    card("P(A > B) + 0.5 P(A = B), U1/(n1 n2)", fmt(u1 / (n1 * n2)));
+
+    var pExact = null;
+    if (!hasTies && n1 <= EXACT_MAX_N && n2 <= EXACT_MAX_N) { pExact = exactTwoSidedP(u1, n1, n2); }
+    if (pExact !== null) { card("p, exact two-sided", String(pExact)); }
+    if (sigma > 0) {
+      card("p, asymptotic two-sided (continuity correction)", String(twoSidedNormalP(Math.max(0, Math.abs(u1 - mu) - 0.5) / sigma)));
+      card("p, asymptotic two-sided (no continuity correction)", String(twoSidedNormalP((u1 - mu) / sigma)));
+    }
+    outBox.appendChild(grid);
+    outBox.appendChild(node("p", "mn-note", "Midranks of sample A: " + ranks.slice(0, n1).join(", ") + ". Midranks of sample B: " + ranks.slice(n1).join(", ") + "."));
+
+    if (n1 === 0 || n2 === 0) { return; }
+    var notes = [];
+    if (hasTies) {
+      notes.push("The samples contain equal values (ties). The page does not calculate the exact p value when there are ties. The asymptotic p values above use the tie-corrected variance.");
+    } else if (n1 > EXACT_MAX_N || n2 > EXACT_MAX_N) {
+      notes.push("A sample has 50 or more values. The page does not calculate the exact p value for this size. It shows the asymptotic p values only.");
+    }
+    if (sigma === 0) {
+      notes.push("Every value is identical, so the test is not defined. The page shows no p value.");
+    }
+    if (n1 < 1 || n2 < 1) { notes.push("Each sample needs at least 1 value."); }
+    for (j = 0; j < notes.length; j += 1) { outBox.appendChild(node("p", "mn-note", notes[j])); }
+  }
+
+  // strict = true after Calculate: an empty sample is a problem. strict = false while the
+  // reader types and after the Back button: an empty sample only removes the result.
+  function update(strict) {
+    var samples = [];
+    var problems = [];
+    var incomplete = false;
+    var firstBad = null;
+    var j;
+    for (j = 0; j < FIELDS.length; j += 1) {
+      var parsed = parseSample(inputs[j].value);
+      if (parsed.problem === null) {
+        inputs[j].removeAttribute("aria-invalid");
+        samples.push(parsed.values);
+      } else if (parsed.problem === "empty" && !strict) {
+        inputs[j].removeAttribute("aria-invalid");
+        incomplete = true;
+        samples.push(null);
+      } else {
+        var msg = problemText(FIELDS[j].label, parsed.problem);
+        problems.push(msg);
+        inputs[j].setAttribute("aria-invalid", "true");
+        firstBad = firstBad || inputs[j];
+        samples.push(null);
+      }
+    }
+    empty(errorBox);
+    statusBox.textContent = "";
+    if (problems.length > 0) {
+      empty(outBox);
+      for (j = 0; j < problems.length; j += 1) { errorBox.appendChild(node("p", "", problems[j])); }
+      return firstBad;
+    }
+    if (incomplete) { empty(outBox); return null; }
+    showResult(samples[0], samples[1]);
+    statusBox.textContent = "Result updated.";
+    return null;
+  }
+
+  function loadExample(key) {
+    var cells = EXAMPLES[key];
+    var j;
+    if (!cells) { return; }
+    for (j = 0; j < inputs.length; j += 1) { inputs[j].value = String(cells[j]); }
+    update(true);
+    form.scrollIntoView({ block: "start" });
+  }
+
+  function clearAll() {
+    var j;
+    for (j = 0; j < inputs.length; j += 1) { inputs[j].value = ""; }
+    update(false);
+    inputs[0].focus();
+  }
+
+  form.addEventListener("submit", function (event) {
+    var bad;
+    event.preventDefault();
+    bad = update(true);
+    if (bad) { bad.focus(); }
+  });
+  form.addEventListener("input", function () { update(false); });
+  document.getElementById("mwu-clear").addEventListener("click", clearAll);
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    var button = target && target.closest ? target.closest(".mwu-load") : null;
+    if (button) { loadExample(button.getAttribute("data-example")); }
+  });
+  // After the Back button the browser can restore the page or the field values.
+  // The result is calculated again from the fields, so the two always agree.
+  window.addEventListener("pageshow", function () { update(false); });
+
+  var buttons = document.querySelectorAll("#mwu-form button, .mwu-load");
+  for (i = 0; i < buttons.length && i < 20; i += 1) { buttons[i].disabled = false; }
+  update(false);
+}());
+</script>
+<script defer src="/assets/js/nav.js?v=45f62fb3"></script>
+</body>
+</html>
